@@ -1,0 +1,171 @@
+IFRDBA no prodsede >
+IFRDBA no prodsede >CREATE OR REPLACE VIEW helpdesk.viw_solicitante_chamado (
+  2     cod_solicitante,
+  3     nome,
+  4     lotacao,
+  5     ramal )
+  6  AS
+  7  select a.EMP_NUMERO_MATRICULA 
+  8        ,a.EMP_NOME
+  9        ,b.UOR_SIGLA
+ 10        ,substr(lpad(f.EFC_UFF_NUMERO,8,'3'),5,4) -- pega apenas os 4 ultimos digitos - ramal
+ 11  from  cadastros a , unidades_organizacionais b, 
+ 12    (select efc_uff_numero, efc_emp_numero_matricula 
+ 13       from empregado_fone_comercial
+ 14      where efc_uff_tipo = 1 ) f -- fone comercial direto
+ 15  where a.emp_dep_codigo_lotacao = 1 -- apenas SEDE
+ 16  and   a.emp_status <> 2
+ 17  and   b.uor_codigo = a.emp_uor_codigo_lotacao
+ 18  and   a.emp_numero_matricula = f.efc_emp_numero_matricula(+) 
+ 19  union all
+ 20  select ter_cpf
+ 21        ,ter_nome
+ 22        ,uor_sigla
+ 23        ,ter_ramal
+ 24  from  ( select a.ter_cpf
+ 25        ,a.ter_nome
+ 26        ,b.uor_sigla 
+ 27     ,a.ter_ramal, max(TER_DATA_CADASTRAMENTO)
+ 28     from terceiros a , unidades_organizacionais b
+ 29     where a.ter_dep_codigo_lotacao = 1 -- apenas SEDE
+ 30     and   a.ter_status <> 2 -- (0. AFASTADO; 1. ATIVO; 2. DESLIGADO
+ 31       and   b.uor_codigo = a.ter_uor_codigo_lotacao
+ 32     group by a.ter_cpf
+ 33        ,a.ter_nome
+ 34        ,b.uor_sigla
+ 35     ,a.ter_ramal) Terceiros_Ativos
+ 36  /
+      ,substr(lpad(f.EFC_UFF_NUMERO,8,'3'),5,4) -- pega apenas os 4 ultimos digitos - ramal
+       *
+ERRO na linha 10:
+ORA-01790: expression must have same datatype as corresponding expression
+
+
+IFRDBA no prodsede >comment on view helpdesk.viw_solicitante_chamado is 'Esta view armazena informações dos usuários que solicitaram o chamado, somente para a SEDE.'
+  2  /
+comment on view helpdesk.viw_solicitante_chamado is 'Esta view armazena informações dos usuários que solicitaram o chamado, somente para a SEDE.'
+           *
+ERRO na linha 1:
+ORA-00966: missing TABLE keyword
+
+
+IFRDBA no prodsede >
+IFRDBA no prodsede >-- Armazena os técnicos e atendentes de Help Desk
+IFRDBA no prodsede >CREATE OR REPLACE VIEW helpdesk.viw_tecnico_sede (
+  2     matricula,
+  3     nome,
+  4     lotacao,
+  5     situacao )
+  6  AS
+  7  select ter_cpf
+  8        ,ter_nome
+  9        ,uor_sigla
+ 10        ,ter_status
+ 11  from  ( select a.ter_cpf
+ 12        ,a.ter_nome
+ 13        ,b.uor_sigla 
+ 14     ,a.ter_status, max(TER_DATA_CADASTRAMENTO)
+ 15     from terceiros a , unidades_organizacionais b
+ 16     where a.ter_uor_codigo_lotacao = 7061 -- apenas TIST - SUPORTE
+ 17     and   a.ter_status <> 2 -- (0. AFASTADO; 1. ATIVO; 2. DESLIGADO
+ 18       and   b.uor_codigo = a.ter_uor_codigo_lotacao
+ 19     group by a.ter_cpf
+ 20        ,a.ter_nome
+ 21        ,b.uor_sigla
+ 22     ,a.ter_status) Terceiros_Ativos
+ 23  /
+
+View criada.
+
+IFRDBA no prodsede >
+IFRDBA no prodsede >comment on view helpdesk.viw_tecnicos_sede is 'Armazena os técnicos e atendentes de Help Desk.'
+  2  /
+comment on view helpdesk.viw_tecnicos_sede is 'Armazena os técnicos e atendentes de Help Desk.'
+           *
+ERRO na linha 1:
+ORA-00966: missing TABLE keyword
+
+
+IFRDBA no prodsede >CREATE OR REPLACE TRIGGER helpdesk.trg_tec_help_iu
+  2   BEFORE INSERT OR UPDATE ON helpdesk.cad_tecnico_helpdesk
+  3  REFERENCING NEW AS NEW OLD AS OLD
+  4   FOR EACH ROW
+  5  declare
+  6    v_qtde_reg number:=0;
+  7  Begin
+  8      -- Verifica se o cod_tecnico existe na viw_tecnico_sede
+  9   if (:new.cod_tecnico is not null) then
+ 10    begin
+ 11     select  count(*)
+ 12     into v_qtde_reg
+ 13     from helpdesk.viw_tecnico_sede
+ 14     where matricula = :new.cod_tecnico;
+ 15    end;
+ 16    
+ 17    if v_qtde_reg = 0 then
+ 18        raise_application_error(-20000,'Não existe o técnico na viw_tecnico_sede',true);
+ 19    end if;
+ 20    
+ 21   end if;
+ 22  End;
+ 23  /
+
+Gatilho criado.
+
+IFRDBA no prodsede >
+IFRDBA no prodsede >--constraint
+IFRDBA no prodsede >alter table helpdesk.tab_situacao_chamado
+  2      add constraint sch_pk primary key (cod_situacao_chamado);
+
+Tabela alterada.
+
+IFRDBA no prodsede >/
+    add constraint sch_pk primary key (cod_situacao_chamado)
+                          *
+ERRO na linha 2:
+ORA-02260: table can have only one primary key
+
+
+IFRDBA no prodsede >
+IFRDBA no prodsede >ALTER TABLE helpdesk.cad_chamado
+  2      ADD CONSTRAINT cha_sch_fk FOREIGN KEY (cod_situacao_chamado)
+  3      REFERENCES HELPDESK.tab_situacao_chamado (cod_situacao_chamado)
+  4  /
+
+Tabela alterada.
+
+IFRDBA no prodsede >
+IFRDBA no prodsede >-- Trigger que controla a inclusão do cod_solicitante na tabela cad_chamado, baseado na viw_solicitante_chamado
+IFRDBA no prodsede >CREATE OR REPLACE TRIGGER helpdesk.trg_cha_iu
+  2   BEFORE INSERT OR UPDATE ON helpdesk.cad_chamado
+  3  REFERENCING NEW AS NEW OLD AS OLD
+  4   FOR EACH ROW
+  5  declare
+  6    v_qtde_reg number:=0;
+  7  Begin
+  8      -- Verifica se o cod_solicitante existe na viw_solicitante_chamado
+  9   if (:new.cod_solicitante is not null) then
+ 10    begin
+ 11     select  count(*)
+ 12     into v_qtde_reg
+ 13     from helpdesk.viw_solicitante_chamado
+ 14     where cod_solicitante = :new.cod_solicitante;
+ 15    end;
+ 16    
+ 17    if v_qtde_reg = 0 then
+ 18        raise_application_error(-20000,'Não existe o solicitante na VIW_SOLICITANTE_CHAMADO',true);
+ 19    end if;
+ 20    
+ 21   end if;
+ 22  End;
+ 23  /
+
+Advertência: Gatilho criado com erros de compilação.
+
+IFRDBA no prodsede >
+IFRDBA no prodsede >
+IFRDBA no prodsede >comment on column helpdesk.cad_chamado.seq_chamado is 'Código do chamando. Campo auto-numerico, alimentado por uma sequence';
+
+Comentário criado.
+
+IFRDBA no prodsede >

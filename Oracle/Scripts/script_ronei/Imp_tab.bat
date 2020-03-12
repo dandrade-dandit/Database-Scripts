@@ -1,0 +1,1 @@
+imp73 userid=%1@prodsede fromuser=%2 touser=%3 ROWS=Y IGNORE=Y tables=(%4) file=C:\Sistemas\Sql\Infraero\Oracle\Scripts\script_ronei\EXP_%2.dmp log=C:\Sistemas\Sql\Infraero\Oracle\Scripts\script_ronei\imp_%3.log

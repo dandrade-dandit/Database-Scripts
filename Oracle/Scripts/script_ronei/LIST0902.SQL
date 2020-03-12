@@ -1,0 +1,13 @@
+CREATE USER applicationdeveloper IDENTIFIED BY password
+  DEFAULT TABLESPACE testapplications
+  TEMPORARY TABLESPACE testapplications
+  QUOTA UNLIMITED ON testapplications
+  PROFILE developerprofile
+
+CREATE ROLE productiondbdeveloper IDENTIFIED BY password
+
+GRANT CREATE SESSION, ALTER SESSION,
+  CREATE TABLE, CREATE CLUSTER, CREATE VIEW,
+  CREATE SEQUENCE, CREATE PROCEDURE, CREATE TRIGGER,
+  CREATE ROLE, CREATE SYNONYM
+  TO productiondbdeveloper

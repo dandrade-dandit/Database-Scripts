@@ -1,0 +1,51 @@
+SQL> grant connect, resource to CORRENTISTA;
+
+Operação de Grant bem-sucedida.
+
+SQL> conn ifrteca@sebn07
+Informe a senha: ******
+Conectado.
+SQL> 
+SQL> ALTER TABLE IFRTECA.TKP_USER
+  2          ADD (CONSTRAINT USER_GRUPO_FK FOREIGN KEY (US_GRUPO) REFERENCES TKP_GRUPOS (COD_GRUPO)
+  3                  ENABLE NOVALIDATE)
+  4  /
+
+Tabela alterada.
+
+SQL> select * from global_name@PRBR.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR1CONT
+
+SQL> conn correntista/vpttrmyodys@sebn07
+Conectado.
+SQL> 
+SQL> select * from global_name@PRBR.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR1CONT
+
+SQL> select * from global_name@PRMN.INFRAERO.GOV.BR;
+select * from global_name@PRMN.INFRAERO.GOV.BR
+                          *
+ERRO na linha 1:
+ORA-01017: invalid username/password; logon denied
+ORA-02063: precedendo line a partir de PRMN
+
+
+SQL> conn ifrteca@sebn07
+Informe a senha: ******
+Conectado.
+SQL> 
+SQL> select * from global_name@PRMN.INFRAERO.GOV.BR;
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR1MN.WORLD
+
+SQL> 

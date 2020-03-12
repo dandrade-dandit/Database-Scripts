@@ -1,0 +1,31 @@
+echo '**********************************'
+echo 'Inicio do procedimento de stop'
+echo '**********************************'
+echo ' '
+
+echo '**********************************'
+echo 'Parada do Listener'
+echo '**********************************'
+echo ' '
+
+lsnrctl stop
+
+echo '**********************************'
+echo 'Parada das Instances'
+echo '**********************************'
+echo ' '
+
+/usr/users/oracle/Scripts/stopAllInstances_Immediate
+
+
+echo '**********************************'
+echo 'Parada dos DBConsoles'
+echo '**********************************'
+echo ' '
+
+/usr/users/oracle/Scripts/stopAllDBConsole
+
+echo ' '
+echo '**********************************'
+echo 'Final do procedimento de stop'
+echo '**********************************'

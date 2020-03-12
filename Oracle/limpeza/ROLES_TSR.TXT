@@ -1,0 +1,15 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+TSR_CHF_TER_GERAL                                         1
+TSR_EMP_TER_GERAL                                         1
+
+2 linhas selecionadas.
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+TSR_CHF_TER_GERAL              NO
+TSR_EMP_TER_GERAL              NO
+
+2 linhas selecionadas.

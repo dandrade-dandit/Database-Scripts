@@ -1,0 +1,12 @@
+COMMENT ON COLUMN FUNCIONARIO.ID IS 'Identificacao do empregado da empresa'
+/
+COMMENT ON COLUMN FUNCIONARIO.CARGO IS 'Cargo do empregado'
+/
+COMMENT ON COLUMN FUNCIONARIO.NOME IS 'Nome do empregado'
+/
+COMMENT ON COLUMN FUNCIONARIO.TELEFONE IS 'Telefone do empregado'
+/
+COMMENT ON COLUMN FUNCIONARIO.EMAIL IS 'E-mail do empregado'
+/
+COMMENT ON COLUMN FUNCIONARIO.STATUS IS 'Status do empregado'
+/

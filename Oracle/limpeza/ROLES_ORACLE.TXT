@@ -1,0 +1,32 @@
+ Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+AQ_ADMINISTRATOR_ROLE                                     2
+AQ_USER_ROLE                                              1
+CONNECT                                                 208
+CTXAPP                                                    3
+DBA                                                       7
+DELETE_CATALOG_ROLE                                       2
+EXECUTE_CATALOG_ROLE                                      4
+EXP_FULL_DATABASE                                         3
+HS_ADMIN_ROLE                                             3
+IMP_FULL_DATABASE                                         2
+JAVA_ADMIN                                                2
+JAVADEBUGPRIV                                             1
+JAVA_DEPLOY                                               2
+JAVAIDPRIV                                                1
+JAVASYSPRIV                                               1
+JAVAUSERPRIV                                              3
+OEM_MONITOR                                               1
+ORAFORMS$BGM                                              1
+ORAFORMS$DBG                                              1
+ORAFORMS$OSC                                              1
+OWS_ADMIN_ROLE                                            1
+OWS_DEFAULT_ROLE                                          1
+OWS_STANDARD_ROLE                                         2
+PLUSTRACE                                                 3
+RECOVERY_CATALOG_OWNER                                    1
+RESOURCE                                                 27
+SELECT_CATALOG_ROLE                                       6
+SNMPAGENT                                                 2
+
+28 linhas selecionadas.

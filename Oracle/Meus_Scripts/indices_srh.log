@@ -1,0 +1,212 @@
+SQL> @d:\temp\indices.sql
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+ALTER INDEX IFRSRH.IND_OFE_2 REBUILD ONLINE TABLESPACE TSI_PESSOAL
+*
+ERROR at line 1:
+ORA-01652: unable to extend temp segment by 8 in tablespace SYSTEM 
+
+
+ALTER INDEX IFRSRH.OFE_PK REBUILD ONLINE TABLESPACE TSI_PESSOAL
+*
+ERROR at line 1:
+ORA-01652: unable to extend temp segment by 8 in tablespace SYSTEM 
+
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+ALTER INDEX IFRSRH.IDX_PK REBUILD ONLINE TABLESPACE TSI_PESSOAL
+*
+ERROR at line 2:
+ORA-02243: invalid ALTER INDEX or ALTER SNAPSHOT option 
+
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+
+Index altered.
+
+SQL> SPOOL OFF

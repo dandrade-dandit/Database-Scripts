@@ -1,0 +1,58 @@
+CREATE OR REPLACE VIEW EMPREGADOS_INFRAERO AS
+select a.emp_numero_matricula,
+       a.emp_nome,
+       a.emp_indicador_sexo,
+       a.emp_qlp_car_codigo,
+       b.car_sigla,
+       b.car_nome,
+       a.emp_qlp_car_occ_codigo,
+       c.occ_descricao,
+       a.emp_qlp_car_codigo_nivel,
+       a.emp_nsa_codigo_padrao,
+       a.emp_nsa_codigo_nivel,
+       a.emp_qfu_fun_codigo,
+       d.fun_descricao,
+       e.cfu_nome,
+       a.emp_dep_codigo_lotacao,
+       g.dep_sigla,
+       g.dep_nome,
+       a.emp_dep_codigo_fisico,
+       a.emp_uor_codigo_lotacao,
+       f.uor_sigla,
+       a.emp_nu_carteira_identidade,
+       a.emp_sigla_orgao_emitente_ci,
+       a.emp_numero_cpf,
+       a.emp_ati_ct_custos,
+       a.emp_aba_ban_codigo_cta_pgto,
+       a.emp_aba_codigo_conta_pgto,
+       a.emp_nu_conta_corrente_pagto,
+       i.vld_diaria vld_diaria_cargo,
+       j.vld_diaria vld_diaria_funcao
+   from cadastros a,
+        cargos b,
+        ocupacoes_cargo c,
+        cargos_confianca d,
+        categorias_funcoes e,
+        unidades_organizacionais f,
+        dependencias g,
+        niveis_salariais h,
+        (select vld_codigo, vld_diaria, max(vld_data_vigencia)
+         from valores_diaria
+         group by vld_codigo, vld_diaria) i,
+        (select vld_codigo, vld_diaria, max(vld_data_vigencia)
+         from valores_diaria
+         group by vld_codigo, vld_diaria) j
+where a.emp_status = 1
+and   a.emp_dep_codigo_lotacao     = g.dep_codigo
+and   a.emp_uor_codigo_lotacao     = f.uor_codigo
+and   a.emp_qfu_fun_codigo         = d.fun_codigo(+)
+and   d.fun_cfu_codigo             = e.cfu_codigo(+)
+and   a.emp_qlp_car_codigo         = b.car_codigo(+)
+and   a.emp_qlp_car_occ_codigo     = b.car_occ_codigo(+)
+and   a.emp_qlp_car_occ_codigo     = c.occ_codigo(+)
+and   a.emp_qlp_car_codigo_nivel   = b.car_codigo_nivel(+)
+and   a.emp_nsa_codigo_nivel       = h.nsa_codigo_nivel(+)
+and   a.emp_nsa_codigo_padrao      = h.nsa_codigo_padrao(+)
+and   h.nsa_vld_codigo             = i.vld_codigo(+)
+and   e.cfu_vld_codigo             = j.vld_codigo(+)
+/

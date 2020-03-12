@@ -1,0 +1,187 @@
+#!/bin/ksh
+date
+mt -f /dev/nrmt1h fsf 1 
+date
+#
+echo "\n\n particao 10002"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10002 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10003"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10003 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10004"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10004 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10005"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10005 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10006"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10006 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10007"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10007 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10008"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10008 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10009"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10009 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10010"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10010 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10011"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10011 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10012"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10012 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10013"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10013 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10014"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10014 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10015"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10015 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10016"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10016 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10017"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10017 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10018"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10018 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10019"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10019 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10020"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10020 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10021"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10021 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10022"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10022 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10023"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10023 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10024"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10024 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10025"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10025 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10026"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10026 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10027"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10027 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10028"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10028 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10029"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10029 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10030"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10030 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10031"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10031 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10032"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10032 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10033"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10033 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10001"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10001 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10034"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10034 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10035"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10035 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10036"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10036 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10037"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10037 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10038"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10038 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10039"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10039 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10040"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10040 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10041"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10041 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10042"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10042 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10043"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10043 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10044"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10044 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+echo "\n\n particao 10047"
+dd of=/dev/rdrd/drd10052 if=/dev/nrmt1h  bs=1024000 conv=sync
+dd of=/dev/rdrd/drd10047 if=/dev/rdrd/drd10052  bs=65536 oseek=1 iseek=1 conv=sync,notrunc
+#
+mt -f /dev/rmt1h rewind
+

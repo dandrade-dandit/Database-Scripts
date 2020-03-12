@@ -1,0 +1,24 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+LIC_CHE_LIC_CN                                           23
+LIC_DIR_ASS                                               2
+LIC_FUN_ARE_LIC                                         148
+LIC_FUN_INF                                              82
+LIC_GER_SISLIC                                            6
+LIC_SUP_CN                                                3
+
+6 linhas selecionadas.
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+LIC_CHE_LIC_CN                 NO
+LIC_DIR_ASS                    NO
+LIC_FUN_ARE_LIC                NO
+LIC_FUN_INF                    NO
+LIC_GER_SISLIC                 NO
+LIC_GES_CON                    NO
+LIC_SUP_CN                     NO
+
+7 linhas selecionadas.

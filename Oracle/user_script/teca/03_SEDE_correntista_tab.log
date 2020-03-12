@@ -1,0 +1,159 @@
+Entre o valor para tsd_correntista: TSD_TECA
+antigo  18: TABLESPACE &&TSD_CORRENTISTA
+novo  18: TABLESPACE TSD_TECA
+
+Tabela criada.
+
+antigo   7: TABLESPACE &&TSD_CORRENTISTA
+novo   7: TABLESPACE TSD_TECA
+
+Tabela criada.
+
+
+Gatilho criado.
+
+Não há erros.
+antigo  13: TABLESPACE &&TSD_CORRENTISTA
+novo  13: TABLESPACE TSD_TECA
+
+Tabela criada.
+
+antigo  10: TABLESPACE &&TSD_CORRENTISTA
+novo  10: TABLESPACE TSD_TECA
+
+Tabela criada.
+
+antigo   9: TABLESPACE &&TSD_CORRENTISTA
+novo   9: TABLESPACE TSD_TECA
+Entre o valor para tsd_lob_correntista: TSD_TECA
+antigo  12:       ( TABLESPACE  &&TSD_LOB_CORRENTISTA
+novo  12:       ( TABLESPACE  TSD_TECA
+
+Tabela criada.
+
+antigo   8: TABLESPACE &&TSD_CORRENTISTA
+novo   8: TABLESPACE TSD_TECA
+antigo  11:       ( TABLESPACE  &&TSD_LOB_CORRENTISTA
+novo  11:       ( TABLESPACE  TSD_TECA
+
+Tabela criada.
+
+antigo  11: TABLESPACE &&TSD_CORRENTISTA
+novo  11: TABLESPACE TSD_TECA
+antigo  14:       ( TABLESPACE  &&TSD_LOB_CORRENTISTA
+novo  14:       ( TABLESPACE  TSD_TECA
+antigo  21:       ( TABLESPACE  &&TSD_LOB_CORRENTISTA
+novo  21:       ( TABLESPACE  TSD_TECA
+
+Tabela criada.
+
+antigo  10: TABLESPACE &&TSD_CORRENTISTA
+novo  10: TABLESPACE TSD_TECA
+
+Tabela criada.
+
+antigo  18: TABLESPACE &&TSD_CORRENTISTA
+novo  18: TABLESPACE TSD_TECA
+
+Tabela criada.
+
+antigo  23: TABLESPACE &&TSD_CORRENTISTA
+novo  23: TABLESPACE TSD_TECA
+
+Tabela criada.
+
+
+Gatilho criado.
+
+Não há erros.
+
+Gatilho criado.
+
+Não há erros.
+Entre o valor para tsi_correntista: TSI_TECA
+antigo   3:     TABLESPACE &&TSI_CORRENTISTA
+novo   3:     TABLESPACE TSI_TECA
+
+Índice criado.
+
+antigo   4:     TABLESPACE &&TSI_CORRENTISTA
+novo   4:     TABLESPACE TSI_TECA
+
+Tabela alterada.
+
+antigo   4:     TABLESPACE &&TSI_CORRENTISTA
+novo   4:     TABLESPACE TSI_TECA
+
+Tabela alterada.
+
+antigo   4:     TABLESPACE &&TSI_CORRENTISTA
+novo   4:     TABLESPACE TSI_TECA
+
+Tabela alterada.
+
+antigo   4:     TABLESPACE &&TSI_CORRENTISTA
+novo   4:     TABLESPACE TSI_TECA
+
+Tabela alterada.
+
+antigo   4:     TABLESPACE &&TSI_CORRENTISTA
+novo   4:     TABLESPACE TSI_TECA
+
+Tabela alterada.
+
+antigo   4:     TABLESPACE &&TSI_CORRENTISTA
+novo   4:     TABLESPACE TSI_TECA
+
+Tabela alterada.
+
+antigo   4:     TABLESPACE &&TSI_CORRENTISTA
+novo   4:     TABLESPACE TSI_TECA
+
+Tabela alterada.
+
+antigo   4:     TABLESPACE &&TSI_CORRENTISTA
+novo   4:     TABLESPACE TSI_TECA
+
+Tabela alterada.
+
+antigo   4:     TABLESPACE &&TSI_CORRENTISTA
+novo   4:     TABLESPACE TSI_TECA
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+
+
+Tabela alterada.
+

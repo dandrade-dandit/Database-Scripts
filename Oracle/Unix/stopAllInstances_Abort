@@ -1,0 +1,33 @@
+echo '**********************************'
+echo 'Inicio do procedimento de shutdown abort'
+echo '**********************************'
+echo ' '
+
+ORACLE_SID=homolog
+export ORACLE_SID
+
+echo $ORACLE_SID
+
+sqlplus /nolog <<EOF
+connect / as sysdba
+prompt 'Inicio shutdown abort -> homolog' 
+shutdown abort;
+prompt 'fim shutdown abort -> homolog' 
+EOF
+
+ORACLE_SID=case9i
+export ORACLE_SID
+
+echo $ORACLE_SID
+
+sqlplus /nolog <<EOF
+connect / as sysdba
+prompt 'Inicio shutdown abort -> case9i' 
+shutdown abort;
+prompt 'fim shutdown abort -> case9i
+EOF
+
+echo ' '
+echo '**********************************'
+echo 'Final do procedimento de shutdown abort'
+echo '**********************************'

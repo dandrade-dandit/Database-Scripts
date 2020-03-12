@@ -1,0 +1,83 @@
+:
+
+# +----------------------------------------------------------------------------+
+# |                          Jeffrey M. Hunter                                 |
+# |                      jhunter@idevelopment.info                             |
+# |                         www.idevelopment.info                              |
+# +----------------------------------------------------------------------------|
+# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# +----------------------------------------------------------------------------|
+# | DATABASE : Oracle                                                          |
+# | FILE     : top15                                                           |
+# | CLASS    : UNIX Shell Scripts                                              |
+# | PURPOSE  : Display the top 15 oracle processes.                            |
+# | NOTE     : As with any code, ensure to test this script in a development   |
+# |            environment before attempting to run it in production.          |
+# +----------------------------------------------------------------------------+
+
+# +--------------------------+
+# | WRITE OUT TEMPORARY FILE |
+# +--------------------------+
+
+echo "
+SET linesize 2000
+SET pagesize 50
+
+COLUMN pu           FORMAT a8      HEADING 'O/S|Login|ID'     JUSTIFY left
+COLUMN su           FORMAT a8      HEADING 'Oracle|User ID'   JUSTIFY left
+COLUMN os_user      FORMAT a12     HEADING 'O/S User'         JUSTIFY left
+COLUMN oracle_user  FORMAT a12     HEADING 'Oracle User'      JUSTIFY left
+COLUMN stat         FORMAT a8      HEADING 'Status'           JUSTIFY left
+COLUMN ssid         FORMAT 999999  HEADING 'SID'              JUSTIFY right
+COLUMN sser         FORMAT 999999  HEADING 'Serial#'          JUSTIFY right
+COLUMN spid         FORMAT 999999  HEADING 'O/S PID'          JUSTIFY right
+COLUMN program      FORMAT a30     HEADING 'Program'          JUSTIFY left truncate
+
+SET verify off
+
+SELECT
+    s.username     oracle_user
+  , s.sid          ssid
+  , s.serial#      sser
+  , s.osuser       os_user
+  , lpad(p.spid,7) spid
+  , s.program      program
+  , s.status       stat
+FROM
+    v\$process p
+  , v\$session s
+WHERE (
+       p.spid=&1
+    OR p.spid=&2
+    OR p.spid=&3
+    OR p.spid=&4
+    OR p.spid=&5
+    OR p.spid=&6
+    OR p.spid=&7
+    OR p.spid=&8
+    OR p.spid=&9
+    OR p.spid=&10
+    OR p.spid=&11
+    OR p.spid=&12
+    OR p.spid=&13
+    OR p.spid=&14
+    OR p.spid=&15
+  )
+  AND p.addr (+) = s.paddr
+  AND s.username IS NOT null
+ORDER BY
+    s.program
+  , s.osuser
+/
+
+exit
+" > top15.sql
+
+top -b | awk '{print $1}' | tail -16 | xargs echo start top15.sql $* > top15_temp.sql
+sqlplus -s "/ as sysdba" @top15_temp.sql 
+
+# +----------------------------+
+# | REMOVE ALL TEMPORARY FILES |
+# +----------------------------+
+rm top15.sql
+rm top15_temp.sql

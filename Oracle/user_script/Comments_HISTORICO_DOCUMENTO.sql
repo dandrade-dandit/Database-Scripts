@@ -1,0 +1,24 @@
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.ID IS 'Identificacao do historico do documento'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.DESCRICAO IS 'Descricao do Documento'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.DATA_PUBLICACAO IS 'Data de Publicacao do domento'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.OBSERVACAO IS 'Observacoes gerais sobre o documento'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.ID_LICITACAO IS 'Identificacao da licitacao'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.DESCRICAO_TP_DOCUMENTO IS 'Descricao do tipo de documento (Edital, Ata de abertura...)'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.ID_DOCUMENTO IS 'Identificacao do documento'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.DT_ALTERACAO IS 'Data de alteracao do documento'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.OPERACAO IS 'Historico de inclusao e alteracao na tabela documento'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.NOME_USUARIO IS 'Nome do usuario que efetuou o cadastro'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.EMAIL_USUARIO IS 'E-mail do usuario'
+/
+COMMENT ON COLUMN HISTORICO_DOCUMENTO.ID_USUARIO IS 'Identificacao do usuario'
+/

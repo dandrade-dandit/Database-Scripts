@@ -1,0 +1,33 @@
+echo '**********************************'
+echo 'Inicio do procedimento de startup'
+echo '**********************************'
+echo ' '
+
+ORACLE_SID=homolog
+export ORACLE_SID
+
+echo $ORACLE_SID
+
+sqlplus /nolog <<EOF
+connect / as sysdba
+prompt 'Inicio startup -> homolog' 
+startup
+prompt 'fim startup -> homolog' 
+EOF
+
+ORACLE_SID=case9i
+export ORACLE_SID
+
+echo $ORACLE_SID
+
+sqlplus /nolog <<EOF
+connect / as sysdba
+prompt 'Inicio startup -> case9i' 
+startup
+prompt 'fim startup -> case9i
+EOF
+
+echo ' '
+echo '**********************************'
+echo 'Final do procedimento de startup'
+echo '**********************************'

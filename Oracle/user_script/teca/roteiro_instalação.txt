@@ -1,0 +1,25 @@
+Roteiro de instalação do Tecasig online e do Sistema de Correntista no Servidor da SEDE
+=======================================================================================
+
+Este documento aborda apenas a instalação de objetos no banco de dados, o setup no banco e a instalação da aplicação serão feitas pelo analista Eric Tamura.
+
+Seguir os passos abaixo:
+1. Descompactar o arquivo inst_correntista.zip que contém os scripts.;
+2. Os scripts deverão ser execudados na seguinte ordem:
+     01_tecasig_online.sql
+     02_TECASIG_online_dblink.sql
+     01_SEDE_correntista_user.sql
+     02a_SEDE_IFRTECA_grant.sql
+     02_SEDE_correntista_seq.sql
+     03_SEDE_correntista_tab.sql
+     04_SEDE_correntista_grant.sql
+     05_SEDE_correntista_syn.sql
+     06_SEDE_correntista_atu_link.sql
+     06_SEDE_correntista_comments.sql
+
+3. As senhas de usuário de banco definidas no script não poderão ser alteradas devido a dependência com a aplicação;
+
+4. Recompilar objetos inválidos em IFRTECA e em CORRENTISTA;
+
+
+Qualquer dúvida entrar em contato no ramal 3741 (DBA Jorge Hoshida).

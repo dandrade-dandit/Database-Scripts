@@ -1,0 +1,1094 @@
+-- Execução do arquivo : 01_tecasig_online.sql
+
+SQL> CREATE TABLE IFRTECA.TAB_TKP_CLT
+  2  (
+  3    COD_CLT            NUMBER                     NOT NULL,
+  4    NOM_CLT            VARCHAR2(30)          NOT NULL,
+  5    NOM_RGNAL_CLT      VARCHAR2(30)          NOT NULL,
+  6    COD_SENHA_CLT      VARCHAR2(30)          NOT NULL,
+  7    NOM_DBLINK_CRRNTA  VARCHAR2(30)              NULL
+  8  )
+  9  TABLESPACE TSD_TECA
+ 10  STORAGE (initial 128k next 128k pctincrease 0)
+ 11  /
+
+Tabela criada.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_FAVORITOS  (Table) 
+SQL> --
+SQL> CREATE TABLE IFRTECA.TKP_FAVORITOS
+  2  (
+  3    US_CODIGO  CHAR(10)                      NOT NULL,
+  4    ID_MENU    NUMBER                             NOT NULL
+  5  )
+  6  TABLESPACE TSD_TECA
+  7  STORAGE (initial 128k next 128k pctincrease 0)
+  8  /
+
+Tabela criada.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_GRUPOS  (Table) 
+SQL> --
+SQL> CREATE TABLE IFRTECA.TKP_GRUPOS
+  2  (
+  3    COD_GRUPO   CHAR(1)                          NULL,
+  4    DESC_GRUPO  VARCHAR2(40)                     NULL
+  5  )
+  6  TABLESPACE TSD_TECA
+  7  STORAGE (initial 128k next 128k pctincrease 0)
+  8  /
+
+Tabela criada.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_LOG_ACESSO  (Table) 
+SQL> --
+SQL> CREATE TABLE IFRTECA.TKP_LOG_ACESSO
+  2  (
+  3    US_CODIGO   CHAR(10)                         NULL,
+  4    DT_ACESSO   DATE                                  NULL,
+  5    END_ACESSO  VARCHAR2(512)                    NULL
+  6  )
+  7  TABLESPACE TSD_TECA
+  8  STORAGE (initial 10M next 10M pctincrease 0)
+  9  /
+
+Tabela criada.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_MENU  (Table) 
+SQL> --
+SQL> CREATE TABLE IFRTECA.TKP_MENU
+  2  (
+  3    ID_MENU               INTEGER                     NULL,
+  4    PAG_MENU              VARCHAR2(60)           NULL,
+  5    DESC_MENU             VARCHAR2(80)           NULL,
+  6    GRUPO_MENU            VARCHAR2(40)           NULL,
+  7    ORDER_GRUPO           INTEGER                     NULL,
+  8    ORDER_PAGINA          INTEGER                     NULL,
+  9    COD_ITEM_OBRIGATORIO  NUMBER(1)                   NULL,
+ 10    COD_GRUPO             CHAR(1)                NULL
+ 11  )
+ 12  TABLESPACE TSD_TECA
+ 13  STORAGE (initial 128k next 128k pctincrease 0)
+ 14  /
+
+Tabela criada.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_PERMISSAO_MENU  (Table) 
+SQL> --
+SQL> CREATE TABLE IFRTECA.TKP_PERMISSAO_MENU
+  2  ( AER_COD    CHAR(3) not null, 
+  3    US_CODIGO  CHAR(10) not null,
+  4    ID_MENU    NUMBER   not null
+  5  )
+  6  TABLESPACE TSD_TECA
+  7  STORAGE (initial 512k next 512k pctincrease 0)
+  8  /
+
+Tabela criada.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TAB_TKP_CLT  (Synonym) 
+SQL> --
+SQL> CREATE PUBLIC SYNONYM TAB_TKP_CLT FOR IFRTECA.TAB_TKP_CLT
+  2  /
+
+Sinônimo criado.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_FAVORITOS  (Synonym) 
+SQL> --
+SQL> CREATE PUBLIC SYNONYM TKP_FAVORITOS FOR IFRTECA.TKP_FAVORITOS
+  2  /
+
+Sinônimo criado.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_GRUPOS  (Synonym) 
+SQL> --
+SQL> CREATE PUBLIC SYNONYM TKP_GRUPOS FOR IFRTECA.TKP_GRUPOS
+  2  /
+
+Sinônimo criado.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_LOG_ACESSO  (Synonym) 
+SQL> --
+SQL> CREATE PUBLIC SYNONYM TKP_LOG_ACESSO FOR IFRTECA.TKP_LOG_ACESSO
+  2  /
+
+Sinônimo criado.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_MENU  (Synonym) 
+SQL> --
+SQL> CREATE PUBLIC SYNONYM TKP_MENU FOR IFRTECA.TKP_MENU
+  2  /
+
+Sinônimo criado.
+
+SQL> 
+SQL> 
+SQL> --
+SQL> -- TKP_PERMISSAO_MENU  (Synonym) 
+SQL> --
+SQL> CREATE PUBLIC SYNONYM TKP_PERMISSAO_MENU FOR IFRTECA.TKP_PERMISSAO_MENU
+  2  /
+
+Sinônimo criado.
+
+SQL> 
+SQL> 
+SQL> -- 
+SQL> -- Non Foreign Key Constraints for Table TAB_TKP_CLT 
+SQL> -- 
+SQL> ALTER TABLE IFRTECA.TAB_TKP_CLT ADD ( 
+  2    CONSTRAINT TAB_TKP_CLT_PK PRIMARY KEY (COD_CLT)
+  3      USING INDEX 
+  4      TABLESPACE TSI_TECA
+  5      STORAGE (initial 128k next 128k pctincrease 0))
+  6  /
+
+Tabela alterada.
+
+SQL> 
+SQL> -- 
+SQL> -- Non Foreign Key Constraints for Table TKP_GRUPOS 
+SQL> -- 
+SQL> ALTER TABLE IFRTECA.TKP_GRUPOS ADD (
+  2    CONSTRAINT TKP_GRUPOS_PK PRIMARY KEY (COD_GRUPO)
+  3      USING INDEX 
+  4      TABLESPACE TSI_TECA
+  5      STORAGE (initial 128k next 128k pctincrease 0))
+  6  /
+
+Tabela alterada.
+
+SQL> 
+SQL> ALTER TABLE IFRTECA.TKP_FAVORITOS ADD (
+  2    CONSTRAINT TKP_FAVORITOS_PK PRIMARY KEY (US_CODIGO,ID_MENU)
+  3      USING INDEX 
+  4      TABLESPACE TSI_TECA
+  5      STORAGE (initial 128k next 128k pctincrease 0))
+  6  /
+
+Tabela alterada.
+
+SQL> 
+SQL> ALTER TABLE IFRTECA.TKP_MENU ADD  ( 
+  2    CONSTRAINT TKP_MENU_PK PRIMARY KEY (ID_MENU)
+  3      USING INDEX 
+  4      TABLESPACE TSI_TECA
+  5      STORAGE (initial 128k next 128k pctincrease 0) ) ;
+
+Tabela alterada.
+
+SQL> 
+SQL> ALTER TABLE IFRTECA.TKP_PERMISSAO_MENU ADD  ( 
+  2    CONSTRAINT TKP_PERMISSAO_MENU_PK PRIMARY KEY (ID_MENU, US_CODIGO, AER_COD) 
+  3      USING INDEX 
+  4      TABLESPACE TSI_TECA
+  5      STORAGE (initial 128k next 128k pctincrease 0)) ;
+
+Tabela alterada.
+
+SQL> 
+SQL> -- ADICONA O GRUPO
+SQL> ALTER TABLE TKP_USER
+  2      MODIFY (US_GRUPO CHAR(1) NULL);
+
+Tabela alterada.
+
+SQL> 
+SQL> ALTER TABLE TKP_TECAS ADD (COD_CLT NUMBER);
+
+Tabela alterada.
+
+SQL> 
+SQL> -- CRIACAO DO CAMPO PARA ARMAZENAR O SALT DAS SENHAS
+SQL> ALTER TABLE TKP_USER
+  2         ADD US_SALT VARCHAR(10);
+
+Tabela alterada.
+
+SQL> 
+SQL> ALTER TABLE TKP_USER
+  2         ADD TIP_USU_CRRNTA VARCHAR2(1);
+
+Tabela alterada.
+
+SQL> 
+SQL> -- AUMENTO DO TAMANHO DA SENHA PARA COMPORTAR CRIPTOGRAFIA
+SQL> ALTER TABLE TKP_USER
+  2       MODIFY US_SENHA VARCHAR2(40);
+
+Tabela alterada.
+
+SQL> 
+SQL> -- PARA EXPIRACAO DA NOTICIA
+SQL> ALTER TABLE TKP_NOTICIA
+  2         ADD (NOT_DATA_INICIO DATE);
+
+Tabela alterada.
+
+SQL> 
+SQL> ALTER TABLE TKP_NOTICIA
+  2         ADD (NOT_DATA_FIM DATE);
+
+Tabela alterada.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> -- RELACIONAMENTO ENTRE MENU RAPIDO/FAVORITOS E OS MENUS DISPONIVEIS
+SQL> ALTER TABLE TKP_FAVORITOS
+  2          ADD (CONSTRAINT FAVORITOS_MENU_FK FOREIGN KEY (ID_MENU) REFERENCES TKP_MENU (ID_MENU));
+
+
+Tabela alterada.
+
+SQL> 
+SQL> ALTER TABLE TKP_PERMISSAO_MENU
+  2          ADD (CONSTRAINT PERMISSAO_MENU_FK FOREIGN KEY (ID_MENU) REFERENCES TKP_MENU (ID_MENU));
+
+
+Tabela alterada.
+
+SQL> 
+SQL> ALTER TABLE TKP_PERMISSAO_MENU
+  2          ADD (CONSTRAINT USER_MENU_FK FOREIGN KEY (AER_COD,US_CODIGO) REFERENCES TKP_USER (AER_C
+OD,US_CODIGO));
+
+Tabela alterada.
+
+SQL> 
+SQL> -- RELACIONAMENTO ENTRE OS USUARIOS E SEU GRUPO
+SQL> ALTER TABLE TKP_USER
+  2          ADD (CONSTRAINT USER_GRUPO_FK FOREIGN KEY (US_GRUPO) REFERENCES TKP_GRUPOS (COD_GRUPO))
+;
+        ADD (CONSTRAINT USER_GRUPO_FK FOREIGN KEY (US_GRUPO) REFERENCES TKP_GRUPOS (COD_GRUPO))
+                        *
+ERRO na linha 2:
+ORA-02298: não é possível validar (IFRTECA.USER_GRUPO_FK) - chaves-pai não localizadas
+
+
+SQL> 
+SQL> -- RELACIONAMENTO ENTRE OS USUARIOS E SEU GRUPO
+SQL> ALTER TABLE TKP_MENU
+  2          ADD (CONSTRAINT GRUPO_MENU_FK FOREIGN KEY (COD_GRUPO) REFERENCES TKP_GRUPOS (COD_GRUPO)
+);
+
+Tabela alterada.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> GRANT DELETE, INSERT, SELECT, UPDATE ON  IFRTECA.TAB_TKP_CLT TO ROLE_DCLC
+  2  /
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> GRANT DELETE, INSERT, SELECT, UPDATE ON  IFRTECA.TKP_FAVORITOS TO ROLE_DCLC
+  2  /
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> GRANT DELETE, INSERT, SELECT, UPDATE ON  IFRTECA.TKP_GRUPOS TO ROLE_DCLC
+  2  /
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> GRANT INSERT, SELECT ON  IFRTECA.TKP_LOG_ACESSO TO ROLE_DCLC
+  2  /
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> GRANT SELECT ON  IFRTECA.TKP_MENU TO ROLE_DCLC
+  2  /
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> GRANT DELETE, INSERT, SELECT, UPDATE ON  IFRTECA.TKP_PERMISSAO_MENU TO ROLE_DCLC
+  2  /
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> COMMENT ON TABLE TKP_LOG_ACSSO IS 'Armazena os log´s de acesso às páginas. do TECASIG.';
+COMMENT ON TABLE TKP_LOG_ACSSO IS 'Armazena os log´s de acesso às páginas. do TECASIG.'
+                 *
+ERRO na linha 1:
+ORA-00942: a tabela ou view não existe
+
+
+SQL> COMMENT ON COLUMN TKP_LOG_ACSSO.DAT_ACESSO IS 'Data do acesso à página.';
+COMMENT ON COLUMN TKP_LOG_ACSSO.DAT_ACESSO IS 'Data do acesso à página.'
+                  *
+ERRO na linha 1:
+ORA-00942: a tabela ou view não existe
+
+
+SQL> COMMENT ON COLUMN TKP_LOG_ACSSO.END_ACESSO IS 'endereço de acesso à página.';
+COMMENT ON COLUMN TKP_LOG_ACSSO.END_ACESSO IS 'endereço de acesso à página.'
+                  *
+ERRO na linha 1:
+ORA-00942: a tabela ou view não existe
+
+
+SQL> COMMENT ON COLUMN TKP_MENU.COD_ITEM_OBRIGATORIO IS 'Informa se o item é de preenchimento obriga
+tório ou não.';
+
+Comentário criado.
+
+SQL> 
+SQL> 
+
+-- Execução do arquivo : 02_TECASIG_online_dblink.sql
+
+SQL> 
+SQL> create database link PRKP.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'clusterkp'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRKP.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+PRKP
+
+SQL> --Guarulhos
+SQL> create database link PRGR.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'clustergr'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRGR.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+PRGR
+
+SQL> 
+SQL> --São José
+SQL> create database link PRCG.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'clustercg'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@prcg.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+PRCG
+
+SQL> 
+SQL> --Manaus
+SQL> create database link PRMN.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'CLUSTERMN'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRMN.INFRAERO.GOV.BR
+  2  /
+select * from global_name@PRMN.INFRAERO.GOV.BR
+                          *
+ERRO na linha 1:
+ORA-12535: TNS:timeout da operação
+
+
+SQL> 
+SQL> --Recife
+SQL> create database link PRRF.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'CLUSTERRF'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRRF.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR2RF
+
+SQL> 
+SQL> --Rio
+SQL> create database link PRRJ.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'CLUSTERRJ'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRRJ.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR.INFRAERO.GOV.BR
+
+SQL> 
+SQL> --Porto Alegre
+SQL> create database link PRPA.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'CLUSTERPA'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRPA.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR2PA
+
+SQL> 
+SQL> --Foz do Iguaçú
+SQL> create database link prfi.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'CLUSTERFI'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@prfi.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR2PA
+
+SQL> 
+SQL> --Brasília
+SQL> create database link PRBR.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'CLUSTERBR'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRBR.INFRAERO.GOV.BR
+  2  /
+select * from global_name@PRBR.INFRAERO.GOV.BR
+                          *
+ERRO na linha 1:
+ORA-12541: TNS:não há listener
+
+
+SQL> 
+SQL> --Curitiba
+SQL> create database link PRCT.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'CLUSTERCT'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRCT.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR2PA
+
+SQL> 
+SQL> --Belem
+SQL> create database link PRBE.INFRAERO.GOV.BR
+  2  connect to tecasig_web identified by masmopnasd
+  3  using 'CLUSTERBE'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRBE.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+PERSEU
+
+SQL> 
+SQL> 
+
+-- Execução do arquivo : 01_SEDE_correntista_user.sql
+SQL> create user CORRENTISTA identified by vpttrmyodys
+  2  default tablespace TSD_TECA
+  3  temporary tablespace temp;
+
+Usuário criado.
+
+SQL> 
+SQL> grant connect, resource to CORRENTISTA_ATU;
+grant connect, resource to CORRENTISTA_ATU
+                           *
+ERRO na linha 1:
+ORA-01917: o usuário ou a função 'CORRENTISTA_ATU' não existe
+
+
+SQL> 
+SQL> create user TECASIG_WEB identified by yrvsdohern
+  2  default tablespace TSD_TECA
+  3  temporary tablespace temp;
+
+Usuário criado.
+
+SQL> 
+SQL> grant create session to TECASIG_WEB;
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> create role CORRENTISTA_ADM;
+
+Função criada.
+
+SQL> 
+SQL> grant CORRENTISTA_ADM to TECASIG_WEB;
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> grant ROLE_DCLC to TECASIG_WEB;
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> create user CORRENTISTA_ATU identified by vpttrmyodyssyi
+  2  default tablespace TSD_TECA
+  3  temporary tablespace temp;
+
+Usuário criado.
+
+SQL> 
+SQL> grant create session to CORRENTISTA_ATU;
+
+Operação de Grant bem-sucedida.
+
+SQL> grant create database link to CORRENTISTA_ATU;
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> 
+
+
+-- Execução do arquivo : 02a_SEDE_IFRTECA_grant.sql
+
+SQL> 
+SQL> GRANT SELECT, REFERENCES ON IFRTECA.TKP_LOG_DCLC       TO CORRENTISTA;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT, REFERENCES ON IFRTECA.TKP_PERMISSAO_MENU TO CORRENTISTA;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT, REFERENCES ON IFRTECA.TKP_TECAS          TO CORRENTISTA;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT, REFERENCES ON IFRTECA.TKP_USER           TO CORRENTISTA;
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+
+-- Execução do arquivo : 02_SEDE_correntista_seq.sql
+
+SQL> CREATE SEQUENCE CORRENTISTA.SEQ_CAD_CRRNTA INCREMENT BY 1 START WITH 0 MINVALUE 0 MAXVALUE 1000
+000000000000000000000000 NOCYCLE NOCACHE NOORDER;
+
+Seqüência criada.
+
+SQL> CREATE SEQUENCE CORRENTISTA.SEQ_CAD_DPCHTE INCREMENT BY 1 START WITH 0 MINVALUE 0 MAXVALUE 1000
+000000000000000000000000 NOCYCLE NOCACHE NOORDER;
+
+Seqüência criada.
+
+SQL> CREATE SEQUENCE CORRENTISTA.SEQ_CAD_REPRE INCREMENT BY 1 START WITH 0 MINVALUE 0 MAXVALUE 10000
+00000000000000000000000 NOCYCLE NOCACHE NOORDER;
+
+Seqüência criada.
+
+SQL> CREATE SEQUENCE CORRENTISTA.SEQ_CAD_TERMO_CRRNTA INCREMENT BY 1 START WITH 0 MINVALUE 0 MAXVALU
+E 1000000000000000000000000000 NOCYCLE NOCACHE NOORDER;
+
+Seqüência criada.
+
+SQL> 
+
+-- Execução do arquivo : 03_SEDE_correntista_tab.sql
+ VER ARQUIVO 03_SEDE_correntista_tab.log
+
+-- Execução do arquivo : 04_SEDE_correntista_grant.sql
+
+SQL> GRANT DELETE ON CAD_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON CAD_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON CAD_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON CAD_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT DELETE ON CAD_DPCHTE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON CAD_DPCHTE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON CAD_DPCHTE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON CAD_DPCHTE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT DELETE ON CAD_REPRE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON CAD_REPRE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON CAD_REPRE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON CAD_REPRE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT DELETE ON CAD_TERMO_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON CAD_TERMO_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON CAD_TERMO_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON CAD_TERMO_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT DELETE ON HIS_MOVTC_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON HIS_MOVTC_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON HIS_MOVTC_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON HIS_MOVTC_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT DELETE ON MOVTC_FNCRO_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON MOVTC_FNCRO_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON MOVTC_FNCRO_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON MOVTC_FNCRO_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON SEQ_CAD_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON SEQ_CAD_DPCHTE TO ROLE_DCLC;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON SEQ_CAD_REPRE TO ROLE_DCLC;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON SEQ_CAD_TERMO_CRRNTA TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT DELETE ON SOLTC_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON SOLTC_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON SOLTC_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON SOLTC_TERMO TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT DELETE ON TERMO_AER TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON TERMO_AER TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON TERMO_AER TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON TERMO_AER TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT DELETE ON TERMO_MODLDE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON TERMO_MODLDE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON TERMO_MODLDE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON TERMO_MODLDE TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> 
+SQL> GRANT DELETE ON TAB_MOTVO_APRV TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT INSERT ON TAB_MOTVO_APRV TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT SELECT ON TAB_MOTVO_APRV TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> GRANT UPDATE ON TAB_MOTVO_APRV TO CORRENTISTA_ADM;
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+
+-- Execução do arquivo : 05_SEDE_correntista_syn.sql
+SQL> CREATE PUBLIC SYNONYM CAD_CRRNTA FOR CORRENTISTA.CAD_CRRNTA   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM CAD_DPCHTE FOR CORRENTISTA.CAD_DPCHTE   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM CAD_REPRE FOR CORRENTISTA.CAD_REPRE   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM CAD_TERMO_CRRNTA FOR CORRENTISTA.CAD_TERMO_CRRNTA   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM HIS_MOVTC_TERMO FOR CORRENTISTA.HIS_MOVTC_TERMO   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM MOVTC_FNCRO_TERMO FOR CORRENTISTA.MOVTC_FNCRO_TERMO   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM SEQ_CAD_CRRNTA FOR CORRENTISTA.SEQ_CAD_CRRNTA   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM SEQ_CAD_DPCHTE FOR CORRENTISTA.SEQ_CAD_DPCHTE   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM SEQ_CAD_REPRE FOR CORRENTISTA.SEQ_CAD_REPRE   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM SEQ_CAD_TERMO_CRRNTA FOR CORRENTISTA.SEQ_CAD_TERMO_CRRNTA   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM SOLTC_TERMO FOR CORRENTISTA.SOLTC_TERMO   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM TAB_MOTVO_APRV FOR CORRENTISTA.TAB_MOTVO_APRV   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM TERMO_AER FOR CORRENTISTA.TERMO_AER   ;
+
+Sinônimo criado.
+
+SQL> CREATE PUBLIC SYNONYM TERMO_MODLDE FOR CORRENTISTA.TERMO_MODLDE   ;
+
+Sinônimo criado.
+
+SQL> 
+
+-- Execução do arquivo : 06_SEDE_correntista_atu_link.sql
+SQL> create database link PRKP.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'clusterkp'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRKP.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+PRKP
+
+SQL> 
+SQL> --Guarulhos
+SQL> create database link PRGR.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'clustergr'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRGR.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+PRGR
+
+SQL> 
+SQL> --São José
+SQL> create database link PRCG.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'clustercg'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@prcg.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+PRCG
+
+SQL> 
+SQL> --Manaus
+SQL> create database link PRMN.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'CLUSTERMN'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRMN.INFRAERO.GOV.BR
+  2  /
+select * from global_name@PRMN.INFRAERO.GOV.BR
+                          *
+ERRO na linha 1:
+ORA-01017: invalid username/password; logon denied
+ORA-02063: precedendo line a partir de PRMN
+
+
+SQL> 
+SQL> --Recife
+SQL> create database link PRRF.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'CLUSTERRF'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRRF.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR2RF
+
+SQL> 
+SQL> --Rio de Janeiro
+SQL> create database link PRRJ.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'CLUSTERRJ'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRRJ.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR.INFRAERO.GOV.BR
+
+SQL> 
+SQL> --Porto Alegre
+SQL> create database link PRPA.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'CLUSTERPA'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRPA.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR2PA
+
+SQL> 
+SQL> --Foz do Iguaçú
+SQL> create database link prfi.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'CLUSTERFI'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@prfi.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR2PA
+
+SQL> 
+SQL> --Brasília
+SQL> create database link PRBR.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'CLUSTERBR'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRBR.INFRAERO.GOV.BR
+  2  /
+select * from global_name@PRBR.INFRAERO.GOV.BR
+                          *
+ERRO na linha 1:
+ORA-12541: TNS:não há listener
+
+
+SQL> 
+SQL> --Curitiba
+SQL> create database link PRCT.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'CLUSTERCT'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRCT.INFRAERO.GOV.BR
+  2  /
+
+GLOBAL_NAME
+----------------------------------------------------------------------------------------------------
+IFR2PA
+
+SQL> 
+SQL> --Belem
+SQL> create database link PRBE.INFRAERO.GOV.BR
+  2  connect to CORRENTISTA_ATU identified by vpttrmyodyssyi
+  3  using 'CLUSTERBE'
+  4  /
+
+Vínculo de banco de dados criado.
+
+SQL> select * from global_name@PRBE.INFRAERO.GOV.BR
+  2  /
+select * from global_name@PRBE.INFRAERO.GOV.BR
+                          *
+ERRO na linha 1:
+ORA-01045: user CORRENTISTA_ATU lacks CREATE SESSION privilege; logon denied
+ORA-02063: precedendo line a partir de PRBE
+
+
+SQL> 
+
+-- Execução do arquivo : 06_SEDE_correntista_comments.sql
+
+VER ARQUIVO 06_SEDE_correntista_comments.LOG

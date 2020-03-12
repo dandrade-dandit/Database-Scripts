@@ -1,0 +1,23 @@
+ORACLE_HOME=/u01/app/oracle/product/10.1
+export ORACLE_HOME
+
+ORACLE_BASE=/u01/app
+export ORACLE_BASE
+
+ORACLE_SID=homolog
+export ORACLE_SID
+
+PATH=$ORACLE_HOME:$ORACLE_HOME/bin:$PATH
+export PATH
+
+chmod 770 /u02/backup/export/*
+rm -f /u02/backup/export/*
+
+expdp operacao/infraero FULL=Y DIRECTORY=EXP_DUMP DUMPFILE=EXP_FULL_HOMOLOG.DPM LOGFILE=EXP_FULL_HOMOLOG.LOG PARALLEL=3
+
+ORACLE_SID=case9i
+export ORACLE_SID
+
+expdp operacao/infraero FULL=Y DIRECTORY=EXP_DUMP DUMPFILE=EXP_FULL_CASE9I.DPM LOGFILE=EXP_FULL_CASE9I.LOG PARALLEL=3
+
+/usr/openv/netbackup/bin/bpbackup -p Linux_Oracle_Export -s Linux_Export -S s-segu113 -t 0 /u02/backup/export

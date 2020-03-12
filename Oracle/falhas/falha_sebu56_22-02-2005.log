@@ -1,0 +1,108 @@
+--Arquivo 1
+ALTER ROLLBACK SEGMENT RBS0 OFFLINE immediate;
+
+
+DROP ROLLBACK SEGMENT RBS0
+
+
+--Arquivo 2
+ALTER DATABASE DATAFILE '/ora03/inet/rbs01.dbf' OFFLINE DROP;  
+  
+ALTER DATABASE OPEN    	
+
+_corrupted_rollback_segments = ( <rollback1>,...., <rollbackN> ) 
+
+
+--Arquivo 3
+STARTUP NOMOUNT
+CREATE CONTROLFILE REUSE DATABASE "INET" NORESETLOGS ARCHIVELOG
+    MAXLOGFILES 32
+    MAXLOGMEMBERS 3
+    MAXDATAFILES 254
+    MAXINSTANCES 8
+    MAXLOGHISTORY 907
+LOGFILE
+  GROUP 1 (
+    '/ora02/inet/log1a.rdo',
+    '/ora04/inet/log1b.rdo'
+  ) SIZE 100M,
+  GROUP 2 (
+    '/ora02/inet/log2a.rdo',
+    '/ora04/inet/log2b.rdo'
+  ) SIZE 100M,
+  GROUP 3 (
+    '/ora02/inet/log3a.rdo',
+    '/ora04/inet/log3b.rdo'
+  ) SIZE 100M
+DATAFILE
+  '/ora01/inet/system01.dbf',
+  '/ora01/inet/licit_dat01.dbf',
+  '/ora03/inet/rbs01.dbf',
+  '/ora01/inet/temp01.dbf',
+  '/ora01/inet/tsd_portal_infraero01.dbf',
+  '/ora03/inet/licit_lob01.dbf',
+  '/ora01/inet/drsys01.dbf',
+  '/ora01/inet/tsd_portalbr01.dbf',
+  '/ora03/inet/tsi_portalbr01.dbf',
+  '/ora01/inet/tsd_balcaoinfo01.dbf',
+  '/ora03/inet/tsi_balcaoinfo01.dbf',
+  '/ora01/inet/tsd_corp_portal01.dbf',
+  '/ora01/inet/tsd_rman01.dbf',
+  '/ora03/inet/licit_idx01.dbf',
+  '/ora02/inet/tsd_sivne_nolog_01.dbf'
+CHARACTER SET WE8ISO8859P1
+;
+
+RECOVER DATABASE UNTIL TIME '2005-02-21:04:30:00' 
+
+# All logs need archiving and a log switch is needed.
+ALTER SYSTEM ARCHIVE LOG ALL;
+# Database can now be opened normally.
+ALTER DATABASE OPEN;
+
+--Arquivo 4
+cp drsys01.dbf temp01.dbf tsd_portal_infraero01.dbf licit_dat01.dbf tsd_balcaoinfo01.dbf tsd_portalbr01.dbf system01.dbf tsd_corp_portal01.dbf tsd_rman01.dbf /ora01/inet
+
+cp /ora05/inet/backup/online/tsd_sivne_nolog_01.dbf /ora02/inet
+
+cp /ora05/inet/backup/online/licit_lob01.dbf /ora05/inet/backup/online/tsi_balcaoinfo01.dbf /ora05/inet/backup/online/licit_idx01.dbf /ora05/inet/backup/online/rbs01.dbf /ora05/inet/backup/online/tsi_portalbr01.dbf /ora03/inet
+
+
+
+ALTER DATABASE  RECOVER UNTIL SCN 4505; 
+
+
+
+RECOVER DATABASE UNTIL TIME to_date('21/02/2005 06:00:00', 'DD/MM/YYYY HH24:MI:SS'); 
+
+
+RECOVER DATABASE UNTIL TIME '2005-02-21:04:30:00' 
+
+--Arquivo 5
+ALTER DATABASE DATAFILE '/ora03/inet/rbs01.dbf' ONLINE;
+ALTER DATABASE DATAFILE '/ora03/inet/licit_lob01.dbf' ONLINE;
+ALTER DATABASE DATAFILE '/ora03/inet/tsi_portalbr01.dbf' ONLINE;
+ALTER DATABASE DATAFILE '/ora03/inet/tsi_balcaoinfo01.dbf' ONLINE;
+ALTER DATABASE DATAFILE '/ora03/inet/licit_idx01.dbf' ONLINE;
+
+ALTER ROLLBACK SEGMENT RBS10 OFFLINE;
+ALTER ROLLBACK SEGMENT RBS11 OFFLINE;
+ALTER ROLLBACK SEGMENT RBS12 OFFLINE;
+ALTER ROLLBACK SEGMENT RBS13 OFFLINE;
+ALTER ROLLBACK SEGMENT RBS14 OFFLINE;
+ALTER ROLLBACK SEGMENT RBS15 OFFLINE;
+ALTER ROLLBACK SEGMENT RBS16 OFFLINE;
+
+DROP ROLLBACK SEGMENT RBS10;
+DROP ROLLBACK SEGMENT RBS11;
+DROP ROLLBACK SEGMENT RBS12;
+DROP ROLLBACK SEGMENT RBS13;
+DROP ROLLBACK SEGMENT RBS14;
+DROP ROLLBACK SEGMENT RBS15;
+DROP ROLLBACK SEGMENT RBS16;
+
+DROP TABLESPACE rbs2 INCLUDING CONTENTS;
+
+--Arquivo 6
+#Backup dos archives todos os dias as 0h,12h,18h.
+0 0,12,18 * * * /ora05/backup/bkp_archs.sh

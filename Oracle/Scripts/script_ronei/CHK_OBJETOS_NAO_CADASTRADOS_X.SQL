@@ -1,0 +1,32 @@
+set heading off
+SET FEEDBACK OFF
+set verify off
+
+SPOOL C:\Sistemas\Sql\Infraero\Oracle\Scripts\script_ronei\LOG_OBJETOS_homolog.LOG
+
+SELECT 'INSERT INTO TABELAS VALUES',
+       '('''||A.APLICACAO||''','''||A.TABELA||''','''||A.OWNER||''','''||A.TIPO||''');'
+FROM TABELAS A
+WHERE 	A.OWNER = 'IFRDBA2' ORDER BY A.TIPO,A.TABELA;
+
+SELECT 'INSERT INTO TABELAS VALUES',
+       '('''||A.APLICACAO||''','''||A.TABELA||''','''||A.OWNER||''','''||A.TIPO||''');'
+FROM TABELAS A
+WHERE 	A.OWNER = 'IFRPAT' ORDER BY A.TIPO,A.TABELA;
+
+SELECT 'INSERT INTO TABELAS VALUES',
+       '('''||A.APLICACAO||''','''||A.TABELA||''','''||A.OWNER||''','''||A.TIPO||''');'
+FROM TABELAS A
+WHERE 	A.OWNER = 'IFRBEP' ORDER BY A.TIPO,A.TABELA;
+
+SELECT 'INSERT INTO TABELAS VALUES',
+       '('''||A.APLICACAO||''','''||A.TABELA||''','''||A.OWNER||''','''||A.TIPO||''');'
+FROM TABELAS A
+WHERE 	A.OWNER = 'IFRMAT' ORDER BY A.TIPO,A.TABELA;
+
+SELECT 'INSERT INTO TABELAS VALUES',
+       '('''||A.APLICACAO||''','''||A.TABELA||''','''||A.OWNER||''','''||A.TIPO||''');'
+FROM TABELAS A
+WHERE 	A.OWNER = 'IFRLIC' ORDER BY A.TIPO,A.TABELA;
+
+SPOOL OFF

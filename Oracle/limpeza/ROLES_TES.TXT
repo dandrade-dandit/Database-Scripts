@@ -1,0 +1,13 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+TES_ADM                                                   2
+
+1 linhas selecionadas.
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+TES_ADM                        NO
+
+1 linhas selecionadas.

@@ -1,0 +1,11 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+não há linhas selecionadas
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+SGS_GERAL                      NO
+
+1 linha selecionada.

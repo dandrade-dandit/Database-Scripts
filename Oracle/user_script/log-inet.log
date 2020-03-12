@@ -1,0 +1,139 @@
+SQL> connect infraero_licitacao/infraero_licitacao@inet
+Conectado.
+SQL> 
+SQL> alter table historico_fornecedor modify email null;
+alter table historico_fornecedor modify email null
+                                        *
+ERRO na linha 1:
+ORA-01451: column to be modified to NULL cannot be modified to NULL
+
+
+SQL> 
+SQL> alter table historico_participante modify email null;
+
+Tabela alterada.
+
+SQL> 
+SQL> 
+SQL> delete from privilegio;
+
+234 linhas deletadas.
+
+SQL> desc historico_fornecedor
+ Nome                                                              Nulo?    Tipo
+ ----------------------------------------------------------------- -------- --------------------------------------------
+ ID                                                                NOT NULL NUMBER(10)
+ ID_FORNECEDOR                                                     NOT NULL NUMBER(10)
+ DT_ALTERACAO                                                      NOT NULL DATE
+ ID_USUARIO                                                        NOT NULL NUMBER(10)
+ NOME_USUARIO                                                      NOT NULL VARCHAR2(80)
+ EMAIL_USUARIO                                                              VARCHAR2(80)
+ RAZAO_SOCIAL                                                      NOT NULL VARCHAR2(50)
+ CNPJ                                                                       VARCHAR2(20)
+ ENDERECO                                                          NOT NULL VARCHAR2(100)
+ CEP                                                               NOT NULL VARCHAR2(20)
+ CIDADE                                                            NOT NULL VARCHAR2(30)
+ TELEFONE                                                          NOT NULL VARCHAR2(40)
+ FAX                                                                        VARCHAR2(20)
+ CONTATO                                                                    VARCHAR2(50)
+ TEL_CONTATO                                                                VARCHAR2(40)
+ FAX_CONTATO                                                                VARCHAR2(20)
+ EMAIL                                                                      VARCHAR2(50)
+ SIGLA_UF                                                                   VARCHAR2(2)
+ NOME_PAIS                                                         NOT NULL VARCHAR2(20)
+ ESTADO_ESTRANGEIRO                                                         VARCHAR2(50)
+ CODIGO_ESTRANGEIRO                                                         VARCHAR2(20)
+ OPERACAO                                                          NOT NULL VARCHAR2(3)
+
+SQL> --PRIVILEGIO
+SQL> 
+SQL>   -- PARA O PERFIL ADMINISTRADOR
+SQL>   
+SQL> -- ACESSO TOTAL
+SQL> INSERT INTO PRIVILEGIO (ID_FUNCIONALIDADE, ID_PERFIL)
+  2    SELECT ID, 1
+  3    FROM FUNCIONALIDADE
+  4  /
+
+145 linhas criadas.
+
+SQL> 
+SQL>  PARA O PERFIL CADASTRADOR DE LICITAÇÃO
+SP2-0734: início de comando desconhecido "PARA O PER..." - restante da linha ignorado.
+SQL> 
+SQL> -- PRIVILEGIO PARA AS PARTES COMUNS
+SQL> INSERT INTO PRIVILEGIO (ID_FUNCIONALIDADE, ID_PERFIL)
+  2    SELECT ID, 2
+  3    FROM FUNCIONALIDADE
+  4    WHERE ID >= 240 AND ID < 260
+  5  /
+
+9 linhas criadas.
+
+SQL> 
+SQL> -- PRIVILEGIO PARA CONSULTA A LICITACAO
+SQL> INSERT INTO PRIVILEGIO (ID_FUNCIONALIDADE, ID_PERFIL)
+  2    SELECT ID, 2
+  3    FROM FUNCIONALIDADE
+  4    WHERE ID >= 130 AND ID < 170
+  5  /
+
+17 linhas criadas.
+
+SQL> 
+SQL> -- PRIVILEGIO PARA PESQUISA DE FUNCIONARIO
+SQL> INSERT INTO PRIVILEGIO (ID_FUNCIONALIDADE, ID_PERFIL)
+  2    SELECT ID, 2
+  3    FROM FUNCIONALIDADE
+  4    WHERE ID >= 170 AND ID < 180
+  5  /
+
+3 linhas criadas.
+
+SQL> 
+SQL> -- PRIVILEGIO PARA CADASTRO DE LICITACAO
+SQL> INSERT INTO PRIVILEGIO (ID_FUNCIONALIDADE, ID_PERFIL)
+  2    SELECT ID, 2
+  3    FROM FUNCIONALIDADE
+  4    WHERE ID >= 180 AND ID < 240
+  5  /
+
+34 linhas criadas.
+
+SQL> 
+SQL> -- PRIVILEGIO PARA CADASTRO DE FORNECEDOR
+SQL> INSERT INTO PRIVILEGIO (ID_FUNCIONALIDADE, ID_PERFIL)
+  2    SELECT ID, 2
+  3    FROM FUNCIONALIDADE
+  4    WHERE ID >= 100 AND ID < 111
+  5  /
+
+11 linhas criadas.
+
+SQL> 
+SQL>  -- PARA O PERFIL CONSULTA
+SQL> 
+SQL> -- PRIVILEGIO PARA AS PARTES COMUNS
+SQL> INSERT INTO PRIVILEGIO (ID_FUNCIONALIDADE, ID_PERFIL)
+  2    SELECT ID, 3
+  3    FROM FUNCIONALIDADE
+  4    WHERE ID >= 240 AND ID < 260
+  5  /
+
+9 linhas criadas.
+
+SQL> 
+SQL> -- PRIVILEGIO PARA CONSULTA A LICITACAO
+SQL> INSERT INTO PRIVILEGIO (ID_FUNCIONALIDADE, ID_PERFIL)
+  2    SELECT ID, 3
+  3    FROM FUNCIONALIDADE
+  4    WHERE ID >= 130 AND ID < 170
+  5  /
+
+17 linhas criadas.
+
+SQL> commit;
+
+Validação completa.
+
+SQL> 

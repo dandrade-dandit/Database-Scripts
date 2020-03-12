@@ -1,0 +1,2 @@
+COMMENT ON COLUMN LOG_JOB.DATA_EXE IS 'Data de execucao'
+/

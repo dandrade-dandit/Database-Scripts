@@ -1,0 +1,20 @@
+
+
+***********************************************************************
+Fatal NI connect error 12505, connecting to:
+ (DESCRIPTION_LIST=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.0.17.2)(PORT=1521)))(CONNECT_DATA=(SID=oracle)(CID=(PROGRAM=D:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=CHENNIG)(USER=prsi_adriana)))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.3.0.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 8.0.3.0.1 - Production
+  Time: 01-MAR-00 14:15:52
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12204
+    TNS-12204: TNS:received data refused from an application
+    ns main err code: 12564
+    TNS-12564: TNS:connection refused
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0

@@ -1,0 +1,138 @@
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+SYSTEM                                  277,807,104
+SYSTEM                                      196,608
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+TSD_AUDIT                             4,831,707,136
+TSD_AUDIT                               410,910,720
+TSD_AUDIT                                    65,536
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+TSD_INTEGRACAO                          256,835,584
+TSD_INTEGRACAO                              655,360
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+TSD_MAXIMO                            3,820,879,872
+TSD_MAXIMO                              563,085,312
+TSD_MAXIMO                               40,894,464
+TSD_MAXIMO                               10,485,760
+TSD_MAXIMO                                8,388,608
+TSD_MAXIMO                                8,388,608
+TSD_MAXIMO                                8,388,608
+TSD_MAXIMO                                1,048,576
+TSD_MAXIMO                                   65,536
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+TSD_SEG                                 216,989,696
+TSD_SEG                                     983,040
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+TSD_SIPRECO                             253,689,856
+TSD_SIPRECO                                  65,536
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+TSI_INTEGRACAO                          447,676,416
+TSI_INTEGRACAO                              786,432
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+TSI_MAXIMO                            3,214,934,016
+TSI_MAXIMO                              309,329,920
+TSI_MAXIMO                              217,972,736
+TSI_MAXIMO                                8,388,608
+TSI_MAXIMO                                8,388,608
+TSI_MAXIMO                                8,388,608
+TSI_MAXIMO                                8,388,608
+TSI_MAXIMO                                4,194,304
+TSI_MAXIMO                                1,048,576
+TSI_MAXIMO                                1,048,576
+TSI_MAXIMO                                1,048,576
+TSI_MAXIMO                                1,048,576
+TSI_MAXIMO                                1,048,576
+TSI_MAXIMO                                1,048,576
+TSI_MAXIMO                                1,048,576
+TSI_MAXIMO                                  196,608
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+TSI_SEG                                 290,390,016
+TSI_SEG                                   3,145,728
+TSI_SEG                                     655,360
+TSI_SEG                                     393,216
+TSI_SEG                                     327,680
+TSI_SEG                                      65,536
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+TSI_SIPRECO                             296,681,472
+TSI_SIPRECO                               1,048,576
+TSI_SIPRECO                                 458,752
+TSI_SIPRECO                                 196,608
+                                                Contiguous Extents Report
+
+
+TABLESPACE NAME                    CONTIGUOUS BYTES
+------------------------------ --------------------
+UNDOTBS1                             14,397,931,520
+UNDOTBS1                                499,122,176
+UNDOTBS1                                 48,234,496
+UNDOTBS1                                 45,088,768
+UNDOTBS1                                 17,825,792
+UNDOTBS1                                  8,388,608
+UNDOTBS1                                  8,388,608
+UNDOTBS1                                  3,145,728
+UNDOTBS1                                    851,968
+UNDOTBS1                                    655,360
+UNDOTBS1                                    589,824
+UNDOTBS1                                    327,680
+UNDOTBS1                                    196,608
+UNDOTBS1                                    131,072
+UNDOTBS1                                    131,072
+UNDOTBS1                                    131,072
+UNDOTBS1                                    131,072
+UNDOTBS1                                     65,536
+UNDOTBS1                                     65,536
+                                                Contiguous Extents Report
+
+
+TABLESPACE_NAME                # OF EXTENTS          TOTAL BYTES
+------------------------------ ------------ --------------------
+SYSTEM                                    2          278,003,712
+TSD_AUDIT                                 4        5,242,683,392
+TSD_INTEGRACAO                            2          257,490,944
+TSD_MAXIMO                               10        4,461,625,344
+TSD_SEG                                   2          217,972,736
+TSD_SIPRECO                               2          253,755,392
+TSI_INTEGRACAO                            2          448,462,848
+TSI_MAXIMO                               16        3,787,522,048
+TSI_SEG                                   6          294,977,536
+TSI_SIPRECO                               4          298,385,408
+UNDOTBS1                                 22       15,031,402,496

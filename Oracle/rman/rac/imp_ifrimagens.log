@@ -1,0 +1,41 @@
+;;; 
+Import: Release 10.1.0.4.0 - Production on Tuesday, 19 April, 2005 14:03
+
+Copyright (c) 2003, Oracle.  All rights reserved.
+;;; 
+Connected to: Oracle Database 10g Enterprise Edition Release 10.1.0.4.0 - Production
+With the Partitioning, Real Application Clusters, OLAP and Data Mining options
+Master table "IFRDBA"."SYS_IMPORT_SCHEMA_01" successfully loaded/unloaded
+Starting "IFRDBA"."SYS_IMPORT_SCHEMA_01":  ifrdba/********@sebu122 DIRECTORY=EXP_DUMP DUMPFILE=EXP_FULL.DPM logfile=imp_ifrimagens.log SCHEMAS=ifrimagens 
+Processing object type DATABASE_EXPORT/SCHEMA/USER
+ORA-31684: Object type USER:"IFRIMAGENS" already exists
+Processing object type DATABASE_EXPORT/SCHEMA/GRANT/SYSTEM_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/ROLE_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/DEFAULT_ROLE
+Processing object type DATABASE_EXPORT/SCHEMA/SEQUENCE/SEQUENCE
+Processing object type DATABASE_EXPORT/SCHEMA/SEQUENCE/GRANT/DE_S_SEQ_OWNER_OBJGRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/PROCACT_SCHEMA
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/TABLE
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/TABLE_DATA
+. . imported "IFRIMAGENS"."IMAGENS"                      2.132 GB    3996 rows
+. . imported "IFRIMAGENS"."FOTOS"                        379.5 KB    1332 rows
+. . imported "IFRIMAGENS"."ACESSOS"                      6.085 KB      18 rows
+. . imported "IFRIMAGENS"."ACESSOS_GRUPOS"               5.507 KB      26 rows
+. . imported "IFRIMAGENS"."AEROPORTOS"                   6.984 KB      21 rows
+. . imported "IFRIMAGENS"."ALBUNS"                       6.757 KB       7 rows
+. . imported "IFRIMAGENS"."ALBUNS_FOTOS"                 6.843 KB     149 rows
+. . imported "IFRIMAGENS"."GRUPOS"                       5.656 KB       6 rows
+. . imported "IFRIMAGENS"."USUARIOS"                     8.117 KB      16 rows
+. . imported "IFRIMAGENS"."ALBUNS_GRVISUAL"                  0 KB       0 rows
+. . imported "IFRIMAGENS"."FOTOS_GRVISUAL"                   0 KB       0 rows
+. . imported "IFRIMAGENS"."GRUPOS_ADMIN"                     0 KB       0 rows
+. . imported "IFRIMAGENS"."GRVISUALIZACOES"                  0 KB       0 rows
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/GRANT/DE_S_TABLE_OWNER_OBJGRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/INDEX
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/CONSTRAINT/CONSTRAINT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/STATISTICS/INDEX_STATISTICS
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/STATISTICS/TABLE_STATISTICS
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/COMMENT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/CONSTRAINT/REF_CONSTRAINT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/TRIGGER
+Job "IFRDBA"."SYS_IMPORT_SCHEMA_01" completed with 1 error(s) at 14:18

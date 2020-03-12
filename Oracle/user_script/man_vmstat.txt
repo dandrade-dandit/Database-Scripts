@@ -1,0 +1,198 @@
+Reformatting page. Please wait... completed
+
+vmstat(1)                                                           vmstat(1)
+
+NAME
+
+  vmstat - Displays virtual memory statistics
+
+SYNOPSIS
+
+  vmstat interval [count]
+
+  vmstat [-f|-M|-P|-s]
+
+  The vmstat command displays system statistics for virtual memory,
+  processes, trap, and CPU activity.
+
+OPTIONS
+
+  -f  Displays only statistics about the number of forks since system startup
+      (see the fork() call).
+
+  -M  Displays information about memory usage by buckets.  This information
+      can be used for kernel debugging.
+
+  -P  Displays the following accumulated statistics about physical memory
+      use:
+
+      Total Physical Memory
+          Number of megabytes of installed memory, and the equivalent page
+          value.
+
+      Physical Memory Clusters
+          How physical memory is clustered.  The starting and ending page
+          frames (pfn) and where the memory is utilized (pal, os, and
+          *nvram).
+
+      Physical Memory Use
+          A breakdown of memory usage by os, the starting and ending page
+          frames, type of usage such as unixtable, or bss and the total phy-
+          sical memory in use.
+
+      Managed Pages Break Down
+          A snapshot of where managed physical memory resided when the vmstat
+          command executed.  The display shows the number of pages in the
+          free queue, active and inactive pages, wired pages and unified
+          buffer cache (ubc) pages.
+
+      WIRED Pages Break Down
+          A further breakdown of physical pages that are wired in memory.
+          The display typically shows:
+
+            +
+            vm and ubc wired pages
+            
+            +
+            meta data, malloc, and contig pages
+
+            +
+            user, kernel, and free ptepages.
+
+  -s  Displays the following accumulated statistics along with the page size:
+
+      active pages
+          Total number of pages that are currently in use but can be used for
+          paging.
+
+      inactive pages
+          Total number of VM pages that are allocated but are most likely to
+          be used for paging.
+
+      free pages
+          Total number of unreferenced (clean) pages that are available for
+          use.
+
+      wire pages
+          Total number of pages that are currently in use and cannot be used
+          for paging (not a real list).
+
+      virtual memory page faults
+          Number of address translation faults that have occurred.
+
+      copy-on-write page faults
+          Number of copy-on-write page faults, which occur if the requested
+          page is shared by a parent process and one or more child processes
+          (using the fork function) and if one of the processes needs to
+
+     manaamCla (37%)
+          translation buffer and copies the contents of the requested page
+          into the new address for modification by the process.
+
+      zero file page faults
+          Number of zero-filled-on-demand page faults, which occur if VM can-
+          not find the page in the internal data structures and if the
+          requested page is new and has never been referenced.  In this case,
+          VM initializes a physical page (the contents of the page are zeroed
+          out) and loads the address into the page table.
+          modify the page.  In this case, VM loads a new address into the
+      reattaches from reclaim list
+          Number of pages that have been faulted while on the inactive list.
+
+      pages paged in
+          Number of requests for pages from a pager.
+
+      pages paged out
+          Number of pages that have been paged out.
+
+      task and thread context switches
+          Number of task and thread context switches per second.
+
+      device interrupts
+          Number of nonclock device interrupts per second.
+
+      system calls
+          Number of system calls called per second.
+
+DESCRIPTION
+
+  If you specify interval, vmstat displays the statistics listed below every
+  interval seconds.  The first report is for all time since a reboot, and
+  each subsequent report is for the last interval only.  If you specify count
+  after interval, count specifies the number of reports.  For example, vmstat
+  1 10 produces 10 reports at 1-second intervals.  You cannot specify count
+  without interval, since the first numeric argument to vmstat is always
+  assumed to be interval.
+
+  At any time, system memory can be in use by the kernel in kseg, wired
+  (pages that are currently in use and cannot be used for paging), on the
+  active list (pages that are currently in use but can be used for paging),
+  on the inactive list (pages that are allocated but are most likely to be
+  used for paging), on the free list (pages that are clean and available for
+  use), or used by the Unified Buffer Cache (UBC).  The vmstat command does
+  not report on the memory in kseg and memory used by the UBC.
+
+  The following values are displayed:
+
+  Process information:
+
+  r   Number of threads that are running or are runnable.
+
+  w   Number of threads waiting interruptibly.
+
+  u   Number of threads waiting uninterruptibly.
+
+  Virtual memory information:
+
+  act Total number of pages on the active list, the inactive list (pages that
+      are allocated but are most likely to be used for paging), and the Uni-
+      fied Buffer Cache (UBC) least recently used (LRU) list.
+
+  free
+      Total number of pages that are clean and available for use.
+
+  wire
+      Total number of pages that are currently in use and cannot be used for
+      paging (not a real list).
+
+  fault
+      Number of address translation faults that have occurred.
+
+      Number of zero-filled-on-demand page faults, which occur if VM cannot
+      find the page in the internal data structures andlif the requested page
+      is new and has never been referenced.  Inethis case, VM initializes a
+      physical page (the contents of the page are zeroed out) and loadsbtheer
+      address into the page table.he requested page into the new address for
+      modification by the process.
+  react
+      Number of pages that have been faulted while on the inactive list.
+
+  pin Number of requests for pages from a pager.
+
+  pout
+      Number of pages that have been paged out.
+
+  Interrupt information:
+
+  in  Number of nonclock device interrupts per second.
+
+  sy  Number of system calls called per second.
+
+  cs  Number of task and thread context switches per second.
+
+  CPU information:
+
+  us  Percentage of user time for normal and priority processes.
+
+  sy  Percentage of system time.
+
+  id  Percentage of idle time.
+
+  Specify -f to display fork statistics only.  Specify -s for a single
+  display of accumulated statistics, as well as page size.
+
+SEE ALSO
+
+  Commands:  iostat(1)
+
+       

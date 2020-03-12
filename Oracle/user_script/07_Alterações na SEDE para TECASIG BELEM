@@ -1,0 +1,107 @@
+Alterações na SEDE para TECASIG BELEM
+=====================================
+
+
+SEDE
+====
+
+1) Criar dblink para o usuario ifrteca do banco de Belem no usuario ifrteca da sede
+
+CREATE PUBLIC DATABASE LINK IFR1BE USING 'REGIONAL_BE';
+CREATE DATABASE LINK IFR1BE CONNECT TO IFRTECA IDENTIFIED BY TKPINFRA004 USING 'REGIONAL_BE';
+
+   
+   Dados servidor de Belém:
+     HOST = 10.7.17.18
+     PORT = 1521
+     SID = perseu 
+
+
+
+2) Criar snapshots abaixo em IFRTECA
+
+CREATE SNAPSHOT IFRTECA.TKPSANPBE_MOV_RECEBIMENTO 
+PCTFREE 5 PCTUSED 80
+TABLESPACE TSD_TECA
+STORAGE ( INITIAL 10M
+	 NEXT 10M
+	 MINEXTENTS 1 
+	 MAXEXTENTS 9999 
+	 PCTINCREASE 0 )
+USING INDEX TABLESPACE TSI_TECA STORAGE  ( INITIAL 1M
+	 NEXT 1M
+	 MINEXTENTS 1 
+	 MAXEXTENTS 9999 
+	 PCTINCREASE 0 )
+refresh fast 
+with primary key 
+as 
+select * from  IFRTECA.TKP_MOV_RECEBIMENTO@IFR1BE;
+
+
+CREATE SNAPSHOT IFRTECA.TKPSANPBE_MOV_FINANCEIRO 
+PCTFREE 5 PCTUSED 80
+TABLESPACE TSD_TECA
+STORAGE ( INITIAL 20M
+	 NEXT 20M
+	 MINEXTENTS 1 
+	 MAXEXTENTS 9999 
+	 PCTINCREASE 0 )
+USING INDEX TABLESPACE TSI_TECA STORAGE  ( INITIAL 2M
+	 NEXT 2M
+	 MINEXTENTS 1 
+	 MAXEXTENTS 9999 
+	 PCTINCREASE 0 )
+refresh fast 
+with primary key 
+as 
+select * from  IFRTECA.TKP_MOV_FINANCEIRO@IFR1BE;
+
+
+CREATE SNAPSHOT IFRTECA.TKPSANPBE_MOV_ENTREGA 
+PCTFREE 5 PCTUSED 80
+TABLESPACE TSD_TECA
+STORAGE ( INITIAL 10M
+	 NEXT 10M
+	 MINEXTENTS 1 
+	 MAXEXTENTS 9999 
+	 PCTINCREASE 0 )
+USING INDEX TABLESPACE TSI_TECA STORAGE  ( INITIAL 2M
+	 NEXT 1M
+	 MINEXTENTS 1 
+	 MAXEXTENTS 9999 
+	 PCTINCREASE 0 )
+refresh fast 
+with primary key 
+as 
+select * from  IFRTECA.TKP_MOV_ENTREGA@IFR1BE;
+
+
+3) Criar grupo de snapshot para os snapshots criados acima no banco da Sede. ( TKPREFRESHBE )
+
+
+BEGIN
+   DBMS_REFRESH.MAKE (
+      name => 'IFRTECA.TKPREFRESHBE',
+      list => 'TKPSANPBE_MOV_RECEBIMENTO,TKPSANPBE_MOV_FINANCEIRO,TKPSANPBE_MOV_ENTREGA',
+      next_date => SYSDATE, 
+      interval => '(TRUNC(sysdate) + 1) + 3/24',
+      implicit_destroy => FALSE, 
+      rollback_seg => '',
+      push_deferred_rpc => TRUE, 
+      refresh_after_errors => FALSE);
+END;
+/
+
+
+
+4) Alterar views tkp_mov_entrega, tkp_mov_financeiro, tkp_mov_recebimento da sede, conforme os scripts abaixo:
+
+
+@user_Script/VIEW_TKP_MOV_ENTREGA.SQL
+@user_Script/VIEW_TKP_MOV_FINANCEIRO.SQL
+@user_Script/VIEW_TKP_MOV_RECEBIMENTO.SQL
+
+
+
+

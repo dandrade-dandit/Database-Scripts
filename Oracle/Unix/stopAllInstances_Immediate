@@ -1,0 +1,33 @@
+echo '**********************************'
+echo 'Inicio do procedimento de shutdown immediate'
+echo '**********************************'
+echo ' '
+
+ORACLE_SID=homolog
+export ORACLE_SID
+
+echo $ORACLE_SID
+
+sqlplus /nolog <<EOF
+connect / as sysdba
+prompt 'Inicio shutdown immediate -> homolog' 
+shutdown immediate;
+prompt 'fim shutdown immediate -> homolog' 
+EOF
+
+ORACLE_SID=case9i
+export ORACLE_SID
+
+echo $ORACLE_SID
+
+sqlplus /nolog <<EOF
+connect / as sysdba
+prompt 'Inicio shutdown immediate -> case9i' 
+shutdown immediate;
+prompt 'fim shutdown immediate -> case9i
+EOF
+
+echo ' '
+echo '**********************************'
+echo 'Final do procedimento de shutdown immediate'
+echo '**********************************'

@@ -1,0 +1,14 @@
+COMMENT ON COLUMN PARTICIPANTE.ID IS 'Identificacao do participante'
+/
+COMMENT ON COLUMN PARTICIPANTE.CONTATO IS 'Contato do participante'
+/
+COMMENT ON COLUMN PARTICIPANTE.TELEFONE IS 'Telefone do participante'
+/
+COMMENT ON COLUMN PARTICIPANTE.FAX IS 'Fax do participante'
+/
+COMMENT ON COLUMN PARTICIPANTE.EMAIL IS 'Email do participante'
+/
+COMMENT ON COLUMN PARTICIPANTE.LCT_ID IS 'Identificacao do lct'
+/
+COMMENT ON COLUMN PARTICIPANTE.FORNEC_ID IS 'Identicacao do fornecedor'
+/

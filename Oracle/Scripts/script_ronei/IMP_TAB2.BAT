@@ -1,0 +1,1 @@
+imp73 userid=system@homolog IGNORE=Y fromuser=dba_infraero touser=dba_infraero tables=(TIPOS_OCORRENCIAS) file=D:\ORACLE\ORANT\BACKUP\EXPTUDO.dmp log=C:\Sistemas\Sql\Infraero\Oracle\Scripts\script_ronei\imp.log

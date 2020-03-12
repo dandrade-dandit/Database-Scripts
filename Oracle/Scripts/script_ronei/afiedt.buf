@@ -1,0 +1,2 @@
+analyze table ifrbanco.analyz_tabelas compute statistics
+/

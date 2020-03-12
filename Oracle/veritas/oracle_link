@@ -1,0 +1,732 @@
+#!/bin/sh
+# $Header: oracle_link.sh,v 1.4.2.2 2004/02/10 23:45:16 $
+#bcpyrght
+#***************************************************************************
+#* $VRTScprght: Copyright 1993 - 2004 VERITAS Software Corporation, All Rights Reserved $ *
+#***************************************************************************
+#ecpyrght
+
+# this script runs from Oracle user account 
+
+# set up a trace file that will be used troughout the script
+MAKE_TRACE=/tmp/make_trace.$$
+ 
+if [ -f ${MAKE_TRACE} ]; then
+        rm -f ${MAKE_TRACE}
+fi
+ 
+date | tee ${MAKE_TRACE}
+chmod 777 ${MAKE_TRACE}
+
+
+confirm ()
+{
+  echo "${1} (y/n) [n] \c " | tee -a ${MAKE_TRACE}
+  read ans
+  echo "${ans}" >> ${MAKE_TRACE}
+  case "${ans}" in
+    Y*|y*)
+	   echo
+	   return 1
+	   ;;
+    *)
+       echo
+       return 0
+       ;;
+  esac
+}
+
+#get O_HOME from the env var ORACLE_HOME
+O_HOME=$ORACLE_HOME
+
+
+
+echo "All Oracle instances should be shutdown before running this script." | tee -a ${MAKE_TRACE}
+
+echo ""
+echo "Please log into the Unix system as the Oracle owner for running this script" | tee -a ${MAKE_TRACE}
+echo ""
+
+if confirm "Do you want to continue?"
+then
+  echo "exiting script"
+  exit 0
+fi;
+
+
+if [ "${O_HOME}" = "" ]; then
+  echo "ORACLE_HOME env var is not set. Please set it and rerun the script." | tee - a ${MAKE_TRACE}
+   echo "exiting script"
+   exit 0
+fi;
+
+#Make sure User is logged in with Oracle owner account
+#-----------------------------------------------------
+login_id=`id |cut -d"(" -f2 | cut -d ")" -f1`
+ora_owner=`ls -l $ORACLE_HOME/bin/oracle | sed -e 's/  \{1,\}/ /' | cut -d' ' -f3`
+if  [ $login_id != $ora_owner ] ; then
+    echo "Please log into the Unix system as the Oracle owner and rerun the script." | tee -a ${MAKE_TRACE}
+    echo "exiting script"
+    exit 0
+fi ;
+
+
+# find out if this is Oracle 7.x or 8.x
+
+if [ -f $O_HOME/bin/rman ]; then
+  VER8x=1
+else
+  VER8x=0
+fi;
+
+TEMP=/tmp/temp.$$
+
+echo "exit" >> $TEMP
+
+
+if [ ${VER8x} -ne 1 ]  
+then
+  O_VERSION=7.x
+else
+  O_VERSION=`$O_HOME/bin/sqlplus -? < $TEMP |grep Release | cut -f3 -d " "`
+fi
+
+rm -rf $TEMP
+
+LIBOBK_PATH=/usr/openv/netbackup/bin
+
+echo ""
+echo "LIBOBK_PATH: $LIBOBK_PATH" | tee -a ${MAKE_TRACE}
+echo "O_HOME: $O_HOME" | tee -a ${MAKE_TRACE}
+echo "O_VERSION: $O_VERSION" | tee -a ${MAKE_TRACE}
+
+
+if [ -f ${LIBOBK_PATH}/version ]; then
+  MACHINE=`head -1 ${LIBOBK_PATH}/version | cut -f2- -d-`
+  PLATFORM=nosupport
+  
+#  echo "MACHINE:$MACHINE" |tee -a ${MAKE_TRACE}
+  
+  case "${MACHINE}" in
+    AIX*)
+	  OS=`oslevel | cut -f1-3 -d"." | sed -e 's/\.//g'`
+	  if [ "${OS}" -ge "420" -a "${OS}" -lt "433" ] ; then
+	    PLATFORM=rs6000_42
+	    
+	  elif [ "${OS}" -ge "433" -a "${OS}" -lt "510" ] ; then
+	    PLATFORM=rs6000_433
+	  else
+	  PLATFORM=rs6000_51
+	  fi
+	  #Is this a valid version of Oracle for this platform
+	  case "${O_VERSION}" in
+	    7*|8.0.3*|8.0.4*|8.0.5*|8.0.6*|8.1*|9*|10*)
+		#Is a 64-bit Oracle installed - release prior to Oracle 9i
+		if [ -d ${O_HOME}/lib64 ] ; then
+		  echo " linking Oracle v${O_VERSION} for ${PLATFORM} ." | tee -a ${MAKE_TRACE}
+		  export LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH;
+		  if [ -f ${O_HOME}/lib64/libobk.a -o -h ${O_HOME}/lib64/libobk.a ] ; then
+		    echo "Moving libobk.a to libobk.a.back" | tee -a ${MAKE_TRACE}
+		    mv -f ${O_HOME}/lib64/libobk.a ${O_HOME}/lib64/libobk.a.back
+		  fi ;
+		  echo "ln -s ${LIBOBK_PATH}/libobk.a64 ${O_HOME}/lib64/libobk.a" | tee -a ${MAKE_TRACE}
+		  ln -s ${LIBOBK_PATH}/libobk.a64 ${O_HOME}/lib64/libobk.a ;
+		  LIBPATH=${O_HOME}/lib:$LIBPATH ;
+		  export LIBPATH ;
+		  case "${O_VERSION}" in
+		    8.1*|9*|10*)
+			echo "Done" | tee -a ${MAKE_TRACE}
+		    ;;
+		    *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		    ;;
+		  esac
+		#Is a 64-bit Oracle installed - Oracle 9i and newer
+		elif [ -d ${O_HOME}/lib -a -d ${O_HOME}/lib32 ] ; then 
+		  echo " linking Oracle v${O_VERSION} for ${PLATFORM} ." | tee -a ${MAKE_TRACE}
+		  export LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH;
+		  if [ -f ${O_HOME}/lib/libobk.a -o -h ${O_HOME}/lib/libobk.a ] ; then
+		    echo "Moving libobk.a to libobk.a.back" | tee -a ${MAKE_TRACE}
+		    mv -f ${O_HOME}/lib/libobk.a ${O_HOME}/lib/libobk.a.back
+		  fi ;
+		  echo "ln -s ${LIBOBK_PATH}/libobk.a64 ${O_HOME}/lib/libobk.a" | tee -a ${MAKE_TRACE}
+		  ln -s ${LIBOBK_PATH}/libobk.a64 ${O_HOME}/lib/libobk.a ;
+		  LIBPATH=${O_HOME}/lib:$LIBPATH ;
+		  export LIBPATH ;
+		  case "${O_VERSION}" in
+		    8.1*|9*|10*)
+			echo "Done" | tee -a ${MAKE_TRACE}
+		    ;;
+		    *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+		  esac
+		#32-bit Oracle is installed
+		else
+		    echo " linking Oracle v${O_VERSION} for ${PLATFORM} ." | tee -a ${MAKE_TRACE}
+		    export LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH;
+		    if [ -f ${O_HOME}/lib/libobk.a -o -h ${O_HOME}/lib/libobk.a ] ; then
+		      echo "Moving libobk.a to libobk.a.back" | tee -a ${MAKE_TRACE}
+		      mv -f ${O_HOME}/lib/libobk.a ${O_HOME}/lib/libobk.a.back
+		    fi ;
+		    echo "ln -s ${LIBOBK_PATH}/libobk.a ${O_HOME}/lib/libobk.a" | tee -a ${MAKE_TRACE}
+		    ln -s ${LIBOBK_PATH}/libobk.a ${O_HOME}/lib/libobk.a ;
+		    LIBPATH=${O_HOME}/lib:$LIBPATH ;
+		    export LIBPATH ;
+		    case "${O_VERSION}" in
+		      8.0.3*|8.0.4*|8.0.5*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBMM=-lobk" | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBMM=-lobk 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		      7*|8.0.6*|8.1*|9*|10*)
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		      *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+		    esac
+		fi
+                ;;
+	    *)
+		echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		;;
+	  esac
+	  ;;
+    DYNIX*)
+	#Sequent/DYNIX/pts
+	  OS=`uname -v | cut -c1-4`
+	  PLATFORM=Sequent${OS}
+	  #Is this a valid version of Oracle for this platform
+	  case "${O_VERSION}" in
+	    7*|8.0.4*|8.0.5*|8.1.5*|8.1.6*|8.1.7*|9*|10*)
+	      echo " linking Oracle v${O_VERSION} for ${PLATFORM}" | tee -a ${MAKE_TRACE}
+	      if [ -f ${O_HOME}/lib/libobk.so -o -h ${O_HOME}/lib/libobk.so ] ; then
+		echo "Moving libobk.so to libobk.so.back" | tee -a ${MAKE_TRACE}
+		mv -f ${O_HOME}/lib/libobk.so ${O_HOME}/lib/libobk.so.back
+	      fi ;
+	      echo "ln -s ${LIBOBK_PATH}/libobk.so ${O_HOME}/lib/libobk.so" | tee -a ${MAKE_TRACE}
+	      ln -s ${LIBOBK_PATH}/libobk.so ${O_HOME}/lib/libobk.so ;
+	      LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH ;
+	      export LD_LIBRARY_PATH ;
+	      case "${O_VERSION}" in
+		8.0.4*|8.1.6*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=-lobk" | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=-lobk 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		8.0.5*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle " | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		7*|8.1.5*|8.1.7*|9*|10*)
+			 echo "Done" | tee -a ${MAKE_TRACE}
+			 ;;
+		*)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+	      esac
+              ;;
+	    *)
+		echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		;;
+	  esac
+	  ;;
+    HP*)
+	 OS=`uname -r | cut -f2 -d"."`
+	 if [ "${OS}" = "10" ] ; then
+	   PLATFORM=hp10.20
+	  #Is this a valid version of Oracle for this platform
+	  case "${O_VERSION}" in
+	    7*|8.0.5*|8.0.6*|8.1*|9*|10*)
+	      echo " linking Oracle v${O_VERSION} for ${PLATFORM} ." | tee -a ${MAKE_TRACE}
+	      if [ -f ${O_HOME}/lib/libobk.sl -o -h ${O_HOME}/lib/libobk.sl ] ; then
+	        echo "Moving libobk.sl to libobk.sl.back" | tee -a ${MAKE_TRACE}
+	        mv -f ${O_HOME}/lib/libobk.sl ${O_HOME}/lib/libobk.sl.back
+	      fi ;
+	      if [ -f ${O_HOME}/lib/libobk.a -o -h ${O_HOME}/lib/libobk.a ] ; then
+	        echo "Moving libobk.a to libobk.a.back" | tee -a ${MAKE_TRACE}
+	        mv -f ${O_HOME}/lib/libobk.a ${O_HOME}/lib/libobk.a.back
+	      fi ;
+	      echo "ln -s ${LIBOBK_PATH}/libobk.sl ${O_HOME}/lib/libobk.sl" | tee -a ${MAKE_TRACE}
+	      ln -s ${LIBOBK_PATH}/libobk.sl ${O_HOME}/lib/libobk.sl ;
+	     
+	      case "${O_VERSION}" in
+	        8.0.5*|8.0.6*)
+	 		echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBMM=\"${O_HOME}/lib/libobk.sl\" LIBMM=" | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBMM="${O_HOME}/lib/libobk.sl" LIBMM= 2>&1 | tee -a ${MAKE_TRACE} 
+			;;
+	       
+	        7*|8.1*|9*|10*)
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+	        *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+	      esac
+              ;;
+	    *)
+		echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		;;
+	  esac
+	     
+	 elif [ "${OS}" = "11" ] ; then
+	   PLATFORM=hp11.00
+	   os_bits=`getconf _CS_KERNEL_BITS`
+	   O_EXECBITS=`file ${O_HOME}/bin/oracle | cut -f1 -d " " |cut -f2`
+	   if [ "${os_bits}" = "64" -a "${O_EXECBITS}" = "ELF-64" ] ; then
+	     is_64_bit=1
+	       case "${O_VERSION}" in
+		 8.0.5.1*)
+			echo " linking Oracle v${O_VERSION} for ${PLATFORM} ${os_bits} bits." | tee -a ${MAKE_TRACE}
+			if [ -f ${O_HOME}/lib/libobk.sl -o -h ${O_HOME}/lib/libobk.sl ] ; then
+				echo "Moving libobk.sl to libobk.sl.back" | tee -a ${MAKE_TRACE}
+				mv -f ${O_HOME}/lib/libobk.sl ${O_HOME}/lib/libobk.sl.back
+			fi ;
+			if [ -f ${O_HOME}/lib/libobk.a -o -h ${O_HOME}/lib/libobk.a ] ; then
+				 echo "Moving libobk.a to libobk.a.back" | tee -a ${MAKE_TRACE}
+				 mv -f ${O_HOME}/lib/libobk.a ${O_HOME}/lib/libobk.a.back
+			fi ;
+			echo "ln -s ${LIBOBK_PATH}/libobk.sl64 ${O_HOME}/lib/libobk.sl" | tee -a ${MAKE_TRACE}
+			ln -s ${LIBOBK_PATH}/libobk.sl64 ${O_HOME}/lib/libobk.sl ;
+			SHLIB_PATH=${O_HOME}/lib:$SHLIB_PATH ;
+			export SHLIB_PATH ;
+			echo "copying oracle executable"
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=\"${O_HOME}/lib/libobk.sl\"" | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK="${O_HOME}/lib/libobk.sl" 2>&1 | tee -a ${MAKE_TRACE}
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		 8.0.6*)
+			echo " linking Oracle v${O_VERSION} for ${PLATFORM} ${os_bits} bits." | tee -a ${MAKE_TRACE}
+			if [ -f ${O_HOME}/lib64/libobk.sl -o -h ${O_HOME}/lib64/libobk.sl ] ; then
+				 echo "Moving libobk.sl to libobk.sl.back" | tee -a ${MAKE_TRACE}
+				 mv -f ${O_HOME}/lib64/libobk.sl ${O_HOME}/lib64/libobk.sl.back
+			fi ;
+			if [ -f ${O_HOME}/lib64/libobk.a -o -h ${O_HOME}/lib64/libobk.a ] ; then
+				 echo "Moving libobk.a to libobk.a.back" | tee -a ${MAKE_TRACE}
+				 mv -f ${O_HOME}/lib64/libobk.a ${O_HOME}/lib64/libobk.a.back
+			fi ;
+			echo "ln -s ${LIBOBK_PATH}/libobk.sl64 ${O_HOME}/lib64/libobk.sl" | tee -a ${MAKE_TRACE}
+			ln -s ${LIBOBK_PATH}/libobk.sl64 ${O_HOME}/lib64/libobk.sl ;
+			SHLIB_PATH=${O_HOME}/lib:$SHLIB_PATH ;
+			export SHLIB_PATH ;
+			echo "copying oracle executable"
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=\"${O_HOME}/lib64/libobk.sl\"" | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK="${O_HOME}/lib64/libobk.sl" 2>&1 | tee -a ${MAKE_TRACE}
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		 8.1*)
+			echo " linking Oracle v${O_VERSION} for ${PLATFORM} ${os_bits} bits." | tee -a ${MAKE_TRACE}
+			if [ -f ${O_HOME}/lib64/libobk.sl -o -h ${O_HOME}/lib64/libobk.sl ] ; then
+				 echo "Moving libobk.sl to libobk.sl.back" | tee -a ${MAKE_TRACE}
+				 mv -f ${O_HOME}/lib64/libobk.sl ${O_HOME}/lib64/libobk.sl.back
+			fi ;
+			if [ -f ${O_HOME}/lib64/libobk.a -o -h ${O_HOME}/lib64/libobk.a ] ; then
+				 echo "Moving libobk.a to libobk.a.back" | tee -a ${MAKE_TRACE}
+				 mv -f ${O_HOME}/lib64/libobk.a ${O_HOME}/lib64/libobk.a.back
+			fi ;
+			echo "ln -s ${LIBOBK_PATH}/libobk.sl64 ${O_HOME}/lib64/libobk.sl" | tee -a ${MAKE_TRACE}
+			ln -s ${LIBOBK_PATH}/libobk.sl64 ${O_HOME}/lib64/libobk.sl ;
+			SHLIB_PATH=${O_HOME}/lib:$SHLIB_PATH ;
+			export SHLIB_PATH ;
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		 9*|10*)
+			echo " linking Oracle v${O_VERSION} for ${PLATFORM} ${os_bits} bit" | tee -a ${MAKE_TRACE}
+			if [ -f ${O_HOME}/lib/libobk.sl -o -h ${O_HOME}/lib/libobk.sl ] ; then
+				echo "Moving libobk.sl to libobk.sl.back"
+				mv -f ${O_HOME}/lib/libobk.sl ${O_HOME}/lib/libobk.sl.back
+			fi ;
+			if [ -f ${O_HOME}/lib/libobk.a -o -h ${O_HOME}/lib/libobk.a ] ; then
+				echo "Moving libobk.a to libobk.a.back" | tee -a ${MAKE_TRACE}
+				mv -f ${O_HOME}/lib/libobk.a ${O_HOME}/lib/libobk.a.back
+			fi ;
+			echo "ln -s ${LIBOBK_PATH}/libobk.sl64 ${O_HOME}/lib/libobk.sl" | tee -a ${MAKE_TRACE}
+			ln -s ${LIBOBK_PATH}/libobk.sl64 ${O_HOME}/lib/libobk.sl ;
+			SHLIB_PATH=${O_HOME}/lib:$SHLIB_PATH ;
+			export SHLIB_PATH ;
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+
+		 *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+	       esac
+
+	   else
+	     #Is this a valid version of Oracle for this platform
+	     case "${O_VERSION}" in
+	       7*|8.0.5*|8.0.6*|8.1*|9*|10*)
+	            #32 bit (os_bits=32)
+	            echo " linking Oracle v${O_VERSION} for ${PLATFORM} ${os_bits} bit" | tee -a ${MAKE_TRACE}
+	            if [ -f ${O_HOME}/lib/libobk.sl -o -h ${O_HOME}/lib/libobk.sl ] ; then
+	     	      echo "Moving libobk.sl to libobk.sl.back"
+	     	      mv -f ${O_HOME}/lib/libobk.sl ${O_HOME}/lib/libobk.sl.back
+	            fi ;
+	            if [ -f ${O_HOME}/lib/libobk.a -o -h ${O_HOME}/lib/libobk.a ] ; then
+		      echo "Moving libobk.a to libobk.a.back" | tee -a ${MAKE_TRACE}
+		      mv -f ${O_HOME}/lib/libobk.a ${O_HOME}/lib/libobk.a.back
+	            fi ;
+	            echo "ln -s ${LIBOBK_PATH}/libobk.sl ${O_HOME}/lib/libobk.sl" | tee -a ${MAKE_TRACE}
+	            ln -s ${LIBOBK_PATH}/libobk.sl ${O_HOME}/lib/libobk.sl ;
+	            SHLIB_PATH=${O_HOME}/lib:$SHLIB_PATH ;
+	            export SHLIB_PATH ;
+	            case "${O_VERSION}" in
+		      8.0.3*|8.0.4*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBMM=\"${O_HOME}/lib/libobk.sl\" " | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBMM="${O_HOME}/lib/libobk.sl" 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		      8.0.5*|8.0.6*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=\"${O_HOME}/lib/libobk.sl\" " | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK="${O_HOME}/lib/libobk.sl" 2>&1 | tee -a ${MAKE_TRACE} 
+			;;
+		      7*|8.1*|9*|10*)
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		      *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+	            esac
+                    ;;
+	       *)
+		   echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		   ;;
+	     esac
+	   fi ;
+         fi;
+	 ;;
+    IRIX*)
+	#SGI/IRIX
+	   OS_f1=`uname -r | cut -f1 -d"."`
+	   OS_f2=`uname -r | cut -f2 -d"."`
+	   if [ "${OS_f1}" = "6" -a "${OS_f2}" -ge "5" ] ; then
+	     PLATFORM="SGI 6.5"
+	     #Is this a valid version of Oracle for this platform
+	     case "${O_VERSION}" in
+	       8.1.6*|8.1.7*|9*|10*)
+	         if [ -d ${O_HOME}/lib -a -d ${O_HOME}/lib32 ] ; then 
+		    echo " linking Oracle v${O_VERSION} for ${PLATFORM}." | tee -a ${MAKE_TRACE}
+		    if [ -f ${O_HOME}/lib/libobk.so -o -h ${O_HOME}/lib/libobk.so ] ; then
+		       echo "Moving libobk.so to libobk.so.back" | tee -a ${MAKE_TRACE}
+		       mv -f ${O_HOME}/lib/libobk.so ${O_HOME}/lib/libobk.so.back
+		    fi ;
+		    if [ -f ${O_HOME}/lib/libobk.so64 -o -h ${O_HOME}/lib/libobk.so64 ] ; then
+		       echo "Moving libobk.so64 to libobk.so64.back" | tee -a ${MAKE_TRACE}
+		       mv -f ${O_HOME}/lib/libobk.so64 ${O_HOME}/lib/libobk.so64.back
+		    fi ;
+		    LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH ;
+		    export LD_LIBRARY_PATH ;
+		    case "${O_VERSION}" in
+		       8.1.6*)
+			echo "ln -s ${LIBOBK_PATH}/libobk.so64 ${O_HOME}/lib/libobk.so64" | tee -a ${MAKE_TRACE}
+			ln -s ${LIBOBK_PATH}/libobk.so64 ${O_HOME}/lib/libobk.so64 ;
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=\"${O_HOME}/lib/libobk.so64\" PL_FLAGS=-64 " | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK="${O_HOME}/lib/libobk.so64" PL_FLAGS=-64 2>&1 | tee -a ${MAKE_TRACE} 
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		       8.1.7*|9*|10*)
+			echo "ln -s ${LIBOBK_PATH}/libobk.so64 ${O_HOME}/lib/libobk.so" | tee -a ${MAKE_TRACE}
+			ln -s ${LIBOBK_PATH}/libobk.so64 ${O_HOME}/lib/libobk.so ;
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		       *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+		    esac
+	         else
+		    echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+                 fi
+                 ;;
+	       *)
+		   echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		   ;;
+	     esac
+	   elif [ "${OS_f1}" = "6" ] ; then
+	     PLATFORM="SGI 6.${OS_f2}"
+	     echo "${PLATFORM} is not supported for this release" | tee -a ${MAKE_TRACE}
+	   fi
+	   ;;
+    OSF1*)
+	#Compaq TRU64/Digital UNIX(OSF1)
+	   OS_f1=`uname -r | cut -f1 -d"."`
+	   PLATFORM="Digital UNIX ALPHA"
+	   #Is this a valid version of Oracle for this platform
+	   case "${O_VERSION}" in
+	     7*|8.0.3*|8.0.4*|8.0.5*|8.0.6*|8.1.5*|8.1.6*|8.1.7*|9*|10*)
+	       echo "linking Oracle v${O_VERSION} for ${PLATFORM}." | tee -a ${MAKE_TRACE}
+	       if [ -f ${O_HOME}/lib/libobk.so -o -h ${O_HOME}/lib/libobk.so ]; then
+		 echo "Moving libobk.so to libobk.so.back" | tee -a ${MAKE_TRACE}
+		 mv -f ${O_HOME}/lib/libobk.so ${O_HOME}/lib/libobk.so.back
+	       fi ;
+	       if [ -f ${O_HOME}/lib/libobk.so.1 -o -h ${O_HOME}/lib/libobk.so.1 ]; then
+		 echo "Moving libobk.so.1 to libobk.so.1.back" | tee -a ${MAKE_TRACE}
+		 mv -f ${O_HOME}/lib/libobk.so.1 ${O_HOME}/lib/libobk.so.1.back
+	       fi ;
+	       echo "ln -s ${LIBOBK_PATH}/libobk.so.1 ${O_HOME}/lib/libobk.so.1" | tee -a ${MAKE_TRACE}
+	       ln -s ${LIBOBK_PATH}/libobk.so.1 ${O_HOME}/lib/libobk.so.1 ;
+	       echo "ln -s ${O_HOME}/lib/libobk.so.1 ${O_HOME}/lib/libobk.so" | tee -a ${MAKE_TRACE}
+	       ln -s ${O_HOME}/lib/libobk.so.1 ${O_HOME}/lib/libobk.so;
+	       LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH ;
+	       export LD_LIBRARY_PATH ;
+	       case "${O_VERSION}" in
+		 8.0.3*|8.0.4*|8.0.5*|8.0.6*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle PL_FLAGS=-call_shared LLIBMM=-lobk" | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle PL_FLAGS=-call_shared LLIBMM=-lobk 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		 8.1.5*|8.1.6*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle PL_FLAGS=\"-rpath ${O_HOME}/lib\" " | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle PL_FLAGS="-rpath ${O_HOME}/lib" 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		 7*|8.1.7*|9*|10*)
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		 *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+	       esac
+               ;;
+	     *)
+		   echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		   ;;
+	   esac
+	   ;;
+    Solaris*)
+	   #OS_f1=`uname -r | cut -f1 -d"."`
+	   OS_f2=`uname -r | cut -f2 -d"."`
+	   PLATFORM="Solaris 2.${OS_f2}"
+	   #Is this a valid version of Oracle for this platform
+	   case "${O_VERSION}" in
+	     7*|8.0.3*|8.0.4*|8.0.5*|8.0.6*|8.1.5*|8.1.6*|8.1.7*|9*|10*)
+	        echo " linking Oracle v${O_VERSION} for Solaris 2.${OS_f2} " | tee -a  ${MAKE_TRACE}
+               #Is it a 64-bit Oracle, before Oracle 9i?
+	        if [ -d ${O_HOME}/lib64 ] ; then
+		   if [ -f ${O_HOME}/lib64/libobk.so -o -h ${O_HOME}/lib64/libobk.so ] ; then
+		      echo "Moving 64-bit libobk.so to libobk.so.back" | tee -a ${MAKE_TRACE}
+		      mv -f ${O_HOME}/lib64/libobk.so ${O_HOME}/lib64/libobk.so.back
+		   fi
+		   echo "ln -s ${LIBOBK_PATH}/libobk.so64.1 ${O_HOME}/lib64/libobk.so" | tee -a ${MAKE_TRACE}
+		   ln -s ${LIBOBK_PATH}/libobk.so64.1 ${O_HOME}/lib64/libobk.so ;
+		   LD_LIBRARY_PATH=${O_HOME}/lib64:$LD_LIBRARY_PATH ;
+		   export LD_LIBRARY_PATH ;
+               #Is it a 64-bit Oracle, Oracle 9i or after?
+	        elif [ -d ${O_HOME}/lib -a -d ${O_HOME}/lib32 ] ; then 
+		   if [ -f ${O_HOME}/lib/libobk.so -o -h ${O_HOME}/lib/libobk.so ] ; then
+		      echo "Moving 64-bit libobk.so to libobk.so.back" | tee -a ${MAKE_TRACE}
+		      mv -f ${O_HOME}/lib/libobk.so ${O_HOME}/lib/libobk.so.back
+		   fi
+		   echo "ln -s ${LIBOBK_PATH}/libobk.so64.1 ${O_HOME}/lib/libobk.so" | tee -a ${MAKE_TRACE}
+		   ln -s ${LIBOBK_PATH}/libobk.so64.1 ${O_HOME}/lib/libobk.so ;
+		   LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH ;
+		   export LD_LIBRARY_PATH ;
+               #Must be a 32-bit Oracle on a 64-bit Solaris
+	        else 
+		   if [ -f ${O_HOME}/lib/libobk.so -o -h ${O_HOME}/lib/libobk.so ] ; then
+		      echo "Moving libobk.so to libobk.so.back" | tee -a ${MAKE_TRACE}
+		      mv -f ${O_HOME}/lib/libobk.so ${O_HOME}/lib/libobk.so.back
+		   fi
+		   echo "ln -s ${LIBOBK_PATH}/libobk.so.1 ${O_HOME}/lib/libobk.so" | tee -a ${MAKE_TRACE}
+		   ln -s ${LIBOBK_PATH}/libobk.so.1 ${O_HOME}/lib/libobk.so ;
+		   LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH ;
+		   export LD_LIBRARY_PATH ;
+                fi ;
+		case "${O_VERSION}" in
+		  8.0.3*|8.0.4*|8.0.5*|8.0.6*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle" | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		  8.1.6*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			cd ${O_HOME}/rdbms/lib;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=-lobk" | tee -a ${MAKE_TRACE}
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=-lobk 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		  7*|8.1.5*|8.1.7*|9*|10*)
+				    echo "Done" | tee -a ${MAKE_TRACE}
+				    ;;
+		  *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+		esac
+                ;;
+	     *)
+		   echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		   ;;
+	   esac
+		;;
+    RedHat*)
+	#Linux platforms
+	   OS_f2=`uname -a | cut -c1-5`
+	   PLATFORM="${OS_f2} RedHat"
+	   #Is this a valid version of Oracle for this platform
+	   case "${O_VERSION}" in
+	     8.1.6*|8.1.7*|9*|10*)
+	      echo " linking Oracle v${O_VERSION} for Linux RedHat " | tee -a  ${MAKE_TRACE}
+		if [ -f ${O_HOME}/lib/libobk.so -o -h ${O_HOME}/lib/libobk.so ] ; then
+		  echo "Moving libobk.so to libobk.so.back" | tee -a ${MAKE_TRACE}
+		  mv -f ${O_HOME}/lib/libobk.so ${O_HOME}/lib/libobk.so.back
+		fi ;
+		echo "ln -s ${LIBOBK_PATH}/libobk.so ${O_HOME}/lib/libobk.so" | tee -a ${MAKE_TRACE}
+		ln -s ${LIBOBK_PATH}/libobk.so ${O_HOME}/lib/libobk.so ;
+		LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH ;
+		export LD_LIBRARY_PATH ;
+		case "${O_VERSION}" in
+		  8.1.6*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			cd ${O_HOME}/rdbms/lib;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=\"${O_HOME}/lib/libobk.so\"" | tee -a ${MAKE_TRACE}
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK="${O_HOME}/lib/libobk.so" 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		  8.1.7*|9*|10*)
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		  *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+		esac
+                ;;
+	     *)
+		   echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		   ;;
+	   esac
+	   ;;
+    UNIX*)
+	   unix_level=`uname -s`
+	   if [ "${unix_level}" = "dgux" ]; then
+	     PLATFORM="Data General UNIX"
+	     #Is this a valid version of Oracle for this platform
+	     case "${O_VERSION}" in
+	       7*|8.0.4*|8.0.5*|9*|10*)
+	          echo " linking Oracle v${O_VERSION} for ${PLATFORM}." | tee -a  ${MAKE_TRACE}
+	          if [ -f ${O_HOME}/lib/libobk.so -o -h ${O_HOME}/lib/libobk.so ] ; then
+		    echo "Moving libobk.so to libobk.so.back" | tee -a ${MAKE_TRACE}
+		    mv -f ${O_HOME}/lib/libobk.so ${O_HOME}/lib/libobk.so.back
+	          fi ;
+	          echo "ln -s ${LIBOBK_PATH}/libobk.so ${O_HOME}/lib/libobk.so" | tee -a ${MAKE_TRACE}
+	          ln -s ${LIBOBK_PATH}/libobk.so ${O_HOME}/lib/libobk.so ;
+	          case "${O_VERSION}" in
+		    8.0.4*|8.0.5*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -i ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=-lobk" | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=-lobk 2>&1 | tee -a ${MAKE_TRACE} 
+			;;
+		    7*|9*|10*)
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		    *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+	          esac
+                  ;;
+	       *)
+		   echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		   ;;
+	     esac
+	   
+	   else
+	     PLATFORM=NCR
+	     #Is this a valid version of Oracle for this platform
+	     case "${O_VERSION}" in
+	       7*|8.0.4*|8.0.5*|9*|10*)
+	          echo " linking Oracle v${O_VERSION} for ${PLATFORM}." | tee -a  ${MAKE_TRACE} 
+	          if [ -f ${O_HOME}/lib/libobk.so -o -h ${O_HOME}/lib/libobk.so ] ; then    
+		    echo "Moving libobk.so to libobk.so.back" | tee -a ${MAKE_TRACE}
+		    mv -f ${O_HOME}/lib/libobk.so ${O_HOME}/lib/libobk.so.back   
+	          fi ;   
+	          echo "ln -s ${LIBOBK_PATH}/libobk.so ${O_HOME}/lib/libobk.so" | tee -a ${MAKE_TRACE}
+	          ln -s ${LIBOBK_PATH}/libobk.so ${O_HOME}/lib/libobk.so ;     
+	          LD_LIBRARY_PATH=${O_HOME}/lib:$LD_LIBRARY_PATH ;
+	          export LD_LIBRARY_PATH ;
+	          case "${O_VERSION}" in
+		    8.0.4*|8.0.5*|8.0.6*)
+			echo "copying oracle executable" | tee -a ${MAKE_TRACE}
+			echo "cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back" | tee -a ${MAKE_TRACE}
+			cp -f ${O_HOME}/bin/oracle ${O_HOME}/bin/oracle.back ;
+			echo "make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=-lobk" | tee -a ${MAKE_TRACE}
+			cd ${O_HOME}/rdbms/lib;
+			make -f ${O_HOME}/rdbms/lib/ins_rdbms.mk ioracle LLIBOBK=-lobk 2>&1 | tee -a ${MAKE_TRACE}
+			;;
+		    7*|9*|10*)
+			echo "Done" | tee -a ${MAKE_TRACE}
+			;;
+		    *)
+			echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+			;;
+	          esac
+                  ;;
+	       *)
+		   echo "This version of Oracle is not supported in this script" | tee -a ${MAKE_TRACE}
+		   ;;
+	     esac
+	   fi
+	   ;;
+  esac
+  
+  if [ "${PLATFORM}" = "nosupport" ] ; then
+    echo "ERROR:  Platform ${MACHINE} is not supported." | tee -a ${MAKE_TRACE}
+    echo "Oracle Linking Script Aborted." | tee -a ${MAKE_TRACE}
+    exit 1
+  fi
+else
+  
+  echo "${LIBOBK_PATH}/version not found." | tee -a ${MAKE_TRACE}
+  exit 1
+fi;
+echo ""
+echo "Please check the trace file located in ${MAKE_TRACE} 
+to make sure the linking process was successful"
+
+exit 0
+
+
+

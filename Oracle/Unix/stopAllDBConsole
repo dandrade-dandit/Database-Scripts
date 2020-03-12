@@ -1,0 +1,7 @@
+ORACLE_SID=homolog
+export ORACLE_SID
+emctl stop dbconsole
+
+ORACLE_SID=case9i
+export ORACLE_SID
+emctl stop dbconsole

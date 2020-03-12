@@ -1,0 +1,17 @@
+antigo   2: set    SDO_TABLE_OWNER = '&&NEWOWNER'
+novo   2: set    SDO_TABLE_OWNER = 'DISCOVERER4I'
+antigo   3: where  SDO_TABLE_OWNER = '&&OLDOWNER'
+novo   3: where  SDO_TABLE_OWNER = 'DISCOVERER4I'
+
+0 linhas atualizadas.
+
+antigo   4: 		    where  eu_username = '&&NEWOWNER')
+novo   4: 		    where  eu_username = 'DISCOVERER4I')
+antigo   7: 		    where  eu_username = '&&OLDOWNER')
+novo   7: 		    where  eu_username = 'DISCOVERER4I')
+
+0 linhas atualizadas.
+
+
+Commit concluído.
+

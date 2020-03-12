@@ -1,0 +1,34 @@
+  1  select * from dba_tab_privs
+  2* where GRANTEE = 'SYSAD'
+SQL> /
+
+GRANTEE                        OWNER                          TABLE_NAME
+------------------------------ ------------------------------ ------------------------
+GRANTOR                        PRIVILEGE                                GRA
+------------------------------ ---------------------------------------- ---
+SYSAD                          SYS                            DBA_ROLES
+SYS                            SELECT                                   NO
+
+SYSAD                          SYS                            DBA_OBJECTS
+SYS                            SELECT                                   NO
+
+SYSAD                          SYS                            DBA_ROLE_PRIVS
+SYS                            SELECT                                   NO
+
+SYSAD                          SYS                            DBA_SYNONYMS
+SYS                            SELECT                                   NO
+
+SYSAD                          SYS                            DBA_TABLES
+SYS                            SELECT                                   NO
+
+SYSAD                          SYS                            DBA_TAB_PRIVS
+SYS                            SELECT                                   NO
+
+SYSAD                          SYS                            DBA_VIEWS
+SYS                            SELECT                                   NO
+
+SYSAD                          SYS                            DBA_TRIGGERS
+SYS                            SELECT                                   NO
+
+SYSAD                          SYS                            DBA_EXTENTS
+SYS                            SELECT                                   NO

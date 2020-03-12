@@ -1,0 +1,125 @@
+SQL> 
+SQL>  
+SQL> CREATE SNAPSHOT IFRTECA.TKPSANPBE_MOV_RECEBIMENTO 
+  2  PCTFREE 5 PCTUSED 80
+  3  TABLESPACE TSD_TECA
+  4  STORAGE ( INITIAL 10M
+  5    NEXT 10M
+  6    MINEXTENTS 1 
+  7    MAXEXTENTS 9999 
+  8    PCTINCREASE 0 )
+  9  USING INDEX TABLESPACE TSI_TECA STORAGE  ( INITIAL 1M
+ 10    NEXT 1M
+ 11    MINEXTENTS 1 
+ 12    MAXEXTENTS 9999 
+ 13    PCTINCREASE 0 )
+ 14  refresh fast 
+ 15  with primary key 
+ 16  as 
+ 17  select * from  IFRTECA.TKP_MOV_RECEBIMENTO@IFR1BE;
+
+View materializada criada.
+
+SQL> 
+SQL> 
+SQL> CREATE SNAPSHOT IFRTECA.TKPSANPBE_MOV_FINANCEIRO 
+  2  PCTFREE 5 PCTUSED 80
+  3  TABLESPACE TSD_TECA
+  4  STORAGE ( INITIAL 20M
+  5    NEXT 20M
+  6    MINEXTENTS 1 
+  7    MAXEXTENTS 9999 
+  8    PCTINCREASE 0 )
+  9  USING INDEX TABLESPACE TSI_TECA STORAGE  ( INITIAL 2M
+ 10    NEXT 2M
+ 11    MINEXTENTS 1 
+ 12    MAXEXTENTS 9999 
+ 13    PCTINCREASE 0 )
+ 14  refresh fast 
+ 15  with primary key 
+ 16  as 
+ 17  select * from  IFRTECA.TKP_MOV_FINANCEIRO@IFR1BE;
+
+View materializada criada.
+
+SQL> 
+SQL> 
+SQL> CREATE SNAPSHOT IFRTECA.TKPSANPBE_MOV_ENTREGA 
+  2  PCTFREE 5 PCTUSED 80
+  3  TABLESPACE TSD_TECA
+  4  STORAGE ( INITIAL 10M
+  5    NEXT 10M
+  6    MINEXTENTS 1 
+  7    MAXEXTENTS 9999 
+  8    PCTINCREASE 0 )
+  9  USING INDEX TABLESPACE TSI_TECA STORAGE  ( INITIAL 2M
+ 10    NEXT 1M
+ 11    MINEXTENTS 1 
+ 12    MAXEXTENTS 9999 
+ 13    PCTINCREASE 0 )
+ 14  refresh fast 
+ 15  with primary key 
+ 16  as 
+ 17  select * from  IFRTECA.TKP_MOV_ENTREGA@IFR1BE;
+
+View materializada criada.
+
+SQL> 
+SQL> 
+SQL> BEGIN
+  2     DBMS_REFRESH.MAKE (
+  3        name => 'IFRTECA.TKPREFRESHBE',
+  4        list => 'TKPSANPBE_MOV_RECEBIMENTO,TKPSANPBE_MOV_FINANCEIRO,TKPSANPBE_MOV_ENTREGA',
+  5        next_date => SYSDATE, 
+  6        interval => '(TRUNC(sysdate) + 1) + 3/24',
+  7        implicit_destroy => FALSE, 
+  8        rollback_seg => '',
+  9        push_deferred_rpc => TRUE, 
+ 10        refresh_after_errors => FALSE);
+ 11  END;
+ 12  /
+
+Procedimento PL/SQL concluído com sucesso.
+
+SQL> 
+SQL>  
+SQL> @user_Script/VIEW_TKP_MOV_ENTREGA.SQL
+
+View criada.
+
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> 
+SQL> @user_Script/VIEW_TKP_MOV_FINANCEIRO.SQL
+
+View criada.
+
+
+Operação de Grant bem-sucedida.
+
+SQL> 
+SQL> 
+SQL> @user_Script/VIEW_TKP_MOV_RECEBIMENTO.SQL
+
+View criada.
+
+
+Operação de Grant bem-sucedida.
+
+SQL>
+SQL> 
+SQL> execute dbms_snapshot.refresh('TKPSANPBE_MOV_ENTREGA','C');
+
+Procedimento PL/SQL concluído com sucesso.
+
+SQL> execute dbms_snapshot.refresh('TKPSANPBE_MOV_FINANCEIRO','C');
+
+Procedimento PL/SQL concluído com sucesso.
+
+SQL> execute dbms_snapshot.refresh('TKPSANPBE_MOV_RECEBIMENTO','C');
+
+Procedimento PL/SQL concluído com sucesso.
+
+SQL> 

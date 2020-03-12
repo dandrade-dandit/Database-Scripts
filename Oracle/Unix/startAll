@@ -1,0 +1,31 @@
+echo '**********************************'
+echo 'Inicio do procedimento de startup'
+echo '**********************************'
+echo ' '
+
+echo '**********************************'
+echo 'Inicialização do Listener'
+echo '**********************************'
+echo ' '
+
+lsnrctl start
+
+echo '**********************************'
+echo 'Inicialização das Instances'
+echo '**********************************'
+echo ' '
+
+/usr/users/oracle/Scripts/startAllInstances
+
+
+echo '**********************************'
+echo 'Inicialização dos DBConsoles'
+echo '**********************************'
+echo ' '
+
+/usr/users/oracle/Scripts/startAllDBConsole
+
+echo ' '
+echo '**********************************'
+echo 'Final do procedimento de startup'
+echo '**********************************'

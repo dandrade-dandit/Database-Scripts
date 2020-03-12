@@ -1,0 +1,81 @@
+SQL> CREATE OR REPLACE FUNCTION INSS_Parte_Autonomo (p_cre_codigo number, p_ano number, p_mes number,
+  2                                p_doc_numero number, p_ben_sigla varchar2, p_doc_dep_codigo number)  return number is
+
+  3  
+  4  
+  5      c_teto_inss                  number(15,2) := Valor_Constante_Legal(18,p_ano,p_mes); -- Constante Legal: Teto Au
+tônomo
+  6      c_perc_aut                   number(15,2) := Valor_Constante_Legal(17,p_ano,p_mes); -- Constante Legal: Percent
+ual Retenção Autônomo
+  7      v_inss_aut                   number(15,2);
+  8      v_recolhido_mac_doc          number(15,2);
+  9      v_recolhido_outros_orgaos    number(15,2);
+ 10  /
+
+Aviso: Função criada com erros de compilação.
+
+SQL> show error
+Erros para FUNCTION INSS_PARTE_AUTONOMO:
+
+LINE/COL ERROR
+-------- -----------------------------------------------------------------
+10/0     PLS-00103: Encountered the symbol "end-of-file" when expecting
+         one of the following:
+         begin function package pragma procedure subtype type use
+         <an identifier> <a double-quoted delimited-identifier> cursor
+         form current
+
+SQL> CREATE OR REPLACE  Function Recolhido_Mac_Doc return number is
+  2          -- retorna a soma dos valores já recolhidos nos campos movimentacao_autonomo_cooperat.mac_inss_autonomo e
+  3          -- documentos_cobranca.doc_inss_autonomo
+  4          cursor c_mac is
+  5              select nvl(sum(mac_inss_autonomo),0) inss_ja_recolhido
+  6                from movimentacao_autonomo_cooperat
+  7               where mac_ano_referencia = p_ano
+  8                 and mac_mes_referencia = p_mes
+  9                 and mac_cre_sequencial = p_cre_codigo;
+ 10          cursor c_doc is
+ 11              select nvl(sum(doc_inss_autonomo),0) inss_ja_recolhido
+ 12                from documentos_cobranca
+ 13               where to_number(ltrim(to_char(doc_data_pagamento,'mm'))) = p_mes
+ 14                 and to_number(ltrim(to_char(doc_data_pagamento,'yyyy'))) = p_ano
+ 15                 and doc_cbe_cre_sequencial = p_cre_codigo
+ 16                 and doc_processo_encerrado = 'S'
+ 17                 and ((p_doc_numero is null)
+ 18                  or (doc_numero <> p_doc_numero
+ 19                     or doc_cbe_ben_sigla <> nvl(p_ben_sigla,'x')
+ 20                     or doc_dep_codigo <> nvl(p_doc_dep_codigo,0)));
+ 21          v_total_mac  number;
+ 22          v_total_doc  number;
+ 23      Begin
+ 24          open c_mac;
+ 25          fetch c_mac into v_total_mac;
+ 26          close c_mac;
+ 27          open c_doc;
+ 28          fetch c_doc into v_total_doc;
+ 29          close c_doc;
+ 30          return (nvl(v_total_mac,0) + nvl(v_total_doc,0));
+ 31      End;
+ 32  /
+
+Aviso: Função criada com erros de compilação.
+
+SQL> show error
+Erros para FUNCTION RECOLHIDO_MAC_DOC:
+
+LINE/COL ERROR
+-------- -----------------------------------------------------------------
+5/13     PL/SQL: SQL Statement ignored
+5/20     PLS-00320: the declaration of the type of this expression is
+         incomplete or malformed
+
+7/41     PLS-00201: identifier 'P_ANO' must be declared
+11/13    PL/SQL: SQL Statement ignored
+11/20    PLS-00320: the declaration of the type of this expression is
+         incomplete or malformed
+
+13/73    PLS-00201: identifier 'P_MES' must be declared
+25/9     PL/SQL: SQL Statement ignored
+28/9     PL/SQL: SQL Statement ignored
+SQL> 
+SQL> 

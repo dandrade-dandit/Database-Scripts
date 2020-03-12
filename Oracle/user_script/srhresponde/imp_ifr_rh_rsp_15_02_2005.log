@@ -1,0 +1,178 @@
+
+Conectado a: Oracle9i Enterprise Edition Release 9.2.0.4.0 - Production
+With the Partitioning, OLAP and Oracle Data Mining options
+JServer Release 9.2.0.4.0 - Production
+
+Arquivo de exportação criado por EXPORT:V08.01.07 via caminho convencional
+
+Advertência: os objetos foram exportados por IFR_RH_RSP; não por você
+
+importação realizada nos conjuntos de caracteres WE8ISO8859P1 e NCHAR UTF8
+o servidor de importação usa o conjunto de caracteres WE8MSWIN1252 (conversão de charset possível)
+o servidor de exportação usa o conjunto de caracteres NCHAR WE8ISO8859P1 (conversão de ncharset possível)
+. importando objetos de IFR_RH_RSP para IFRSRHRSP
+. . importando table         "CAD_DUVIDA_FREQUENTE"          0 linhas importadas
+. . importando table           "CAD_ENCAMINHAMENTO"          0 linhas importadas
+IMP-00017: a instrução a seguir falhou com o erro 2264 ORACLE:
+ "ALTER TABLE "CAD_ENCAMINHAMENTO" ADD CONSTRAINT "ENC_FLG_RESTRITO_CK" CHECK"
+ " (FLG_RESTRITO in ('S','N')"
+ ") ENABLE NOVALIDATE"
+IMP-00003: Erro Oracle: 2264 encontrado
+ORA-02264: name already used by an existing constraint
+IMP-00017: a instrução a seguir falhou com o erro 2264 ORACLE:
+ "ALTER TABLE "CAD_ENCAMINHAMENTO" ADD CONSTRAINT "ENC_TIP_STATUS_CK" CHECK ("
+ "TIP_STATUS in ('P','F')"
+ ") ENABLE NOVALIDATE"
+IMP-00003: Erro Oracle: 2264 encontrado
+ORA-02264: name already used by an existing constraint
+. . importando table              "CAD_SOLICITACAO"          0 linhas importadas
+IMP-00017: a instrução a seguir falhou com o erro 2264 ORACLE:
+ "ALTER TABLE "CAD_SOLICITACAO" ADD CONSTRAINT "SOL_FLG_ANONIMA_CK" CHECK (FL"
+ "G_ANONIMA in ('S','N')"
+ ") ENABLE NOVALIDATE"
+IMP-00003: Erro Oracle: 2264 encontrado
+ORA-02264: name already used by an existing constraint
+IMP-00017: a instrução a seguir falhou com o erro 2264 ORACLE:
+ "ALTER TABLE "CAD_SOLICITACAO" ADD CONSTRAINT "SOL_TIP_STATUS_CK" CHECK (TIP"
+ "_STATUS in ('A','T','E','R','F')"
+ ") ENABLE NOVALIDATE"
+IMP-00003: Erro Oracle: 2264 encontrado
+ORA-02264: name already used by an existing constraint
+. . importando table "TAB_ASSUNTO_DUVIDA_FREQUENTE"          0 linhas importadas
+. . importando table      "TAB_ASSUNTO_SOLICITACAO"          0 linhas importadas
+. . importando table       "TAB_ORIGEM_SOLICITACAO"          0 linhas importadas
+. . importando table         "TAB_TIPO_SOLICITACAO"          0 linhas importadas
+IMP-00017: a instrução a seguir falhou com o erro 942 ORACLE:
+ "ALTER TABLE "CAD_ENCAMINHAMENTO" ADD CONSTRAINT "ENC_CAD" FOREIGN KEY ("EMP"
+ "_NUMERO_MATRICULA") REFERENCES "PESSOAL"."CADASTROS" ("EMP_NUMERO_MATRICULA"
+ "") ENABLE NOVALIDATE"
+IMP-00003: Erro Oracle: 942 encontrado
+ORA-00942: table or view does not exist
+IMP-00017: a instrução a seguir falhou com o erro 942 ORACLE:
+ "ALTER TABLE "CAD_SOLICITACAO" ADD CONSTRAINT "SOL_CAD" FOREIGN KEY ("EMP_NU"
+ "MERO_MATRICULA") REFERENCES "PESSOAL"."CADASTROS" ("EMP_NUMERO_MATRICULA") "
+ "ENABLE NOVALIDATE"
+IMP-00003: Erro Oracle: 942 encontrado
+ORA-00942: table or view does not exist
+IMP-00017: a instrução a seguir falhou com o erro 942 ORACLE:
+ "ALTER TABLE "CAD_SOLICITACAO" ADD CONSTRAINT "SOL_CAD_2" FOREIGN KEY ("NUM_"
+ "MATRICULA_ATEND") REFERENCES "PESSOAL"."CADASTROS" ("EMP_NUMERO_MATRICULA")"
+ " ENABLE NOVALIDATE"
+IMP-00003: Erro Oracle: 942 encontrado
+ORA-00942: table or view does not exist
+IMP-00041: Advertência: objeto criado com advertências de compilação
+ "CREATE TRIGGER "IFRSRHRSP".trg_adf_i_b"
+ " BEFORE"
+ "  INSERT"
+ " ON tab_assunto_duvida_frequente"
+ "REFERENCING NEW AS NOVA OLD AS OLD"
+ " FOR EACH ROW"
+ ""
+ "declare"
+ "    seq_val TAB_ASSUNTO_DUVIDA_FREQUENTE.SEQ_ASSUNTO_DUVIDA_FREQUENTE%TYPE;"
+ "begin"
+ ""
+ "    Select  IFR_RH_RSP.SEQ_TAB_ASSUNTO_DFQ.nextval"
+ "     Into   seq_val"
+ "     From   Dual;"
+ ""
+ "	:NOVA.SEQ_ASSUNTO_DUVIDA_FREQUENTE := Seq_val;"
+ ""
+ "end;"
+IMP-00041: Advertência: objeto criado com advertências de compilação
+ "CREATE TRIGGER "IFRSRHRSP".trg_aso_i_b"
+ " BEFORE"
+ "  INSERT"
+ " ON tab_assunto_solicitacao"
+ "REFERENCING NEW AS NOVA OLD AS OLD"
+ " FOR EACH ROW"
+ ""
+ "declare"
+ "    seq_val TAB_ASSUNTO_SOLICITACAO.SEQ_ASSUNTO_SOLICITACAO%TYPE;"
+ "begin"
+ ""
+ "    Select  IFR_RH_RSP.SEQ_TAB_ASSUNTO_SOLICITACAO.nextval"
+ "     Into   seq_val"
+ "     From   Dual;"
+ ""
+ ":NOVA.SEQ_ASSUNTO_SOLICITACAO := seq_val;"
+ ""
+ "end;"
+IMP-00041: Advertência: objeto criado com advertências de compilação
+ "CREATE TRIGGER "IFRSRHRSP".trg_cen_i_b"
+ " BEFORE"
+ "  INSERT"
+ " ON cad_encaminhamento"
+ "REFERENCING NEW AS NOVA OLD AS OLD"
+ " FOR EACH ROW"
+ ""
+ "declare"
+ "    seq_val CAD_ENCAMINHAMENTO.SEQ_ENCAMINHAMENTO%TYPE;"
+ "begin"
+ ""
+ "    Select  IFR_RH_RSP.SEQ_CAD_ENCAMINHAMENTO.nextval"
+ "     Into   seq_val"
+ "     From   Dual;"
+ ""
+ "	:NOVA.SEQ_ENCAMINHAMENTO := seq_val;"
+ ""
+ "end;"
+IMP-00041: Advertência: objeto criado com advertências de compilação
+ "CREATE TRIGGER "IFRSRHRSP".trg_dfq_i_b"
+ " BEFORE"
+ "  INSERT"
+ " ON cad_duvida_frequente"
+ "REFERENCING NEW AS NOVA OLD AS OLD"
+ " FOR EACH ROW"
+ ""
+ "declare"
+ "    seq_val CAD_DUVIDA_FREQUENTE.SEQ_DUVIDA_FREQUENTE%TYPE;"
+ "begin"
+ ""
+ "    Select  IFR_RH_RSP.SEQ_CAD_DUVIDA_FREQUENTE.nextval"
+ "     Into   seq_val"
+ "     From   Dual;"
+ ""
+ "	:NOVA.SEQ_DUVIDA_FREQUENTE := seq_val;"
+ ""
+ "end;"
+IMP-00041: Advertência: objeto criado com advertências de compilação
+ "CREATE TRIGGER "IFRSRHRSP".trg_oso_i_b"
+ " BEFORE"
+ "  INSERT"
+ " ON tab_origem_solicitacao"
+ "REFERENCING NEW AS NOVA OLD AS OLD"
+ " FOR EACH ROW"
+ ""
+ "declare"
+ "    seq_val TAB_ORIGEM_SOLICITACAO.SEQ_ORIGEM_SOLICITACAO%TYPE;"
+ "begin"
+ ""
+ "    Select  IFR_RH_RSP.SEQ_TAB_ORIGEM_SOLICITACAO.nextval"
+ "     Into   seq_val"
+ "     From   Dual;"
+ ""
+ "	:NOVA.SEQ_ORIGEM_SOLICITACAO := seq_val;"
+ ""
+ "end;"
+IMP-00041: Advertência: objeto criado com advertências de compilação
+ "CREATE TRIGGER "IFRSRHRSP".trg_tso_i_b"
+ " BEFORE"
+ "  INSERT"
+ " ON tab_tipo_solicitacao"
+ "REFERENCING NEW AS NOVA OLD AS OLD"
+ " FOR EACH ROW"
+ ""
+ "declare"
+ "    seq_val TAB_TIPO_SOLICITACAO.SEQ_TIPO_SOLICITACAO%TYPE;"
+ "begin"
+ ""
+ "    Select  IFR_RH_RSP.SEQ_TAB_TIPO_SOLICITACAO.nextval"
+ "     Into   seq_val"
+ "     From   Dual;"
+ ""
+ ":NOVA.SEQ_TIPO_SOLICITACAO := seq_val;"
+ ""
+ "end;"
+Sobre ativação de restrições...
+Importação encerrada com êxito, com advertências.

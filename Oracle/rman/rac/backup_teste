@@ -1,0 +1,1 @@
+/usr/openv/netbackup/bin/bpbackup -p Linux_Oracle_Export -s Linux_Export -S s-segu113 -t 0 /backup/export

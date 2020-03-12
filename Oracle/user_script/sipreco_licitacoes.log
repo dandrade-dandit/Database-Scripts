@@ -1,0 +1,233 @@
+SQL> @USER_SCRIPT/sipreco_licitacoes
+
+Seqüência criada.
+
+
+Seqüência criada.
+
+
+Tabela criada.
+
+
+Operação de Grant bem-sucedida.
+
+
+Operação de Grant bem-sucedida.
+
+
+Operação de Grant bem-sucedida.
+
+         REFERENCES CAD_CRONOGRAMAS (CRO_SEQUENCIAL),
+                    *
+ERRO na linha 14:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON TABLE CAD_LICITACAO_CARENCIA IS
+                 *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+CREATE INDEX CAD_LICITACAO_CARENCIA_01_IX ON CAD_LICITACAO_CARENCIA (
+                                             *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON CAD_LICITACAO_CARENCIA TO ROLE_SIPRECO_VIEWS
+                                     *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON CAD_LICITACAO_CARENCIA TO ROLE_SIPRECO
+                                     *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+GRANT ALTER,SELECT,INSERT,DELETE,UPDATE ON CAD_LICITACAO_CARENCIA TO SIPRECO_VIEWS
+                                           *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+   CONSTRAINT CAD_PAGAMENTO_CONTRATO_01_FK FOREIGN KEY (NUM_SEQ_CARENCIA, NUM_CONTRATO),
+                                                                                       *
+ERRO na linha 15:
+ORA-00905: missing keyword
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.NUM_SEQ_PAG_CONTRATO IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.NUM_SEQ_CARENCIA IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.NUM_CONTRATO IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.NUM_ANO_PGOSE IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.COD_RECURSO IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.COD_TIPO_PAG IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.DAT_PAGAMENTO IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.VAL_PAGAMENTO IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.NUM_FATURA_PAGAMENTO IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.VAL_GLOSA IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.VAL_RETENCAO IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON COLUMN CAD_PAGAMENTO_CONTRATO.NUM_SEQ_ENTIDADE IS
+                  *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+CREATE UNIQUE INDEX CAD_PAGAMENTO_CONTRATO_01_IX ON CAD_PAGAMENTO_CONTRATO (
+                                                    *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON CAD_PAGAMENTO_CONTRATO TO ROLE_SIPRECO_VIEWS
+                                     *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON CAD_PAGAMENTO_CONTRATO TO ROLE_SIPRECO
+                                     *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+GRANT ALTER,SELECT,INSERT,DELETE,UPDATE ON CAD_PAGAMENTO_CONTRATO TO SIPRECO_VIEWS
+                                           *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+
+Tabela criada.
+
+
+Operação de Grant bem-sucedida.
+
+
+Operação de Grant bem-sucedida.
+
+
+Operação de Grant bem-sucedida.
+
+
+Tabela criada.
+
+
+Operação de Grant bem-sucedida.
+
+
+Operação de Grant bem-sucedida.
+
+
+Operação de Grant bem-sucedida.
+
+
+Tabela criada.
+
+
+Comentário criado.
+
+
+Índice criado.
+
+
+Operação de Grant bem-sucedida.
+
+
+Operação de Grant bem-sucedida.
+
+
+Operação de Grant bem-sucedida.
+
+         REFERENCES CAD_LICITACAO_CARENCIA (NUM_SEQ_LICITACAO)
+                    *
+ERRO na linha 11:
+ORA-00942: table or view does not exist
+
+
+COMMENT ON TABLE CAD_EVENTOS_LICITACAO IS
+                 *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+CREATE UNIQUE INDEX CAD_EVENTOS_LICITACAO_01_IX ON CAD_EVENTOS_LICITACAO (
+                                                   *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON CAD_EVENTOS_LICITACAO TO ROLE_SIPRECO_VIEWS
+                                     *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON CAD_EVENTOS_LICITACAO TO ROLE_SIPRECO
+                                     *
+ERRO na linha 1:
+ORA-00942: table or view does not exist
+
+
+GRANT ALTER,SELECT,INSERT,DELETE,UPDATE ON CAD_EVENTOS_LICITACAO TO SIPRECO_VIEWS
+                                           *
+ERRO na linha 1:
+ORA-00942: table or view does not exist

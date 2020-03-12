@@ -1,0 +1,398 @@
+SQL> 
+SQL> COMMENT ON TABLE CAD_CRRNTA IS 'Contém o cadastro de todas as empresas que solicitam o benefício de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.COD_CRRNTA IS 'Código referente ao cliente correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.NUM_CNPJ_EMPR IS 'Número do CNPJ da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.NOM_RAZAO_SCIAL IS 'Nome da Razão Social da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.DSC_END_EMPR IS 'Endereço onde está localizada a empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.DSC_END_COMPL IS 'Complemento de endereço do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.DSC_BAIRRO_EMPR IS 'Bairro onde está localizada a empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.DSC_CDADE_EMPR IS 'Cidade onde está localizada a empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.COD_SIGLA_UF IS 'Identifica o Estado / Unidade Federativa.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.NUM_CEP_EMPR IS 'Número do cep da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.VAL_MOVTO_FNCRO IS 'Valor referente a movimentação financeira do correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.FLG_DEBTO_SRASA IS 'Indica se o cliente correntista possui débito no SERASA ou não.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.FLG_DEBTO_CADIN IS 'Indica se o cliente correntista possui débito ou não.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.DAT_CAD_CRRNTA IS 'Data do cadastro do correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_CRRNTA.FLG_CLI_DEBTO IS 'Indica se o cliente possui débitos ou não.';
+COMMENT ON COLUMN CAD_CRRNTA.FLG_CLI_DEBTO IS 'Indica se o cliente possui débitos ou não.'
+                             *
+ERRO na linha 1:
+ORA-00904: nome inválido de coluna 
+
+
+SQL> COMMENT ON TABLE CAD_DPCHTE IS 'Contém o cadastro de todos os despachantes de cargas da Infraero.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.COD_DPCHTE IS 'Identifica o código do despachante.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.NUM_RG_DPCHTE IS 'Número do RG do rdo despachante.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.NUM_CPF_DPCHTE IS 'Número do documento de CPF do despachante.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.NOM_DPCHTE IS 'Nome do despachante da carga.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.DSC_END_DPCHTE IS 'Contém o endereço fico do despachante.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.DSC_END_COMPL IS 'Complemento de endereço do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.DSC_BAIRRO_DPCHTE IS 'Bairro onde está localizado o despachante.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.DSC_CDADE_DPCHTE IS 'Cidade onde está localizado o despachante.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.COD_SIGLA_UF IS 'Identifica o Estado / Unidade Federativa.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.NUM_CEP_DPCHTE IS 'Número do CEP do despachante.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.DAT_CAD_DPCHTE IS 'Data do cadastro do despachante no sistema.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.COD_TERMO_CRRNTA IS 'Código referente ao termo de solicitação de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.NUM_ADCNL_TERMO IS 'Número adcional do TERMO, ou seja, um determinado TERMO é cadastrado em um determinado momento para algumas regionais, daqui um mês precisa complementar este mesmo TERMO para mais algumas regionais, neste caso adiciona-se um número adicional para este mesmo TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_DPCHTE.DSC_ORG_EMSSOR_RG IS 'Indica o órgão emissor do RG (Documento de Identidade).';
+COMMENT ON COLUMN CAD_DPCHTE.DSC_ORG_EMSSOR_RG IS 'Indica o órgão emissor do RG (Documento de Identidade).'
+                             *
+ERRO na linha 1:
+ORA-00904: nome inválido de coluna 
+
+
+SQL> COMMENT ON TABLE CAD_REPRE IS 'Contém os dados cadastrais de todos os representantes das empresas correntistas.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.COD_REPRE IS 'Código do representante legal pertencente a empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.NUM_RG_REPRE IS 'Número do RG do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.NUM_CPF_REPRE IS 'Número do CPF do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.NOM_REPRE IS 'Nome completo do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.DSC_NATU IS 'Descrição da naturalidade do representante da empresa correntista. Ex: São Paulo, Rio de Janeiro, etc...';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.TIP_ESTDO_CIIVL IS 'Informa o código do estado civil do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.DSC_PRFSAO_REPRE IS 'Informa profissão (cargo) do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.DSC_END_REPRE IS 'Endereço fixo do representante da empresesa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.DSC_END_COMPL IS 'Complemento de endereço do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.DSC_BAIRO_REPRE IS 'Informa o Bairro do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.DSC_CDADE_REPRE IS 'Informa a Cidade do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.COD_SIGLA_UF IS 'Identifica o Estado / Unidade Federativa.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.NUM_CEP_REPRE IS 'Informa o CEP do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.DAT_CAD_REPRE IS 'Data em que foi cadastrado os dados do representante da empresa correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.COD_TERMO_CRRNTA IS 'Código referente ao termo de solicitação de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.NUM_ADCNL_TERMO IS 'Número adcional do TERMO, ou seja, um determinado TERMO é cadastrado em um determinado momento para algumas regionais, daqui um mês precisa complementar este mesmo TERMO para mais algumas regionais, neste caso adiciona-se um número adicional para este mesmo TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_REPRE.DSC_ORG_EMSSOR_RG IS 'Indica o órgão emissor do RG (Documento de Identidade).';
+COMMENT ON COLUMN CAD_REPRE.DSC_ORG_EMSSOR_RG IS 'Indica o órgão emissor do RG (Documento de Identidade).'
+                            *
+ERRO na linha 1:
+ORA-00904: nome inválido de coluna 
+
+
+SQL> COMMENT ON COLUMN CAD_REPRE.TIP_SEXO IS 'Indica o sexo, se Feminino ou Masculino.';
+
+Comentário criado.
+
+SQL> COMMENT ON TABLE CAD_TERMO_CRRNTA IS 'Contém o sequencial referente ao documento de TERMO e informações cadastrais. Ex: código do correntista, endereço, etc...';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_TERMO_CRRNTA.COD_TERMO_CRRNTA IS 'Código referente ao termo de solicitação de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_TERMO_CRRNTA.NUM_ADCNL_TERMO IS 'Número adcional do TERMO, ou seja, um determinado TERMO é cadastrado em um determinado momento para algumas regionais, daqui um mês precisa complementar este mesmo TERMO para mais algumas regionais, neste caso adiciona-se um número adicional para este mesmo TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_TERMO_CRRNTA.COD_CRRNTA IS 'Código referente ao cliente correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_TERMO_CRRNTA.NUM_CF_ENVIO IS 'Número referente a CF (Carta Formal) enviada para um responsável na SEDE.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_TERMO_CRRNTA.NUM_CF_RETORNO IS 'Número referente a CF (Carta Formal) de retorno da SEDE.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_TERMO_CRRNTA.DAT_CAD_TERMO IS 'Data do cadastro do termo do correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_TERMO_CRRNTA.TIP_MOVTC_FNCRO_TERMO IS 'Código do tipo da movimentação financeira.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_TERMO_CRRNTA.AER_COD IS 'Codigo do aeroporto.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN CAD_TERMO_CRRNTA.FLG_CLI_ESP IS 'Indica se o termo trata-se de cliente especial ou não.';
+
+Comentário criado.
+
+SQL> COMMENT ON TABLE HIS_MOVTC_TERMO IS 'Contém o histórico de todas as movimentações financeiras desde o início até a conclusão da habilitação do benefício de correntista, assim como suspensão ou até mesmo cancelamento.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN HIS_MOVTC_TERMO.COD_TERMO_CRRNTA IS 'Código referente ao termo de solicitação de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN HIS_MOVTC_TERMO.NUM_ADCNL_TERMO IS 'Número adcional do TERMO, ou seja, um determinado TERMO é cadastrado em um determinado momento para algumas regionais, daqui um mês precisa complementar este mesmo TERMO para mais algumas regionais, neste caso adiciona-se um número adicional para este mesmo TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN HIS_MOVTC_TERMO.DAT_CAD_MOVTC_TERMO IS 'Data do cadastro do correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN HIS_MOVTC_TERMO.TIP_MOVTC_FNCRO_TERMO IS 'Código do tipo da movimentação financeira.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN HIS_MOVTC_TERMO.US_CODIGO IS 'Codigo do usuario.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN HIS_MOVTC_TERMO.DSC_OBS_MOVTC IS 'Indica se há observações gerais para determinada movimentação.';
+COMMENT ON COLUMN HIS_MOVTC_TERMO.DSC_OBS_MOVTC IS 'Indica se há observações gerais para determinada movimentação.'
+                                  *
+ERRO na linha 1:
+ORA-00904: nome inválido de coluna 
+
+
+SQL> COMMENT ON TABLE MOVTC_FNCRO_TERMO IS 'Contém a descrição das movimentações financeiras referente a um determinado TERMO para rastreamento.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN MOVTC_FNCRO_TERMO.TIP_MOVTC_FNCRO_TERMO IS 'Código do tipo da movimentação financeira.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN MOVTC_FNCRO_TERMO.DSC_MOVTC_FNCRO_TERMO IS 'Descrição referente a movimentação financeira.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN MOVTC_FNCRO_TERMO.TIP_MOVTC_REG IS 'Indica o tipo de movimentação do registro.';
+COMMENT ON COLUMN MOVTC_FNCRO_TERMO.TIP_MOVTC_REG IS 'Indica o tipo de movimentação do registro.'
+                                    *
+ERRO na linha 1:
+ORA-00904: nome inválido de coluna 
+
+
+SQL> COMMENT ON TABLE SOLTC_TERMO IS 'Motivos da solicitação de um TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN SOLTC_TERMO.COD_TERMO_CRRNTA IS 'Código referente ao termo de solicitação de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN SOLTC_TERMO.COD_REG IS 'Codigo do registro.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN SOLTC_TERMO.NUM_ADCNL_TERMO IS 'Número adcional do TERMO, ou seja, um determinado TERMO é cadastrado em um determinado momento para algumas regionais, daqui um mês precisa complementar este mesmo TERMO para mais algumas regionais, neste caso adiciona-se um número adicional para este mesmo TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN SOLTC_TERMO.DSC_SOLTC_TERMO IS 'Descrição da solicitação do TERMO, ato da solicitação.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN SOLTC_TERMO.US_CODIGO IS 'codigo do usuario.';
+
+Comentário criado.
+
+SQL> COMMENT ON TABLE TAB_MOTVO_APRV IS 'Contém a descrição do movimento das aprovações.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TAB_MOTVO_APRV.COD_TERMO_CRRNTA IS 'Código referente ao termo de solicitação de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TAB_MOTVO_APRV.NUM_ADCNL_TERMO IS 'Número adcional do TERMO, ou seja, um determinado TERMO é cadastrado em um determinado momento para algumas regionais, daqui um mês precisa complementar este mesmo TERMO para mais algumas regionais, neste caso adiciona-se um número adicional para este mesmo TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TAB_MOTVO_APRV.DSC_MOTVO_APRV IS 'Descrição do motivo da aprovação.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TAB_MOTVO_APRV.US_CODIGO IS 'Codigo do usuario.';
+
+Comentário criado.
+
+SQL> COMMENT ON TABLE TERMO_AER IS 'Identifica os aeroportos referente a um determinado TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_AER.AER_COD IS 'Codigo do aeroporto.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_AER.COD_TERMO_CRRNTA IS 'Código referente ao termo de solicitação de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_AER.NUM_ADCNL_TERMO IS 'Número adcional do TERMO, ou seja, um determinado TERMO é cadastrado em um determinado momento para algumas regionais, daqui um mês precisa complementar este mesmo TERMO para mais algumas regionais, neste caso adiciona-se um número adicional para este mesmo TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_AER.FLG_APRVDO_CLIE IS 'Informa se o cliente foi aprovado para o benefício de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_AER.FLG_ATULZ_TECAPLUS IS 'Informa se o benefício de correntista foi atualizado no Tecaplus.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_AER.DSC_SUSPE_TERMO IS 'Informa o motivo da suspenção (temporária) do termo, qual o motivo, se por falta de pagamento, etc...';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_AER.DSC_CANCE_TERMO IS 'Informa o motivo pelo qual o TERMO foi cancelado, após sua suspenção. Sepor falta de pagamento, etc...';
+
+Comentário criado.
+
+SQL> COMMENT ON TABLE TERMO_MODLDE IS 'Identifica as modalidades relacionadas a um determinado TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_MODLDE.COD_MODLDE IS 'Identifica o código da modalidade para determinado aeroporto, ou seja, Importação, Exportação, Internação, Courier, Carga Nacional ou Serviços Prestados.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_MODLDE.COD_TERMO_CRRNTA IS 'Código referente ao termo de solicitação de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_MODLDE.NUM_ADCNL_TERMO IS 'Número adcional do TERMO, ou seja, um determinado TERMO é cadastrado em um determinado momento para algumas regionais, daqui um mês precisa complementar este mesmo TERMO para mais algumas regionais, neste caso adiciona-se um número adicional para este mesmo TERMO.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_MODLDE.FLG_APRVDO_CLIE IS 'Informa se o cliente foi aprovado para o benefício de correntista.';
+
+Comentário criado.
+
+SQL> COMMENT ON COLUMN TERMO_MODLDE.FLG_ATULZ_TECAPLUS IS 'Informa se o benefício de correntista foi atualizado no Tecaplus.';
+
+Comentário criado.
+
+SQL> 
+SQL> SPO OFF

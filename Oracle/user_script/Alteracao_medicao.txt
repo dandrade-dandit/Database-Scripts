@@ -1,0 +1,168 @@
+SQL> @user_script/Alteracao_medicao
+
+Seqüência criada.
+
+Creating Table 'OBRAS_USUARIOS'
+CREATE TABLE OBRAS_USUARIOS
+             *
+ERRO na linha 1:
+ORA-00955: name is already used by an existing object
+
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Tabela criada.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+Creating Table 'CAD_FATURAMENTOS'
+
+Tabela criada.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+Creating Table 'FOTOS'
+
+Tabela criada.
+
+Creating Table 'DESPACHOS'
+
+Tabela criada.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+
+Comentário criado.
+
+Creating Primary Key on 'OBRAS_USUARIOS'
+ ADD CONSTRAINT PK_OBRAS_USUARIOS PRIMARY KEY
+                                  *
+ERRO na linha 2:
+ORA-02260: table can have only one primary key
+
+
+Creating Primary Key on 'FOTOS'
+
+Tabela alterada.
+
+Creating Primary Key on 'DESPACHOS'
+
+Tabela alterada.
+
+Creating Foreign Keys on 'OBRAS_USUARIOS'
+  (OBUS_OBR_SEQUENCIAL) REFERENCES TAB_CARENCIA
+   *
+ERRO na linha 3:
+ORA-02267: column type incompatible with referenced column type
+
+
+Creating Foreign Keys on 'CAD_CRONOGRAMAS'
+  (CRO_OBR_SEQUENCIAL) REFERENCES TAB_CARENCIA
+   *
+ERRO na linha 3:
+ORA-02267: column type incompatible with referenced column type
+
+
+Creating Foreign Keys on 'CAD_FATURAMENTOS'
+  (FAT_OBR_SEQUENCIAL
+   *
+ERRO na linha 3:
+ORA-02267: column type incompatible with referenced column type
+
+
+Creating Foreign Keys on 'FOTOS'
+  (FOTO_OBR_SEQUENCIAL) REFERENCES TAB_CARENCIA
+   *
+ERRO na linha 3:
+ORA-02267: column type incompatible with referenced column type
+
+
+Creating Foreign Keys on 'DESPACHOS'
+  (DES_OBR_SEQUENCIAL) REFERENCES TAB_CARENCIA
+   *
+ERRO na linha 3:
+ORA-02267: column type incompatible with referenced column type
+
+
+Creating View 'VW_CRO_ATRASADO'
+SP2-0734: início de comando desconhecido "from cad_c..." - restante da linha ignorado.
+SP2-0734: início de comando desconhecido "WHERE  P.C..." - restante da linha ignorado.
+SP2-0734: início de comando desconhecido "and p.CRO_..." - restante da linha ignorado.
+SP2-0734: início de comando desconhecido "and P.CRO_..." - restante da linha ignorado.
+SP2-0044: P/lista comandos conhec., entre HELP
+. P/sair, entre EXIT.
+SP2-0734: início de comando desconhecido "and P.CRO_..." - restante da linha ignorado.
+SP2-0734: início de comando desconhecido "AND P.CRO_..." - restante da linha ignorado.
+SP2-0734: início de comando desconhecido "AND P.CRO_..." - restante da linha ignorado.
+R.CRO_MESANO_FIM ,R.CRO_ATIVIDADE,R.CRO_TIPO ,'FA' AS TIPO_ATRASO
+                                                                *
+ERRO na linha 31:
+ORA-00923: FROM keyword not found where expected

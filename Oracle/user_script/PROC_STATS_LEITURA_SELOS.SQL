@@ -1,0 +1,5 @@
+CREATE OR REPLACE PROCEDURE STATS_LEITURA_SELOS IS
+BEGIN
+	DBMS_STATS.GATHER_TABLE_STATS (ownname => 'IFRSELO', tabname => 'LEITURA_SELOS', estimate_percent => 25 , cascade => TRUE);
+END;
+/

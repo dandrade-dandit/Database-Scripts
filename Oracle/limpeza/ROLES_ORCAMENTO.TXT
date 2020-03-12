@@ -1,0 +1,35 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+ORC_AUDITOR                                               1
+ORC_DFOT2                                                 2
+ORC_EMP_DFOT1                                             1
+ORC_EMP_DFOT2                                             3
+ORC_GER_GERAL                                             4
+ORC_GER_ORC                                             195
+ORC_GER_ORC_SEDE                                          5
+ORC_GER_USR                                             799
+ORC_SUP                                                   1
+ORC_USR                                                   1
+R_SICOF                                                   1
+
+11 linhas selecionadas.
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+ORC_AUDITOR                    NO
+ORC_DFOT2                      NO
+ORC_EMP_DFOT1                  NO
+ORC_EMP_DFOT12                 NO
+ORC_EMP_DFOT2                  NO
+ORC_GER_GERAL                  NO
+ORC_GER_ORC                    NO
+ORC_GER_ORC_SEDE               NO
+ORC_GER_USR                    NO
+ORC_RESP_DEP                   NO
+ORC_SUP                        NO
+ORC_USR                        NO
+R_SICOF                        NO
+
+13 linhas selecionadas.
