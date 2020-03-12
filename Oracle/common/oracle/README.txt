@@ -1,31 +1,4 @@
 +------------------------------------------------------------------------------+
-|                               README.txt                                     |
-|                            Oracle DBA Scripts                                |
-| ---------------------------------------------------------------------------- |
-|                            Jeffrey M. Hunter                                 |
-|                        jhunter@idevelopment.info                             |
-|                          www.idevelopment.info                               |
-| ---------------------------------------------------------------------------- |
-|     Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.          |
-|                                                                              |
-| All scripts and material located at the Internet address of                  |
-| http://www.idevelopment.info is the copyright of Jeffrey M. Hunter and is    |
-| protected under copyright laws of the United States. These scripts may not   |
-| be hosted on any other site without my express, prior, written permission.   |
-| Application to host any of the material elsewhere can be made by contacting  |
-| me at jhunter@idevelopment.info.                                             |
-|                                                                              |
-| I have made every effort and taken great care in making sure that the        |
-| scripts included on my web site are technically accurate, but I disclaim any |
-| and all responsibility for any loss, damage or destruction of data or any    |
-| other property which may arise from relying on it. I will in no case be      |
-| liable for any monetary damages arising from such loss, damage or            |
-| destruction.                                                                 |
-| ---------------------------------------------------------------------------- |
-| This README.txt file provides notes on how to configure your operating       |
-| system environment to run the Oracle DBA scripts provided from the           |
-| www.idevelopment.info website.                                               |
-+------------------------------------------------------------------------------+
 
 =======================
     INSTALLATION
