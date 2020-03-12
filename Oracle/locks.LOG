@@ -1,6 +1,0 @@
-
-                                             Locks by users (except type MR and RT) by                                              
--                                                                                                                                   
-USER OS   PID SID    USER ORA VLOCK                TYPE                        MODE W                                               
--------- ---- ------ -------- -------------------- --------------------------- ---- -                                               
-oracle      6 980             TEMPORARYSEGMENT     TEMPORARYSEGMENT            RX                                                   

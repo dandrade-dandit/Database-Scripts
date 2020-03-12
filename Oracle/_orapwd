@@ -1,7 +1,0 @@
-orapwd file=filename  password=password entries=max_users
-
- 
-PARA RAC
-orapwd file=orapwd_rac password=xpto entries=10
-
-dd if=orapwd_rac of=/dev/raw/raw23
