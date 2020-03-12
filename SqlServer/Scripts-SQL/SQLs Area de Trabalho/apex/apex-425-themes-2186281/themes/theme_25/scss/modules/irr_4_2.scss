@@ -1,0 +1,614 @@
+/******************************************************************************
+
+File Name:    irr_4_2.scss
+Purpose:      interactive styles
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+/* ====================== */
+/* = Interactive Report = */
+/* ====================== */
+.apexir_COLUMN_SELECTOR,
+#apexir_SEARCH_COLUMN_DROP,
+.apexir_SEARCH {
+	height: 32px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	@include box-shadow(0 1px 0 rgba(255,255,255,.75));
+	background: none #FFF;
+}
+
+
+.apexir_COLUMN_SELECTOR {
+/*	background-color: #FFF;
+	margin: 6px 0 6px 6px;
+	height: 22px;
+*/	
+	margin-left: 8px;
+	border: 1px solid #999;
+	border-bottom: 1px solid #777;
+	border-right: none;
+	padding: 0;
+	@include border-radius(2px 0 0 2px);
+}
+#apexir_SEARCHDROPROOT.apexir_SEARCHICON {
+	margin: 8px 4px 8px 8px;
+}
+.apexir_SEARCHICON span {
+	position: absolute;
+	left: -9999px;
+	visibility: hidden;
+	display: block;
+}
+.apexir_SEARCH {
+	padding: 0;
+	border: 1px solid #999;
+	border-bottom: 1px solid #777;
+	border-left: none;
+	@include border-radius(0 2px 2px 0);
+}
+/* input field*/
+input#apexir_SEARCH {
+	padding: 8px 4px;
+	border: none;
+	height: 16px;
+	font: normal 16px/16px $fontFamily;
+	display: block;
+	float: left;
+	background-color: #FFF;
+	color: #404040;
+	@include box-shadow(none);
+}
+/*button.apexir-go-button {
+  border: none;
+  @include background-gradient(#F0F0F0,#D0D0D0);
+  @include box-shadow(0 1px 0 rgba(255,255,255,1) inset);
+  margin: 0;
+  display: block;
+  float: left;
+  height: 32px;
+  border-left: 1px solid #AAAAAA;
+  padding: 0 12px;
+  &:hover {
+    @include background-gradient(#E0E0E0,#C0C0C0);
+    @include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+  }
+  &:active {
+    @include box-shadow(0 2px 4px rgba(0, 0, 0, 0.15) inset);
+    background: none #C0C0C0;
+  }
+}
+button.apexir-go-button span {
+  font: bold 13px/32px $fontFamily;
+  background: none transparent;
+  height: auto;
+  padding: 0;
+  color: #404040;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.75);
+
+}*/
+#apexir_SEARCH_COLUMN_DROP {
+	padding: 0;
+	color: #909090;
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #777;
+	font: normal 13px/32px $fontFamily;
+}
+
+.apexir_SAVED_REPORTS,
+.apexir_ROW_SELECT_LIST {
+	padding: 0;
+	margin: 8px 8px 8px 0;
+/*	height: 24px;*/
+	label {
+		font: bold 12px/34px $fontFamily;
+		display: inline-block;
+		color: #404040;
+		text-shadow: 0 1px 0 rgba(255,255,255,.65);
+		margin: 0 4px 0 8px;
+	}
+}
+
+td.apex_finderbar_left {
+	#apexir_rowcount.fielddata {
+		font: normal 11px/24px $fontFamily;
+		color: #333;
+	}
+	table.formlayout td {
+		font: normal 11px/24px $fontFamily;
+		label.fielddata {
+			font: normal 11px/24px $fontFamily !important;
+		}
+	}	
+}
+
+#apexir_SEARCH_BAR_OPTIONS {
+	padding: 0;
+	margin: 8px 0;
+	height: 34px;
+	.irr-pill:first-child {
+		@include border-radius(2px 0 0 2px);
+		border-left: 1px solid #999;
+	}
+	.irr-pill:last-child {
+		@include border-radius(0 2px 2px 0);
+	}
+	.irr-pill-icons-left-active,
+	.irr-pill-icons-left,
+	.irr-pill-group,
+	.irr-pill-group-active,
+	.irr-pill-chart,
+	.irr-pill-chart-active,
+	.irr-pill-report,
+	.irr-pill-report-active,
+	.irr-pill-report-left,
+	.irr-pill-report-left-active {
+		margin: 0;
+	}
+	
+	.irr-pill-icons-report-active,
+	.irr-pill-icons-report {
+		margin: 0;
+	}
+}
+
+#apexir_TOOLBAR_OPEN {
+	background: none;
+	height: auto;
+	float: none;
+	display: block;
+	border: 1px solid #AAA;
+	@include background-image(linear-gradient(top, #fafafa 0%,#f0f0f0 50%,#eaeaea 100%));
+	@include border-radius(3px);
+	@include box-shadow(0 1px 1px rgba(0,0,0,.15), 0 1px 0 rgba(255,255,255,.75) inset);
+}
+
+#apexir_TOOLBAR_CLOSE {
+	background: none;
+	padding: 0;
+	float: none;
+	height: 50px; 
+}
+#apexir_WORKSHEET_REGION {
+	padding: 0;
+	float: none;
+	display: block;
+}
+#apexir_TOOLBAR {
+	padding: 0;
+	float: none;
+	position: relative;
+}
+
+.apexir_BUTTONS {
+	margin: 8px;
+	padding: 0;
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	table {
+		width: auto !important;
+	}
+}
+.apexir_RIGHT_BUTTONS {
+	float: right;
+}
+
+/* Interactive Report that has no Action Bar above it */
+div.wsInteractiveReportOnly {
+	#apexir_TOOLBAR_OPEN {
+		border-top: 1px solid #AAAAAA;
+		@include border-radius(2px);
+	}
+	#apexir_TOOLBAR_CLOSE {
+		border-top: none;
+	}
+}
+
+#apexir_CONTROL_PANEL_COMPLETE {
+	a {
+		color: #333;
+	}
+}
+
+/* Single Row Filter View */
+td.apex_finderbar_left_top,
+td.apex_finderbar_left_top img,
+td.apex_finderbar_left_bottom,
+td.apex_finderbar_left_bottom img  {
+	background: none !important;
+}
+td.apex_finderbar_middle {
+	border-left: 1px solid #CCC;
+}
+
+/* ============================ */
+/* = Interactive Report Table = */
+/* ============================ */
+#apexir_WORKSHEET {
+/* 	padding: 10px 0; */
+}
+#apexir_DATA_PANEL {
+	margin: 0;
+}
+.ie7, .ie8, .ie9 {
+	#apexir_DATA_PANEL > table,
+	#apexir_GROUP_BY > table {
+		.apexir_WORKSHEET_DATA th {
+			background-image: none;
+		}
+	}
+}
+#apexir_DATA_PANEL > table,
+#apexir_GROUP_BY > table {
+	border-spacing: 0 0;
+/*	width: 100%;*/
+	.apexir_WORKSHEET_DATA {
+/*		width: 100%;*/
+		border-top: 1px solid #ddd;
+		border-left: 1px solid #ddd;
+		th {
+			border-top: none;
+			@include background-gradient(#F8F8F8,#E8E8E8);
+			border-bottom: 1px solid #CCC;
+			border-right: 1px solid #CCC;
+			text-align:  left;
+			color: #404040;
+			padding: 0;
+			div {
+				@include box-shadow(0 1px 0 rgba(255,255,255,.75) inset);
+				margin: 0;
+				padding: 8px;
+				color: #404040;
+				font: bold 13px/16px $fontFamily;
+				text-decoration: none;
+				letter-spacing: normal;
+				&:hover {
+					text-decoration: underline;
+				}
+				img {
+					vertical-align: bottom;
+				}
+			}
+			&.current {
+				div {
+					@include box-shadow(0 2px 6px rgba(0,0,0,.15) inset);
+				}
+				@include background-gradient(#E0E0E0,#F8F8F8);
+				border-left: 1px solid #CCC;
+				border-right: 1px solid #CCC;
+			}
+		}
+		.apexir_REPEAT_HEADING {
+		  padding: 8px;
+		}
+		td {
+			border-bottom: 1px solid #DDD;
+			border-right: 1px solid #DDD;
+			border-top: none;
+			background: none #FFF;
+			padding: 8px 8px 8px 8px;
+			font: normal 12px/16px $fontFamily;
+			color: #404040;
+			@include transition(background-color, .2s);
+			a {
+				color: #3467A9;
+				text-decoration: none;
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+			p {
+				margin: 0;
+			}
+		}
+		&.apexir_WORKSHEET_ICONS {
+			border-top: none;
+			border-left: none;
+			td {
+				border: none; 
+				a {
+					text-decoration: none;
+					font: normal 12px/16px $fontFamily;
+				}
+			}
+		}
+		tr.odd:hover td,
+		tr.even:hover td {
+			background-color: #F0F0F0 !important;
+		}
+	}
+	td.pagination {
+		padding: 5px 0;
+		span.fielddata {
+			font: normal 11px/16px $fontFamily;
+			color: #666;
+		}
+		img {
+			vertical-align: bottom;
+		}
+	} 
+}
+
+/* ==================== */
+/* = APEX IR Rollover = */
+/* ==================== */
+/* Roll Over IR */
+#apexir_rollover {
+	margin-top: -4px;
+	border: 1px solid #AAAAAA;
+	@include border-radius(0 3px 3px 3px);
+	padding: 0;
+	background: none #FFF !important;
+	@include box-shadow(0 1px 2px rgba(0,0,0,.15));
+	}
+	#apexir_rollover table {
+		@include border-radius(0 3px 0 0);
+		background-color: #F0F0F0;
+		border-bottom: 2px solid #DDD;
+		}
+		#apexir_rollover table td {
+			padding: 0 5px;
+			text-align: center;
+			}
+				#apexir_rollover table td input{
+					width: 90% !important;
+					margin: 0 5px 5px 5px !important;
+					padding: 4px;
+					font: normal 14px/14px $fontFamily;
+					@include border-radius(2px);
+					border: 1px solid #888;
+					}
+		#apexir_rollover table span {
+			background-color: transparent;
+			padding: 2px;
+			height: 20px;
+			}
+			#apexir_rollover table span:hover {
+				border: 1px solid #AAAAAA;
+				background-color: #CCC;
+				@include border-radius(2px);
+				}
+	#apexir_rollover #apexir_rollover_content {
+		padding: 3px 0;
+	}
+#apexir_rollover #apexir_rollover_content a {
+		background: #FFF;
+		font: normal 11px/20px $fontFamily;
+		padding: 0 5px !important;
+		width: auto !important;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		}
+		#apexir_rollover #apexir_rollover_content a:hover {
+			background-color: #F0F0F0;
+			}
+
+/* Filter / Sort Dialogs */
+div#apexir_CONTROL_PANEL_DROP {
+	float: none;
+	background: none #F8F8F8;
+	border: 1px solid #AAA;
+	border-top: none;
+	border-radius: 0 0 3px 3px;
+	@include box-shadow(0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.75) inset);
+	padding: 12px;
+	margin: 0 3px 0 3px;
+	font: normal 12px/16px $fontFamily;
+	color: #404040;
+	td.fielddatabold {
+		img {
+			display: none;
+		}
+		color: #404040;
+		text-shadow: 0 1px 0 rgba(255,255,255,.75);
+		font: bold 14px/20px Arial,sans-serif;
+		padding: 0 0 12px 0 !important;
+	}
+}
+
+div#apexir_CHART,
+div#apexir_GROUP_BY,
+div#apexir_CALENDAR,
+div#apexir_DATA_PANEL,
+table#apexir_CONTROL_PANEL {
+	margin-top: 12px;
+}
+
+/* ==================== */
+/* = Actions Sub Menu = */
+/* ==================== */
+.dhtmlSubMenu {
+	margin: 2px 0 0 0;
+	font: normal 12px/20px $fontFamily;
+	@include border-radius(3px);
+	background: none #FFF;
+	padding: 3px 0;
+	@include box-shadow(0 1px 1px rgba(0,0,0,.15));
+	border: 1px solid #AAAAAA;
+	li.dhtmlMenuSep {
+		img {
+			display: none;
+		}
+		border-bottom: 1px solid #DDD;
+		padding-bottom: 5px;
+		margin-bottom: 5px;
+		line-height: 1px;
+		font-size: 1px;
+		background: #FFF;
+	}
+	li {
+		&.dhtmlSubMenuSelected a {
+			background-color: #F0F0F0;
+			font-weight: bold !important;
+			color: #333;
+		}
+		a {
+			color: #333 !important;
+			padding: 0;
+			margin: 0;
+			border: none;
+			background: #FFF;
+			span {
+				color: #333;
+			}
+			&.dhtmlSubMenuN,
+			&.dhtmlSubMenuS {
+				font: normal 12px/16px $fontFamily;
+				padding: 4px;
+				margin: 0;
+				border-top: 1px solid white !important;
+				border-bottom: 1px solid white !important;
+				border-left: none;
+				&:hover {
+					border-left: none;
+				};
+			}
+			&:hover {
+				border-top: 1px solid #4973B4 !important;
+				border-bottom: 1px solid #4973B4 !important;
+				border-right: none !important; 
+				background-color: #4F84C8 !important;
+				color: #FFF !important;
+				span {
+					color: #FFF !important;
+				}
+			}
+			img {
+				display: none;
+				&.htmldbMIMG {
+					display: block;
+					margin: 4px 2px 0 0;
+				}
+			}
+		}
+	}
+}
+
+/* ========================== */
+/* = Column Search Selector = */
+/* ========================== */
+#apexir_columnsearch {
+	@include border-radius(3px);
+	backround: none #FFF;
+	padding: 3px 0;
+	@include box-shadow(0 1px 1px rgba(0,0,0,.15));
+	border: 1px solid #AAAAAA;
+	& > a {
+		display: block;
+		width: auto !important;
+		padding: 4px !important;
+		border-top: 1px solid white;
+		border-bottom: 1px solid white;
+		font: normal 12px/16px $fontFamily;
+		color: #404040;
+		&:hover {
+			border-top: 1px solid #4973B4;
+			border-bottom: 1px solid #4973B4;
+			background-color: #4F84C8;
+			color: #FFF !important;
+		}
+	}
+}
+
+// ==========================
+// = IRR for Mobile Devices =
+// ==========================
+@media only screen and (max-width: 767px) {
+	#apexir_WORKSHEET {overflow: auto;}
+	#apexir_TOOLBAR_CLOSE {
+		height: auto;
+		@include clearfix;
+	}
+	#apexir_TOOLBAR_OPEN {
+		border-bottom: none;
+		@include border-radius(3px 3px 0 0);
+	}
+	.apexir_BUTTONS {
+		margin: 0;
+		position: static;
+		float: none;
+		border: 1px solid #AAA;
+		border-top: none;
+		padding: 0 8px 8px 8px;
+		background-color: #EAEAEA;
+		@include box-shadow(0 1px 1px rgba(0,0,0,.15));
+		@include border-radius(0 0 3px 3px);
+		table {
+			width: 100% !important;
+		}
+		button {
+			margin: 8px 0 0 0 !important;
+			display: block;
+			width: 100%;
+		}
+	}
+	.apexir_SAVED_REPORTS,
+	#apexir_SEARCH_BAR_OPTIONS {
+		clear: both;
+		&:empty {
+			display: none;
+		}
+	}
+	#apexir_SEARCH_BAR_OPTIONS {
+		padding: 8px 8px 0 8px;
+		margin: 0;
+		display: table;
+		float: none;
+		@include box-sizing(border-box);
+		width: 100%;
+		a.irr-pill {
+			display: table-cell;
+			float: none;
+			width: auto;
+			span {
+				margin: 4px auto;
+			}
+		}
+	}
+	.apexir_COLUMN_SELECTOR, 
+	#apexir_SEARCH_COLUMN_DROP, 
+	.apexir_SEARCH,
+	.apexir_SAVED_REPORTS {
+		margin-bottom: 0;
+	}
+	.apexir_ACTION_MENU {
+		float: none;
+		padding: 8px 8px 0 8px;
+		margin: 0;
+		clear: both;
+		div.dhtmlMenuLGButton {
+			float: none;
+		}
+		button#apexir_ACTIONSMENUROOT {
+			float: none;
+			width: 100%;
+		}
+	}
+	div#apexir_CONTROL_PANEL_DROP {
+		overflow: auto;
+		padding: 8px;
+	}
+}
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	input#apexir_SEARCH {
+		width: 360px;
+	}
+}
+@media screen and (min-width: 320px) and (max-width: 479px) {
+	input#apexir_SEARCH {
+		width: 200px;
+	}
+}

@@ -1,0 +1,53 @@
+/*@import "compass/css3";
+@import "settings/gradient";
+@import "settings/vars";*/
+
+@mixin clearfix {
+    zoom:1;
+    &:before, &:after {
+        content: "\0020"; 
+        display: block; 
+        height: 0; 
+        overflow: hidden; 
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+header#uHeader hgroup,
+header#uHeader nav,
+header#uHeader nav ul,
+div#uBreadcrumbs,
+div#uOneCol,
+footer#uFooter,
+div#uTwoColumns,
+ {
+	width: 974px;
+	margin: 0 auto !important;
+}
+
+header#uHeader {
+	hgroup {
+		height: auto;
+		padding-bottom: 8px;
+		a#uLogo {
+			margin: 10px 0;
+		}
+		div.uAPEXNavBar {
+			top: 0;
+		}
+	}
+	nav {
+		height: 33px;
+		@include clearfix;
+	}
+	nav ul {
+		margin: 0;
+		@include clearfix;
+		position: static !important;
+		li {
+			display: block;
+		}
+	}
+}

@@ -1,0 +1,117 @@
+INICIO                                                                          
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+TAMANHO DOS SEGMENTOS WOSTATUS ANTES DO SHRINK                                  
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WOSTATUS                                                                        
+IFRMAXIMO                            11398                                      
+                                                                                
+
+Elapsed: 00:00:00.53
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WOSTATUS_NDX3                                                                   
+IFRMAXIMO                             4253                                      
+                                                                                
+WOSTATUS_NDX1                                                                   
+IFRMAXIMO                             6636                                      
+                                                                                
+WOSTATUS_NDX2                                                                   
+IFRMAXIMO                             4352                                      
+                                                                                
+
+Elapsed: 00:00:00.54
+alter table wostatus enable row movement;                                       
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+Table altered.
+
+Elapsed: 00:00:00.10
+alter table wostatus shrink space;                                              
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+Table altered.
+
+Elapsed: 08:59:27.38
+alter index WOSTATUS_NDX1 rebuild online;                                       
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.02
+
+Index altered.
+
+Elapsed: 00:08:03.89
+alter index WOSTATUS_NDX2 rebuild online;                                       
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:05:03.77
+alter index WOSTATUS_NDX3 rebuild online;                                       
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:04:53.41
+TAMANHO DOS SEGMENTOS WOSTATUS DEPOIS DO SHRINK                                 
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WOSTATUS                                                                        
+IFRMAXIMO                        5731.4375                                      
+                                                                                
+
+Elapsed: 00:00:00.58
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WOSTATUS_NDX3                                                                   
+IFRMAXIMO                             1664                                      
+                                                                                
+WOSTATUS_NDX1                                                                   
+IFRMAXIMO                             2481                                      
+                                                                                
+WOSTATUS_NDX2                                                                   
+IFRMAXIMO                             1920                                      
+                                                                                
+
+Elapsed: 00:00:00.58
+FIM                                                                             
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00

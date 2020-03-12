@@ -1,0 +1,97 @@
+Use of the /PAE switch in the Boot.ini and the AWE enable option in SQL Server allows 
+SQL Server 2000 to utilize more than 4 GB memory. 
+Without the /PAE switch SQL Server can only utilize up to 3 GB of memory.
+sp_configure 'show advanced options', 1
+RECONFIGURE
+GO
+sp_configure 'awe enabled', 1
+RECONFIGURE
+GO
+sp_configure 'max server memory', 6144
+RECONFIGURE
+GO
+
+While running the query, if the CPU graph is consistently high (for example, greater than
+ 70 percent), 
+and the "% Disk Time" value is consistently low, this indicates a CPU-bound state. 
+While running the query, if the CPU graph is consistently low (for example, less than 50 
+percent), 
+and the "% Disk Time" is consistently high, this indicates an I/O bound state. 
+Compare the CPU graph with the STATISTICS IO information. 
+
+Conclusion
+Lightweight pooling is only even potentially useful if all of the following conditions 
+are met. You must determine if it is actually useful through careful controlled testing.
+Large multi-processor servers are in use.
+All servers are running at or near maximum capacity.
+A lot of context switching occurs (greater than 20,000 per second).
+To look for context switching, use Performance Monitor, select the counter threads, 
+select the object Context switches/sec", and then select to capture all SQL 
+Server instances.
+
+If the CPU usage, SQL Compilations/sec, and Free Buffers counters are high, 
+and the Memory Grants Pending and Stolen Page Count counters are low, 
+this indicates that the CPU is the bottleneck. 
+If the Free Buffers and SQL Compilations/sec counters are low, 
+and the Stolen Page Count and Memory Grants Pending counters are high, 
+SQL Server is memory-constrained. 
+
+Focus on finding queries where hash joins are used and can be changed to loop joins.
+
+You would check the Avg. Disk Sec/Transfer, 
+Avg. Disk Sec/Read < 30% , and Avg. Disk Sec/Write 
+counters of the PhysicalDisk object because they monitor disk latency 
+(the amount of time the disk requires to perform a read or write), 
+and increased latency is a sign that you are overdriving your disk drives or disk array. 
+The general rule is that a normal reading for these counters is between 1 and 15 milliseconds 
+(between 0.001 and 0.015 seconds), but you should not be concerned if latencies are as 
+long as 20 milliseconds (0.020 seconds) at times of peak usage. 
+If you are seeing values higher than 20 milliseconds, your system is definitely 
+experiencing an I/O subsystem performance problem.
+You would also look at Disk Writes/Sec and Disk Reads/Sec. 
+Let's say these counters show that a disk performs 20 writes and 20 reads per second, 
+for a total of 40 I/O operations, and the disk's capacity is 85 I/O operations per second. 
+If, at the same time, the disk's latency is long, the disk drive might be faulty. 
+Now let's say that the disk is performing 100 I/O operations per second and 
+that the latencies are around 20 milliseconds or more. 
+
+In this case, you need to add drives to improve performance.
+
+problema de kernel:
+page-file: < 90%
+memory:pool paged memory (bytes) > 130MB
+memory:pool nonpaged memory > 100MB
+memory:system PTE < 6000
+
+Processador
+processor% processor time ~= 45%
+processor%priviledge time
+system:processor queue length <9
+
+buffer:
+sql buffer manager: page requestes/sec, page reads/sec, readahead pages/sec, lazy writes/sec,
+free pages, workfiles created/sec, worktables created/sec
+disco:
+avg disk read queue lenght < 2
+fragmentação:
+(dbcc showcontig with fast, all_indexes  + mais rápido mas sem page density)
+(para indexid <> 0)
+pages scanned >nº, melhor menos fragmentação
+scan density ~= 100% (exceto quando span multiple files)
+extent scan fragmentation < melhor
+logical scan fragmentation < 10%
+avg.page density (full) para update <, para read >
+
+
+1. You can use bcp utility.
+Read about bcp utility in SQL Server Books online. This is the example to export data from the authors table in the pubs database into authors.txt file on the drive C:
+
+EXEC master..xp_cmdshell
+'bcp "select * from pubs..authors" queryout c:\authors.txt -c -Usa -P'
+2. You can use osql or isql utility.
+This is the example to export data from the authors table in the pubs database into authors.txt file on the drive C:
+
+EXEC master..xp_cmdshell
+'osql -S ServerName -U sa -P -q "select * from pubs..authors" -o c:\authors.txt'
+
+

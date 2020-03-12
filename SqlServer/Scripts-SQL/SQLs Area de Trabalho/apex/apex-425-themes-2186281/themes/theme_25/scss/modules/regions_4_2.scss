@@ -1,0 +1,567 @@
+/******************************************************************************
+
+File Name:    regions_4_2.scss
+Purpose:      region templates and styles
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Region Styles
+******************************************************************************/
+section.uRegion {
+	@include box-sizing(border-box);
+	clear: both;
+	@include border-radius(3px);
+	@include box-shadow(0 1px 1px rgba(0,0,0,.1));
+	border: 1px solid #AAA;
+	background-color: #FFF;
+	color: #333;
+	margin: 0 0 8px 0;
+	/* Adding Overflow: Hidden */
+	overflow: hidden;
+	p {
+		margin: 0 0 8px 0;
+	}
+	& > div.uRegionHeading {
+		display: table;
+		width: 100%;
+		border-spacing: 0;
+		border-collapse: collapse;
+		background-color: #f0f0f0;
+    	@include background-image(linear-gradient(top, #fafafa 0%,#f0f0f0 50%,#eaeaea 100%));
+		@include border-radius(3px 3px 0 0);
+		border-bottom: 1px solid #AAA;
+		@include box-shadow(0 1px 0 rgba(255,255,255,.75) inset);
+		h1 {
+			display: table-cell;
+			vertical-align: middle;
+			font: bold 12px/36px $fontFamily;
+			text-shadow: 0 1px 0 rgba(255,255,255,.75);
+			padding: 0 0 0 8px;
+			color: #333;
+			a.uRegionControl {
+				display: block;
+				float: left;
+				img {
+					width: 16px;
+					height: 16px;
+					display: block;
+					margin: 7px 6px 7px 0;
+					border: none;
+				}
+			}
+		}
+		span.uButtonContainer {
+			display: table-cell;
+			text-align: right;
+			font-size: 0;
+			button {
+				margin: 8px 8px 8px 0;
+			}
+		}
+	}
+	& > div.uRegionContent {
+		@include border-radius(0 0 3px 3px);
+		padding: 8px;
+		overflow: hidden;
+		span.nodatafound {
+			display: block;
+			color: #767676;
+			font: normal 11px/16px $fontFamily;
+			padding: 8px;
+		}
+	}
+}
+
+section.uAlertRegion {
+	margin-left: auto;
+	margin-right: auto;
+	color: #404040;
+	background-color: #EAEAEA;
+	ul {
+		margin: 8px 16px;
+		li {
+			font: normal 12px/20px $fontFamily;
+			color: #333;
+		}
+	}
+	& > div.uRegionHeading {
+	  border-bottom: none;
+	}
+	& > div.uRegionContent > table {
+		td {
+/*			vertical-align: middle;*/
+			padding: 0 8px 4px 0;
+		}
+		table.lov {
+			td {
+				padding: 0 0 8px 0;
+			}
+		}
+		
+	}
+	span.uButtonContainer {
+		display: block;
+		text-align: right;
+		padding: 8px 16px 16px 16px;
+	}
+	&.uRegion > div.uRegionHeading > h1 {
+		font: normal 20px/20px $fontFamily;
+		padding: 16px 16px 8px 16px;
+	}
+	&.uRegion > div.uRegionContent {
+		padding: 8px 16px;
+	}
+}
+
+/* Error Region */
+section.uErrorRegion {
+	width: 600px;
+	margin: 30px auto;
+	@include background-gradient(#F9F9F9,#EAEAEA);
+	img#error_technical_info_expand_icon {
+		margin-right: 4px;
+	}
+	ul#error_technical_info {
+		margin: 0 0 0 24px;
+	}
+	p.errorIcon {
+	  text-align: center;
+	  border-bottom: 1px solid #E0E0E0;
+	  padding: 12px;
+	}
+	div.uRegionContent {
+	  padding: 12px !important;
+	}
+	span.uButtonContainer {
+	  text-align: center !important;
+	  button.uButtonLarge {
+	    margin: 12px !important;
+	  }
+	}
+}
+// Style error for mobile
+@media only screen and (max-width: 767px) {
+  section.uErrorRegion {
+    width: auto;
+    margin: 0 0 8px 0;
+  }
+}
+
+section.uRegionNoPadding {
+	& > div.uRegionContent {
+		padding: 0;
+		table.uReportContainer,
+		table.uReport {
+			border-right: none;
+			border-left: none;
+			width: 100%;
+		}
+		table.uReport.uReportFixedHeaders {
+			width: auto;
+		}
+		tbody.uReportPagination > tr > td {
+			padding: 0 8px;
+			table td {
+				padding: 4px 0;
+			}
+		}
+		div.uReportDownloadLinks {
+			padding: 4px 8px;
+		}
+	}
+}
+
+section.paddedRegion {
+  & > div.uRegionContent {
+    padding: 8px !important;
+  }
+}
+
+section.scrollOverflow {
+	& > div.uRegionContent {
+		overflow: auto !important;
+	}
+}
+
+section.uHideShowRegion {
+	& > div.uRegionHeading {
+		h1 {
+			line-height: 30px !important;
+		}
+	}
+}
+
+section.uBorderlessRegion {
+	background: none transparent;
+	border: none;
+	@include box-shadow(none);
+	& > div.uRegionHeading {
+		background: none transparent;
+		border-bottom: none;
+		@include box-shadow(none);
+		h1 {
+			font: bold 12px/14px $fontFamily;
+			padding: 8px 0;
+		}
+		span.uButtonContainer {
+			.uButton,
+			.uButtonLarge {
+				margin: 8px 0;
+			}
+		}
+	}
+	& > div.uRegionContent {
+		padding: 0;
+	}
+}
+
+
+/* ===== */
+/* =Addii = */
+/* ===== */
+
+/* Region with No Heading */
+section.uNoHeading {
+	div.uRegionHeading {
+		background: none transparent;
+		border-bottom: none;
+    @include box-shadow(none);
+	}
+	div.uRegionContent {
+		padding: 8px;
+	}
+}
+
+/* Button Region with Title */
+section.uButtonRegion {
+	@include background-gradient(#F0F0F0, #DDD);
+	border: 1px solid #AAA;
+	@include border-radius(3px);
+	@include box-shadow(0 1px 0 rgba(255,255,255,.75) inset, 0 1px 1px rgba(0,0,0,.1));
+	margin: 0 0 8px 0;
+	div.uButtonRegionContentContainer {
+		display: table;
+		width: 100%;
+		border-spacing: 0;
+		border-collapse: collapse;
+		h1 {
+			display: table-cell;
+			vertical-align: middle;
+			font: bold 12px/30px $fontFamily;
+			text-shadow: 0 1px 0 rgba(255,255,255,.75);
+			padding: 0 0 0 8px;
+			color: #333;
+		}
+		div.uButtonRegionContent {
+			display: table-cell;
+			vertical-align: middle;
+			font: normal 12px/30px $fontFamily;
+			text-shadow: 0 1px 0 rgba(255,255,255,.75);
+			padding: 0 0 0 8px;
+			color: #333;
+			table {
+				border-collapse: collapse;
+				border-spacing: 0;
+			}
+		}
+		span.uButtonContainer {
+			display: table-cell;
+			text-align: right;
+			.uButton,
+			.uButtonLarge {
+				margin: 8px 8px 8px 0;
+			}
+		}
+	}
+}
+
+/* IE7 Styles for uButtonRegion */
+.ie7 section.uButtonRegion {
+	div.uButtonRegionContentContainer h1,
+	div.uButtonRegionContentContainer div.uButtonRegionContent {
+		float: left;
+		border-bottom: none;
+		line-height: 38px;
+	}
+	span.uButtonContainer {
+		float: right;
+	}
+}
+
+
+/* ===================================== */
+/* = target regions place in side bars = */
+/* ===================================== */
+aside {
+	section.uRegion {
+		div.uRegionHeading h1 {
+			font: bold 11px/24px $fontFamily;
+		}
+		div.uRegionContent {
+			ul.uVerticalSidebarList {
+/*				margin: -9px -8px !important;*/
+				li {
+					a {
+						padding: 4px 8px;
+						font-size: 13px;
+					}
+				}
+			}
+		}
+	}
+	section.uWhiteRegion,
+	section.uBorderlessRegion,
+	section.uBracketedRegion {
+		div.uRegionHeading {
+			background: none transparent;
+			h1 {
+				border-bottom: none;
+				font: bold 11px/12px $fontFamily;
+				padding-top: 6px;
+			}
+		}
+	}	
+}
+
+.ie7 aside {
+	section.uRegion {
+		div.uRegionHeading h1 {
+			line-height: 24px;
+		}
+	}
+	section.uWhiteRegion,
+	section.uBorderlessRegion,
+	section.uBracketedRegion {
+		div.uRegionHeading h1 {
+			line-height: 12px;
+			padding-top: 6px;
+		}
+	}
+}
+
+
+
+/* ================ */
+/* = IE9 specific = */
+/* ================ */
+.ie9 {
+	section.uRegion,
+	section.uButtonRegion {
+		border-radius: 3.2px;
+	}
+}
+
+/* ===== */
+/* = INSET BUTTONS = */
+/* ===== */
+/* Inset Buttons */
+section.uRegion span.uButtonContainer,
+section.uButtonRegion {
+	.uButton,
+	.uButtonLarge {
+		@include box-shadow(0 1px 0 rgba(255,255,255,.95));
+	}
+}
+
+/* Buttons in White Region have a Shadow */
+/* section.uWhiteRegion span.uButtonContainer {
+	.uButton,
+	.uButtonLarge {
+		@include box-shadow(0 1px 0 rgba(0,0,0,.10));
+	}
+} */
+
+
+/* ============= */
+/* = Help Page = */
+/* ============= */
+div.textRegion {
+	h1 {
+		font: bold 24px/36px Arial, sans-serif;
+		color: #404040;
+		margin: 0 0 8px 0;
+	}
+	h2 {
+		font: bold 20px/32px Arial, sans-serif;
+		color: #404040;
+		margin: 0 0 8px 0;
+	}
+	h3 {
+		font: bold 16px/24px Arial, sans-serif;
+		color: #404040;
+		margin: 0 0 8px 0;
+	}
+	h4 {
+		font: bold 12px/16px Arial, sans-serif;
+		color: #404040;
+		margin: 0 0 8px 0;
+	}
+	p {
+		font: normal 12px/16px Arial, sans-serif;
+		color: #404040;
+		margin: 0 0 8px 0;
+	}
+	ul {
+		list-style: outside disc;
+		margin: 0 0 8px 24px;
+		li {
+			font: normal 12px/16px Arial, sans-serif;
+			color: #404040;
+		}
+	}
+}
+
+div.helpContainer {
+	width: 960px;
+	margin: 16px auto;
+	@include clearfix;
+	div.helpSide {
+		float: left;
+		width: 300px;
+		h1.appNameHeader {
+			min-height: 48px;
+			position: relative;
+			font: bold 22px/36px Arial, sans-serif;
+			color: #404040;
+			padding: 16px 0 0 72px;
+			margin: 8px;
+			img {
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		}
+	}
+	div.helpMain {
+		float: right;
+		border-left: 1px solid #EEE;
+		width: 632px;
+		padding-left: 16px;
+		h2 {
+			font: bold 20px/32px Arial, sans-serif;
+			color: #404040;
+			margin: 0 0 8px 0;
+		}
+		h3 {
+			font: bold 16px/24px Arial, sans-serif;
+			color: #404040;
+			margin: 0 0 8px 0;
+		}
+		h4 {
+			font: bold 12px/16px Arial, sans-serif;
+			color: #404040;
+			margin: 0 0 8px 0;
+		}
+		p {
+			font: normal 12px/16px Arial, sans-serif;
+			color: #404040;
+			margin: 0 0 8px 0;
+		}
+		ul {
+			list-style: outside disc;
+			margin: 0 0 0 24px;
+			li {
+				font: normal 12px/20px Arial, sans-serif;
+				color: #404040;
+			}
+		}
+		.aboutApp,
+		.textRegion {
+			border-bottom: 1px solid #EEE;
+			padding-bottom: 16px;
+			margin-bottom: 16px;
+		}
+	}
+}
+
+/* Helper Classes */
+.uRegion {
+	&.m160, &.im160 > .uRegionContent {min-height: 160px;}
+	&.m170, &.im170 > .uRegionContent {min-height: 170px;}
+	&.m180, &.im180 > .uRegionContent {min-height: 180px;}
+	&.m190, &.im190 > .uRegionContent {min-height: 190px;}
+	&.m200, &.im200 > .uRegionContent {min-height: 200px;}
+	&.m210, &.im210 > .uRegionContent {min-height: 210px;}
+	&.m220, &.im220 > .uRegionContent {min-height: 220px;}
+	&.m230, &.im230 > .uRegionContent {min-height: 230px;}
+	&.m240, &.im240 > .uRegionContent {min-height: 240px;}
+	&.m250, &.im250 > .uRegionContent {min-height: 250px;}
+	&.m260, &.im260 > .uRegionContent {min-height: 260px;}
+	&.m270, &.im270 > .uRegionContent {min-height: 270px;}
+	&.m280, &.im280 > .uRegionContent {min-height: 280px;}
+	&.m290, &.im290 > .uRegionContent {min-height: 290px;}
+	&.m300, &.im300 > .uRegionContent {min-height: 300px;}
+	&.m310, &.im310 > .uRegionContent {min-height: 310px;}
+	&.m320, &.im320 > .uRegionContent {min-height: 320px;}
+	&.m330, &.im330 > .uRegionContent {min-height: 330px;}
+	&.m330, &.im330 > .uRegionContent {min-height: 330px;}
+	&.m340, &.im340 > .uRegionContent {min-height: 340px;}
+	&.m350, &.im350 > .uRegionContent {min-height: 350px;}
+	&.m360, &.im360 > .uRegionContent {min-height: 360px;}
+	&.m370, &.im370 > .uRegionContent {min-height: 370px;}
+	&.m380, &.im380 > .uRegionContent {min-height: 380px;}
+	&.m390, &.im390 > .uRegionContent {min-height: 390px;}
+	&.m400, &.im400 > .uRegionContent {min-height: 400px;}
+	&.m410, &.im410 > .uRegionContent {min-height: 410px;}
+	&.m420, &.im420 > .uRegionContent {min-height: 420px;}
+	&.m430, &.im430 > .uRegionContent {min-height: 430px;}
+	&.m440, &.im440 > .uRegionContent {min-height: 440px;}
+	&.m450, &.im450 > .uRegionContent {min-height: 450px;}
+	&.m460, &.im460 > .uRegionContent {min-height: 460px;}
+	&.m470, &.im470 > .uRegionContent {min-height: 470px;}
+	&.m480, &.im480 > .uRegionContent {min-height: 480px;}
+	&.m490, &.im490 > .uRegionContent {min-height: 490px;}
+	&.m500, &.im500 > .uRegionContent {min-height: 500px;}
+
+	&.f160, &.ih160 > .uRegionContent  {height: 160px;}
+	&.f170, &.ih170 > .uRegionContent  {height: 170px;}
+	&.f180, &.ih180 > .uRegionContent  {height: 180px;}
+	&.f190, &.ih190 > .uRegionContent  {height: 190px;}
+	&.f200, &.ih200 > .uRegionContent  {height: 200px;}
+	&.f210, &.ih210 > .uRegionContent  {height: 210px;}
+	&.f220, &.ih220 > .uRegionContent  {height: 220px;}
+	&.f230, &.ih230 > .uRegionContent  {height: 230px;}
+	&.f240, &.ih240 > .uRegionContent  {height: 240px;}
+	&.f250, &.ih250 > .uRegionContent  {height: 250px;}
+	&.f260, &.ih260 > .uRegionContent  {height: 260px;}
+	&.f270, &.ih270 > .uRegionContent  {height: 270px;}
+	&.f280, &.ih280 > .uRegionContent  {height: 280px;}
+	&.f290, &.ih290 > .uRegionContent  {height: 290px;}
+	&.f300, &.ih300 > .uRegionContent  {height: 300px;}
+	&.f310, &.ih310 > .uRegionContent  {height: 310px;}
+	&.f320, &.ih320 > .uRegionContent  {height: 320px;}
+	&.f330, &.ih330 > .uRegionContent  {height: 330px;}
+	&.f330, &.ih330 > .uRegionContent  {height: 330px;}
+	&.f340, &.ih340 > .uRegionContent  {height: 340px;}
+	&.f350, &.ih350 > .uRegionContent  {height: 350px;}
+	&.f360, &.ih360 > .uRegionContent  {height: 360px;}
+	&.f370, &.ih370 > .uRegionContent  {height: 370px;}
+	&.f380, &.ih380 > .uRegionContent  {height: 380px;}
+	&.f390, &.ih390 > .uRegionContent  {height: 390px;}
+	&.f400, &.ih400 > .uRegionContent  {height: 400px;}
+	&.f410, &.ih410 > .uRegionContent  {height: 410px;}
+	&.f420, &.ih420 > .uRegionContent  {height: 420px;}
+	&.f430, &.ih430 > .uRegionContent  {height: 430px;}
+	&.f440, &.ih440 > .uRegionContent  {height: 440px;}
+	&.f450, &.ih450 > .uRegionContent  {height: 450px;}
+	&.f460, &.ih460 > .uRegionContent  {height: 460px;}
+	&.f470, &.ih470 > .uRegionContent  {height: 470px;}
+	&.f480, &.ih480 > .uRegionContent  {height: 480px;}
+	&.f490, &.ih490 > .uRegionContent  {height: 490px;}
+	&.f500, &.ih500 > .uRegionContent  {height: 500px;}
+}
+
+// Make Regions have overflow when on mobile devices
+@media only screen and (max-width: 767px) {
+	section.uRegion,
+	section.uIRRegion {overflow: auto;}
+}

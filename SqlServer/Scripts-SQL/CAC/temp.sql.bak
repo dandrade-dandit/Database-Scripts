@@ -1,0 +1,50 @@
+CREATE OR REPLACE FORCE VIEW "IFRCACCOM"."VIW_TIPS_CHAMADOS" ("Numero Chamado", "Tipo Chamado", "Subtipo Chamado", "Atividade", "Sistema", "Prioridade", "Situacao Chamado", "Solicitacao", "Matricula Solicitante", "Nome Solicitante", "Data de Abertura", "Inicio Efetivo", "Data Encerramento") AS 
+  select  distinct c.seq_chamado "Numero Chamado",
+        t.dsc_tipo_chamado "Tipo Chamado",
+        s.dsc_subtipo_chamado "Subtipo Chamado",
+        a.dsc_atividade_chamado "Atividade",
+        i.nom_item_configuracao "Sistema",
+        p.dsc_prioridade_chamado "Prioridade",
+        sc.dsc_situacao_chamado "Situacao Chamado",
+        c.txt_chamado "Solicitacao",
+        c.num_matricula_solicitante "Matricula Solicitante",
+        v.nome "Nome Solicitante",
+        c.dth_abertura "Data de Abertura",
+        c.dth_inicio_efetivo "Inicio Efetivo",
+        c.dth_encerramento_efetivo "Data Encerramento"
+from    chamado c,
+        atividade_chamado a,
+        tipo_chamado t,
+        subtipo_chamado s,
+        item_configuracao i,
+        prioridade_chamado p,
+        situacao_chamado sc,
+        viw_age_empregados v,
+        (select distinct seq_chamado,
+                seq_equipe_ti, dth_atribuicao
+         from   atribuicao_chamado        
+         ) x
+where   c.seq_atividade_chamado = a.seq_atividade_chamado
+and     c.seq_chamado = x.seq_chamado
+and     c.num_matricula_solicitante = substr(v.mat_geral,2,9)
+and     c.seq_situacao_chamado = sc.seq_situacao_chamado
+and     c.seq_prioridade_chamado = p.seq_prioridade_chamado
+and     i.seq_item_configuracao(+) = c.seq_item_configuracao
+and     t.seq_tipo_chamado = s.seq_tipo_chamado
+and     s.seq_subtipo_chamado = a.seq_subtipo_chamado
+and     x.seq_equipe_ti in (284,  --    TIPS-2 - Administração de Banco de Dados
+                            883,  --    TIPS-2 - Arquitetura Infraestrutura
+                            241,  --    TIPS-2 - Operação e Monitoramento
+                            1120, --    TIPS-2 - Suporte a Atendimento
+                            222,   --    TIPS-2 - Suporte a Infraestrutura
+                            1241 --   TIPS-2 - Suporte à Logística
+                            )
+and(
+    c.dth_abertura >= to_date('03/12/2012 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+    or c.dth_encerramento_efetivo  >= to_date('03/12/2012 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+    --Este campo ficou de fora pq se não é garantido que é de uma das equipes acima.
+    --c.dth_inicio_efetivo
+    or x.dth_atribuicao >= to_date('03/12/2012 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+)
+order by 1
+/

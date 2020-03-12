@@ -1,0 +1,14 @@
+bcp SICOM..DEBITO_GERAL_CONSOLIDADO_I85120_ATE_COMP_052005 out d:\debito_geral_consol_i85120.txt -t ; -r \n -c -q -Ss-sebn97 -UD_SEDE\prsi_denis -T
+
+bcp INTEGRACAO..INTEGRACAO_SIV_SARA out d:\siso\integracao_siv_sara.txt.pl -t ; -r \n -c -q -Ss_svsn01 -Usa -Psatiglsiso
+
+bcp bdo..VIW_RPE_DESEMBARQUE out d:\siso\bioger_rpe_desemb.txt.pl -t ; -r \n -c -q -Ss_plsn03 -Usa -Psatiglsiso
+
+bcp "SELECT * FROM bdo..VIW_RPE_EMBARQUE WHERE YEAR(dh_par_nrm) = 2005 AND MONTH(dh_par_nrm) = 5 AND DAY(dh_par_nrm) BETWEEN 15 AND 20 ORDER BY dh_par_nrm ASC" queryout d:\VIW_RPE_EMBARQUE.txt -t ; -r \n -c -q -Ss-rfsn02 -Usa -Psatiglsiso
+
+bcp aims..VIW_RPE_EMBARQUE out d:\siso\bioger_rpe_emb.txt.il -t ; -r \n -c -q -SS_ILSn02 -Usa -Parpoador
+
+bcp aims..VIW_RPE_DESEMBARQUE out d:\siso\bioger_rpe_desemb.txt.il -t ; -r \n -c -q -SS_ILSn02 -Usa -Parpoador
+
+
+

@@ -1,0 +1,257 @@
+@import "compass/css3";
+@import "settings/gradient";
+@import "settings/vars";
+
+$white75: rgba(255,255,255,.75);
+$black75: rgba(0,0,0,.75);
+$black75hex: #404040;
+
+$white50: rgba(255,255,255,.50);
+$black50: rgba(0,0,0,.50);
+$black50hex: #7f7f7f;
+
+$white25: rgba(255,255,255,.25);
+$black25: rgba(0,0,0,.25);
+$black25hex: #bfbfbf;
+
+
+/* =========== */
+/* = Buttons = */
+/* =========== */
+
+@mixin uButton($border-radius: 3px, $side-padding: 8px) {
+	$inner-radius: $border-radius - 1px;
+/*	$border-radius: $border-radius+"px";*/
+	display: inline-block;
+	text-decoration: none;
+	border: 1px solid #999;
+	border-bottom: 1px solid #777;
+	@include box-shadow(0 1px 1px rgba(0,0,0,.10));
+	background: none #888;
+	@include border-radius($border-radius);
+	span {
+		@include transition(all .25s);
+		text-align: center;
+		@include border-radius($inner-radius);
+		display: block;
+		color: #404040;
+		text-shadow: 0 1px 0 $white75;
+		padding: 0 $side-padding;
+		@include background-gradient-ie(#F0F0F0,#D0D0D0);
+		@include box-shadow(0 1px 0 rgba(255,255,255,1) inset);
+	}
+	&:hover span {
+		@include background-gradient-ie(#E0E0E0,#C0C0C0);
+		@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+	}
+	&:active span {
+		@include box-shadow(0 2px 4px rgba(0, 0, 0, 0.15) inset);
+		background: none #C0C0C0;
+	}
+	&.uHotButton {
+		border: 1px solid #2d61a6;
+		border-bottom: 1px solid #1C3D7B;
+		background: #2d61a6;
+		span {
+			background-color: #4277bd;
+			@include background-gradient-ie(#6096D9,#285B9C);
+			color: #FFF;
+			text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+			@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+		}
+		&:hover span {
+			@include box-shadow(0 1px 0 rgba(255,255,255,.35) inset);
+			@include background-gradient-ie(#5687C4,#24528C);
+		}
+		&:active span {
+			@include box-shadow(0 2px 4px rgba(0, 0, 0, 0.15) inset);
+			background: none #356098;
+		}
+	}
+	&.uButtonAlt,
+	&[data-style='uButtonAlt'] {
+		border: 1px solid #cca42e;
+		border-bottom: 1px solid #cc7f12;
+		background: #cca42e;
+		span {
+			background-color: #ffd566;
+			@include background-gradient-ie(#ffed97,#ffd566);
+			color: #404040;
+			text-shadow: 0 1px 0 rgba(255,255,255,.75);
+			@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+		}
+		&:hover span {
+			@include box-shadow(0 1px 0 rgba(255,255,255,.35) inset);
+			@include background-gradient-ie(#FFF2B7,#FEE190);
+		}
+		&:active span {
+			@include box-shadow(0 2px 4px rgba(0, 0, 0, 0.15) inset);
+			background: none #FECA5E;
+		}
+	}
+}
+
+a.uButton,
+a.uButtonLarge,
+a.uButtonSmall,
+a.uButtonIR {
+	text-align: center;
+	span {
+		white-space: nowrap;
+	}
+}
+
+a.uButton {
+	font: bold 12px/22px $fontFamily;
+	@include uButton(3px);
+}
+
+a.uButtonSmall {
+	font: bold 11px/18px $fontFamily;
+	@include uButton(2px);
+}
+
+a.uButtonLarge {
+	display: inline-block;
+	font: bold 14px/38px $fontFamily;
+	@include uButton(3px, 16px);
+}
+
+a.uButtonIR {
+	display: inline-block;
+	font: bold 11px/22px $fontFamily;
+	@include uButton(2px);
+}
+
+a.uButton,
+a.uButtonLarge,
+a.uButtonSmall,
+a.uButtonIR {
+	&.prevButton img.prevIcon {
+		margin-right: 0;
+	}
+	img.uButtonIcon {
+		width: 10px;
+		height: 18px;
+		background-image: url(../images/app_theme.png);
+		background-repeat: no-repeat;
+		background-color: transparent;
+		vertical-align: text-top;
+	}
+	img.nextIcon {
+		margin-left: 6px;
+		background-position: -126px -1312px;
+	}
+	img.prevIcon {
+		margin-right: 6px;
+		background-position: -96px -1312px;
+	}
+	&.uHotButton {
+		img.nextIcon {
+			background-position: -116px -1312px;
+		}
+		img.prevIcon {
+			background-position: -106px -1312px;
+		}
+	}
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	a.uButton,
+	a.uButtonLarge,
+	a.uButtonSmall,
+	a.uButtonIR {
+		img.uButtonIcon {
+			background-image: $retina_image;
+			background-size: $retina_size;
+		}
+	}
+}
+
+a.uButtonLarge {
+	&.nextIcon {
+		img {
+			width: 10px;
+			height: 18px;
+		}
+	}
+}
+
+a.simpleButton {
+	display: inline-block;
+	padding: 0 8px;
+	font: normal 11px/20px Arial,sans-serif;
+	color: #404040;
+	background-color: #F0F0F0;
+	border: 1px solid #BBB;
+	text-align: center;
+	@include border-radius(8px);
+	text-decoration: none;
+	@include transition(background-color, border, .1s);
+	&:hover {
+		background-color: #FFF;
+		border: 1px solid #AAA;
+	}
+	&.hot {
+		background-color: #5786C0;
+		color: #FFF;
+		border-color: #00316F;
+		&:hover {
+			background-color: #6A9AD5;
+		}
+	}
+}
+
+button.apexir-button {
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	border: 1px solid #999;
+	border-bottom: 1px solid #777;
+	@include box-shadow(0 1px 1px rgba(0,0,0,.10));
+	background: none #888;
+	@include border-radius(3px);
+	span {
+		text-align: center;
+		@include border-radius(2px);
+		display: block;
+		color: #404040;
+		text-shadow: 0 1px 0 $white75;
+		padding: 0 16px;
+		@include background-gradient-ie(#F0F0F0,#D0D0D0);
+		@include box-shadow(0 1px 0 rgba(255,255,255,1) inset);
+		font: bold 14px/38px $fontFamily;
+	}
+	&:hover span {
+		@include background-gradient-ie(#E0E0E0,#C0C0C0);
+		@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+	}
+	&:active span {
+		@include box-shadow(0 2px 4px rgba(0, 0, 0, 0.15) inset);
+		background: none #C0C0C0;
+	}
+
+}
+
+button#apexir_btn_APPLY.apexir-button {
+	border: 1px solid #2d61a6;
+	border-bottom: 1px solid #1C3D7B;
+	background: #2d61a6;
+	&:hover {
+		background: #2d61a6;
+	}
+	span {
+		@include background-gradient-ie(#73a4e5,#3868a6);
+		color: #FFF;
+		text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+		@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+	}
+	&:hover span {
+		@include box-shadow(0 1px 0 rgba(255,255,255,.35) inset);
+		@include background-gradient-ie(#6591cc,#356098);
+	}
+	&:active span {
+		@include box-shadow(0 2px 4px rgba(0, 0, 0, 0.15) inset);
+		background: none #356098;
+	}
+}

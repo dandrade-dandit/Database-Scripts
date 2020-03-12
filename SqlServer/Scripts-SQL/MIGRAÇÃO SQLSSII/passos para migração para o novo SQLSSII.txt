@@ -1,0 +1,16 @@
+Pre requisito:
+
+Instalar o cliente oracle nas 2 máquinas do novo cluster SQLSSII.
+
+Passos para migração:
+
+ 1) Desatachar os databases do antigo SQLSSII (script criado e ok);
+ 2) Desmontar os volumes no antigo SQLSSII (com a TIST-1);
+ 3) Parar o serviço do SQLSSII (com a TIST-1);
+ 4) Alterar o nome do cluster do servidor novo para SQLSSII (com a TIST-1);
+ 5) Montar os volumes no novo SQLSSII mantendo as mesmas letras para os discos (com a TIST-1);
+ 6) Atachar os databases no novo SQLSSII (script criado e ok);
+ 7) Criar os logins no novo SQLSSII (script criado e ok);
+ 8) Criar as tabelas e procedures na master (conceder privilégio de select e execute para public) & (script criado e ok);
+ 9) Criar os linkedservers(script criado e ok);
+10) Criar os jobs(script criado e ok).

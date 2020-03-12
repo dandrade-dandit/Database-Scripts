@@ -1,0 +1,144 @@
+/******************************************************************************
+
+File Name:    breadcrumbs_4_2.scss
+Purpose:      breadcrumb styles
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+div.uBreadcrumbsContainer {
+ 	padding: 0 0 12px 0;
+}
+div.uBreadcrumbs {
+	float: left;
+/* 	@include box-shadow(0 1px 1px rgba(0,0,0,.10)); */
+	color: #202020;
+	@include clearfix;
+	ul {
+		list-style: none;
+		margin: 0;
+		li {
+			@include background-gradient(#FAFAFA,#EEEEEE); 
+			@include box-shadow(0 1px 0 rgba(255,255,255,.75) inset, 0 1px 0 rgba(0,0,0,.05));
+			border-top: 1px solid #AAAAAA;
+			border-bottom: 1px solid #AAAAAA;
+			border-right: none;
+			padding: 0;
+			display: block;
+			float: left;
+			line-height: 28px;
+			font-size: 12px;
+			&:first-child {
+				border-radius: 3px 0 0 3px;
+				border-left: 1px solid #AAAAAA;
+			}
+			&.uEndCap {
+				@include box-shadow(none);
+				border: none;
+				background: none transparent;
+				span {
+					display: block;
+					width: 14px;
+					height: 30px;
+					vertical-align: text-top;
+				}
+			}
+			&.uStartCap {
+				span {
+					display: block;
+					width: 4px;
+					height: 28px;
+				}
+			}
+			a {
+				padding: 0 8px;
+				display: block;
+				color: #303030;
+				text-decoration: none;
+				position: relative;
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+			&.active span {
+				padding: 0 8px;
+				display: block;
+				color: #303030;
+				font-weight: bold
+			}
+			&.uSeparator {
+				span {
+					display: block;
+					width: 14px;
+					height: 28px;
+					vertical-align: text-top;
+				}
+			}
+		}
+	}
+}
+/* IE 7 Breadcrumbs Fix */
+.ie7 div#uBreadcrumbs {
+	ul li {
+		zoom: 1;
+		display: inline;
+		padding: 8px 4px;
+	}
+	ul li.uSeparator {
+		padding: 8px 0;
+	}
+	ul li:first-child {
+		padding-left: 0;
+	}
+}
+
+/******************************************************************************
+Mobile
+******************************************************************************/
+@media only screen and (min-width: 768px) {
+  div.uBreadcrumbs li.uStartCap span {
+    background: none transparent;
+  }
+}
+@media only screen and (max-width: 767px) {
+	div.uBreadcrumbs {
+		ul {
+			li {
+				display: none;
+				&:nth-last-child(4) {
+					display: block;
+					border-right: 1px solid #AAA;
+					border-radius: 0 3px 3px 0;
+					a {
+						padding-right: 12px;
+						font-weight: bold;
+					}
+				}
+				&.uEndCap {
+					display: none;
+				}
+				&.uStartCap {
+					display: block;
+					@include box-shadow(none);
+					border: none;
+					background: none transparent;
+					span {
+						display: block;
+						width: 12px;
+						height: 30px;
+					}
+				}
+			}
+		}
+	}
+}

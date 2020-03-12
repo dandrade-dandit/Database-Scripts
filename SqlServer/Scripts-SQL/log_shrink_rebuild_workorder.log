@@ -1,0 +1,430 @@
+INICIO                                                                          
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+TAMANHO DOS SEGMENTOS WORKORDER ANTES DO SHRINK                                 
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER                                                                       
+IFRMAXIMO                            15113                                      
+                                                                                
+
+Elapsed: 00:00:00.15
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX10                                                                 
+IFRMAXIMO                             1344                                      
+                                                                                
+WORKORDER_NDX4                                                                  
+IFRMAXIMO                              896                                      
+                                                                                
+WORKORDER_NDX8                                                                  
+IFRMAXIMO                              960                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX9                                                                  
+IFRMAXIMO                             1344                                      
+                                                                                
+WORKORDER_NDX11                                                                 
+IFRMAXIMO                              955                                      
+                                                                                
+WORKORDER_NDX19                                                                 
+IFRMAXIMO                             1088                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX6                                                                  
+IFRMAXIMO                             1522                                      
+                                                                                
+WORKORDER_NDX3                                                                  
+IFRMAXIMO                             1152                                      
+                                                                                
+WORKORDER_NDX7                                                                  
+IFRMAXIMO                             1517                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX12                                                                 
+IFRMAXIMO                             1536                                      
+                                                                                
+WORKORDER_NDX14                                                                 
+IFRMAXIMO                             1216                                      
+                                                                                
+WORKORDER_NDX15                                                                 
+IFRMAXIMO                             1344                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX17                                                                 
+IFRMAXIMO                                6                                      
+                                                                                
+WORKORDER_NDX18                                                                 
+IFRMAXIMO                             1216                                      
+                                                                                
+WORKORDER_NDX1                                                                  
+IFRMAXIMO                             1728                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX2                                                                  
+IFRMAXIMO                             1216                                      
+                                                                                
+WORKORDER_NDX5                                                                  
+IFRMAXIMO                              888                                      
+                                                                                
+WORKORDER_NDX16                                                                 
+IFRMAXIMO                              832                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX13                                                                 
+IFRMAXIMO                             1152                                      
+                                                                                
+
+19 rows selected.
+
+Elapsed: 00:00:00.17
+alter table workorder enable row movement;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+Table altered.
+
+Elapsed: 00:00:00.09
+alter table workorder shrink space;                                             
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+Table altered.
+
+Elapsed: 31:39:03.54
+alter index WORKORDER_NDX1 rebuild online;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.05
+
+Index altered.
+
+Elapsed: 00:05:29.78
+alter index WORKORDER_NDX12 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:48.15
+alter index WORKORDER_NDX2 rebuild online;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:02:25.52
+alter index WORKORDER_NDX3 rebuild online;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:33.73
+alter index WORKORDER_NDX4 rebuild online;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+Index altered.
+
+Elapsed: 00:01:31.02
+alter index WORKORDER_NDX5 rebuild online;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:21.15
+alter index WORKORDER_NDX6 rebuild online;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:42.84
+alter index WORKORDER_NDX7 rebuild online;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:02:13.24
+alter index WORKORDER_NDX8 rebuild online;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:25.45
+alter index WORKORDER_NDX9 rebuild online;                                      
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+Index altered.
+
+Elapsed: 00:01:49.89
+alter index WORKORDER_NDX10 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:37.65
+alter index WORKORDER_NDX11 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.03
+
+Index altered.
+
+Elapsed: 00:01:42.60
+alter index WORKORDER_NDX13 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:37.64
+alter index WORKORDER_NDX14 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:46.90
+alter index WORKORDER_NDX15 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:57.14
+alter index WORKORDER_NDX16 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:01:20.45
+alter index WORKORDER_NDX17 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+Index altered.
+
+Elapsed: 00:00:31.69
+alter index WORKORDER_NDX18 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:05:36.64
+alter index WORKORDER_NDX19 rebuild online;                                     
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+Index altered.
+
+Elapsed: 00:05:25.78
+CREATE MATERIALIZED VIEW IFRMAXIMO.VIW_RELATORIOS                               
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+Materialized view created.
+
+Elapsed: 00:01:20.43
+TAMANHO DOS SEGMENTOS WORKORDER DEPOIS DO SHRINK                                
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER                                                                       
+IFRMAXIMO                        7267.9375                                      
+                                                                                
+
+Elapsed: 00:00:00.56
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX10                                                                 
+IFRMAXIMO                              400                                      
+                                                                                
+WORKORDER_NDX4                                                                  
+IFRMAXIMO                              296                                      
+                                                                                
+WORKORDER_NDX8                                                                  
+IFRMAXIMO                              304                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX9                                                                  
+IFRMAXIMO                              472                                      
+                                                                                
+WORKORDER_NDX11                                                                 
+IFRMAXIMO                              352                                      
+                                                                                
+WORKORDER_NDX19                                                                 
+IFRMAXIMO                              384                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX6                                                                  
+IFRMAXIMO                              384                                      
+                                                                                
+WORKORDER_NDX3                                                                  
+IFRMAXIMO                              312                                      
+                                                                                
+WORKORDER_NDX7                                                                  
+IFRMAXIMO                              536                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX12                                                                 
+IFRMAXIMO                              328                                      
+                                                                                
+WORKORDER_NDX14                                                                 
+IFRMAXIMO                              408                                      
+                                                                                
+WORKORDER_NDX15                                                                 
+IFRMAXIMO                              440                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX17                                                                 
+IFRMAXIMO                                4                                      
+                                                                                
+WORKORDER_NDX18                                                                 
+IFRMAXIMO                              392                                      
+                                                                                
+WORKORDER_NDX1                                                                  
+IFRMAXIMO                              398                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX2                                                                  
+IFRMAXIMO                              376                                      
+                                                                                
+WORKORDER_NDX5                                                                  
+IFRMAXIMO                              296                                      
+                                                                                
+WORKORDER_NDX16                                                                 
+IFRMAXIMO                              304                                      
+                                                                                
+
+SEGMENT_NAME                                                                    
+--------------------------------------------------------------------------------
+OWNER                          TOTAL EM MB                                      
+------------------------------ -----------                                      
+WORKORDER_NDX13                                                                 
+IFRMAXIMO                              336                                      
+                                                                                
+
+19 rows selected.
+
+Elapsed: 00:00:00.53
+FIM                                                                             
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00

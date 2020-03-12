@@ -1,0 +1,9 @@
+rotina para backup     (substituir o drive e o servidor)
+
+x:\mssql7\postie -from:HHHHHH@infraero.gov.br -to:denis_andrade@infraero.gov.br,ronei@infraero.gov.br -s:Backup_BDO_full_OK -nomsg -host:10.0.17.47
+
+
+
+rotina para restauração
+
+x:\mssql7\postie -from:HHHHHH@infraero.gov.br -to:denis_andrade@infraero.gov.br,ronei@infraero.gov.br -s:Restaura_BDO_full_OK -nomsg -host:10.0.17.47

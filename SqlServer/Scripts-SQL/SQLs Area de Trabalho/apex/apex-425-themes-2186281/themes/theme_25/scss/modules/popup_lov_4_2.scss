@@ -1,0 +1,67 @@
+/******************************************************************************
+
+File Name:    popup_lov_4_2.scss
+Purpose:      popup list of values page styles
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+
+body.uPopUpLOV {
+	margin: 0;
+	background-color: #FFF;
+	input.searchField {
+	  display: inline-block;
+		padding: 4px;
+		border: none;
+		font: normal 12px/16px $fontFamily;
+		color: #333;
+		border: 1px solid #969696;
+		margin: 0;
+		height: 24px;
+		background: #FFF;
+		@include box-shadow(0 1px 1px rgba(0,0,0,.1) inset);
+		@include border-radius(2px);
+	}
+	div.uActionBar {
+		background-color: #F8F8F8;
+		border-bottom: 1px solid #AAAAAA;
+		position: relative;
+		@include box-shadow(0 1px 2px rgba(0,0,0,.1));
+		margin: 0 0 8px 0;
+		padding: 12px;
+		@include clearfix;
+	}
+	div.lovLinks {
+		a {
+			display: block;
+			font: normal 12px/16px $fontFamily;
+			padding: 4px 12px;
+			border-bottom: 1px solid #E0E0E0;
+			color: #404040;
+			text-decoration: none;
+			&:hover {
+				background-color: #DCE7F5;
+			}
+		}
+		br {
+			display: none;
+		}
+	}
+	div.lovPagination {
+		text-align: center;
+		font: normal 11px/16px $fontFamily;
+		color: #888;
+		padding: 10px 0;
+	}
+}

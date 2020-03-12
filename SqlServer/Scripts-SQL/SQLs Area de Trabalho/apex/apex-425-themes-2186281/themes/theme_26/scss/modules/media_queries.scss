@@ -1,0 +1,302 @@
+@import "compass/css3";
+@import "settings/gradient";
+@import "settings/vars";
+
+/* Large Screen */
+@media only screen and (min-width: 1140px) {
+
+}
+
+/* iPad Screen */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+	/* NAV ACTIONS */
+	div.navActions {
+		position: absolute;
+/*		bottom: -31px;*/
+		right: 0;
+		ul {
+			li {
+				a {
+					span {
+						font-size: 12px;
+					}
+				}
+			}
+		}
+	}
+	/* MAIN TABS */
+	header#uHeader nav {
+		& > ul {
+			@include clearfix;
+			margin: 0 188px 0 8px;
+			li {
+				a {
+					font-size: 12px;
+					padding: 0 12px;
+				}
+			}	
+		}
+	}
+	/* LOGO */
+	header#uHeader hgroup a#uLogo {
+		margin: 8px;
+		font: bold 22px/26px $fontFamily;
+	}
+}
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+	/* USER BLOCK */
+	div.userBlock {
+		margin: 4px 8px;
+	}
+	/* NAV ACTIONS */
+	div.navActions {
+		position: absolute;
+		bottom: -31px;
+		right: 0;
+		ul {
+			li {
+				a {
+					max-width: 30px;
+					min-width: 30px;
+					height: 30px;
+					span {
+						font: normal 12px/30px $fontFamily;
+						padding: 0 6px 0 30px;
+					}
+					&:hover {
+						span {
+							padding: 0 6px 0 26px;
+						}
+					}
+				}
+			}
+		}
+		img.navIcon {
+			margin: 6px;
+		}
+	}
+	/* MAIN TABS */
+	header#uHeader nav {
+		& > ul {
+			@include clearfix;
+			margin: 0 188px 0 8px;
+			height: 30px;
+			li {
+				a {
+					font: bold 12px/30px $fontFamily;
+					padding: 0 12px;
+				}
+			}	
+		}
+	}
+	/* LOGO */
+	header#uHeader hgroup a#uLogo {
+		margin: 6px 8px;
+		text-shadow: 0 1px 2px rgba(0,0,0,.25);
+		font: bold 18px/22px $fontFamily;
+	}
+}
+
+@media only screen and (min-width: 321px) and (max-width: 480px) {
+  section.uRegion {
+    height: auto !important;
+  }
+  div#detailedStatusListToolTip {
+    display: none !important;
+  }
+  div.sCustomSearch {
+    margin: 12px auto;
+  }
+	div.sCustomSearch table.formlayout input.sSearchFieldBig {
+		width: 318px;
+	}
+
+	/* USER BLOCK */
+	div.userBlock {
+		margin: 4px 8px;
+	}
+	/* NAV ACTIONS */
+	div.navActions {
+		position: absolute;
+		bottom: -29px;
+		right: 0;
+		ul {
+			li {
+				a {
+					max-width: 28px;
+					min-width: 28px;
+					height: 28px;
+					@include transition(none);
+					span {
+						display: none;
+						font: normal 11px/28px $fontFamily;
+						padding: 0 6px 0 28px;
+					}
+					&:hover {
+						max-width: 28px;
+/*						span {
+							padding: 0 6px 0 26px;
+						}*/
+					}
+				}
+			}
+		}
+		img.navIcon {
+			margin: 5px;
+		}
+	}
+	/* MAIN TABS */
+	header#uHeader nav {
+		& > ul {
+			@include clearfix;
+			margin: 0 88px 0 0;
+			height: 28px;
+			li {
+				a {
+					font: bold 12px/28px $fontFamily;
+					padding: 0 8px;
+				}
+			}	
+		}
+	}
+	header#uHeader hgroup a#uLogo {
+		margin: 6px 8px;
+		text-shadow: 0 1px 2px rgba(0,0,0,.25);
+		font: bold 18px/22px $fontFamily;
+	}
+	
+}
+@media only screen and (max-width: 320px) {
+  section.uRegion {
+    height: auto !important;
+  }
+  div#detailedStatusListToolTip {
+    display: none !important;
+  }
+  div.sCustomSearch {
+    margin: 12px auto;
+  }
+
+	div.sCustomSearch table.formlayout input.sSearchFieldBig {
+		width: 200px;
+	}
+	/* USER BLOCK */
+	div.userBlock {
+		margin: 4px 8px;
+	}
+	/* NAV ACTIONS */
+	div.navActions {
+		position: absolute;
+		bottom: -27px;
+		right: 0;
+		ul {
+			li {
+				a {
+					max-width: 26px;
+					min-width: 26px;
+					height: 26px;
+					@include transition(none);
+					span {
+						display: none;
+						font: normal 11px/26px $fontFamily;
+						padding: 0 6px 0 26px;
+					}
+					&:hover {
+						max-width: 26px;
+/*						span {
+							padding: 0 6px 0 26px;
+						}*/
+					}
+				}
+			}
+		}
+		img.navIcon {
+			margin: 4px;
+		}
+	}
+	/* MAIN TABS */
+	header#uHeader nav {
+		& > ul {
+			@include clearfix;
+			margin: 0 72px 0 0;
+			height: 26px;
+			li {
+				a {
+					font: bold 11px/26px $fontFamily;
+					padding: 0 6px;
+				}
+			}	
+		}
+	}
+	header#uHeader hgroup a#uLogo {
+		margin: 6px 8px;
+		text-shadow: 0 1px 2px rgba(0,0,0,.25);
+		font: bold 18px/22px $fontFamily;
+	}
+}
+
+
+/* =============== */
+/* = Manage Grid = */
+/* =============== */
+@media only screen and (max-width: 480px) {
+	section.uRegion[data-grid='col_1'],
+	section.uRegion[data-grid='col_2'],
+	section.uRegion[data-grid='col_3'],
+	section.uRegion[data-grid='col_2_3'],
+	section.uRegion[data-grid='col_4'] {
+		float: none;
+		clear: both;
+		margin: 0 0 8px 0;
+		min-height: 80px;
+		width: 100% !important;
+	}
+}
+
+@media only screen and (max-width: 640px) {
+	/* ================ */
+	/* = Login Page = */
+	/* ================ */
+	body#uLogin {
+		background: none #FFF;
+	}
+	div#uLoginContainer {
+		width:auto;
+		height:auto;
+		position:static;
+		left:auto;
+		top:auto;
+		margin:0;
+		div.uLoginBody table.formlayout {
+			margin: 0 auto;
+			width: auto;
+			td {
+				input {
+					display: block;
+					width: 270px;
+				}
+			}
+		}
+		section.uRegion.uLoginRegion {
+			width: auto;
+			margin: 0 auto;
+			min-height: auto;
+			@include box-shadow(none);
+			border: none;
+			@include border-radius(0);
+			div.uLoginHeading {
+				h1 {
+					font: bold 20px/64px $fontFamily;
+				}
+			}
+			div.uLoginBody {
+				span.uButtonContainer {
+					text-align: center;
+					a.uButtonLarge {
+						width: 286px;
+					}
+				}
+			}
+		}
+	}
+}

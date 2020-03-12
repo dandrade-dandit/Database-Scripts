@@ -1,0 +1,55 @@
+@import "compass/css3";
+@import "settings/gradient";
+@import "settings/vars";
+@import "settings/multi-transition";
+
+.tagCloud {
+	ul {
+		li {
+			display: inline-block;
+			a {
+				padding: 0 0 0 8px;
+				color: #404040;
+				text-shadow: 0 1px 0 rgba(255,255,255,.5);
+				border-radius: 3px;
+				border: 1px solid #A6AAAF;
+				border-bottom-color: #7a8799;
+				background: url(../images/app_theme.png) 0 -1380px repeat-x #dae7f8;
+				@include box-shadow(0 1px 0 rgba(255,255,255,.65) inset);
+				text-decoration: none;
+				display: inline-block;
+				margin: 0 4px 8px 0;
+				text-transform: lowercase;
+				white-space: nowrap;
+				font: normal 12px/24px $fontFamily;
+				@include all-transition(.1s);
+				span {
+					color: #404040;
+					background: url(../images/app_theme.png) 0 -1407px no-repeat transparent;
+					display: inline-block;
+					margin-left: 8px;
+					padding: 0;
+					font-weight: bold;
+					padding: 0 8px 0 13px;
+					border-radius: 0 2px 2px 0;
+					@include all-transition(.1s);
+				}
+				&:hover {
+					background-color: #B3CEF7;
+					border: 1px solid #A6AAAF;
+					border-bottom-color: #7a8799;
+				}
+				&.size1, &.size2, &.size3, &.size4, &.size5, &.size6 {
+					font-size: 12px; line-height: 24px
+				}
+			}                           
+		}
+	}
+}
+.ie7 .tagCloud {
+	ul li { display: inline;}
+}
+/* =================== */
+/* = Load Retina CSS = */
+/* =================== */
+@import 'tag_cloud_2x.scss';

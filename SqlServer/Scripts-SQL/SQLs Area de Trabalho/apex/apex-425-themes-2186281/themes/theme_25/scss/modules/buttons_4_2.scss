@@ -1,0 +1,484 @@
+/******************************************************************************
+
+File Name:    buttons_4_2.scss
+Purpose:      apex template based button styles
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Required Mixins
+******************************************************************************/
+
+@mixin border-background-color($color) {
+  border: 1px solid $color;
+  border-bottom-color: darken($color,10%);
+  background-color: $color;
+}
+
+/******************************************************************************
+Button Variables
+
+Variable              Description
+-------------------------------------------------------------------------------
+Border                Border and Background Color
+TextColor             Button Label Text Color
+HoverColor            Glow Color on Mouseover / Hover
+PressedBackground     Background Color when Pressed (Active State)
+PressedShadow         Shadow when Pressed (Active State)
+TextShadow            Text Shadow of Button Label
+Highlight             Button Highlight Shadow (Inset Shadow)
+Gradient              Background Gradient
+
+******************************************************************************/
+
+/* Default Button */
+$defaultBorder:             #AAAAAA;
+$defaultTextColor:          #404040;
+$defaultHoverColor:         #5A99E8;
+$defaultPressedBackground:  #C0C0C0;
+$defaultPressedShadow:      0 2px 4px rgba(0,0,0,.25);
+$defaultTextShadow:         0 1px 0 rgba(255,255,255,.65);
+$defaultHighlight:          rgba(255,255,255,.75);
+$defaultBackground:         linear-gradient(top, #F8F8F8 0%,#EDEDED 50%,#E0E0E0 100%);
+//$defaultBackground:         linear-gradient(bottom, #c6c6c6 0%, #d8d8d8 20%, #eaeaea 60.01%, #f2f2f2 79.91%, #f2f2f2 95%, #fff 100%);
+
+
+/* Hot Button */
+$hotBorder:                 #2d61a6;
+$hotTextColor:              #FFF;
+$hotHoverColor:             #5A99E8;
+$hotPressedBackground:      #2d61a6;
+$hotPressedShadow:          0 2px 4px rgba(0,0,0,.25);
+$hotTextShadow:             0 -1px 0 rgba(0,0,0,.35);
+$hotHighlight:              rgba(255,255,255,.40);
+$hotBackground:             linear-gradient(bottom, #3164a5 0%, #5b97e5 75%, #5499f2 100%);
+//$hotBackground:             linear-gradient(bottom, #264c7f 0%, #3164a5 10.01%, #5b97e5 75%, #5499f2 100%);
+
+/* Alt Button */
+$altBorder:                 #cea61b;
+$altTextColor:              #404040;
+$altHoverColor:             #cea61b;
+$altPressedBackground:      #FCC633;
+$altPressedShadow:          0 2px 4px rgba(0,0,0,.25);
+$altTextShadow:             0 1px 0 rgba(255,255,255,.65);
+$altHighlight:              rgba(255,255,255,.5);
+$altBackground:             linear-gradient(bottom, #ffba00 0%, #fbcc4d 10.01%, #ffd668 53.69%, #fbebbf 100%);
+
+/******************************************************************************
+Button Classes
+******************************************************************************/
+.uButton {
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  text-decoration: none;
+  @include border-background-color($defaultBorder);
+  @include box-shadow(0 1px 1px rgba(0,0,0,.10));
+  @include border-radius(3px);
+  @include transition(box-shadow .25s);
+  cursor: pointer;
+  span {
+    display: block;
+    text-align: center;
+    padding: 0 12px;
+    @include border-radius(2px);
+    color: $defaultTextColor;
+    text-shadow: $defaultTextShadow;
+    background-color: #EDEDED;
+    @include background-image($defaultBackground);
+    @include box-shadow(0 1px 0 $defaultHighlight inset);
+    @include transition(box-shadow .25s);
+    white-space: nowrap;
+  }
+  &:hover {
+    @include box-shadow(0 1px 0 $defaultHighlight inset,
+                        0 0 10px transparentize($defaultHoverColor,0.1) !important);
+  }
+  &:active span {
+    background: none $defaultPressedBackground;
+    @include box-shadow($defaultPressedShadow inset);
+  }
+  
+  /* Hot Button */
+  &.uHotButton {
+    @include border-background-color($hotBorder);
+    span {
+      font-weight: bold;
+      background-color: #5b97e5;
+      @include background-image($hotBackground);
+      @include box-shadow(0 1px 0 $hotHighlight inset);
+      color: $hotTextColor;
+      text-shadow: $hotTextShadow;
+    }
+    &:hover {
+      @include box-shadow(0 1px 0 $hotHighlight inset,
+                          0 0 10px transparentize($hotHoverColor,0.1) !important);
+    }
+    &:active span {
+      background: none $hotPressedBackground;
+      @include box-shadow($hotPressedShadow inset);
+    }
+  }
+  
+  /* Alternative Button */
+  &.uAltButton {
+    @include border-background-color($altBorder);
+    span {
+      background-color: #ffd668;
+      @include background-image($altBackground);
+      @include box-shadow(0 1px 0 $altHighlight inset);
+      color: $altTextColor;
+      text-shadow: $altTextShadow;
+    }
+    &:hover {
+      @include box-shadow(0 1px 0 $altHighlight inset,
+                          0 0 10px transparentize($altHoverColor,0.1) !important);
+    }
+    &:active span {
+      background: none $altPressedBackground;
+      @include box-shadow($altPressedShadow inset);
+    }
+  }
+}
+
+button.uButtonLarge::-moz-focus-inner,
+button.uButton::-moz-focus-inner {border: 0 !important; padding: 0 !important;}
+
+/******************************************************************************
+Standard Button
+******************************************************************************/
+.uButton span {
+	font: normal 12px/22px $fontFamily;
+}
+
+/******************************************************************************
+Large Button
+******************************************************************************/
+.uButtonLarge {
+  @extend .uButton;
+	span {
+	  font: bold 14px/38px $fontFamily;
+	  padding: 0 16px;
+	}
+}
+
+/******************************************************************************
+Help Icon Button
+******************************************************************************/
+.itemHelpButton {
+  background: none transparent;
+  border: none;
+  @include box-shadow(none);
+  &:hover {
+    @include box-shadow(none !important);
+  }
+  span {
+    background: none transparent;
+    @include box-shadow(none);
+    padding: 0 0 0 2px !important;
+  }
+  &:active span {
+    background: none transparent;
+    @include box-shadow(none);
+  }
+}
+
+/******************************************************************************
+Help Icon Button
+******************************************************************************/
+section.uRegion > div.uRegionHeading span.uButtonContainer .insetButton {
+  margin: 0;
+  border-width: 0 0 0 1px;
+  @include border-radius(0);
+  @include box-shadow(none);
+  border-left-color: #AAA;
+  &.uHotButton {
+    border-left-color: $hotBorder;
+  }
+  &.uAltButton {
+    border-left-color: $altBorder;
+  }
+  span {
+    @include border-radius(0);
+  }
+}
+
+/******************************************************************************
+Simple Button
+******************************************************************************/
+a.simpleButton {
+	display: inline-block;
+	padding: 0 8px;
+	font: normal 11px/20px Arial,sans-serif;
+	color: #404040;
+	background-color: #F0F0F0;
+	border: 1px solid #BBB;
+	text-align: center;
+	@include border-radius(8px);
+	text-decoration: none;
+	@include transition(background-color, border, .1s);
+	&:hover {
+		background-color: #FFF;
+		border: 1px solid #AAA;
+	}
+	&.hot {
+		background-color: #5786C0;
+		color: #FFF;
+		border-color: #00316F;
+		&:hover {
+			background-color: #6A9AD5;
+		}
+	}
+}
+
+/******************************************************************************
+Popup LOV Buttons
+******************************************************************************/
+input.lovButton {
+  display: inline-block;
+  text-align: center;
+  padding: 0 12px;
+  @include border-radius(2px);
+  color: $defaultTextColor;
+  text-shadow: $defaultTextShadow;
+  @include background-image($defaultBackground);
+  @include box-shadow(0 1px 0 $defaultHighlight inset);
+  @include transition(box-shadow .25s);
+  white-space: nowrap;
+	font: bold 11px/22px $fontFamily;
+	margin: 0 0 0 8px;
+	border: 1px solid #969696;
+	text-decoration: none;
+	&:active {
+    background: none $defaultPressedBackground;
+    @include box-shadow($defaultPressedShadow inset);
+	}
+	&.hotButton {
+	border: 1px solid #00316f;
+    font-weight: bold;
+    @include border-background-color($hotBorder);
+    @include background-image($hotBackground);
+    @include box-shadow(0 1px 0 $hotHighlight inset);
+    color: $hotTextColor;
+    text-shadow: $hotTextShadow;
+		&:active {
+      background: none $hotPressedBackground;
+      @include box-shadow($hotPressedShadow inset);
+		}
+	}
+}
+
+
+/******************************************************************************
+Responsive Buttons for Mobile
+******************************************************************************/
+@media only screen and (max-width: 767px) {
+  .uAlertRegion span.uButtonContainer {
+    button.uButton,
+    button.uButtonLarge {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+    }
+  }
+}
+
+/******************************************************************************
+Full Width Buttons
+******************************************************************************/
+.uButton,
+.uButtonLarge {
+  &.fullWidth {
+    display: block !important;
+    width: 100%;
+  }
+}
+
+/******************************************************************************
+Interactive Report APEX Buttons
+******************************************************************************/
+.apexir_BUTTONS {
+	.uButton,
+	.uButtonLarge {
+	  border-radius: 2px;
+		@include box-shadow(0 1px 0 rgba(255,255,255,.65));
+	}
+	.uButtonLarge {
+		span {
+			font: bold 13px/32px $fontFamily;
+		}
+		margin: 0 0 0 4px;
+	}
+	.iconButton {
+  	&.uButton {
+  	  i {margin-top: 3px; margin-bottom: 3px;}
+  	}
+  	&.uButtonLarge {
+      i {margin-top: 6px; margin-bottom: 6px;}
+  	}
+	}
+}
+
+.apexir_ACTION_MENU {
+	padding: 0;
+	margin: 8px 0 8px 8px;
+	display: block;
+	float: left;
+	button#apexir_ACTIONSMENUROOT {
+		display: block;
+		float: left;
+		margin: 0;
+		padding: 0 12px;
+		height: 34px;
+		@include border-radius(2px);
+    @include border-background-color($defaultBorder);
+    @include background-image($defaultBackground);
+    @include box-shadow(0 1px 0 $defaultHighlight inset, 0 1px 0 rgba(255,255,255,.75));
+    @include transition(box-shadow .25s);
+		&:hover {
+      @include box-shadow(0 1px 0 $defaultHighlight inset,
+                          0 0 10px transparentize($defaultHoverColor,0.1));
+		}
+		&:active,
+		&.dhtmlMenuOn {
+      background: none $defaultPressedBackground;
+      @include box-shadow($defaultPressedShadow inset, 0 1px 0 rgba(255,255,255,.75));
+		}
+		span {
+			padding: 0 20px 0 0;
+			margin: 0;
+			display: block;
+			height: 32px;
+			font: bold 13px/32px $fontFamily;
+			color: $defaultTextColor;
+			text-shadow: $defaultTextShadow;
+		}
+	}
+}
+#apexir_SEARCH_BAR_OPTIONS {
+	.irr-pill {
+		width: 32px;
+		height: 32px;
+    @include border-background-color($defaultBorder);
+    @include background-image($defaultBackground);
+		border-left: none;
+    @include box-shadow(0 1px 0 $defaultHighlight inset, 0 1px 0 rgba(255,255,255,.75));
+		&:hover {
+      @include box-shadow(0 1px 0 $defaultHighlight inset,
+                          0 0 10px transparentize($defaultHoverColor,0.1));
+		}
+		&:active {
+      background: none $defaultPressedBackground;
+      @include box-shadow($defaultPressedShadow inset, 0 1px 0 rgba(255,255,255,.75));
+		}
+	}
+	.irr-pill-icons-left-active,
+	.irr-pill-report-right-active,
+	.irr-pill-group-active,
+	.irr-pill-chart-active,
+	.irr-pill-report-active,
+	.irr-pill-report-center-active,
+	.irr-pill-details-right-active,
+	.irr-pill-report-left-active {
+	  &:hover {
+      background: none $defaultPressedBackground;
+      @include box-shadow($defaultPressedShadow inset, 0 1px 0 rgba(255,255,255,.75));
+	  }
+    background: none $defaultPressedBackground;
+    @include box-shadow($defaultPressedShadow inset, 0 1px 0 rgba(255,255,255,.75));
+	}
+}
+
+/* ============================== */
+/* = Interactive Report Buttons = */
+/* ============================== */
+button.apexir-button {
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	border: 1px solid #999;
+	border-bottom: 1px solid #777;
+	@include box-shadow(0 1px 1px rgba(0,0,0,.10));
+	background: none #888;
+	@include border-radius(3px);
+	span {
+		text-align: center;
+		@include border-radius(2px);
+		display: block;
+		color: #404040;
+		text-shadow: 0 1px 0 rgba(255,255,255,0.75);
+		padding: 0 16px;
+		@include background-gradient(#F0F0F0,#D0D0D0);
+		@include box-shadow(0 1px 0 rgba(255,255,255,1) inset);
+		font: bold 14px/38px $fontFamily;
+	}
+	&:hover span {
+		@include background-gradient(#E0E0E0,#C0C0C0);
+		@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+	}
+	&:active span {
+		@include box-shadow(0 2px 4px rgba(0, 0, 0, 0.15) inset);
+		background: none #C0C0C0;
+	}
+}
+
+button.apexir-go-button {
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 0 12px;
+	height: 32px;
+	@include border-radius(0 1px 1px 0);
+	border: none;
+	border-left: 1px solid #909090;
+  @include background-image($defaultBackground);
+  @include box-shadow(0 1px 0 $defaultHighlight inset);
+  @include transition(box-shadow .25s);
+	&:hover {
+      @include box-shadow(0 1px 0 $defaultHighlight inset,
+                          0 0 10px transparentize($defaultHoverColor,0.1));
+	}
+	&:active {
+      background: none $defaultPressedBackground;
+      @include box-shadow($defaultPressedShadow inset);
+	}
+}
+button.apexir-go-button span {
+	font: bold 13px/32px $fontFamily;
+	background: none transparent;
+	height: auto;
+	padding: 0;
+	color: #404040;
+	text-shadow: 0 1px 0 rgba(255,255,255,0.75);
+
+}
+
+button#apexir_btn_APPLY.apexir-button {
+	border: 1px solid #2d61a6;
+	border-bottom: 1px solid #1C3D7B;
+	background: #2d61a6;
+	&:hover {
+		background: #2d61a6;
+	}
+	span {
+		@include background-gradient(#73a4e5,#3868a6);
+		color: #FFF;
+		text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+		@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+	}
+	&:hover span {
+		@include box-shadow(0 1px 0 rgba(255,255,255,.35) inset);
+		@include background-gradient(#6591cc,#356098);
+	}
+	&:active span {
+		@include box-shadow(0 2px 4px rgba(0, 0, 0, 0.15) inset);
+		background: none #356098;
+	}
+}

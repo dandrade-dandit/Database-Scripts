@@ -1,0 +1,42 @@
+/* A partir daqui é possível rodar na base on-line */
+
+alter database GEACupax add filegroup selos_data
+
+ALTER DATABASE GEACupax
+ADD FILE 
+( NAME = GEACupax_dt01,
+FILENAME = 'P:\MSSQL7\DATA1\GEACupax_01.ndf',
+SIZE = 11520000,  MAXSIZE = 12800000 , FILEGROWTH = 30%   )                                                                                                                                          
+TO FILEGROUP selos_data
+
+ALTER DATABASE GEACupax
+ADD FILE 
+( NAME = GEACupax_dt02,
+FILENAME = 'Y:\MSSQL7\DATA1\GEACupax_02.ndf',
+SIZE = 11520000,  MAXSIZE = 12800000 , FILEGROWTH = 30%   )                                                                                                                                          
+TO FILEGROUP selos_data
+
+ALTER DATABASE GEACupax
+ADD FILE 
+( NAME = GEACupax_dt03,
+FILENAME = 'S:\MSSQL7\DATA1\GEACupax_03.ndf',
+SIZE = 11520000,  MAXSIZE = 12800000 , FILEGROWTH = 30%   )       -- <-- S,U,T?                                                                                                                                   
+TO FILEGROUP selos_data
+
+/* Neste ponto a base Selos sofrerá leve lock */
+dbcc dbreindex ('rpax_emb_voo_u_history_u', '') 
+dbcc dbreindex ('rpax_desemb_u_history_u', '') 
+dbcc dbreindex ('pax_entrega_selo_l_history_u', '') 
+
+dbcc shrinkdatabase (GEACupax, truncateonly)
+
+/* alteração que só valerá a partir do próximo restart do banco */
+
+alter database tempdb modify file 
+(name = tempdev,
+filename = 'e:\sqlserver\log\tempdb_dev1.ndf',
+size = 2gb, maxsize=10gb, filegrowth = 20%) 
+
+
+/* Aqui, alterar o filegroup de todas as tabelas da base selos para selos_data */
+

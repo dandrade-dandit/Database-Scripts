@@ -1,0 +1,164 @@
+**************************************
+servidor: mssqli.dw.infraero.gov.br
+
+database:repdatastagedsv
+
+usuário:usr_repdatastage_dsv
+
+senha:datastage
+
+**************************************
+senha do usuário root
+Infr@!2010
+
+**************************************
+
+dsadm
+infr@er02011
+
+
+isadmin
+infra2010
+
+vi /opt/IBM/InformationServer/Server/DSEngine/.odbc.ini
+
+[INTEGRACAO_SBGL]
+Driver=/opt/IBM/InformationServer/Server/branded_odbc/lib/VMmsss23.so
+Description=DataDirect SQL Server Wire Protocol driver
+Database=INTEGRACAO
+LogonID=usr_sivnet_carga
+Password=sivnet@usr
+Address=S-RJBN135\PRDSBGL01,1433
+QuotedId=No
+AnsiNPW=No
+
+vi /u01/project/DENIS/uvodbc.config
+
+<SQL_DSV>
+DBMSTYPE = ODBC
+
+<INTEGRACAO_SBGL>
+DBMSTYPE = ODBC
+
+--websphere
+serverStatus.sh -all
+
+stopServer.sh server1 -username isadmin -password 123456 -nowait
+startServer.sh server1
+
+--rede
+service network restart
+
+nestat -atnp
+
+system-config-securitylevel
+
+--datastage
+uv -admin -stop
+uv -admin -start
+uv -admin -info
+netstat -a | grep 9080
+
+
+--add user
+useradd -G dstage -g dstage I1438037
+useradd -G dstage -g dstage I1190738
+useradd -G dstage -g dstage I1235546
+useradd -G dstage -g dstage I1462533
+useradd -G dstage -g dstage I1460539
+useradd -G dstage -g dstage I1438135
+useradd -G dstage -g dstage I1424935
+useradd -G dstage -g dstage -d /u01/home/T830348201 T830348201
+
+useradd -G dstage -g dstage -d /u01/home/T914112544 T914112544
+
+passwd T914112544
+
+chmod -Rf 777 /u01/home/T830348201
+chmod -Rf 777 /u01/home/T914112544
+chmod -Rf 777 /u01/home/I1235546
+chmod -Rf 777 /u01/home/I1424935
+chmod -Rf 777 /u01/home/I1438135
+chmod -Rf 777 /u01/home/I1438037
+chmod -Rf 777 /u01/home/I1190738
+chmod -Rf 777 /u01/home/I1235549
+chmod -Rf 777 /u01/home/I1462533
+chmod -Rf 777 /u01/home/I1460539
+
+--modify user
+usermod -G dstage dasadm1 db2iadm1 db2fadm1 xmeta iauser dsadm
+
+--users
+sabayon:x:86:86:Sabayon user:/home/sabayon:/sbin/nologin
+dasusr1:x:500:102::/home/dasusr1:/bin/bash
+db2inst1:x:501:103::/home/db2inst1:/bin/bash
+db2fenc1:x:502:104::/home/db2fenc1:/bin/bash
+xmeta:x:503:503::/home/xmeta:/bin/bash
+dsadm:x:504:504::/home/dsadm:/bin/bash
+iauser:x:505:505::/home/iauser:/bin/bash
+I1438037:x:506:504::/home/I1438037:/bin/bash
+I1190738:x:507:504::/home/I1190738:/bin/bash
+I1235549:x:508:504::/home/I1235549:/bin/bash
+I1462533:x:509:504::/home/I1462533:/bin/bash
+I1460539:x:510:504::/home/I1460539:/bin/bash
+
+--groups
+dasadm1:x:102:db2inst1,dsadm
+db2iadm1:x:103:dsadm
+db2fadm1:x:104:dsadm
+xmeta:x:503:dsadm
+dstage:x:504:dsadm
+iauser:x:505:dsadm
+
+-db2
+http://www.ibm.com/developerworks/data/library/techarticle/dm-0609xu/
+# Confirm db2inst1 instance was created successfully. If it failed, please refer to the official DB2 installation documentation.
+
+[root@stage164 instance]# su - db2inst1
+[db2inst1@stage164 db2inst1]$ db2start
+05-19-2006 03:56:01     0   0   SQL1063N  DB2START processing was successful.
+SQL1063N  DB2START processing was successful.
+
+
+# Check to confirm that DBM SVCENAME configuration parameter was configured successfully. If it is not set, the client has no way to connect to the DB2 server. 
+In addition, the TCPIP communication protocol also must be set.
+
+[db2inst1@stage164 db2inst1]$ db2 get dbm cfg | grep -i svcename
+ TCP/IP Service name                          (SVCENAME) = 50000
+[db2inst1@stage164 db2inst1]$ db2set DB2COMM=TCPIP
+
+
+
+ db2 connect to xmeta              
+ 
+ 
+LD_LIBRARY_PATH=/home/db2inst1/sqllib/lib64:/home/db2inst1/sqllib/lib32                                                                                                                                                                                                                                                                                                                                                                                           
+
+:/home/db2inst1/sqllib/bin:/home/db2inst1/sqllib/adm:/home/db2inst1/sqllib/misc:/home/db2inst1/bin                                                                                                                                                                                                                                                                                                        
+
+AppServerAdmin.sh -was -user isadmin -password infra2010
+
+
+
+<SEBN111_BIOGER>
+DBMSTYPE = ODBC
+<SEBN111_DMBIOGER>
+DBMSTYPE = ODBC
+
+--****************************
+PATH=$PATH:$HOME/bin
+
+export PATH
+
+export DSHOME=/opt/IBM/InformationServer/Server/DSEngine
+export WSHOME=/opt/IBM/WebSphere/AppServer
+
+. $DSHOME/dsenv
+
+export PATH=$PATH:$DSHOME:$DSHOME/bin:$WSHOME:$WSHOME/bin:/home/db2inst1/sqllib/bin:/home/db2inst1/sqllib/adm:/home/db2inst1/sqllib/misc:/home/db2inst1/bin
+
+
+--log erro
+/opt/IBM/WebSphere/AppServer/profiles/default/logs/server1
+
+ tail -f /opt/IBM/WebSphere/AppServer/profiles/default/logs/server1/SystemOut.log

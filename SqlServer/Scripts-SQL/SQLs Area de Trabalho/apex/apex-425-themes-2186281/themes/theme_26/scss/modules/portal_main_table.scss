@@ -1,0 +1,380 @@
+@import "compass/css3";
+@import "settings/gradient";
+@import "settings/vars";
+
+section.uRegion table.porListReport {
+	border-spacing: 0 0;
+	border-collapse: collapse;
+	width: 100%;
+	thead th {
+		background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalTileSprite.png) 0 -296px repeat-x;
+		font: normal 12px/20px Arial, sans-serif;
+		padding: 4px 8px;
+		color: #666;
+		color: rgba(0,0,0,.60);
+		border-bottom: 1px solid #CCC;
+		text-align: left;
+		text-shadow: 0 1px 0 rgba(255,255,255,.5);
+	}
+	tbody tr {
+		&.alertRow td,
+		td.alertRow {
+			padding: 0;
+			border-bottom: 1px solid #AAA;
+			&.yellow {
+				background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Yellow.png) 0 -200px repeat-x transparent;
+				div.alertRow {
+					background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Yellow.png) -3px 0 no-repeat transparent;
+				}
+			}
+			&.green {
+				background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Green.png) 0 -200px repeat-x transparent;
+				div.alertRow {
+					background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Green.png) -3px 0 no-repeat transparent;
+				}
+			}
+			&.red {
+				background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Red.png) 0 -200px repeat-x transparent;
+				div.alertRow {
+					background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Red.png) -3px 0 no-repeat transparent;
+				}
+			}
+			&.gray {
+				background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Gray.png) 0 -200px repeat-x transparent;
+				div.alertRow {
+					background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Gray.png) -3px 0 no-repeat transparent;
+				}
+			}
+			div.alertRow {
+				padding: 8px 0 0 0;
+				@include box-shadow(0 -1px 0 rgba(0,0,0,.10) inset);
+				position: relative;
+				div.alertRowInner {
+					padding: 0 8px 8px 8px;
+					background-color: #FEE9B1;
+					div.alertMessageRow {
+						position: relative;
+					}
+					div.rowSideText {
+						position: absolute;
+						right: 0;
+						top: 0;
+						width: 200px;
+						text-align: right;
+						vertical-align: middle;
+						span.timeBadge {
+							margin: 12px 8px 12px 0;
+							display: inline-block;
+							padding: 4px 16px;
+							width: 120px;
+							text-align: center;
+							font: normal 12px/22px $fontFamily;
+							border: 1px solid #A59773;
+							border-radius: 4px;
+							background-color: #EBD7A3;
+							color: #404040;
+							text-shadow: 0 1px 0 rgba(255,255,255,.25);
+							@include box-shadow(0 1px 1px rgba(0,0,0,.15) inset);
+						}
+						img.statusIcon {
+							display: inline-block;
+							background-image: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalSprite.png);
+							background-repeat: no-repeat;
+							background-color: transparent;
+							width: 32px;
+							height: 32px;
+							margin: 12px 8px;
+							&.disruption {
+								background-position: -168px -32px;
+							}
+							&.down {
+								background-position: -200px 0;
+							}
+						}
+					}
+					div.messageContent {
+						margin-right: 200px;
+					}
+					small.timeframe {
+						font-weight: bold !important;
+						font: normal 11px/16px Arial, sans-serif; 
+						color:#928665;
+					}
+					hr {
+						height: 1px; 
+						background-color:#E8D4A1; 
+						border: none; 
+						margin: 4px 0;
+					}
+				}
+				h2 {
+					font: bold 13px/20px Arial, sans-serif;
+					color: #333;
+					color: rgba(0,0,0,.75);
+				}
+				p {
+					padding: 0 !important;
+					margin: 0;
+					font: normal 12px/16px Arial, sans-serif;
+				}
+				div.alertSeparator {
+					border-bottom: 1px dotted #AAA;
+					border-bottom: 1px dotted rgba(0,0,0,.15);
+					height: 1px;
+					padding-top: 4px;
+					margin-bottom: 4px;
+				}
+				div.alertButtons {
+					position: absolute;
+					right: 0;
+					top: 0;
+					a {
+						display: block;
+						img {
+							display: block;
+							width: 24px;
+							height: 24px;
+							margin: 6px;
+							background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalSprite.png) -48px -24px no-repeat;
+						}
+					}
+				}
+			}
+		}
+		&.alertRowParent td {
+			border-bottom: none;
+		}
+		&.alertRowParent {
+			&.yellow td.statusIcon {
+				background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Yellow.png) -3px 100% no-repeat transparent;
+			}
+			&.green td.statusIcon {
+				background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Green.png) -3px 100% no-repeat transparent;
+			}
+			&.red td.statusIcon {
+				background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Red.png) -3px 100% no-repeat transparent;
+			}
+			&.gray td.statusIcon {
+				background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalAlertTile-Gray.png) -3px 100% no-repeat transparent;
+			}
+		}
+		&:last-child td {
+			border-bottom: none;
+			&:first-child {
+				@include border-radius(0 0 0 4px);
+			};
+			&:last-child {
+				@include border-radius(0 0 4px 0);
+			};
+			&:only-child {
+				@include border-radius(0 0 4px 4px);
+			}
+		}
+		&.notFound {
+			p {
+				background-color: #F0F0F0;
+				@include border-radius(4px);
+			}
+			&:hover td {
+				background-color: #FFF !important;
+			}
+		}
+		&:hover td {
+			@include transition(background-color, .1s);
+			background-color: #F8F8F8 !important;
+		}
+		td {
+			padding: 8px 8px;
+			border-bottom: 1px solid #DDD;
+			font: normal 12px/20px Arial, sans-serif;
+			color: #444;
+			border-left: 1px dotted #EEE;
+			vertical-align: middle;
+			height: 30px;
+			&:first-child {
+				border-left: none;
+			}
+			&.actionsList {
+				text-align: center;
+				width: 1%;
+				white-space: nowrap;
+				ul.pillList {
+				}
+				a.standardButton {
+					display: inline-block;
+					float: none;
+					margin-right: 0;
+					height: 24px;
+					@include box-shadow(0 1px 0 rgba(255,255,255,.25) inset,	0 1px 0 rgba(0,0,0,.05));
+					span {
+						font: bold 12px/16px Arial, sans-serif;
+					}
+				}
+			}
+			&.serviceName {
+				h4 {
+					color: #444;
+					a {
+						font-weight: bold;
+						color: #444;
+					}
+				}
+			}
+			&.serviceName,
+			&.serviceType {
+				small {
+					display: block;
+					font: normal 11px/16px Arial, sans-serif;
+					color: #767676;
+					white-space: nowrap;
+				}
+				span.secondaryService {
+					display: block;
+					margin-top: 4px;
+					border-top: 1px dotted #EEE;
+					padding-top: 4px;
+				}
+			}
+		}
+	}
+	tr.inactiveRow {
+		td {
+			color: #767676;
+			&.serviceName h4 {
+				font-weight: bold;
+				color: #767676;
+			}
+			ul.utilizationList li small {
+				color: #767676;
+			}
+			ul.utilizationList li big span {
+				background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalTileSprite.png) 0 -388px repeat-x;
+			}
+		}
+	}
+	td, th {
+		&.alignCenter {
+			text-align: center;
+		}
+		&.alignRight {
+			text-align: right;
+		}
+	}
+	thead tr th.statusIcon,
+	tbody tr td.statusIcon {
+		width: 12px;
+	} 
+	tbody tr td.statusIcon {
+		img.statusIcon {
+			display: block;
+			margin: 0 2px;
+		}
+	}
+}
+
+
+/* Status Icon*/
+img.statusIcon {
+	width: 12px;
+	height: 12px;
+	background-image: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalSprite.png);
+	background-repeat: no-repeat;
+	&.statusGreen {
+		background-position: 0 0;
+	}
+	&.statusYellow {
+		background-position: 0 -24px;
+	}
+	&.statusRed {
+		background-position: 0 -48px;
+	}
+	&.statusGray {
+		background-position: 0 -72px;
+	}
+	&.statusLocked {
+		background-position: -144px -48px;
+	}
+	&.statusDisabled {
+		background-position: -144px -72px;
+	}
+}
+
+ul.pillList {
+	list-style: none;
+	margin: 0;
+	height: 26px;
+	display: block;
+	& > li {
+		display: inline-block;
+		& > a {
+			background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalTileSprite.png) 0 -256px repeat-x;
+			border: 1px solid #BBB;
+			border-bottom: 1px solid #AAA;
+			border-left: none;
+			border-right: 1px solid #CCC;
+			@include box-shadow(0 1px 0 rgba(255,255,255,.75) inset,	0 1px 0 rgba(0,0,0,.05));
+			display: block;
+			font: normal 12px/16px $fontFamily;
+			padding: 2px 4px;
+			&:hover {
+				/*background: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalTileSprite.png) 0 -324px repeat-x;*/
+				background: none #E0E0E0;
+			};
+			span {
+				display: inline-block;
+				font: normal 12px/20px $fontFamily;
+				padding: 0 8px;
+				color: #444;
+				text-shadow: 0 1px 0 rgba(255,255,255,.5);
+			}
+			img {
+				display: inline-block;
+				vertical-align: top;
+				height: 20px;
+				width: 20px;
+				background-image: url(#IMAGE_PREFIX#cloud/app_theme/images/portal/portalSprite.png);
+				background-repeat: no-repeat;
+				&.actionsSetting {
+					background-position: -232px 0;
+/*					background-position: -24px 0;*/
+				}
+				&.gotoportal {
+					background-position: -232px -24px;
+				}
+				&.viewDetails {
+					background-position: -232px 0;
+				}
+				&.actionsAccess {
+					background-position: -24px -72px;
+				}
+				&.actionsGoto {
+					background-position: -24px -24px;
+				}
+				&.actionsUtilization {
+					background-position: -24px -48px;
+				}
+				&.normalView {
+					background-position: -48px -72px;
+				}
+				&.denseView {
+					background-position: -72px -72px;
+				}
+				&.actionsConsole {
+					background-position: -144px -24px;
+				}
+			}
+		}
+		&:first-child > a {
+			@include border-radius(4px 0 0 4px);
+			border-left: 1px solid #BBB;
+		}
+		&:last-child > a {
+			@include border-radius(0 4px 4px 0);
+			border-left: none;
+		}
+		&:only-child > a {
+			@include border-radius(4px);
+			border-left: 1px solid #BBB;
+		}
+	}
+}

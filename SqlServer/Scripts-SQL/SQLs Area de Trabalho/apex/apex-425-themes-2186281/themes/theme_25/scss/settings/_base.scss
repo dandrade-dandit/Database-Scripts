@@ -1,0 +1,73 @@
+/******************************************************************************
+
+File Name:    _base.scss
+Purpose:      contains generic mixins, variables, and other common css components 
+
+
+Outline:
+  1. Browser Support
+  2. Font
+  3. Mixins
+  4. Other Variables
+
+******************************************************************************/
+
+/******************************************************************************
+1. Browser Support
+******************************************************************************/
+$legacy-support-for-ie7: true;
+$legacy-support-for-ie6: true;
+$experimental-support-for-microsoft: false;
+$experimental-support-for-khtml: false;
+$experimental-support-for-opera: false;
+$experimental-support-for-webkit: true;
+$experimental-support-for-mozilla: true;
+$experimental-support-for-svg: true;
+
+/******************************************************************************
+2. Fonts
+******************************************************************************/
+$fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/******************************************************************************
+3. Mixins
+******************************************************************************/
+
+/* make any css selector automatically clear by adding this mixin */
+@mixin clearfix {
+    zoom:1;
+    &:before, &:after {
+        content: "\0020"; 
+        display: block; 
+        height: 0; 
+        overflow: hidden; 
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+@mixin background-gradient($start-color, $end-color) {
+	background-color: $end-color;
+	@include background-image(linear-gradient($start-color,$end_color));
+}
+
+/* gray gradient used for buttons */
+@mixin baseGradient {
+  @include background-image(linear-gradient(bottom, #c6c6c6 0%, #d8d8d8 20%, #eaeaea 60.01%, #f2f2f2 79.91%, #f2f2f2 95%, #fff 100%));
+}
+
+/* gradient used for hot buttons */
+@mixin hotGradient {
+  @include background-image(linear-gradient(bottom, #264c7f 0%, #3164a5 10.01%, #5b97e5 75%, #5499f2 100%));
+}
+
+/* gradient used for alt buttons */
+@mixin altGradient {
+  @include background-image(linear-gradient(bottom, #ffba00 0%, #fbcc4d 10.01%, #ffd668 53.69%, #fbebbf 100%));
+}
+
+/******************************************************************************
+4. Other Variables
+******************************************************************************/

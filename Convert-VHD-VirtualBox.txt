@@ -1,0 +1,39 @@
+Importing VHD files into VirtualBox (windows7)
+
+Painful little process to uncover.
+
+Not terribly fast, but functional.  Requires Qemu.  Install the QEMU manager which gives you GUI goodness should you want it and a clean install.
+
+These instructions are tailored towards using Windows for the file conversion with qemu. If you’re using Linux you’re probably smart enough to adapt these instructions to your system.
+
+1) Open a command prompt: Start > Run and type “cmd”
+
+2) Use “cd” to go to the directory you download and extracted Qemu.
+
+3) Run: qemu-img.exe convert -f vpc "[vhd file]” -O raw [outfile].bin
+   -> "C:\Program Files (x86)\QemuManager\qemu"\qemu-img.exe convert -f vpc "D:\VirtualBox VMs\WS2008R2x64BTS2010\Virtual Hard Disks"\BizTalk2010Demo.vhd -O raw "D:\VirtualBox VMs\VM - Biztalk"\BizTalk2010Demo.bin
+   
+4) Wait…(will take a while)
+
+5) Convert and compress the “.bin” file.
+		A) 	VBoxManage convertdd [outfile.bin] [vdifile].vdi
+		    -> "C:\Program Files\Oracle\VirtualBox"\VBoxManage convertdd "D:\VirtualBox VMs\VM - Biztalk"\BizTalk2010Demo.bin "D:\VirtualBox VMs\VM - Biztalk"\BizTalk2010Demo.vdi
+		B)	VBoxManage modifyvdi XPIE7.vdi compact
+		    -> "C:\Program Files\Oracle\VirtualBox"\VBoxManage modifyvdi "D:\VirtualBox VMs\VM - Biztalk"\BizTalk2010Demo.vdi compact
+		
+6) Open VirtualBox
+
+7) Click New
+
+8) Go through the wizard
+		A)	Use the new “.vdi” file as the “Boot Hard Disk”.
+		B)	Finish wizard and start it!
+		C)  You may have to turn on ACPI feature if the image was built on VMWare.  
+		
+It’s slower, but will prevent the windows BSOD
+
+
+
+
+Username: administrator, password: pass@word1
+

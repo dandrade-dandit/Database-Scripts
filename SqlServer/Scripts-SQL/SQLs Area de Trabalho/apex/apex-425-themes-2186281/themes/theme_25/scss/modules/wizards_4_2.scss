@@ -1,0 +1,220 @@
+/******************************************************************************
+
+File Name:    wizards_4_2.scss
+Purpose:      wizard progress lists
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+/* Horizontal Wizard Progress List */
+div.uHorizontalProgressList {
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	margin: 0;
+	ul {
+		margin: 5px 0;
+		height: 64px;
+		padding: 0;
+		clear: left;
+		float: left;
+		position: relative;
+		left: 50%;
+		li {
+			float: left;
+			display: block;
+			position: relative;
+			right: 50%;
+			span {
+				display: block;
+				float: left;
+				padding: 40px 4px 0 4px;
+				font-size: 12px;
+				line-height: 14px;
+				color: #404040;
+				text-align: center;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				min-width: 80px;
+				max-width: 190px;
+			}
+			&.current span,
+			&.first-current span,
+			&.last-current span {
+				color: #333;
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+div.cWizard {
+	small {
+		display: block;
+		font: normal 11px/16px $fontFamily;
+		color: #666;
+		margin: 4px 0 8px 8px;
+	}
+	@include box-sizing(border-box);
+	clear: both;
+	@include border-radius(3px);
+	@include box-shadow(0 1px 1px rgba(0,0,0,.1));
+	border: 1px solid #AAA;
+	background-color: #FFF;
+	color: #333;
+	margin-bottom: 8px;
+/*	width: 920px; */
+	div.cWizardHeader {
+		padding: 0;
+		height: 64px;
+		@include background-gradient(#F8F8F8,#E0E0E0);
+		position: relative;
+		@include border-radius(4px 4px 0 0);
+		@include box-shadow(0 -1px 0 rgba(0,0,0,.10) inset, 0 1px 0 rgba(255,255,255,.75) inset);
+		border-bottom: none;
+		position: relative;
+		div.sHorizontalProgressList {
+			margin: 0;
+			ul {
+			}
+		}
+		div.cWizardButtons {
+			position: absolute;
+			top: 0;
+			margin: 12px 12px;
+			.uButtonLarge {
+				@include box-shadow(0 1px 0 rgba(255,255,255,.50));
+			}
+		}
+		div.cWizardButtonsLeft {
+			left: 0;
+			.uButtonLarge {
+				margin-right: 4px;
+			}
+		}
+		div.cWizardButtonsRight {
+			right: 0;
+			.uButtonLarge {
+				margin-left: 4px;
+			}
+		}
+	}
+	div.cWizardContentContainer {
+		background: #FFF;
+		border-top: none;
+		@include border-radius(0 0 3px 3px);
+	}
+	div.gettingStartedContainer {
+		@include border-radius(3px);
+	}
+	div.cWizardContent {
+		padding: 12px;
+		min-height: 460px;
+		overflow: auto;
+		div.cWizardDividerRegion {
+			border-top: 1px solid #DDD;
+			margin-top: 16px;
+			padding-top: 16px;
+			position: relative;
+			h2 {
+				font: bold 14px/20px $fontFamily;
+				color: #333;
+				padding: 0;
+				width: 198px;
+				text-align: right;
+				margin-bottom: 16px;
+			}
+		}
+		div.cWizardRegion {
+			margin-top: 16px;
+			position: relative;
+			div.cWizardSideMessage {
+				top: 4px;
+			}
+		}
+		div.cWizardSideMessage {
+			position: absolute;
+			right: 16px;
+			top: 24px;
+			border: 1px solid #4d8fcb;
+			background-color: #d1e4f3;
+			padding: 16px;
+			width: 240px;
+			@include border-radius(3px);
+			@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset, 0 1px 1px rgba(0,0,0,.15));
+			h3 {
+				font: bold 13px/20px $fontFamily;
+				color: #333;
+				margin: 0 0 4px 0;
+				padding: 0;
+			}
+			p {
+				font: normal 11px/18px $fontFamily;
+				color: #333;
+				margin: 0 0 4px 0;
+			}
+		}
+		table.formlayout label {
+/*			width: 190px !important; */
+		}
+		table.formlayout input[type=checkbox] {
+			vertical-align: baseline;
+		}
+		table.formlayout fieldset.checkbox_group label {
+			vertical-align: baseline;
+		}
+		table.formlayout div.t1InlineError {
+			width: 190px;
+			white-space: normal;
+		}
+	}
+}
+
+
+/* Vertical Wizard Progress List */
+div.uVerticalProgressList {
+	ul {
+		list-style: none;
+		li {
+			display: block;
+			height: 32px;
+			overflow: hidden;
+			position: relative;
+			img {
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 32px;
+				height: 32px;
+				margin: 0;
+				padding: 0;
+			}
+			span {
+				display: block;
+				padding: 0 0 0 32px;
+				font: normal 12px/32px $fontFamily;
+				@include transition(color, .2s);
+				color: #707070;
+				white-space: nowrap;
+			}
+			&.first-current span,
+			&.current span,
+			&.last-current span {
+				font-weight: bold;
+				color: #404040;
+			}
+		}
+	}
+}

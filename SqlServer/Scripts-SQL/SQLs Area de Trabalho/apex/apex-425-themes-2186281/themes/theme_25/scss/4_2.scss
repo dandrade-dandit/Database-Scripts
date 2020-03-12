@@ -1,0 +1,54 @@
+/******************************************************************************
+
+File Name:    theme_4_2.scss
+Purpose:      Theme 25 main SCSS file
+
+
+Outline:
+  1. Browser Support
+  2. Font
+  3. Mixins
+  4. Other Variables
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+
+/******************************************************************************
+Import all Theme 25 Components
+******************************************************************************/
+
+@import 'modules/body_4_2';
+
+@import 'modules/notifications_4_2';
+@import 'modules/icons_4_2';
+
+@import 'modules/header_4_2';
+@import 'modules/breadcrumbs_4_2';
+@import 'modules/regions_4_2';
+@import 'modules/buttons_4_2';
+@import 'modules/forms_4_2';
+@import 'modules/content_frame_4_2';
+@import 'modules/wizards_4_2';
+@import 'modules/irr_4_2';
+@import 'modules/popup_lov_4_2';
+@import 'modules/reports_4_2';
+@import 'modules/lists_4_2';
+@import 'modules/calendars_4_2';
+@import 'modules/login_4_2';
+@import 'modules/modals_4_2';
+@import 'modules/search_4_2';
+@import 'modules/footer_4_2';
+
+/* Plugins */
+@import 'modules/pl_css_bar_charts_4_2';
+@import 'modules/pl_tag_cloud_4_2';
+
+/* jQuery UI Theme */
+@import 'modules/jquery-ui-1.8.23.theme25.4.2';

@@ -1,0 +1,1174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DS_WIRELESS">
+      <DataSourceReference>/Relatórios Wireless/DS_WIRELESS</DataSourceReference>
+      <rd:SecurityType>Integrated</rd:SecurityType>
+      <rd:DataSourceID>52954321-e18a-4a78-bca4-99a258db2dfe</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Query>
+        <DataSourceName>DS_WIRELESS</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@Mes">
+            <Value>=Parameters!Mes.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Ano">
+            <Value>=Parameters!Ano.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT	CASE 
+			WHEN SUBSTRING(Client_IP_Address, 1, 5) = '10.6.' THEN 'SBBR - BRASÍLIA'
+				WHEN SUBSTRING(Client_IP_Address, 1, 5) = '10.7.' THEN 'SBBE - BELÉM'
+				WHEN SUBSTRING(Client_IP_Address, 1, 5) = '10.4.' THEN 'SBPA - PORTO ALEGRE'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.70.' THEN 'SBSV - SALVADOR'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.38.' THEN 'SBCF - CONFINS'
+				WHEN SUBSTRING(Client_IP_Address, 1, 5) = '10.2.' THEN 'SBGR - GUARULHOS'
+				WHEN SUBSTRING(Client_IP_Address, 1, 5) = '10.0.' THEN 'SEDE - BRASÍLIA'
+				WHEN SUBSTRING(Client_IP_Address, 1, 5) = '10.1.' THEN 'SBGL - GALEÃO'
+				WHEN SUBSTRING(Client_IP_Address, 1, 5) = '10.3.' THEN 'SBEG - MANAUS'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.41.' THEN 'SBSP - CONGONHAS'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.42.' THEN 'SBKP - CAMPINAS'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.60.' THEN 'SBCT - CURITIBA'	
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.91.' THEN 'SBSL - SÃO LUIZ'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.50.' THEN 'SBRB - RIO BRANCO'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.54.' THEN 'SBPV - PORTO VELHO'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.73.' THEN 'SBNT - NATAL'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.71.' THEN 'SBFZ - FORTALEZA'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.78.' THEN 'SBJP - JOÃO PESSOA'
+				WHEN SUBSTRING(Client_IP_Address, 1, 5) = '10.5.' THEN 'SBRF - RECIFE'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.74.' THEN 'SBAR - ARACAJÚ'	
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.35.' THEN 'SBBH - BH - PAMPULHA'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.64.' THEN 'SBFL - FLORIANÓPOLIS'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.72.' THEN 'SBMO - MACEIÓ'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.31.' THEN 'SBRJ - RJ - SANTOS DUMMONT'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.76.' THEN 'SBTE - TEREZINA'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.83.' THEN 'SBUR - UBERABA'
+				WHEN SUBSTRING(Client_IP_Address, 1, 6) = '10.34.' THEN 'SBVT - VITÓRIA'
+                      ELSE 'OUTRO AEROPORTO'
+		END AS LOCAL_OPERACAO
+,		Substring(Called_Station_Id, 19, 30) as Operadora
+,       ROUND(SUM(convert(float,Acct_Session_Time)/60), 2) AS Total_Tempo_Sessoes_Minutos
+,       ROUND(SUM(convert(float,Acct_Session_Time)/60/60), 2) AS Total_Tempo_Sessoes_Horas
+FROM	[IASODBC].[dbo].[accounting_data] WITH (NOLOCK)
+WHERE	Acct_Session_Id IS NOT NULL
+AND		Acct_Status_Type = 2
+AND		month(timestamp) = @Mes
+AND		year(timestamp) = @Ano
+GROUP BY 
+		Client_IP_Address
+,		Substring(Called_Station_Id, 19, 30)
+ORDER BY 1, 2</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="LOCAL_OPERACAO">
+          <DataField>LOCAL_OPERACAO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Operadora">
+          <DataField>Operadora</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Total_Tempo_Sessoes_Minutos">
+          <DataField>Total_Tempo_Sessoes_Minutos</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="Total_Tempo_Sessoes_Horas">
+          <DataField>Total_Tempo_Sessoes_Horas</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="Tablix1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>49.87087mm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>47.75403mm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>12.34999mm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Tempo Total das Sessões em Minutos</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>#7292cc</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#4c68a2</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Tempo Total das Sessões em Horas</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>#7292cc</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#4c68a2</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>5.99999mm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Total_Tempo_Sessoes_Minutos">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Total_Tempo_Sessoes_Minutos.Value)</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <Color>#4d4d4d</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Total_Tempo_Sessoes_Minutos</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>#e5e5e5</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Total_Tempo_Sessoes_Horas">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Total_Tempo_Sessoes_Horas.Value)</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <Color>#4d4d4d</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Total_Tempo_Sessoes_Horas</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>#e5e5e5</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>5.99999mm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox15">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Total_Tempo_Sessoes_Minutos.Value)</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>#465678</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox15</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>#c6daf8</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#9eb6e4</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox16">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Total_Tempo_Sessoes_Horas.Value)</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>#465678</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox16</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>#c6daf8</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#9eb6e4</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>5.99999mm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox11">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Total_Tempo_Sessoes_Minutos.Value)</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox11</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>#9eb6e4</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#7292cc</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox12">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Total_Tempo_Sessoes_Horas.Value)</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox12</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>#9eb6e4</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#7292cc</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>49.34179mm</Size>
+                    <CellContents>
+                      <Textbox Name="Textbox7">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>Local da Operação</Value>
+                                <Style>
+                                  <FontFamily>Tahoma</FontFamily>
+                                  <FontSize>11pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
+                                  <Color>White</Color>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style />
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox7</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>#7292cc</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <BackgroundColor>#4c68a2</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>2pt</PaddingTop>
+                          <PaddingBottom>2pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                  <TablixMembers>
+                    <TablixMember>
+                      <TablixHeader>
+                        <Size>56.49798mm</Size>
+                        <CellContents>
+                          <Textbox Name="Textbox5">
+                            <CanGrow>true</CanGrow>
+                            <KeepTogether>true</KeepTogether>
+                            <Paragraphs>
+                              <Paragraph>
+                                <TextRuns>
+                                  <TextRun>
+                                    <Value>Operadora</Value>
+                                    <Style>
+                                      <FontFamily>Tahoma</FontFamily>
+                                      <FontSize>11pt</FontSize>
+                                      <FontWeight>Bold</FontWeight>
+                                      <Color>White</Color>
+                                    </Style>
+                                  </TextRun>
+                                </TextRuns>
+                                <Style />
+                              </Paragraph>
+                            </Paragraphs>
+                            <rd:DefaultName>Textbox5</rd:DefaultName>
+                            <Style>
+                              <Border>
+                                <Color>#7292cc</Color>
+                                <Style>Solid</Style>
+                              </Border>
+                              <BackgroundColor>#4c68a2</BackgroundColor>
+                              <PaddingLeft>2pt</PaddingLeft>
+                              <PaddingRight>2pt</PaddingRight>
+                              <PaddingTop>2pt</PaddingTop>
+                              <PaddingBottom>2pt</PaddingBottom>
+                            </Style>
+                          </Textbox>
+                        </CellContents>
+                      </TablixHeader>
+                      <TablixMembers>
+                        <TablixMember />
+                      </TablixMembers>
+                    </TablixMember>
+                  </TablixMembers>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="LOCAL_OPERACAO">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!LOCAL_OPERACAO.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!LOCAL_OPERACAO.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <TablixHeader>
+                    <Size>49.34179mm</Size>
+                    <CellContents>
+                      <Textbox Name="LOCAL_OPERACAO">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>=Fields!LOCAL_OPERACAO.Value</Value>
+                                <Style>
+                                  <FontFamily>Tahoma</FontFamily>
+                                  <FontWeight>Bold</FontWeight>
+                                  <Color>#465678</Color>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style />
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>LOCAL_OPERACAO</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>#c6daf8</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <BackgroundColor>#9eb6e4</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>2pt</PaddingTop>
+                          <PaddingBottom>2pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                  <TablixMembers>
+                    <TablixMember>
+                      <Group Name="Operadora">
+                        <GroupExpressions>
+                          <GroupExpression>=Fields!Operadora.Value</GroupExpression>
+                        </GroupExpressions>
+                      </Group>
+                      <SortExpressions>
+                        <SortExpression>
+                          <Value>=Fields!Operadora.Value</Value>
+                        </SortExpression>
+                      </SortExpressions>
+                      <TablixHeader>
+                        <Size>56.49798mm</Size>
+                        <CellContents>
+                          <Textbox Name="Operadora">
+                            <CanGrow>true</CanGrow>
+                            <KeepTogether>true</KeepTogether>
+                            <Paragraphs>
+                              <Paragraph>
+                                <TextRuns>
+                                  <TextRun>
+                                    <Value>=Fields!Operadora.Value</Value>
+                                    <Style>
+                                      <FontFamily>Tahoma</FontFamily>
+                                      <FontWeight>Bold</FontWeight>
+                                      <Color>#4c68a2</Color>
+                                    </Style>
+                                  </TextRun>
+                                </TextRuns>
+                                <Style />
+                              </Paragraph>
+                            </Paragraphs>
+                            <rd:DefaultName>Operadora</rd:DefaultName>
+                            <Style>
+                              <Border>
+                                <Color>#e6eefc</Color>
+                                <Style>Solid</Style>
+                              </Border>
+                              <BackgroundColor>#c6daf8</BackgroundColor>
+                              <PaddingLeft>2pt</PaddingLeft>
+                              <PaddingRight>2pt</PaddingRight>
+                              <PaddingTop>2pt</PaddingTop>
+                              <PaddingBottom>2pt</PaddingBottom>
+                            </Style>
+                          </Textbox>
+                        </CellContents>
+                      </TablixHeader>
+                      <TablixMembers>
+                        <TablixMember />
+                      </TablixMembers>
+                      <Visibility>
+                        <Hidden>true</Hidden>
+                        <ToggleItem>LOCAL_OPERACAO</ToggleItem>
+                      </Visibility>
+                    </TablixMember>
+                    <TablixMember>
+                      <TablixHeader>
+                        <Size>56.49798mm</Size>
+                        <CellContents>
+                          <Textbox Name="Textbox14">
+                            <CanGrow>true</CanGrow>
+                            <KeepTogether>true</KeepTogether>
+                            <Paragraphs>
+                              <Paragraph>
+                                <TextRuns>
+                                  <TextRun>
+                                    <Value>Total</Value>
+                                    <Style>
+                                      <FontFamily>Tahoma</FontFamily>
+                                      <FontWeight>Bold</FontWeight>
+                                      <Color>#465678</Color>
+                                    </Style>
+                                  </TextRun>
+                                </TextRuns>
+                                <Style />
+                              </Paragraph>
+                            </Paragraphs>
+                            <rd:DefaultName>Textbox14</rd:DefaultName>
+                            <Style>
+                              <Border>
+                                <Color>#c6daf8</Color>
+                                <Style>Solid</Style>
+                              </Border>
+                              <BackgroundColor>#9eb6e4</BackgroundColor>
+                              <PaddingLeft>2pt</PaddingLeft>
+                              <PaddingRight>2pt</PaddingRight>
+                              <PaddingTop>2pt</PaddingTop>
+                              <PaddingBottom>2pt</PaddingBottom>
+                            </Style>
+                          </Textbox>
+                        </CellContents>
+                      </TablixHeader>
+                      <KeepWithGroup>Before</KeepWithGroup>
+                    </TablixMember>
+                  </TablixMembers>
+                </TablixMember>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>49.34179mm</Size>
+                    <CellContents>
+                      <Textbox Name="Textbox9">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>Total</Value>
+                                <Style>
+                                  <FontFamily>Tahoma</FontFamily>
+                                  <FontWeight>Bold</FontWeight>
+                                  <Color>White</Color>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style />
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox9</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>#9eb6e4</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <BackgroundColor>#7292cc</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>2pt</PaddingTop>
+                          <PaddingBottom>2pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                  <TablixMembers>
+                    <TablixMember>
+                      <TablixHeader>
+                        <Size>56.49798mm</Size>
+                        <CellContents>
+                          <Textbox Name="Textbox10">
+                            <CanGrow>true</CanGrow>
+                            <KeepTogether>true</KeepTogether>
+                            <Paragraphs>
+                              <Paragraph>
+                                <TextRuns>
+                                  <TextRun>
+                                    <Value />
+                                    <Style>
+                                      <FontFamily>Tahoma</FontFamily>
+                                      <FontWeight>Bold</FontWeight>
+                                      <Color>White</Color>
+                                    </Style>
+                                  </TextRun>
+                                </TextRuns>
+                                <Style />
+                              </Paragraph>
+                            </Paragraphs>
+                            <rd:DefaultName>Textbox10</rd:DefaultName>
+                            <Style>
+                              <Border>
+                                <Color>#9eb6e4</Color>
+                                <Style>Solid</Style>
+                              </Border>
+                              <BackgroundColor>#7292cc</BackgroundColor>
+                              <PaddingLeft>2pt</PaddingLeft>
+                              <PaddingRight>2pt</PaddingRight>
+                              <PaddingTop>2pt</PaddingTop>
+                              <PaddingBottom>2pt</PaddingBottom>
+                            </Style>
+                          </Textbox>
+                        </CellContents>
+                      </TablixHeader>
+                    </TablixMember>
+                  </TablixMembers>
+                  <KeepWithGroup>Before</KeepWithGroup>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet1</DataSetName>
+            <Top>45.49727mm</Top>
+            <Left>0mm</Left>
+            <Height>30.34995mm</Height>
+            <Width>203.46467mm</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+          <Textbox Name="ReportTitle">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Tempo de Conexão Total por Operadora - </Value>
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>20pt</FontSize>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Mes.Value</Value>
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>20pt</FontSize>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>/</Value>
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>20pt</FontSize>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Ano.Value</Value>
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>20pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
+            <rd:DefaultName>ReportTitle</rd:DefaultName>
+            <Top>34.27894mm</Top>
+            <Left>0.00001cm</Left>
+            <Height>10.16mm</Height>
+            <Width>203.46458mm</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Image Name="Infraero">
+            <Source>Embedded</Source>
+            <Value>Infraero</Value>
+            <Sizing>FitProportional</Sizing>
+            <Top>0mm</Top>
+            <Left>0.00009mm</Left>
+            <Height>32.51505mm</Height>
+            <Width>203.46458mm</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
+          <Chart Name="Chart1">
+            <ChartCategoryHierarchy>
+              <ChartMembers>
+                <ChartMember>
+                  <Group Name="Chart1_CategoryGroup1">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!LOCAL_OPERACAO.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <Label>=Fields!LOCAL_OPERACAO.Value</Label>
+                </ChartMember>
+              </ChartMembers>
+            </ChartCategoryHierarchy>
+            <ChartSeriesHierarchy>
+              <ChartMembers>
+                <ChartMember>
+                  <Group Name="Chart1_SeriesGroup1">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!Operadora.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <Label>=Fields!Operadora.Value</Label>
+                </ChartMember>
+              </ChartMembers>
+            </ChartSeriesHierarchy>
+            <ChartData>
+              <ChartSeriesCollection>
+                <ChartSeries Name="Total_Tempo_Sessoes_Horas">
+                  <ChartDataPoints>
+                    <ChartDataPoint>
+                      <ChartDataPointValues>
+                        <Y>=Sum(Fields!Total_Tempo_Sessoes_Horas.Value)</Y>
+                      </ChartDataPointValues>
+                      <ChartDataLabel>
+                        <Style />
+                      </ChartDataLabel>
+                      <Style />
+                      <ChartMarker>
+                        <Style />
+                      </ChartMarker>
+                      <DataElementOutput>Output</DataElementOutput>
+                    </ChartDataPoint>
+                  </ChartDataPoints>
+                  <Style />
+                  <ChartEmptyPoints>
+                    <Style />
+                    <ChartMarker>
+                      <Style />
+                    </ChartMarker>
+                    <ChartDataLabel>
+                      <Style />
+                    </ChartDataLabel>
+                  </ChartEmptyPoints>
+                  <ValueAxisName>Primary</ValueAxisName>
+                  <CategoryAxisName>Primary</CategoryAxisName>
+                  <ChartSmartLabel>
+                    <CalloutLineColor>Black</CalloutLineColor>
+                    <MinMovingDistance>0pt</MinMovingDistance>
+                  </ChartSmartLabel>
+                </ChartSeries>
+              </ChartSeriesCollection>
+            </ChartData>
+            <ChartAreas>
+              <ChartArea Name="Default">
+                <ChartCategoryAxes>
+                  <ChartAxis Name="Primary">
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption>Aeroporto</Caption>
+                      <Style>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Enabled>False</Enabled>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMinorTickMarks>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                  <ChartAxis Name="Secondary">
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption>Axis Title</Caption>
+                      <Style>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Enabled>False</Enabled>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMinorTickMarks>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Location>Opposite</Location>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                </ChartCategoryAxes>
+                <ChartValueAxes>
+                  <ChartAxis Name="Primary">
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption>Tempo Total das Sessões em Horas</Caption>
+                      <Style>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMinorTickMarks>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                  <ChartAxis Name="Secondary">
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption>Axis Title</Caption>
+                      <Style>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMinorTickMarks>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Location>Opposite</Location>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                </ChartValueAxes>
+                <ChartThreeDProperties>
+                  <Enabled>true</Enabled>
+                  <Clustered>true</Clustered>
+                </ChartThreeDProperties>
+                <Style>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                </Style>
+              </ChartArea>
+            </ChartAreas>
+            <ChartLegends>
+              <ChartLegend Name="Default">
+                <Style>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartLegendTitle>
+                  <Caption />
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </ChartLegendTitle>
+                <HeaderSeparatorColor>Black</HeaderSeparatorColor>
+                <ColumnSeparatorColor>Black</ColumnSeparatorColor>
+              </ChartLegend>
+            </ChartLegends>
+            <Palette>BrightPastel</Palette>
+            <ChartBorderSkin>
+              <Style>
+                <BackgroundColor>Gray</BackgroundColor>
+                <BackgroundGradientType>None</BackgroundGradientType>
+                <Color>White</Color>
+              </Style>
+            </ChartBorderSkin>
+            <ChartNoDataMessage Name="NoDataMessage">
+              <Caption>No Data Available</Caption>
+              <Style>
+                <BackgroundGradientType>None</BackgroundGradientType>
+                <TextAlign>General</TextAlign>
+                <VerticalAlign>Top</VerticalAlign>
+              </Style>
+            </ChartNoDataMessage>
+            <DataSetName>DataSet1</DataSetName>
+            <Top>88.55075mm</Top>
+            <Left>0.0001mm</Left>
+            <Height>83.67291mm</Height>
+            <Width>203.46458mm</Width>
+            <ZIndex>3</ZIndex>
+            <Style>
+              <Border>
+                <Color>LightGrey</Color>
+                <Style>Solid</Style>
+              </Border>
+              <BackgroundColor>White</BackgroundColor>
+              <BackgroundGradientType>None</BackgroundGradientType>
+            </Style>
+          </Chart>
+        </ReportItems>
+        <Height>173.28198mm</Height>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Body>
+      <Width>222.51458mm</Width>
+      <Page>
+        <PageFooter>
+          <Height>16.19251mm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="ExecutionTime">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Globals!ExecutionTime</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>ExecutionTime</rd:DefaultName>
+              <Top>5.08001mm</Top>
+              <Left>101.6mm</Left>
+              <Height>6.35mm</Height>
+              <Width>50.8mm</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
+        <PageHeight>279.4mm</PageHeight>
+        <PageWidth>215.9mm</PageWidth>
+        <LeftMargin>25.4mm</LeftMargin>
+        <RightMargin>25.4mm</RightMargin>
+        <TopMargin>25.4mm</TopMargin>
+        <BottomMargin>25.4mm</BottomMargin>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="Mes">
+      <DataType>Integer</DataType>
+      <Prompt>Digite o Mês</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Ano">
+      <DataType>Integer</DataType>
+      <Prompt>Digite o Ano</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <EmbeddedImages>
+    <EmbeddedImage Name="Infraero">
+      <MIMEType>image/jpeg</MIMEType>
+      <ImageData>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
++2h8J9V+Nv7Mvijwro8EF1qGsRQRJFK4iR1W4jdwW7fKrYrnf2YP2dL/APZt+KXjrT7C0gHgjX2t9U065kuzPe29xs2TWrs+XaNdodCThdxHc1VPEXwb5qj5ruyu9tOl/N/5iqULYpcsFy6X0W+vU4L9rX4Q/B/4I/EiH4q6v8BLLxXrsN3b38/iWysLV7u1u/OjhhYtIwYuWZOR+PU16X4y/Zq+Hn7bXhXR9V+Knwm0m+vrDzVtbPxDaw3VxYqxIIBUkAMOcA9/xrV/bH+GOr/GL9nrVvD+gxRT6peXWnywpJIIk2xX1tM+W7fJGxr1G2gC2sSMMbUAxnPasJ4n9zCab502r3d7JK3XTdo3hQvVmmlytJ2srN6/5I+fL742eGfgx9u+Fnw/+Gmr+KdI8D2KRappuhW9utlpEMqM6WwSV1Duynd5ag/K34Vxngj/AIJm/smftIaFpPj/AEn4TeDruz12Fb6BorRrWJyxyQ8CsEDg5DKV4OQa6hPCnxI/Z1+LXxFvPCfgy38d6H491BddtSuqQWM2nXpgSGWObzcboj5MbKUyRuPGTmvQ/wBkT4I3v7P/AMBNF8N6pdwX2rRPPe6hLAMQm5uJnuJRHkA7A8jBcjoB06VvVqqlT5qM2m7ap6u61ur6WZz0oSqVeSrFNK+60VmrWfW6OT+EPxa8J+CPibd/Cn4beAHtdB8ITxWmqT6Tb29lp2jzSIXCmMEO3ygZZVx74r3xBhQuM4FfLvxj+Bnirxj+1p4b8TeF/Bz+Gb3SdTtpNT8YRaxEkesaaoPm2ktqpLSsVOwM6/L/AAsK+oY1ARRjGPwrkxkIWjOD1a11u7+frudeDnO8oy6PTSyt5ehJRRRXIdwUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAU
+UUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAU/D3/IAsf+veP/0EVbKAnJAJpaKAG+SoxgAY9OKXy19BS0UAN8oe35UeUPb8qdRQFxPLX0FIYlPUZp1FADfJXAGOBR5Q9T+dOooAb5Q9T+dKUDAgjINLRQAU3yl54606igBoiAGMnH1pQgAAwOKWigBoQJnAAzycDrSeUDk85PuRT6KAEKA4znj3o8sc8dTmlooAb5YwBjgDGO1HlgZ+9z7mnUUAIEAzwOTmm+UvA2gAcf8A1qfRS5UAmwbs5OaQxKxBIBI4p1FMBBGACOxpQMADJ4oooAQxqxJIBJo2jGOaWigBpiVsAg4HvTgNoAHaiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/2Q==</ImageData>
+    </EmbeddedImage>
+  </EmbeddedImages>
+  <rd:ReportUnitType>Mm</rd:ReportUnitType>
+  <rd:ReportServerUrl>http://10.0.17.111/ReportServer</rd:ReportServerUrl>
+  <rd:ReportID>66d00b10-4add-43b6-af90-ce8d54f6cc80</rd:ReportID>
+</Report>

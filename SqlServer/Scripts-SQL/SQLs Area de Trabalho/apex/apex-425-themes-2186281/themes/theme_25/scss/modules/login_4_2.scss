@@ -1,0 +1,101 @@
+/******************************************************************************
+
+File Name:    login_4_2.scss
+Purpose:      login page
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+/******************************************************************************
+Login Page Background
+******************************************************************************/
+body#uLogin {
+	background: url(../images/bg_noise.png) 0 0 repeat #F9F9F9;
+}
+
+/******************************************************************************
+Reset Columns to be 100% on Login Page
+******************************************************************************/
+#uLoginContainer {
+	.apex_grid_container {
+		width: 100%;
+	}
+	.apex_span_1,
+	.apex_span_2,
+	.apex_span_3,
+	.apex_span_4,
+	.apex_span_5,
+	.apex_span_6,
+	.apex_span_7,
+	.apex_span_8,
+	.apex_span_9,
+	.apex_span_10,
+	.apex_span_11,
+	.apex_span_12 {
+	  width: 100%;
+	  margin: 0;
+	}
+	.uRegionContent .apex_cols {
+		width: 100%;
+		margin: 0 !important;
+	}
+}
+
+div#uLoginContainer {
+  width:480px;
+  margin: 10% auto 0 auto;
+  @media only screen and (max-width: 767px) {
+    width: auto;
+  }
+  section.uRegion {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    border: 1px solid #909090;
+    background-color: #EAEAEA;
+    div.uRegionHeading {
+      border-bottom: none;
+      h1 {
+        font: bold 16px/32px $fontFamily;
+        color: #404040;
+        text-shadow: 0 1px 0 rgba(255,255,255,.75);
+        padding: 16px 16px 0 16px;
+      }
+    }
+    div.uRegionContent {
+      padding: 16px;
+      background-color: #EAEAEA;
+      button.uButton,
+      button.uButtonLarge {
+        display: block;
+        width: 100%;
+        span {
+          font-size: 16px;
+          line-height: 48px;
+        }
+      }
+    }
+    div.uRegionContent div.fieldControls {
+      input[type="text"],
+      input[type="password"] {
+        padding: 12px;
+        font-size: 18px;
+        line-height: 18px;
+        color: #404040;
+        @media only screen and (max-width: 767px) {
+          padding: 8px;
+          font-size: 16px;
+          line-height: 16px;
+        }
+      }
+    }
+  }
+}

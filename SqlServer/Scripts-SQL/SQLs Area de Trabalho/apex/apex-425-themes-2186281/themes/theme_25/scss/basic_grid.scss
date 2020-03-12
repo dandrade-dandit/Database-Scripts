@@ -1,0 +1,106 @@
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Base Grid
+******************************************************************************/
+.apex_grid_container {
+	position: relative;
+	margin: 0 auto;
+	padding: 0;
+	@include clearfix;
+	@include box-shadow(0 0 4px 0 rgba(180,0,0,1) inset);
+	.apex_cols {
+		float: left;
+		display: block;
+		margin-left: 6px;
+		margin-right: 6px;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		box-sizing: border-box;
+		@include box-shadow(0 0 0 1px rgba(0,150,0,1) inset);
+		.alpha {
+			margin-left: 0;
+		}
+		.omega {
+			margin-right: 0;
+		}
+		.apex_row {
+			margin: 0 !important;
+		}
+	}
+	.apex_row {
+		margin: 0 6px 12px 6px;
+		@include clearfix;
+	}
+}
+
+/* One Column */
+#uOneCol {
+	clear: both;
+	margin: 16px 12px;
+	min-height: 512px;
+}
+
+
+/* Two Columns */
+#uTwoColumns {
+	clear: both;
+	margin: 16px 12px;
+	min-height: 500px;
+	&.sideRightCol #uMidCol {
+		margin: 0 202px 0 0;
+	}
+	&.sideLeftCol #uMidCol {
+		margin: 0 0 0 202px;
+	}
+}
+
+/* Three Columns */
+#uThreeColumns {
+	clear: both;
+	margin: 16px 12px;
+	min-height: 500px;
+	#uMidCol {
+		margin: 0 202px;
+	}
+}
+
+/* Two or Three Columns */
+#uRightCol,
+#uLeftCol {
+	width: 190px;
+	position: absolute;
+	top: 0;
+	margin: 0;
+}
+#uRightCol {
+	right: 0;
+}
+#uLeftCol {
+	left: 0;
+}
+#uMidCol {
+	float: none;
+	display: block;
+}
+
+/* ========== */
+/* = Header = */
+/* ========== */
+header#uHeader,
+footer#uFooter {
+	.apex_cols {
+		float: none;
+		display: block;
+		margin: 0 12px;
+	}
+}
+footer#uFooter {
+	margin: 8px 12px 0 12px;
+	div.uFooterBG {
+		z-index: 1;
+		margin: 0 126px;
+	}
+}

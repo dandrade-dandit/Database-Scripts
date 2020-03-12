@@ -1,0 +1,150 @@
+gerai vc mesmo 
+entra com grid 
+ssh-keygen -t rsa 
+cat .ssh/id_rsa.pub 
+copia a chave para o outro servidor para a mesma pasta .ssh e arquivo authorized_keys 
+faça isso nos dois servidores 
+
+
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAxM00mOT72KwrjeL6Se0FOSmXqdJq+PzGuAFxpB7tu6P0WyN8RRcQnm8T3Wh1PIzY0N71b70GsOPkHPn2JS8abVX0jaiIpK5MvUZi4CIF1x6aTeAQzEC2J42WUDnS0Ck8Jvd8ZpuEz71IhXrToANts3+5whgqQ3wtx8SkSbhc8/XwKMsv6yb+755WVXNd5lOHd0BU/DznrRunqvDFTS8ycS4q25t7+/ubK2NXnBVQZkT0T2kU6hr+E/TRykN5aHLJZ5nGHGaXgKvv2RCwAX8oWhdGoHwebfNWs5rdivphq9v+XQLbBBJ9/NVAAqTnxvgk0fa63c6hBHRrdyRtJAJ6aQ== grid@s-sebu86.infraero.gov.br
+
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArT6DroPWwjm5+EyRkFVdmMdQvVPSiQnHzottz80ObIGCheX8IpYrSuvhCRchNIbIYhsXNz4hTcqkrZaNtUawhhKWGExLXIluzTebOLrmnssOGImVKw/78t93HN2nzgk3a/fdNy79m6NNGTqsd6KLKruWi3OlE1BxtOvVUinz5V/hjy7TUVuhnx/g+B6/EXYXldJLow53IS3A0yGI2CWRp1j5LwZRkdYK01xKZFXd+JTjNgSYpVI7dPN1SsVvuTBEgLI/5YBPugHBcqnL29eJhGXBsV1rLa0Nk9Ok4PBxd47SXlmOVCevZjOGRdfzeu25W+FRUCfKLcm2N9kIykfQ5w== grid@s-sebu87.infraero.gov.br
+
+--usuário grid
+umask 022
+#TZ=America/Sao_Paulo; export TZ
+ORACLE_HOSTNAME=s-sebu86.localdomain; export ORACLE_HOSTNAME
+ORACLE_SID=+ASM1; export ORACLE_SID
+ORACLE_BASE=/u01/crs/oracle; export ORACLE_BASE
+ORACLE_HOME=/u01/crs/product/11.2/crs_1; export ORACLE_HOME
+ORA_CRS_HOME=$ORACLE_HOME; export ORA_CRS_HOME
+ORACLE_PATH=/u01/rdbms/oracle/common/oracle/sql:.:$ORACLE_HOME/rdbms/admin
+export ORACLE_PATH
+#PATH=$PATH:$ORACLE_HOME/bin: export PATH
+TNS_ADMIN=$ORACLE_HOME/network/admin; export TNS_ADMIN
+NLS_LANG=American_America.WE8ISO8859P1; export NLS_LANG
+NLS_CHARACTERSET=WE8ISO8859P1; export NLS_CHARACTERSET
+#LD_LIBRARY_PATH=/volorahome/app/oracle/product/10.1/lib:/volorahome/crs/oracle/product/10.1/crs_1/lib:/volorahome/app/oracle/product/10.1/lib32:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
+#LIBPATH=/volorahome/app/oracle/product/10.1/lib:/volorahome/crs/oracle/product/10.1/crs_1/lib:/volorahome/app/oracle/product/10.1/lib32:$LIBPATH; export LIBPATH
+PATH=$PATH/usr/bin:/bin:/usr/bin/X11:/usr/sbin:/sbin:$ORACLE_HOME:$ORACLE_HOME/bin:$ORACLE_BASE
+export PATH
+
+EDITOR=vi
+export EDITOR
+
+--usuário oracle
+umask 022
+#TZ=America/Sao_Paulo; export TZ
+ORACLE_HOSTNAME=s-sebu86.localdomain; export ORACLE_HOSTNAME
+ORACLE_SID=ifrprod1; export ORACLE_SID
+ORACLE_UNQNAME=ifrprod; export ORACLE_UNQNAME
+ORACLE_BASE=/u01/rdbms/oracle; export ORACLE_BASE
+ORACLE_HOME=/u01/rdbms/oracle/product/11.2/dbhome_1; export ORACLE_HOME
+ORA_CRS_HOME=/u01/crs/product/11.2/crs_1; export ORA_CRS_HOME
+ORACLE_PATH=$ORACLE_BASE/common/oracle/sql:.:$ORACLE_HOME/rdbms/admin
+export ORACLE_PATH
+#PATH=$PATH:$ORACLE_HOME/bin: export PATH
+TNS_ADMIN=$ORACLE_HOME/network/admin; export TNS_ADMIN
+NLS_LANG=American_America.WE8ISO8859P1; export NLS_LANG
+NLS_CHARACTERSET=WE8ISO8859P1; export NLS_CHARACTERSET
+#LD_LIBRARY_PATH=$ORACLE_HOME/lib:$ORA_CRS_HOME/lib:$ORACLE_HOME/lib32:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
+#LIBPATH=$ORACLE_HOME/lib:$ORA_CRS_HOME/lib:$ORACLE_HOME/lib32:$LIBPATH; export LIBPATH
+PATH=$PATH/usr/bin:/bin:/usr/bin/X11:/usr/sbin:/sbin:$ORACLE_HOME:$ORACLE_HOME/bin:$ORACLE_BASE:$ORA_CRS_HOME:$ORA_CRS_HOME/bin
+export PATH
+
+EDITOR=vi
+export EDITOR
+
+LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
+CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib; export CLASSPATH
+
+if [ $USER = "oracle" ]; then
+  if [ $SHELL = "/bin/ksh" ]; then
+    ulimit -p 16384
+    ulimit -n 65536
+  else
+    ulimit -u 16384 -n 65536
+  fi
+fi
+
+
+
+http://www.oracle.com/technology/pub/articles/hunter-rac11gr2-iscsi.html
+
+http://www.oracle.com/technetwork/database/clustering/overview/scan-129069.pdf
+
+
+**---------------
+/usr/sbin/groupadd -g 1000 oinstall
+/usr/sbin/groupadd -g 1001 dba
+
+
+/usr/sbin/useradd -u 1100 -g 1000 -G 1000,1001 grid
+
+/usr/sbin/usermod -u 1001 -g 1000 -G 1000,1001 oracle
+groupadd -g 1200 asmadmin
+groupadd -g 1201 asmdba
+groupadd -g 1202 asmoper
+
+chown root.disk /dev/sdb
+chown root.disk /dev/sdc
+chown root.disk /dev/sdd
+chown root.disk /dev/sde
+chown root.disk /dev/sdf
+chown root.disk /dev/sdg
+chown root.disk /dev/sdh
+
+Disk /dev/sdb: 429.5 GB, 429523992576 bytes
+Disk /dev/sdc: 429.5 GB, 429523992576 bytes
+Disk /dev/sdd: 213.6 GB, 213674622976 bytes
+Disk /dev/sde: 429.5 GB, 429523992576 bytes
+Disk /dev/sdf: 5368 MB, 5368709120 bytes
+Disk /dev/sdg: 21.4 GB, 21474836480 bytes
+Disk /dev/sdh: 213.6 GB, 213674622976 bytes
+
+more /etc/sysconfig/oracleasm 
+more /etc/init.d/oracleasm
+
+sudo /etc/init.d/oracleasm createdisk VOLCRS1 /dev/sdf1
+
+sudo /etc/init.d/oracleasm createdisk VOLPROD1 /dev/sdb1
+sudo /etc/init.d/oracleasm createdisk VOLPROD2 /dev/sdc1
+sudo /etc/init.d/oracleasm createdisk VOLPROD3 /dev/sdd1
+sudo /etc/init.d/oracleasm createdisk VOLPROD4 /dev/sdg1
+
+sudo /etc/init.d/oracleasm createdisk VOLFRA1 /dev/sde1
+sudo /etc/init.d/oracleasm createdisk VOLFRA2 /dev/sdh1
+
+
+127.0.0.1       localhost.localdomain localhost
+10.0.17.86      s-sebu86.infraero.gov.br s-sebu86
+10.0.17.87      s-sebu87.infraero.gov.br s-sebu87
+20.0.17.1       int-sebu86.infraero.gov.br int-sebu86
+20.0.17.2       int-sebu87.infraero.gov.br int-sebu87
+10.0.17.195     scan-prodsede.infraero.gov.br scan-prodsede
+10.0.17.196     vip-sebu86.infraero.gov.br vip-sebu86
+10.0.17.197     vip-sebu87.infraero.gov.br vip-sebu87
+10.0.17.4     s-sesf04.infraero.gov.br s-sesf04
+10.0.17.5     s-sesf05.infraero.gov.br s-sesf05
+
+
+--**********************************************************
+nome do cluste -> prodsede-crs
+
+senha asm -> Infra2010
+
+
+
+mkdir -p /u01/crs/oracle
+mkdir -p /u01/crs/product/11.2/crs_1
+
+
+cp root.sh rdbms/root.sh.sebu86.AFTER_INSTALL_SET-01-2010
+
+cp root.sh rdbms/root.sh.sebu87.AFTER_INSTALL_SET-01-2010
+
+
+/u01/rdbms/oracle/product/11.2/dbhome_1/root.sh
+
+CREATE TABLESPACE "TSD_CIA" DATAFILE '+RACDB(DATAFILE)' SIZE 100M LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO 
+/

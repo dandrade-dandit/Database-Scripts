@@ -1,0 +1,6 @@
+depois poderia alterar a tabela T_STA de todos os aeroportos com BDO.
+São Paulo tem 3 codeshare por vôo.
+Foi incluido  3 campos no final da tabela T_STA
+VOO_CHG_VIN2 , VOO_CHG_VIN3, VOO_PAR_VIN2, VOO_PAR_VIN3
+todos 
+caracter com tamanho de 8 e pode ser null.

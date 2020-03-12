@@ -1,0 +1,197 @@
+/******************************************************************************
+
+File Name:    notifications_4_2.scss
+Purpose:      notification styles / alert messages
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+
+/* ========================= */
+/* = Alert Messages Styles = */
+/* ========================= */
+.alertMessage {
+	background-color: #F0F0F0;
+	border: 1px solid #999;
+	border: 1px solid rgba(0,0,0,.35);
+	@include border-radius(4px);
+	@include box-shadow(0 1px 0 rgba(255,255,255,.75) inset, 0 1px 0 rgba(0,0,0,.05));
+	margin: 0 0 8px 0;
+	position: relative;
+	img {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		margin: -16px 0 0 12px;
+		display: block;
+		width: 32px;
+		height: 32px;
+	}
+	&.green {
+		background-color: #E6F9E6;
+	}
+	&.red {
+		border: 1px solid #FCC2C0;
+		border-bottom-color: #FD8E8A;
+		background-color: #FDDFDE;
+	}
+	&.yellow {
+		border: 1px solid #EEDC94;
+		border-bottom-color: #E4C652;
+		background-color: #FDF5D9;
+	}
+	&.info {
+		background-color: #edf4fa;
+		border: 1px solid #9dbee0;
+	}
+	div.innerMessage {
+		margin: 0 0 0 44px;
+		padding: 12px 8px;
+		h3 {
+			font: bold 13px/18px $fontFamily;
+			color: #404040;
+			text-shadow: 0 1px 0 rgba(255,255,255,.35);
+		}
+		p {
+			font: normal 12px/16px $fontFamily;
+			color: #404040;
+			padding: 0;
+			text-shadow: 0 1px 0 rgba(255,255,255,.35);
+			margin: 0;
+		}
+		a.standardButton {
+			float: none;
+			display: inline-block;
+		}
+		small {
+			margin-top: 4px;
+			font: normal 11px/16px $fontFamily;
+			color: #666;
+			padding: 0;
+		}
+	}
+}
+
+section.uSingleAlertMessage {
+	@include border-radius(4px);
+	padding: 16px;
+	margin: 0 0 16px 0;
+	@include box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 1px 8px rgba(0,0,0,.15));
+	position: relative;
+	@include background-gradient(#F8F8F8, #E8E8E8);
+	border: 1px solid #BBB;
+	border-color: #BBB #CCC;
+	#apex_login_throttle_div {
+	  color: #FFF;
+	  font-size: 11px;
+	  line-height: 16px;
+		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	}
+	&.red {
+		@include background-gradient(#E4524E, #C6211A);
+		border: 1px solid #880700;
+		border-color: #880700 #C6211A;
+		p {
+			text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+			color: #FFF;
+			font-weight: bold;
+		}
+	}
+	p {
+		font: normal 13px/16px $fontFamily;
+		color: #404040;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+	}
+	a.closeMessage {
+		position: absolute;
+		right: 16px;
+		top: 16px;
+		width: 16px;
+		height: 16px;
+		display: block;
+	}
+}
+
+section.uMessageRegion {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 50%;
+  margin-left: -300px !important;
+  width: 600px;
+  
+  background-color: #FCF2CA;
+  background-color: rgba(252, 242, 202, .95);
+  min-height: 32px;
+  @include border-radius(0 0 3px 3px);
+  @include box-shadow(0 2px 4px rgba(0,0,0,.15));
+  border: 1px solid #C0A333;
+  border-top: none;
+  
+  &.successMessage {
+    background-color: #E6FAE6;
+    background-color: rgba(230, 250, 230,.95);
+    border-color: #47B347;
+    div.uMessageText {
+      padding: 6px 0;
+    }
+  }
+  
+  img.uCheckmarkIcon,
+  img.uWarningIcon {
+    width: 32px;
+    height: 32px;
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 12px;
+  }
+  div.uMessageText {
+    margin-left: 40px;
+    font: bold 14px/20px $fontFamily;
+    padding: 0;
+    color: #202020;
+  }
+  div.uRegionContent {
+    position: relative;
+    padding: 12px;
+    a.uCloseMessage {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    ul.htmldbUlErr {
+      margin: 4px 0 0 15px;
+      li {
+        font: normal 11px/18px $fontFamily;
+        color: #404040;
+      }
+    }
+  }
+}
+
+
+// For Mobile Devices, Responsively Handle Notifications
+@media only screen and (max-width: 767px) {
+  section.uMessageRegion {
+    width: auto;
+    margin: 0 0 8px 0 !important;
+    position: initial;
+    border-top: 1px solid #C0A333;
+    @include border-radius(3px);
+    @include box-shadow(0 1px 1px rgba(0,0,0,.1));
+  }
+}

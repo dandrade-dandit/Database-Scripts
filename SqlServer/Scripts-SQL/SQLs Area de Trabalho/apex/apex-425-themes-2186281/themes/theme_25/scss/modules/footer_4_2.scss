@@ -1,0 +1,36 @@
+/******************************************************************************
+
+File Name:    footer_4_2.scss
+Purpose:      page footer
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+footer#uFooter {
+	clear: both;
+	position: relative;
+	border-top: 1px solid #D0D0D0;
+	padding: 8px 0;
+	div.uFooterContent {
+		font: normal 11px/16px $fontFamily;
+		color: #606060;
+		a {
+			color: #404040;
+		}
+	}
+	span.uFooterVersion {
+		font: normal 11px/16px $fontFamily;
+		color: #606060;
+		display: block;
+	}
+}

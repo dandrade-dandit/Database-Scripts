@@ -1,0 +1,16 @@
+set nocount on
+    declare table_cursor cursor for
+    select a.id from sysindexes a, sysobjects b where a.name = b.name and a.name = 'cr_acct'
+    open table_cursor
+    declare @table sysname
+    fetch next from table_cursor into @table
+    while @@fetch_status = 0
+    begin
+     print 'dbcc showcontig ('  + @table + ')' + char(10) + ' go '
+     fetch next from table_cursor into @table
+    end
+  close table_cursor
+deallocate table_cursor
+
+dbcc dbreindex ('recv_acct', '', 95)
+

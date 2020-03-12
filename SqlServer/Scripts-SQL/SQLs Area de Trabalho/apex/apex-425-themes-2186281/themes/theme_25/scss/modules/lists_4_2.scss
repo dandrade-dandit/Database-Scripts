@@ -1,0 +1,935 @@
+/******************************************************************************
+
+File Name:    lists_4_2.scss
+Purpose:      list templates
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+/* ================== */
+/* = List Templates = */
+/* ================== */
+ul.uVerticalList,
+ul.uVerticalSidebarList {
+	margin: 0 !important;
+	list-style: none;
+	li {
+		display: block;
+		padding: 3px 0 3px 8px;
+		a {
+			font: normal 12px/14px $fontFamily;
+			text-decoration: none;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+		&.active a {
+			font-weight: bold;
+		}
+	}
+}
+ol.uNumberedList {
+	list-style-type: decimal;
+	list-style-position: outside;
+	margin: 0 0 0 16px !important;
+	padding-left: 4px;
+	li {
+		display: list-item;
+		padding: 3px 0 3px 0;
+		a {
+			font: normal 12px/14px $fontFamily;
+			text-decoration: none;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+		&.active a {
+			font-weight: bold;
+		}
+	}
+}
+ul.uHorizontalLinksList {
+	li {
+		display: inline;
+		margin: 0 4px 0 0;
+		a {
+			font: normal 12px/20px $fontFamily;
+			text-decoration: none;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+		&.active a {
+			font-weight: bold;
+		}
+	}
+}
+ul.noBullets {
+	li {
+		padding: 3px 0;
+		background: none transparent;
+	}
+}
+ul.uVerticalSidebarList {
+	li {
+		background: none transparent;
+		padding: 0;
+		&:last-child a {
+			border-bottom: none;
+		}
+		a {
+			padding: 6px 0;
+			display: block;
+			font: normal 12px/16px $fontFamily;
+			border-bottom: 1px solid #D6D6D6;
+			border-top: 1px solid transparent;
+		}
+		&.active a,
+		a:hover {
+			color: #FFF;
+			background-color: #4F84C8;
+			text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+			text-decoration: none;
+		}
+	}
+}
+
+/* Horizontal Tabs + Region Display Selector */
+div.apex-rds-container,
+div.uHorizontalTabs {
+	height: 32px;
+	margin: 0 0 8px 0;
+	ul {
+		list-style: none;
+		padding: 0;
+		height: 32px;
+		li {
+			display: block;
+			float: left;
+			margin: 0;
+			a {
+				display: block;
+				float: left;
+				font: normal 12px/16px $fontFamily;
+				padding: 6px 12px;
+				@include background-gradient(#FAFAFA,#EFEFEF);
+				border: 1px solid #B0B0B0;
+				border-bottom-color: #909090;
+				border-left: none;
+				color: #404040;
+				text-shadow: 0 1px 0 rgba(255,255,255,0.75);
+				text-decoration: none;
+				@include box-shadow(0 1px 1px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,0.75) inset);
+				@include transition(box-shadow .25s)
+			}
+			&.apex-rds-selected a,
+			&.active a,
+			&.apex-rds-selected a:hover,
+			&.active a:hover {
+				background: none #DDD;
+				@include box-shadow(0 1px 1px rgba(0,0,0,.10), 0 2px 4px rgba(0,0,0,0.25) inset);
+				color: #202020;
+			}
+			a:hover {
+        @include box-shadow(0 1px 0 rgba(255,255,255,.75) inset,
+                            0 0 10px transparentize(#5A99E8,0.1));
+			};
+			&:first-child a {
+				@include border-radius(3px 0 0 3px);
+				border-left: 1px solid #B0B0B0;
+			}
+			&:last-child a {
+				@include border-radius(0 3px 3px 0);
+			}
+		}
+	}
+}
+
+/* Button List */
+div.uButtonList {
+	& > button {
+		margin-right: 4px;
+	}
+}
+
+div.uImagesList {
+	ul {
+		list-style: none;
+		li {
+			display: block;
+			float: left;
+			a {
+				display: block;
+				float: left;
+				min-width: 80px;
+				text-align: center;
+				text-decoration: none;
+				padding: 8px;
+				@include border-radius(3px);
+				@include transition(background-color .2s, border-color .2s, box-shadow .2s);
+				background-color: #FAFAFA;
+				border: 1px solid #E0E0E0;
+				margin: 0 8px 8px 0;
+				span {
+					display: block;
+					font: bold 14px/24px $fontFamily;
+					color: #3467A9;
+					margin-top: 4px;
+				}
+				&:hover {
+          	background-color: #e5effb;
+          	border: 1px solid #b1bbcb;
+          	@include box-shadow(0 0 10px rgba(50, 117, 199,.25));
+				}
+			}
+			&.active a {
+      	background-color: #e5effb;
+      	border: 1px solid #b1bbcb;
+				span {
+					font-weight: bold;
+				}
+			}
+		}
+	}
+	&.uVerticalImagesList {
+		li {
+			clear: left;
+			a {
+				text-align: left;
+				min-width: 160px;
+				margin: 0 0 8px 0;
+				img {
+					display: inline-block;
+					vertical-align: middle;
+				}
+				span {
+					display: inline-block;
+					vertical-align: middle;
+					margin: 0 0 0 4px;
+				}
+			}
+		}
+	}
+}
+
+
+
+/* ======================== */
+/* = Detailed Status List = */
+/* ======================== */
+.ie7 {
+	ul.detailedStatusList {
+		margin: 0 !important;
+		list-style: none;
+		& > li {
+			display: inline-block;
+			height: 1%;
+			a {
+				& > span {
+				}
+			}
+		}
+	}
+}
+ul.detailedStatusList {
+	&.legend {
+		border: 1px solid #D0D0D0;
+		border-radius: 4px;
+		background-color: #F8F8F8;
+		@include clearfix;
+	}
+	margin: 0 !important;
+	list-style: none;
+	& > li {
+		margin: 0;
+		display: block;
+		border-top: 1px solid #EEE;
+		&:first-child {
+			border-top: none;
+		}
+		&.detailedStatusListLegend {
+			span {
+				display: block;
+				float: left;
+				&.legendHeader {
+					font: bold 11px/16px $fontFamily;
+					margin: 12px;
+					float: left;
+					color: #404040;
+				}
+				img {
+					float: left;
+					margin-right: 6px;
+				}
+				em {
+					font: normal 11px/16px $fontFamily;
+					margin: 12px 12px 12px 0;
+					float: left;
+					color: #404040;
+				}
+			}
+		}
+		img {
+			display: block;
+			width: 16px;
+			height: 16px;
+			margin: 12px 8px;
+/* 			background-image: url(../images/app_theme.png);
+			background-repeat: no-repeat;
+			background-position: 0 -910px;
+			&.statusGreen {background-position: 0 -910px;}
+			&.statusRed {background-position: -24px -910px;}
+			&.statusGray {background-position: -48px -910px;}
+			&.statusYellow {background-position: -72px -910px;}
+			&.statusBlack {background-position: -96px -910px;} */
+		}
+		a {
+			display: block;
+			position: relative;
+			text-decoration: none;
+			@include transition(background-color, .1s);
+			&:hover {
+				background-color: #4F84C8;
+				& > span {
+					color: #FFF;
+				}
+				& > em,
+				& > em.dateToday,
+				& > em.dateOverdue {
+					color: #FFF;
+				}
+				img {
+					background-color: rgba(255,255,255,.95);
+					@include border-radius(8px);
+				}
+			}
+			img {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			& > span {
+				font: normal 12px/16px $fontFamily;
+				color: #404040;
+				display: block;
+				padding: 12px 110px 12px 32px;
+				@include transition(color, .1s);
+			}
+			& > em {
+				width: 106px;
+				display: block;
+				position: absolute;
+				right: 0;
+				top: 0;
+				font: normal 11px/16px $fontFamily;
+				color: #767676;
+				padding: 12px;
+				text-align: right;
+				white-space: nowrap;
+				&.dateOverdue,
+				&.dateToday {
+					color: #EA0000;
+				}
+				@include transition(color, .1s);
+			}
+		}
+		section.detailedListTooltip {
+			display: none;
+		}
+	}
+}
+div#detailedStatusListToolTip {
+	position: absolute;
+	width: 420px;
+	@include border-radius(3px);
+	border: 1px solid #AAA;
+	background-color: #F8F8F8;
+	@include box-shadow(0 4px 8px rgba(0,0,0,.25));
+	h4 {
+		@include background-gradient(#F0F0F0,#DDDDDD);
+		@include border-radius(2px 2px 0 0);
+		color: #404040;
+		font: bold 12px/16px $fontFamily;
+		padding: 8px 12px;
+		border-bottom: 1px solid #CCC;
+	}
+	ul {
+		margin: 0;
+		list-style: none;
+		li {
+			display: block;
+			border-top: 1px solid #EEE;
+			padding: 6px 0;
+			&:first-child {
+				border-top: none;
+			};
+			a {
+				color: #3D5B80;
+			}
+			label {
+				display: inline-block;
+				width: 80px;
+				padding: 0 0 0 12px;
+				font: bold 11px/20px $fontFamily;
+				color: #666;
+				vertical-align: top;
+			}
+			span {
+				display: inline-block;
+				padding: 0 12px;
+				font: normal 11px/16px $fontFamily;
+				color: #666;
+				vertical-align: top;
+				small {
+					display: block;
+					font: normal 11px/16px $fontFamily;
+				}
+			}
+		}
+	}
+}
+
+/* ====================== */
+/* = Large Links List   = */
+/* ====================== */
+ul.largeLinkList {
+	margin: 0 !important;
+	list-style: none;
+	li:first-child a {
+		border-top: none;
+	}
+	li a {
+		display: block;
+		padding: 8px;
+		text-decoration: none;
+		position: relative;
+		border-top: 1px solid #DDD;
+		@include transition(background-color, .1s);
+		min-height: 32px;
+		position: relative;
+		&:hover {
+			background-color: #4F84C8;
+			h3, h4 {
+				color: #FFF;
+				text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+			}
+			span {
+				background-color: #4F80BE;
+				color: #FFF;
+				text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+			}
+		};
+		img {
+			position: absolute;
+			left: 0;
+			top: 0;
+			margin: 8px;
+      width: 32px;
+      height: 32px;
+		}
+		h3, h4 {
+			margin-left: 40px;
+			@include transition(color, .1s);
+		}
+		h3 {
+			font: bold 15px/16px $fontFamily;
+			color: #404040;
+		}
+		h4 {
+			font: normal 11px/16px $fontFamily;
+			color: #707070;
+		}
+		span {
+			position: absolute;
+			right: 0;
+			top: 0;
+			margin: 12px 8px;
+			font: normal 11px/16px $fontFamily;
+			background-color: #F0F0F0;
+			@include border-radius(16px);
+			padding: 4px 8px;
+			color: #333;
+			@include transition(background-color, color, .1s);
+		}
+	}
+}
+
+/* ========================= */
+/* = Featured Links List   = */
+/* ========================= */
+ul.featuredLinksList {
+	@include clearfix;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	li {
+		width: 240px;
+		float: left;
+		margin-right: 12px;
+		margin-bottom: 12px;
+		a {
+			display: block;
+			border: 1px solid #9DB3D4;
+			border-radius: 3px;
+			@include background-gradient(#FAFBFD,#F5F7FA);
+			@include box-shadow(0 1px 0 rgba(255,255,255,.65) inset);
+			padding: 16px;
+			text-decoration: none;
+			min-height: 90px;
+			cursor: pointer;
+			&:hover {
+				@include background-gradient(#F0F4FA,#E1E9F5);
+				@include box-shadow(0 1px 0 rgba(255,255,255,.65) inset, 0 0 8px rgba(82, 132, 194, .25));
+			}
+			h3 {
+				font-size: 16px;
+				line-height: 20px;
+				font-weight: bold;
+				margin-bottom: 8px;
+				color: #3467A9;
+			}
+			p {
+				font-size: 12px;
+				line-height: 20px;
+				font-weight: normal;
+				color: #404040;
+			}
+		}
+	}
+}
+
+
+/* ======================================== */
+/* = Value Attribute Pairs List (VAPLIST) = */
+/* ======================================== */
+
+
+ul.vapList.tableBased {
+	display: table;
+	width: 100%;
+	li {
+		display: table-row;
+		border: none;
+		&:first-child {
+			& > label,
+			& > span {
+				border-top: none;
+			}
+		}
+		& > label,
+		& > span.vLabel {
+			display: table-cell;
+			white-space: nowrap;
+			border-top: 1px solid #EEE;
+		}
+		& > span,
+		& > span.vValue {
+			display: table-cell;
+			border-top: 1px solid #EEE;
+		}
+	}
+}
+			
+ul.vapList {
+	margin: 0 !important;
+	list-style: none;
+	&.borderTop li:first-child {
+		border-top: 1px solid #EEE;
+	}
+	&.noBorder {
+		li {
+			border: none;
+		}
+	}
+	li {
+		display: block;
+		border-top: 1px solid #EEE;
+		&:first-child {
+			border-top: none;
+		};
+		a {
+			color: #3D5B80;
+		}
+		label,
+		span.vLabel {
+			display: inline-block;
+			width: 140px;
+			padding: 6px 8px;
+			font: bold 11px/20px $fontFamily;
+			color: #404040;
+			vertical-align: top;
+		}
+		& > span,
+		& > span.vValue {
+			display: inline-block;
+			padding: 6px 8px;
+			font: normal 11px/20px $fontFamily;
+			color: #404040;
+			vertical-align: top;
+			em {
+				color: #EA0000;
+			}
+		}
+		small {
+			display: block;
+			font: normal 11px/16px $fontFamily;
+			color: #404040;
+			white-space: nowrap;
+		}
+		big {
+			display: block;
+			width: 100%;
+			height: 12px;
+			@include border-radius(2px);
+			background-color: #E0E0E0;
+			@include box-shadow(0 1px 0 rgba(0,0,0,.05));
+			em {
+				background-color: #5485c3;
+				height: 12px;
+				display: block;
+				@include border-radius(2px);
+			}
+		}
+		&.utilityGraph {
+			position: relative;
+			label {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			span {
+				max-width: 320px;
+				padding: 12px;
+				margin-left: 168px;
+				display: block;
+			}
+		}
+	}
+}
+
+/* =============== */
+/* = Chart Lists = */
+/* =============== */
+
+.uRegionNoPadding {
+	ul.uChartList {
+		margin-top: -1px !important;
+		li {
+			margin: 0;
+			&.col_2 {
+				width: 50%;
+			}
+			&.col_3 {
+				width: 33%;
+				&.col_start {
+					width: 34%;
+				}
+			}
+			&.col_4 {
+				width: 25%;
+			}
+		}
+		big.uValue {
+			border-top: 1px solid #B0BDCC;
+			border-radius: 0;
+		}
+		small.uLabel {
+			padding: 16px 0;
+		}
+		a {
+			border: none;
+			background-color: #FFF;
+			&:hover {
+				@include box-shadow(none);
+			}
+		}
+	}
+}
+
+section.uRegion > div.uRegionContent > ul.uChartList {
+	margin: 0;
+}
+ul.uChartList {
+	margin: 0;
+	list-style: none;
+	padding: 0;
+	@include clearfix;
+	&.smallChart {
+		border-bottom: 1px solid #D0D0D0;
+	}
+	&.smallChart li {
+		&.uNumber {
+			big {
+				font-size: 14px;
+				line-height: 24px;
+			}
+		}
+		&.uBarChart {
+			span {
+				height: 32px;
+				big {
+					height: 32px;
+				}
+				small {
+					font-size: 14px;
+					line-height: 32px;
+				}
+			}
+			big.uValue {
+				padding: 8px 0;
+				span small {
+					font-size: 12px;
+					font-weight: bold;
+				}
+			}
+			small.uLabel {
+			 padding: 8px 0;
+			 font-size: 12px; 
+			 font-weight: normal;
+			}
+		}
+	}
+	li {
+		display: block;
+		margin: 16px;
+		big.uValue {
+			display: block;
+			text-align: center;
+			padding: 16px 0;
+			color: #404040;
+			text-shadow: 0 0 10px rgba(255,255,255,.95);
+			border-bottom: 1px solid #B0BDCC;
+			border-radius: 2px 2px 0 0;
+			@include background-gradient(#F0F4FA,#E6EEFA);
+			position: relative;
+			&:after, &:before {
+				top: 100%;
+				border: solid transparent;
+				content: " ";
+				height: 0;
+				width: 0;
+				position: absolute;
+				pointer-events: none;
+			}
+			&:after {
+				border-top-color: #E6EEFA;
+				border-width: 8px;
+				left: 50%;
+				margin-left: -8px;
+			}
+			&:before {
+				border-top-color: #B0BDCC;
+				border-width: 9px;
+				left: 50%;
+				margin-left: -9px;
+			}
+		}
+		a {
+			border: 1px solid #B0BDCC;
+			border-bottom-color: #8896A9;
+			background-color: #F0F4FA;
+			border-radius: 3px;
+			padding: 0;
+			display: block;
+			text-decoration: none;
+			@include transition(box-shadow .1s);
+			&:hover {
+				@include box-shadow(0 0 5px 2px rgba(56, 127, 214,.20));
+				big,small {
+					color: #3566A6;
+				}
+			};
+		}
+		small.uLabel {
+			display: block;
+			border-top: 1px solid #F0F0F0;
+			border-top-color: rgba(255,255,255,.65);
+			padding: 8px 0;
+			text-align: center;
+			font-size: 14px;
+			line-height: 20px;
+			color: #404040;
+			font-weight: bold;
+		}
+		&.uNumber {
+			big {
+				font-size: 32px;
+				line-height: 32px;
+			}
+			big, small {
+				@include transition(color .1s);
+			}
+		}
+		&.uBarChart {
+			big.aValue {
+				padding: 8px;
+			}
+			span {
+				display: block;
+				border-radius: 3px;
+				background-color: #FFF;
+				@include box-shadow(0 0 0 1px rgba(0,0,0,.25) inset, 0 1px 1px rgba(0,0,0,.15) inset);
+				display: block;
+				height: 48px;
+				position: relative;
+				margin: 0 8px;
+				small {
+					display: block;
+					position: absolute;
+					width: 100%;
+					font-size: 24px;
+					line-height: 48px;
+					text-align: center;
+					color: #404040;
+					font-weight: normal;
+					font-style: normal;
+					text-shadow: 0 0 10px rgba(255,255,255,.95);
+				}
+				big {
+					border-radius: 3px;
+					display: block;
+					height: 48px;
+					@include background-gradient(#C1D8F7,#9CBDF1);
+					@include box-shadow(0 0 0 1px #8896A9 inset, 0 2px 0 rgba(255,255,255,.65) inset);
+					&.hot {
+						@include background-gradient(#FAEBC2,#FBCC5A);
+						@include box-shadow(0 0 0 1px #deae2c inset, 0 2px 0 rgba(255,255,255,.65) inset);
+					}
+				}
+			}
+		}
+	}
+}
+
+
+/* ================= */
+/* = Timeline List = */
+/* ================= */
+div.timelineStatusList {
+	position: relative;
+	border-top: 1px solid #CCC;
+	&:first-child {
+		border-top: none;
+	};
+	h3 {
+		position: absolute;
+		top: 0;
+		left: 0;
+		clear: both;
+		font: bold 13px/16px Arial, sans-serif;
+		color: #404040;
+		padding: 8px;
+	}
+	ul {
+		list-style: none;
+		margin: 0;
+		display: table;
+		width: 100%;
+		li {
+			display: table-row;
+			&:first-child > div {
+				border-top: none;
+			}
+			&:hover > div {
+				background-color: #F8F8F8;
+			}
+			span.itemDate {
+				font: normal 13px/16px Arial, sans-serif;
+				padding: 8px 8px 8px 100px;
+				text-align: right;
+				white-space: nowrap;
+				display: table-cell;
+				width: 24px;
+				color: #606060;
+			}
+			div {
+				@include transition(background-color, .1s);
+				display: table-cell;
+				border-top: 1px solid #EEE;
+				& > span.itemDesc {
+					padding: 8px 8px 8px 12px;
+					display: block;
+					@include box-shadow(4px 0 0 rgba(0,0,0,.15) inset, 1px 0 0 rgba(0,0,0,.25) inset);
+				}
+				&.statusGreen > span.itemDesc {
+					@include box-shadow(4px 0 0 rgba(0, 204, 0,.75) inset, 1px 0 0 rgba(0,0,0,.25) inset);
+				}
+				&.statusRed > span.itemDesc {
+					@include box-shadow(4px 0 0 rgba(238, 34, 34,.75) inset, 1px 0 0 rgba(0,0,0,.25) inset);
+				}
+				&.statusYellow > span.itemDesc {
+					@include box-shadow(4px 0 0 rgba(254, 199, 0,.75) inset, 1px 0 0 rgba(0,0,0,.25) inset);
+				}
+				&.statusGray > span.itemDesc {
+					@include box-shadow(4px 0 0 rgba(0,0,0,.35) inset, 1px 0 0 rgba(0,0,0,.25) inset);
+				}
+				&.statusBlack > span.itemDesc {
+					@include box-shadow(4px 0 0 rgba(0,0,0,.75) inset, 1px 0 0 rgba(0,0,0,.25) inset);
+				}
+				span.itemDesc > h4 {
+					font: bold 13px/16px Arial, sans-serif;
+					color: #404040;
+				}
+				span.itemDesc > p {
+					font: normal 11px/16px Arial, sans-serif;
+					color: #606060;
+					margin: 2px 0 0 0;
+					padding: 0;
+					span {
+						margin-right: 16px;
+					}
+				}
+			}
+		}
+	}
+}
+.no-css3 {
+	div.timelineStatusList {
+		ul {
+			li {
+				div {
+					span.itemDesc {
+						border-left: 4px solid #F0F0F0;
+					}
+					&.statusGreen > span.itemDesc{border-color:#00CC00;}
+					&.statusRed > span.itemDesc{border-color:#EE2222;}
+					&.statusYellow > span.itemDesc{border-color:#FFC800;}
+					&.statusGray > span.itemDesc{border-color:#CCC;}
+					&.statusBlack > span.itemDesc{border-color:#333;}
+				}
+			}
+		}
+	}
+}
+.ie7 {
+	div.timelineStatusList {
+		ul {
+			margin-left: 100px;
+			li {
+				zoom: 1;
+				vertical-align: bottom;
+				position: relative;
+				padding-left: 24px;
+				width: auto;
+				span.itemDate {
+					display: block;
+					width: 16px;
+					padding: 8px 8px 8px 0;
+					position: absolute;
+					left: 0;
+					top: 0;
+				}
+			}
+		}
+	}
+}

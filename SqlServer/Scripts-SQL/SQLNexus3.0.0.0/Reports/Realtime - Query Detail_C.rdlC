@@ -1,0 +1,632 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="SqlNexus">
+      <DataSourceReference>SqlNexus</DataSourceReference>
+      <rd:DataSourceID>0c5c08c5-8027-491a-9161-2910d2ab982c</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <BottomMargin>1in</BottomMargin>
+  <RightMargin>1in</RightMargin>
+  <ReportParameters>
+    <ReportParameter Name="FmtAmbientBackground">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>#E8F8FF</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+    </ReportParameter>
+    <ReportParameter Name="FmtChartBackground">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>LightSteelBlue</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+    </ReportParameter>
+    <ReportParameter Name="FmtSeries1Color">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>MediumSlateBlue</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+    </ReportParameter>
+    <ReportParameter Name="SessionId">
+      <DataType>String</DataType>
+      <Prompt>SessionId</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>8.5in</InteractiveWidth>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <Body>
+    <ReportItems>
+      <Textbox Name="textbox69">
+        <Left>0.375in</Left>
+        <Top>4.25in</Top>
+        <ZIndex>3</ZIndex>
+        <Width>8.625in</Width>
+        <Style>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>1pt</PaddingBottom>
+          <FontSize>8pt</FontSize>
+          <BorderColor>
+            <Default>DarkGray</Default>
+          </BorderColor>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>1pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>=First(Fields!text.Value, "DataSet_ActiveQueries")</Value>
+      </Textbox>
+      <Textbox Name="textbox39">
+        <Left>0.375in</Left>
+        <Top>4in</Top>
+        <ZIndex>2</ZIndex>
+        <Width>1.5in</Width>
+        <Style>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+          <TextAlign>Right</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>1pt</PaddingBottom>
+          <FontWeight>600</FontWeight>
+          <FontSize>8pt</FontSize>
+          <VerticalAlign>Middle</VerticalAlign>
+          <BorderColor>
+            <Default>DarkGray</Default>
+          </BorderColor>
+          <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>1pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>Query</Value>
+      </Textbox>
+      <Rectangle Name="rectangle2">
+        <Left>4.375in</Left>
+        <ReportItems>
+          <Textbox Name="textbox11">
+            <Left>1in</Left>
+            <Top>0.25in</Top>
+            <ZIndex>5</ZIndex>
+            <Width>1.125in</Width>
+            <Style>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingBottom>1pt</PaddingBottom>
+              <FontSize>8pt</FontSize>
+              <VerticalAlign>Middle</VerticalAlign>
+              <BorderColor>
+                <Default>DarkGray</Default>
+              </BorderColor>
+              <BackgroundColor>White</BackgroundColor>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Value>=First(Fields!ProductVersion.Value, "DataSet_SqlInstanceProperties")</Value>
+          </Textbox>
+          <Textbox Name="textbox18">
+            <Left>1in</Left>
+            <ZIndex>4</ZIndex>
+            <Width>1.125in</Width>
+            <Style>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingBottom>1pt</PaddingBottom>
+              <FontSize>8pt</FontSize>
+              <VerticalAlign>Middle</VerticalAlign>
+              <BorderColor>
+                <Default>DarkGray</Default>
+              </BorderColor>
+              <BackgroundColor>White</BackgroundColor>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Height>0.25in</Height>
+            <Value>=First(Fields!ServerName.Value, "DataSet_SqlInstanceProperties")</Value>
+          </Textbox>
+          <Textbox Name="textbox2">
+            <Top>0.25in</Top>
+            <ZIndex>3</ZIndex>
+            <Width>1in</Width>
+            <Style>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+              <TextAlign>Right</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingBottom>1pt</PaddingBottom>
+              <FontWeight>700</FontWeight>
+              <FontSize>8pt</FontSize>
+              <VerticalAlign>Middle</VerticalAlign>
+              <BorderColor>
+                <Default>DarkGray</Default>
+              </BorderColor>
+              <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Value>Version (SP)</Value>
+          </Textbox>
+          <Textbox Name="textbox4">
+            <ZIndex>2</ZIndex>
+            <Width>1in</Width>
+            <Style>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+              <TextAlign>Right</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingBottom>1pt</PaddingBottom>
+              <FontWeight>700</FontWeight>
+              <FontSize>8pt</FontSize>
+              <VerticalAlign>Middle</VerticalAlign>
+              <BorderColor>
+                <Default>DarkGray</Default>
+              </BorderColor>
+              <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Height>0.25in</Height>
+            <Value>Server</Value>
+          </Textbox>
+          <Textbox Name="textbox30">
+            <Left>3.25in</Left>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+              <TextAlign>Left</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingBottom>1pt</PaddingBottom>
+              <FontSize>8pt</FontSize>
+              <VerticalAlign>Middle</VerticalAlign>
+              <BorderColor>
+                <Default>DarkGray</Default>
+              </BorderColor>
+              <BackgroundColor>White</BackgroundColor>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Height>0.25in</Height>
+            <Value>=First(Fields!ServerDate.Value, "DataSet_SqlInstanceProperties")</Value>
+          </Textbox>
+          <Textbox Name="textbox22">
+            <Left>2.25in</Left>
+            <rd:DefaultName>textbox22</rd:DefaultName>
+            <Width>1in</Width>
+            <Style>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+              <TextAlign>Right</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingBottom>1pt</PaddingBottom>
+              <FontWeight>700</FontWeight>
+              <FontSize>8pt</FontSize>
+              <VerticalAlign>Middle</VerticalAlign>
+              <BorderColor>
+                <Default>DarkGray</Default>
+              </BorderColor>
+              <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Height>0.25in</Height>
+            <Value>Server Time</Value>
+          </Textbox>
+        </ReportItems>
+        <Top>0.125in</Top>
+        <ZIndex>1</ZIndex>
+        <Width>4.625in</Width>
+        <Height>0.5in</Height>
+      </Rectangle>
+      <Textbox Name="textbox16">
+        <Width>2.5in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <FontFamily>Trebuchet MS</FontFamily>
+          <FontWeight>700</FontWeight>
+          <FontSize>14pt</FontSize>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.25in</Height>
+        <Value>Request Details</Value>
+      </Textbox>
+    </ReportItems>
+    <Height>5in</Height>
+    <Style>
+      <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+    </Style>
+  </Body>
+  <rd:ReportID>08b2a6a3-a764-44ca-a0e5-0c2c3e3e962c</rd:ReportID>
+  <LeftMargin>1in</LeftMargin>
+  <DataSets>
+    <DataSet Name="SqlNexus">
+      <Query>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <CommandText>select 1 as c1</CommandText>
+        <DataSourceName>SqlNexus</DataSourceName>
+      </Query>
+      <Fields>
+        <Field Name="c1">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>c1</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet_SqlInstanceProperties">
+      <Query>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <CommandText>SELECT 
+  @@SERVERNAME AS ServerName, 
+  CONVERT (varchar, SERVERPROPERTY ('ProductVersion')) + ' (' + CONVERT (varchar, SERVERPROPERTY ('ProductLevel')) + ')' AS ProductVersion, 
+  GETDATE() AS ServerDate</CommandText>
+        <DataSourceName>SqlNexus</DataSourceName>
+      </Query>
+      <Fields>
+        <Field Name="ServerName">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>ServerName</DataField>
+        </Field>
+        <Field Name="ProductVersion">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>ProductVersion</DataField>
+        </Field>
+        <Field Name="ServerDate">
+          <rd:TypeName>System.DateTime</rd:TypeName>
+          <DataField>ServerDate</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet_ActiveQueries">
+      <Query>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <CommandText>DECLARE @servermajorversion int
+-- SERVERPROPERTY ('ProductVersion') returns e.g. "9.00.2198.00" --&gt; 9
+SET @servermajorversion = REPLACE (LEFT (CONVERT (varchar, SERVERPROPERTY ('ProductVersion')), 2), '.', '')
+
+SET STATISTICS TIME ON
+SELECT 
+    sess.session_id, 
+    req.request_id, 
+    sp.ecid, 
+    sp.blocked, 
+    req.blocking_session_id, 
+    sp.sql_handle AS connection_sql_handle, 
+    LEFT (ISNULL (req.wait_type, ''), 50) AS wait_type, 
+    LEFT (ISNULL (req.wait_resource, ''), 40) AS wait_resource, 
+    LEFT (req.last_wait_type, 50) AS last_wait_type, 
+    -- sysprocesses is the only way to get open_tran count for sessions w/o an active request (SQLBUD #487091)
+    CASE 
+      WHEN req.open_transaction_count IS NOT NULL THEN req.open_transaction_count 
+      ELSE (SELECT open_tran FROM master.dbo.sysprocesses sysproc WHERE sess.session_id = sysproc.spid) 
+    END AS open_trans, 
+    LEFT (CASE COALESCE(req.transaction_isolation_level, sess.transaction_isolation_level)
+      WHEN 0 THEN '0-Read Committed' 
+      WHEN 1 THEN '1-Read Uncommitted (NOLOCK)' 
+      WHEN 2 THEN '2-Read Committed' 
+      WHEN 3 THEN '3-Repeatable Read' 
+      WHEN 4 THEN '4-Serializable' 
+      WHEN 5 THEN '5-Snapshot' 
+      ELSE CONVERT (varchar(30), req.transaction_isolation_level) + '-UNKNOWN' 
+    END, 30) AS transaction_isolation_level, 
+    sess.is_user_process, 
+    req.cpu_time AS request_cpu_time, 
+    -- CASE stmts necessary to workaround SQLBUD #438189 (fixed in SP2)
+    CASE WHEN (@servermajorversion &gt; 9) OR (@servermajorversion = 9 AND SERVERPROPERTY ('ProductLevel') &gt;= 'SP2' COLLATE Latin1_General_BIN) 
+      THEN req.logical_reads ELSE req.logical_reads - sess.logical_reads END AS request_logical_reads, 
+    CASE WHEN (@servermajorversion &gt; 9) OR (@servermajorversion = 9 AND SERVERPROPERTY ('ProductLevel') &gt;= 'SP2' COLLATE Latin1_General_BIN) 
+      THEN req.reads ELSE req.reads - sess.reads END AS request_reads, 
+    CASE WHEN (@servermajorversion &gt; 9) OR (@servermajorversion = 9 AND SERVERPROPERTY ('ProductLevel') &gt;= 'SP2' COLLATE Latin1_General_BIN)
+      THEN req.writes ELSE req.writes - sess.writes END AS request_writes, 
+    sess.memory_usage, 
+    sess.cpu_time AS session_cpu_time, 
+    sess.reads AS session_reads, 
+    sess.writes AS session_writes, 
+    sess.logical_reads AS session_logical_reads, 
+    sess.total_scheduled_time, 
+    sess.total_elapsed_time, 
+    sess.last_request_start_time, 
+    sess.last_request_end_time, 
+    sess.row_count AS session_row_count, 
+    sess.prev_error, 
+    req.open_resultset_count AS open_resultsets, 
+    req.total_elapsed_time AS request_total_elapsed_time, 
+    CONVERT (decimal(5,2), req.percent_complete) AS percent_complete, 
+    req.estimated_completion_time AS est_completion_time, 
+    req.transaction_id, 
+    req.start_time AS request_start_time, 
+    LEFT (req.status, 15) AS request_status, 
+    req.command, 
+    req.plan_handle, 
+    req.sql_handle, 
+    req.statement_start_offset, 
+    req.statement_end_offset, 
+    req.database_id, 
+    req.[user_id], 
+    req.executing_managed_code, 
+--    tasks.pending_io_count, 
+    sess.login_time, 
+    LEFT (sess.[host_name], 20) AS [host_name], 
+    LEFT (ISNULL (sess.program_name, ''), 50) AS program_name, 
+    ISNULL (sess.host_process_id, 0) AS host_process_id, 
+    ISNULL (sess.client_version, 0) AS client_version, 
+    LEFT (ISNULL (sess.client_interface_name, ''), 30) AS client_interface_name, 
+    LEFT (ISNULL (sess.login_name, ''), 30) AS login_name, 
+    LEFT (ISNULL (sess.nt_domain, ''), 30) AS nt_domain, 
+    LEFT (ISNULL (sess.nt_user_name, ''), 20) AS nt_user_name, 
+--    ISNULL (conn.net_packet_size, 0) AS net_packet_size, 
+--    LEFT (ISNULL (conn.client_net_address, ''), 20) AS client_net_address, 
+    sp.net_address, 
+    LEFT (sess.status, 15) AS session_status, 
+    sql.text
+FROM master.dbo.sysprocesses sp 
+INNER JOIN sys.dm_exec_requests req ON sp.spid = req.session_id 
+INNER JOIN sys.dm_exec_sessions sess ON sess.session_id = req.session_id 
+OUTER APPLY sys.dm_exec_sql_text (CASE WHEN req.sql_handle IS NOT NULL then req.sql_handle ELSE sp.sql_handle END) AS sql
+WHERE sess.session_id = @SessionId</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@SessionId">
+            <Value>=Parameters!SessionId.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <DataSourceName>SqlNexus</DataSourceName>
+      </Query>
+      <Fields>
+        <Field Name="session_id">
+          <rd:TypeName>System.Int16</rd:TypeName>
+          <DataField>session_id</DataField>
+        </Field>
+        <Field Name="request_id">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>request_id</DataField>
+        </Field>
+        <Field Name="ecid">
+          <rd:TypeName>System.Int16</rd:TypeName>
+          <DataField>ecid</DataField>
+        </Field>
+        <Field Name="blocked">
+          <rd:TypeName>System.Int16</rd:TypeName>
+          <DataField>blocked</DataField>
+        </Field>
+        <Field Name="blocking_session_id">
+          <rd:TypeName>System.Int16</rd:TypeName>
+          <DataField>blocking_session_id</DataField>
+        </Field>
+        <Field Name="connection_sql_handle">
+          <rd:TypeName>System.Byte[]</rd:TypeName>
+          <DataField>connection_sql_handle</DataField>
+        </Field>
+        <Field Name="wait_type">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>wait_type</DataField>
+        </Field>
+        <Field Name="wait_resource">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>wait_resource</DataField>
+        </Field>
+        <Field Name="last_wait_type">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>last_wait_type</DataField>
+        </Field>
+        <Field Name="open_trans">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>open_trans</DataField>
+        </Field>
+        <Field Name="transaction_isolation_level">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>transaction_isolation_level</DataField>
+        </Field>
+        <Field Name="is_user_process">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>is_user_process</DataField>
+        </Field>
+        <Field Name="request_cpu_time">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>request_cpu_time</DataField>
+        </Field>
+        <Field Name="request_logical_reads">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>request_logical_reads</DataField>
+        </Field>
+        <Field Name="request_reads">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>request_reads</DataField>
+        </Field>
+        <Field Name="request_writes">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>request_writes</DataField>
+        </Field>
+        <Field Name="memory_usage">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>memory_usage</DataField>
+        </Field>
+        <Field Name="session_cpu_time">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>session_cpu_time</DataField>
+        </Field>
+        <Field Name="session_reads">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>session_reads</DataField>
+        </Field>
+        <Field Name="session_writes">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>session_writes</DataField>
+        </Field>
+        <Field Name="session_logical_reads">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>session_logical_reads</DataField>
+        </Field>
+        <Field Name="total_scheduled_time">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>total_scheduled_time</DataField>
+        </Field>
+        <Field Name="total_elapsed_time">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>total_elapsed_time</DataField>
+        </Field>
+        <Field Name="last_request_start_time">
+          <rd:TypeName>System.DateTime</rd:TypeName>
+          <DataField>last_request_start_time</DataField>
+        </Field>
+        <Field Name="last_request_end_time">
+          <rd:TypeName>System.DateTime</rd:TypeName>
+          <DataField>last_request_end_time</DataField>
+        </Field>
+        <Field Name="session_row_count">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>session_row_count</DataField>
+        </Field>
+        <Field Name="prev_error">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>prev_error</DataField>
+        </Field>
+        <Field Name="open_resultsets">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>open_resultsets</DataField>
+        </Field>
+        <Field Name="request_total_elapsed_time">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>request_total_elapsed_time</DataField>
+        </Field>
+        <Field Name="percent_complete">
+          <rd:TypeName>System.Decimal</rd:TypeName>
+          <DataField>percent_complete</DataField>
+        </Field>
+        <Field Name="est_completion_time">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>est_completion_time</DataField>
+        </Field>
+        <Field Name="transaction_id">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>transaction_id</DataField>
+        </Field>
+        <Field Name="request_start_time">
+          <rd:TypeName>System.DateTime</rd:TypeName>
+          <DataField>request_start_time</DataField>
+        </Field>
+        <Field Name="request_status">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>request_status</DataField>
+        </Field>
+        <Field Name="command">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>command</DataField>
+        </Field>
+        <Field Name="plan_handle">
+          <rd:TypeName>System.Byte[]</rd:TypeName>
+          <DataField>plan_handle</DataField>
+        </Field>
+        <Field Name="sql_handle">
+          <rd:TypeName>System.Byte[]</rd:TypeName>
+          <DataField>sql_handle</DataField>
+        </Field>
+        <Field Name="statement_start_offset">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>statement_start_offset</DataField>
+        </Field>
+        <Field Name="statement_end_offset">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>statement_end_offset</DataField>
+        </Field>
+        <Field Name="database_id">
+          <rd:TypeName>System.Int16</rd:TypeName>
+          <DataField>database_id</DataField>
+        </Field>
+        <Field Name="user_id">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>user_id</DataField>
+        </Field>
+        <Field Name="executing_managed_code">
+          <rd:TypeName>System.Boolean</rd:TypeName>
+          <DataField>executing_managed_code</DataField>
+        </Field>
+        <Field Name="login_time">
+          <rd:TypeName>System.DateTime</rd:TypeName>
+          <DataField>login_time</DataField>
+        </Field>
+        <Field Name="host_name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>host_name</DataField>
+        </Field>
+        <Field Name="program_name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>program_name</DataField>
+        </Field>
+        <Field Name="host_process_id">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>host_process_id</DataField>
+        </Field>
+        <Field Name="client_version">
+          <rd:TypeName>System.Int32</rd:TypeName>
+          <DataField>client_version</DataField>
+        </Field>
+        <Field Name="client_interface_name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>client_interface_name</DataField>
+        </Field>
+        <Field Name="login_name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>login_name</DataField>
+        </Field>
+        <Field Name="nt_domain">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>nt_domain</DataField>
+        </Field>
+        <Field Name="nt_user_name">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>nt_user_name</DataField>
+        </Field>
+        <Field Name="net_address">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>net_address</DataField>
+        </Field>
+        <Field Name="session_status">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>session_status</DataField>
+        </Field>
+        <Field Name="text">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>text</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <CodeModules>
+    <CodeModule>System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</CodeModule>
+    <CodeModule>System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</CodeModule>
+  </CodeModules>
+  <Code />
+  <Width>9.375in</Width>
+  <InteractiveHeight>11in</InteractiveHeight>
+  <Language>en-US</Language>
+  <TopMargin>1in</TopMargin>
+</Report>

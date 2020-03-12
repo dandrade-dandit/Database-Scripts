@@ -1,0 +1,233 @@
+--TRACE
+tail -f /u01/rdbms/oracle/diag/rdbms/ifrprod/ifrprod1/trace/alert_ifrprod1.log
+
+tail -f /u01/rdbms/oracle/diag/rdbms/ifrprod/ifrprod2/trace/alert_ifrprod2.log
+
+
+--*****************************************************************************
+--COMANDOS PARA LIGAR E DESLIGAR AS INSTANCES
+--*****************************************************************************
+Start/Stop All Instances with SRVCTL
+Executar com usuário oracle.
+
+/*****procedimento para startar e shutar as instances especificas********/
+
+--Para Instancia 1
+srvctl stop instance -d ifrprod -i ifrprod1
+srvctl start instance -d ifrprod -i ifrprod1
+
+srvctl status instance -d ifrprod -i ifrprod1
+
+--Para Instancia 2
+srvctl stop instance -d ifrprod -i ifrprod2
+srvctl start instance -d ifrprod -i ifrprod2
+
+srvctl status instance -d ifrprod -i ifrprod2
+
+
+/****procedimento para parar todas as instances****/
+srvctl start database -d ifrprod
+srvctl stop database -d ifrprod
+
+--*****************************************************************************
+--COMANDOS PARA LIGAR E DESLIGAR O DBCONSOLE
+--*****************************************************************************
+Executar como oracle nas 2 instancias...
+--para parar o dbconsole
+emctl stop dbconsole
+
+--para subir o dbconsole
+emctl stop dbconsole
+
+--status do dbconsole
+emctl status dbconsole
+
+--*****************************************************************************
+--SCRIPTS ORACLE - BINÁRIOS E CONFIGURAÇÃO
+--*****************************************************************************
+Check the Health of the Cluster - (Clusterized Command)
+Executar com usuário grid.
+
+-> crsctl check cluster
+
+--OUTROS--
+Check CRS Status
+-> crsctl check crs
+Check Clusterware Resources
+-> crs_stat -t -v
+Check Cluster Nodes
+-> olsnodes -n
+Check Oracle TNS Listener Process on Both Nodes
+-> ps -ef | grep lsnr | grep -v 'grep' | grep -v 'ocfs' | awk '{print $9}'
+Check Oracle Cluster Registry (OCR)
+-> ocrcheck
+Check Voting Disk
+-> crsctl query css votedisk
+
+do usuário oracle -> su - grid -c "crs_stat -t -v"
+
+--*****************************************************************************
+All Oracle Instances - (Database Status)
+Executar com usuário oracle.
+
+-> srvctl status database -d racdb
+
+--*****************************************************************************
+Single Oracle Instance - (Status of Specific Instance)
+Executar com usuário oracle.
+
+-> srvctl status instance -d racdb -i racdb1
+
+--*****************************************************************************
+Node Applications - (Status)
+Executar com usuário oracle.
+
+-> srvctl status nodeapps
+
+--*****************************************************************************
+Node Applications - (Configuration)
+Executar com usuário oracle.
+
+-> srvctl config nodeapps
+
+--*****************************************************************************
+List all Configured Databases
+Executar com usuário oracle.
+
+-> srvctl config database
+
+--*****************************************************************************
+Database - (Configuration)
+Executar com usuário oracle.
+
+-> srvctl config database -d racdb -a
+
+--*****************************************************************************
+ASM - (Status)
+Executar com usuário oracle.
+
+-> srvctl status asm -a
+
+--*****************************************************************************
+ASM - (Configuration)
+Executar com usuário oracle.
+
+-> srvctl config asm -a
+
+--*****************************************************************************
+TNS listener - (Status)
+Executar com usuário oracle.
+
+-> srvctl status listener
+
+--*****************************************************************************
+TNS listener - (Configuration)
+Executar com usuário oracle.
+
+-> srvctl config listener -a
+
+--*****************************************************************************
+SCAN - (Status)
+Executar com usuário oracle.
+
+-> srvctl status scan
+
+--*****************************************************************************
+SCAN - (Configuration)
+Executar com usuário oracle.
+
+-> srvctl config scan
+
+--*****************************************************************************
+VIP - (Status of Specific Node)
+Executar com usuário oracle.
+
+-> srvctl status vip -n racnode1
+-> srvctl status vip -n racnode2
+
+--*****************************************************************************
+VIP - (Configuration of Specific Node)
+Executar com usuário oracle.
+
+-> srvctl config vip -n racnode1
+-> srvctl config vip -n racnode2
+
+--*****************************************************************************
+Configuration for Node Applications - (VIP, GSD, ONS, Listener)
+Executar com usuário oracle.
+
+-> srvctl config nodeapps -a -g -s
+
+--*****************************************************************************
+Verifying Clock Synchronization across the Cluster Nodes
+Executar com usuário oracle.
+
+-> cluvfy comp clocksync -verbose
+
+--*****************************************************************************
+All running instances in the cluster - (SQL)
+Executar com usuário oracle.
+
+-> 
+SELECT
+    inst_id
+  , instance_number inst_no
+  , instance_name inst_name
+  , parallel
+  , status
+  , database_status db_status
+  , active_state state
+  , host_name host
+FROM gv$instance
+ORDER BY inst_id;
+
+--*****************************************************************************
+All database files and the ASM disk group they reside in - (SQL)
+Executar com usuário oracle.
+
+-> 
+select name from v$datafile
+union
+select member from v$logfile
+union
+select name from v$controlfile
+union
+select name from v$tempfile;
+
+--*****************************************************************************
+ASM Disk Volumes - (SQL)
+Executar com usuário oracle.
+
+-> 
+SELECT path
+FROM   v$asm_disk;
+
+--*****************************************************************************
+Stopping the Oracle Clusterware Stack on the Local Server
+Executar com usuário root.
+
+-> /u01/app/11.2.0/grid/bin/crsctl stop cluster
+-> /u01/app/11.2.0/grid/bin/crsctl stop cluster -all
+
+--*****************************************************************************
+Starting the Oracle Clusterware Stack on the Local Server
+Executar com usuário root.
+
+-> /u01/app/11.2.0/grid/bin/crsctl start cluster
+-> /u01/app/11.2.0/grid/bin/crsctl start cluster -all
+-> /u01/app/11.2.0/grid/bin/crsctl start cluster -n racnode1 racnode2
+
+--*****************************************************************************
+--SCRIPTS ORACLE - BINÁRIOS E CONFIGURAÇÃO
+--*****************************************************************************
+mv common.zip /u01/app/oracle
+cd /u01/app/oracle
+unzip common.zip
+
+ORACLE_PATH=$ORACLE_BASE/common/oracle/sql:.:$ORACLE_HOME/rdbms/admin
+export ORACLE_PATH
+
+@dba_tablespaces
+@help
+
+--*****************************************************************************

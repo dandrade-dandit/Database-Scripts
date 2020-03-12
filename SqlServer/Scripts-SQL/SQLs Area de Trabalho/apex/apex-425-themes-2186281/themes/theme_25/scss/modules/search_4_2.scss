@@ -1,0 +1,54 @@
+/******************************************************************************
+
+File Name:    search_4_2.scss
+Purpose:      search  results
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+
+ul.sSearchResultsReport {
+	margin: 0 0 10px 0;
+	padding: 0;
+	list-style: none;
+	}
+	ul.sSearchResultsReport li {
+		display: block;
+		list-style: none;
+		padding: 0 0 10px 0;
+		margin: 0;
+		}
+		ul.sSearchResultsReport li span.title {
+			display: block;
+			}
+		ul.sSearchResultsReport li span.title a {
+			font: bold 16px/24px $fontFamily;
+			color: #3467A9;
+			text-decoration: underline;
+			clear: both;
+			}
+		ul.sSearchResultsReport li span.description {
+			font: normal 13px/16px $fontFamily;
+			color: #333;
+			display: block;
+			}
+		ul.sSearchResultsReport li span.type {
+			font: normal 11px/16px $fontFamily;
+			padding: 0 10px 0 0;
+			color: #666;
+			}
+			ul.sSearchResultsReport li span.last_modified {
+				font: normal 13px/16px $fontFamily;
+				padding: 0 10px 0 0;
+				color: #666;
+				}

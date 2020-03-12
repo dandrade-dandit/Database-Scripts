@@ -1,0 +1,723 @@
+/******************************************************************************
+
+File Name:    icons_4_2.scss
+Purpose:      all icons and image sprites
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Mixins and Common Sprites
+******************************************************************************/
+.bgspr {
+  background-image: url(../images/app_sprite_4_2.png);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  @media (-webkit-min-device-pixel-ratio: 1.5), (-moz-min-device-pixel-ratio: 1.5) {
+    background-image: url(../images/app_sprite_4_2_2x.png);
+    background-size: 200px 1200px;
+  }
+}
+
+
+.iconTiny {
+  width: 16px;
+  height: 16px;
+  @extend .bgspr;
+}
+.iconMini {
+  width: 20px;
+  height: 20px;
+  @extend .bgspr;
+}
+.iconSmall {
+  width: 24px;
+  height: 24px;
+  @extend .bgspr;
+}
+.iconMedium {
+  width: 32px;
+  height: 32px;
+  @extend .bgspr;
+}
+.iconLarge {
+  width: 48px;
+  height: 48px;
+  @extend .bgspr;
+}
+
+.iconButton,
+.navIcon,
+.uPaginationPrev img,
+.uPaginationNext img,
+.uRegionControl img,
+.uFileIcon,
+.iconSmall,
+ul.largeLinkList li img,
+.alertMessage img,
+div.uVerticalProgressList ul li img,
+.iconLarge,
+.statusOrb,
+.statusRed,
+.statusGreen,
+.statusGray,
+.statusYellow,
+.statusBlack {
+  @extend .bgspr;
+}
+
+@mixin sprite($size, $x, $y, $width: 0, $height: 0, $imp: '') {
+  $offset: 0;
+  $class: 'normal';
+  @if $size == 16 {
+    $offset: 40;
+  } @else if $size == 20 {
+    $offset: 170;
+  } @else if $size == 24 {
+    $offset: 290;
+  } @else if $size == 32 {
+    $offset: 390;
+  } @else if $size == 48 {
+    $offset: 628;
+  } @else if $size == 64 {
+    $offset: -1; //740
+  } @else {
+    $offset: 0;
+  }
+  
+  @if $width != 0 {
+    width: #{$width}px;
+  }
+  @if $height != 0 {
+    height: #{$height}px;
+  }
+  @if $offset > 0 {
+    background-position: -#{$x*$size}px -#{($y*$size)+$offset}px #{$imp};
+  } @else if $offset == -1 {
+    // Wizard X-Position is 50%
+    background-position: 50% -#{($y*$size)+740}px #{$imp};
+  } @else {
+    background-position: -#{$x}px -#{($y)}px #{$imp};
+  }
+  // @extend .bgspr;
+}
+
+
+/******************************************************************************
+Icons in Buttons
+******************************************************************************/
+
+
+.iconButton {
+  &.uButton {
+    i {margin: 3px 0; width: 16px; height: 16px;}
+    i.iR { margin-left:  2px; }
+    i.iL { margin-right: 2px; }
+    span { padding-right: 8px; }
+    &.iconOnly span {
+      padding: 0 4px;
+    }
+  }
+  &.uButtonLarge {
+    i {margin: 9px 0; width: 20px; height: 20px;}
+    i.iR { margin-left:  4px; }
+    i.iL { margin-right: 4px; }
+    span { padding-right: 12px; }
+    &.iconOnly span {
+      padding: 0 8px;
+    }
+  }
+  i.iL {
+    display: none;
+  }
+  &.iconLeft {
+    i.iL {
+      display: inline-block;
+    }
+    i.iR {
+      display: none;
+    }
+    &.uButtonLarge {
+      span { padding-left: 12px; padding-right: 16px;}
+    }
+    &.uButton {
+      span { padding-left: 8px;  padding-right: 12px;}
+    }
+  }
+/*   &.iconOnly {
+    &.uButtonLarge span { padding: 0 8px; }
+    &.uButton span { padding: 0 4px; }
+  } */
+  i {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-left: 4px;
+    @extend .bgspr;
+  }
+}
+
+/******************************************************************************
+16x16 Icons
+******************************************************************************/
+
+/* Dark Icons */
+
+.iconTiny.user,
+.uButton.user i              {@include sprite(16,0,0);}
+
+.iconTiny.help, 
+.uButton.help i              {@include sprite(16,1,0);}
+
+.iconTiny.gear, 
+.uButton.gear i              {@include sprite(16,2,0);}
+
+.iconTiny.mobile, 
+.uButton.mobile i            {@include sprite(16,3,0);}
+
+.iconTiny.check, 
+.uButton.check i             {@include sprite(16,4,0);}
+
+.iconTiny.lock, 
+.uButton.lock i              {@include sprite(16,5,0);}
+
+.iconTiny.unlock, 
+.uButton.unlock i            {@include sprite(16,6,0);}
+
+.iconTiny.chat, 
+.uButton.chat i              {@include sprite(16,7,0);}
+
+.iconTiny.home, 
+.uButton.home i              {@include sprite(16,8,0);}
+
+.iconTiny.cart, 
+.uButton.cart i              {@include sprite(16,9,0);}
+
+.iconTiny.plus, 
+.uButton.plus i              {@include sprite(16,0,1);}
+
+.iconTiny.rightarrow, 
+.uButton.rightarrow i        {@include sprite(16,1,1);}
+
+.iconTiny.leftarrow, 
+.uButton.leftarrow i         {@include sprite(16,2,1);}
+
+.iconTiny.downarrow, 
+.uButton.downarrow i         {@include sprite(16,3,1);}
+
+.iconTiny.uparrow, 
+.uButton.uparrow i           {@include sprite(16,4,1);}
+
+.iconTiny.close, 
+.uButton.close i             {@include sprite(16,5,1);}
+
+.iconTiny.edit, 
+.uButton.edit i              {@include sprite(16,6,1);}
+
+.iconTiny.comment, 
+.uButton.comment i           {@include sprite(16,7,1);}
+
+.iconTiny.search, 
+.uButton.search i            {@include sprite(16,8,1);}
+
+.iconTiny.copy, 
+.uButton.copy i              {@include sprite(16,9,1);}
+
+/* Light Icons */
+
+.iconTiny.iconLight.user, 
+img.navIcon.user,
+.uButton.uHotButton.user i              {@include sprite(16,0,2);}
+
+.iconTiny.iconLight.help, 
+.uButton.uHotButton.help i              {@include sprite(16,1,2);}
+
+.iconTiny.iconLight.gear, 
+.uButton.uHotButton.gear i              {@include sprite(16,2,2);}
+
+.iconTiny.iconLight.mobile, 
+.uButton.uHotButton.mobile i            {@include sprite(16,3,2);}
+
+.iconTiny.iconLight.check, 
+.uButton.uHotButton.check i             {@include sprite(16,4,2);}
+
+.iconTiny.iconLight.lock, 
+.uButton.uHotButton.lock i              {@include sprite(16,5,2);}
+
+.iconTiny.iconLight.unlock, 
+.uButton.uHotButton.unlock i            {@include sprite(16,6,2);}
+
+.iconTiny.iconLight.chat, 
+.uButton.uHotButton.chat i              {@include sprite(16,7,2);}
+
+.iconTiny.iconLight.home, 
+.uButton.uHotButton.home i              {@include sprite(16,8,2);}
+
+.iconTiny.iconLight.cart, 
+.uButton.uHotButton.cart i              {@include sprite(16,9,2);}
+
+.iconTiny.iconLight.plus, 
+.uButton.uHotButton.plus i              {@include sprite(16,0,3);}
+
+.iconTiny.iconLight.rightarrow, 
+.uButton.uHotButton.rightarrow i        {@include sprite(16,1,3);}
+
+.iconTiny.iconLight.leftarrow, 
+.uButton.uHotButton.leftarrow i         {@include sprite(16,2,3);}
+
+.iconTiny.iconLight.downarrow, 
+.uButton.uHotButton.downarrow i         {@include sprite(16,3,3);}
+
+.iconTiny.iconLight.uparrow, 
+.uButton.uHotButton.uparrow i           {@include sprite(16,4,3);}
+
+.iconTiny.iconLight.close, 
+.uButton.uHotButton.close i             {@include sprite(16,5,3);}
+
+.iconTiny.iconLight.edit, 
+.uButton.uHotButton.edit i              {@include sprite(16,6,3);}
+
+.iconTiny.iconLight.comment, 
+.uButton.uHotButton.comment i           {@include sprite(16,7,3);}
+
+.iconTiny.iconLight.search, 
+.uButton.uHotButton.search i            {@include sprite(16,8,3);}
+
+.iconTiny.iconLight.copy, 
+.uButton.uHotButton.copy i              {@include sprite(16,9,3);}
+
+/* Additonal Tiny Icons */
+
+.iconTiny.orbGreen,
+img.statusOrb.green,
+img.statusGreen                         {@include sprite(16,0,5);}
+
+.iconTiny.orbRed,
+img.statusOrb.red,
+img.statusRed                           {@include sprite(16,1,5);}
+
+.iconTiny.orbGray,
+img.statusOrb.gray,
+img.statusGray                          {@include sprite(16,2,5);}
+
+.iconTiny.orbYellow,
+img.statusOrb.yellow,
+img.statusYellow                        {@include sprite(16,3,5);}
+
+.iconTiny.orbBlack,
+img.statusOrb.black,
+img.statusBlack                         {@include sprite(16,4,5);}
+
+img.uAsterisk                           {@include sprite(16,2,4,8,11);@extend .bgspr;};
+
+.iconTiny.file,
+img.uFileIcon.generic                   {@include sprite(16,5,5)};
+
+.iconTiny.excel,
+img.uFileIcon.excel                     {@include sprite(16,6,5)};
+
+.iconTiny.pdf,
+img.uFileIcon.pdf                       {@include sprite(16,7,5)};
+
+.iconTiny.powerpoint,
+img.uFileIcon.powerpoint                {@include sprite(16,8,5)};
+
+.iconTiny.word,
+img.uFileIcon.word                      {@include sprite(16,9,5)};
+
+.iconTiny.image,
+img.uFileIcon.image                     {@include sprite(16,10,5)};
+
+.iconTiny.rightarrowCircle,
+a.uRegionControl img                    {@include sprite(16,4,4)};
+
+.iconTiny.rightarrowCircle,
+a.uRegionControl.uRegionCollapsed img   {@include sprite(16,4,4)};
+
+.iconTiny.downarrowCircle,
+a.uRegionControl img                    {@include sprite(16,5,4)};
+
+.iconTiny.closeBox,
+a.closeMessage,
+a.uCloseMessage                         {@include sprite(16,3,4);@extend .bgspr;};
+
+a.uPaginationPrev img                   {@include sprite(16,6,4,14,14)};
+a.uPaginationNext img                   {@include sprite(16,7,4,14,14)};
+
+/* Comment Bubbles Arrow */
+ul.commentBubbles > li {
+  & > span {@include sprite(16,11,0);@extend .bgspr}
+  &.grayComment > span {@include sprite(16,11,1);}
+}
+
+
+/******************************************************************************
+20x20 Icons
+******************************************************************************/
+
+/* Dark Icons */
+
+.iconMini.user, 
+.uButtonLarge.user i              {@include sprite(20,0,0);}
+
+.iconMini.help, 
+.uButtonLarge.help i              {@include sprite(20,1,0);}
+
+.iconMini.gear, 
+.uButtonLarge.gear i              {@include sprite(20,2,0);}
+
+.iconMini.mobile, 
+.uButtonLarge.mobile i            {@include sprite(20,3,0);}
+
+.iconMini.check, 
+.uButtonLarge.check i             {@include sprite(20,4,0);}
+
+.iconMini.lock, 
+.uButtonLarge.lock i              {@include sprite(20,5,0);}
+
+.iconMini.unlock, 
+.uButtonLarge.unlock i            {@include sprite(20,6,0);}
+
+.iconMini.chat, 
+.uButtonLarge.chat i              {@include sprite(20,7,0);}
+
+.iconMini.home, 
+.uButtonLarge.home i              {@include sprite(20,8,0);}
+
+.iconMini.cart, 
+.uButtonLarge.cart i              {@include sprite(20,9,0);}
+
+.iconMini.plus, 
+.uButtonLarge.plus i              {@include sprite(20,0,1);}
+
+.iconMini.rightarrow, 
+.uButtonLarge.rightarrow i        {@include sprite(20,1,1);}
+
+.iconMini.leftarrow, 
+.uButtonLarge.leftarrow i         {@include sprite(20,2,1);}
+
+.iconMini.downarrow, 
+.uButtonLarge.downarrow i         {@include sprite(20,3,1);}
+
+.iconMini.uparrow, 
+.uButtonLarge.uparrow i           {@include sprite(20,4,1);}
+
+.iconMini.close, 
+.uButtonLarge.close i             {@include sprite(20,5,1);}
+
+.iconMini.edit, 
+.uButtonLarge.edit i              {@include sprite(20,6,1);}
+
+.iconMini.comment, 
+.uButtonLarge.comment i           {@include sprite(20,7,1);}
+
+.iconMini.search, 
+.uButtonLarge.search i            {@include sprite(20,8,1);}
+
+.iconMini.copy, 
+.uButtonLarge.copy i              {@include sprite(20,9,1);}
+
+/* Light Icons */
+
+.iconMini.iconLightuser, 
+.uButtonLarge.uHotButton.user i              {@include sprite(20,0,2);}
+
+.iconMini.iconLighthelp, 
+.uButtonLarge.uHotButton.help i              {@include sprite(20,1,2);}
+
+.iconMini.iconLightgear, 
+.uButtonLarge.uHotButton.gear i              {@include sprite(20,2,2);}
+
+.iconMini.iconLightmobile, 
+.uButtonLarge.uHotButton.mobile i            {@include sprite(20,3,2);}
+
+.iconMini.iconLightcheck, 
+.uButtonLarge.uHotButton.check i             {@include sprite(20,4,2);}
+
+.iconMini.iconLightlock, 
+.uButtonLarge.uHotButton.lock i              {@include sprite(20,5,2);}
+
+.iconMini.iconLightunlock, 
+.uButtonLarge.uHotButton.unlock i            {@include sprite(20,6,2);}
+
+.iconMini.iconLightchat, 
+.uButtonLarge.uHotButton.chat i              {@include sprite(20,7,2);}
+
+.iconMini.iconLighthome, 
+.uButtonLarge.uHotButton.home i              {@include sprite(20,8,2);}
+
+.iconMini.iconLightcart, 
+.uButtonLarge.uHotButton.cart i              {@include sprite(20,9,2);}
+
+.iconMini.iconLightplus, 
+.uButtonLarge.uHotButton.plus i              {@include sprite(20,0,3);}
+
+.iconMini.iconLightrightarrow, 
+.uButtonLarge.uHotButton.rightarrow i        {@include sprite(20,1,3);}
+
+.iconMini.iconLightleftarrow, 
+.uButtonLarge.uHotButton.leftarrow i         {@include sprite(20,2,3);}
+
+.iconMini.iconLightdownarrow, 
+.uButtonLarge.uHotButton.downarrow i         {@include sprite(20,3,3);}
+
+.iconMini.iconLightuparrow, 
+.uButtonLarge.uHotButton.uparrow i           {@include sprite(20,4,3);}
+
+.iconMini.iconLightclose, 
+.uButtonLarge.uHotButton.close i             {@include sprite(20,5,3);}
+
+.iconMini.iconLightedit, 
+.uButtonLarge.uHotButton.edit i              {@include sprite(20,6,3);}
+
+.iconMini.iconLightcomment, 
+.uButtonLarge.uHotButton.comment i           {@include sprite(20,7,3);}
+
+.iconMini.iconLightsearch, 
+.uButtonLarge.uHotButton.search i            {@include sprite(20,8,3);}
+
+.iconMini.iconLightcopy, 
+.uButtonLarge.uHotButton.copy i              {@include sprite(20,9,3);}
+
+.iconMini.iconPopup,
+img.uPopupLOVIcon                            {@include sprite(20,0,4,18,18); @extend .bgspr;}
+
+/******************************************************************************
+24x24 Icons & Sprites
+******************************************************************************/
+
+.iconSmall.orbGreen                           {@include sprite(24,0,2);}
+.iconSmall.orbRed                             {@include sprite(24,1,2);}
+.iconSmall.orbGray                            {@include sprite(24,2,2);}
+.iconSmall.orbYellow                          {@include sprite(24,3,2);}
+.iconSmall.orbBlack                           {@include sprite(24,4,2);}
+
+#apexir_SEARCHDROPROOT.apexir_SEARCHICON      {@include sprite(24,5,1,24,17); @extend .bgspr;}
+
+/******************************************************************************
+24x24 Interactive Report Pills
+******************************************************************************/
+#apexir_SEARCH_BAR_OPTIONS {
+  .irr-pill span {
+			position: relative;
+			top: 0;
+			text-indent: -9999px;
+			width: 24px;
+			height: 24px;
+			display: block;
+			margin: 4px;
+      @extend .bgspr;
+  }
+	.irr-pill-icons-left-active span {
+	  @include sprite(24,0,0,0,0,!important);
+/*    background: url(../images/app_theme.png) 0 -538px no-repeat !important;*/
+	}
+	.irr-pill-icons-left span {
+	  @include sprite(24,0,1,!important);
+/*    background: url(../images/app_theme.png) 0 -560px no-repeat !important;*/
+	}
+	.irr-pill-report-right-active span,
+	.irr-pill-report-active span,
+	.irr-pill-report-center-active span,
+	.irr-pill-report-left-active span {
+	  @include sprite(24,1,0,0,0,!important);
+/*    background: url(../images/app_theme.png) -22px -538px no-repeat !important;*/
+	}
+	.irr-pill-report-right span,
+	.irr-pill-report span,
+	.irr-pill-report-center span,
+	.irr-pill-report-left span {
+	  @include sprite(24,1,1,0,0,!important);
+/*    background: url(../images/app_theme.png) -22px -560px no-repeat !important;*/
+	}
+	.irr-pill-group span {
+	  @include sprite(24,2,1,0,0,!important);
+/*    background: url(../images/app_theme.png) -44px -538px no-repeat !important;*/
+	}
+	.irr-pill-group-active span {
+	  @include sprite(24,2,0,0,0,!important);
+/*    background: url(../images/app_theme.png) -44px -560px no-repeat !important;*/
+	}
+	.irr-pill-chart span {
+	  @include sprite(24,3,1,0,0,!important);
+/*    background: url(../images/app_theme.png) -66px -538px no-repeat !important;*/
+	}
+	.irr-pill-chart-active span {
+	  @include sprite(24,3,0,0,0,!important);
+/*    background: url(../images/app_theme.png) -66px -560px no-repeat !important;*/
+	}
+	.irr-pill-details-right-active span {
+	  @include sprite(24,4,0,0,0,!important);
+/*    background: url(../images/app_theme.png) -88px -538px no-repeat !important;*/
+	}
+	.irr-pill-details-right span {
+	  @include sprite(24,4,1,0,0,!important);
+/*    background: url(../images/app_theme.png) -88px -560px no-repeat !important;*/
+	}
+}
+
+/******************************************************************************
+32x32 Icons & Sprites
+******************************************************************************/
+li.uEndCap span {
+  @include sprite(32,1,0);
+  @extend .bgspr;
+}
+li.uSeparator span {
+  @include sprite(32,0,0);
+  @extend .bgspr;
+}
+li.uStartCap span {
+  @extend .bgspr;
+}
+@media only screen and (max-width: 767px) {
+  li.uStartCap span {
+    @include sprite(32,2,0);
+    @extend .bgspr;
+  }
+}
+.apexir_ACTION_MENU button#apexir_ACTIONSMENUROOT span {
+  @include sprite(32,5,2);
+  /* FIXEDSPRITE */
+  background-position: 100% -454px;
+  @extend .bgspr;
+}
+
+/* List Icons */
+.iconMedium.calendar,
+ul.largeLinkList li img.calendarIcon     {@include sprite(32,0,1)}
+
+.iconMedium.user,
+ul.largeLinkList li img.userIcon         {@include sprite(32,1,1)}
+
+.iconMedium.chart,
+ul.largeLinkList li img.chartIcon        {@include sprite(32,2,1)}
+
+.iconMedium.gear,
+ul.largeLinkList li img,
+ul.largeLinkList li img.gearIcon         {@include sprite(32,3,1)}
+
+.iconMedium.switch,
+ul.largeLinkList li img.switchIcon       {@include sprite(32,4,1)}
+
+.iconMedium.report,
+ul.largeLinkList li img.reportIcon       {@include sprite(32,5,1)}
+
+.iconMedium.form,
+ul.largeLinkList li img.formIcon       {@include sprite(32,4,3)}
+
+.iconMedium.dashboard,
+ul.largeLinkList li img.dashboardIcon       {@include sprite(32,5,3)}
+
+
+.iconMedium.success,
+img.uCheckmarkIcon,
+.alertMessage.green img               {@include sprite(32,0,3); @extend .bgspr;}
+
+.iconMedium.warning,
+img.uWarningIcon,
+.alertMessage.yellow img              {@include sprite(32,1,3); @extend .bgspr;}
+
+.iconMedium.error,
+.alertMessage.red img                 {@include sprite(32,2,3); border: none; @extend .bgspr;}
+
+.iconMedium.info,
+.alertMessage.info img                {@include sprite(32,3,3); @extend .bgspr;}
+
+/* Gloss on CSS Bar Charts */
+div.cbc table.cbc td span.cbc_bar     {@include sprite(32,0,4);@extend .bgspr;}
+
+/* Vertical Progress List */
+div.uVerticalProgressList ul li.first-current img     {@include sprite(32,0,5);}
+div.uVerticalProgressList ul li.current img           {@include sprite(32,1,5);}
+div.uVerticalProgressList ul li.last-current img      {@include sprite(32,2,5);}
+div.uVerticalProgressList ul li.first-non-current img {@include sprite(32,3,5);}
+div.uVerticalProgressList ul li.non-current img       {@include sprite(32,4,5);}
+div.uVerticalProgressList ul li.last-non-current img  {@include sprite(32,5,5);}
+
+/******************************************************************************
+48x48 Icons & Sprites
+******************************************************************************/
+.iconLarge.success               {@include sprite(48,0,0)}
+
+.iconLarge.warning               {@include sprite(48,1,0)}
+
+.iconLarge.error                 {@include sprite(48,2,0); border: none;}
+
+.iconLarge.info                  {@include sprite(48,3,0)}
+
+/******************************************************************************
+64x64 Icons & Sprites
+******************************************************************************/
+div.uHorizontalProgressList ul li     {@include sprite(64,0,1); @extend .bgspr;}
+div.uHorizontalProgressList ul li span{@extend .bgspr;}
+div.uHorizontalProgressList ul li {
+  &.current span,
+  &.first-current span,
+  &.last-current span                        {@include sprite(64,0,5);}
+  
+  &.non-current span,
+  &.first-non-current span,
+  &.last-non-current span                    {@include sprite(64,0,3);}
+  
+  &.non-current span.pastCurrent,
+  &.first-non-current span.pastCurrent,
+  &.last-non-current span.pastCurrent        {@include sprite(64,0,4);}
+  
+  &.last-non-current,
+  &.last-current                             {@include sprite(64,0,2);}
+  
+  &.first-non-current,
+  &.first-current                            {@include sprite(64,0,0);}
+}
+
+
+/******************************************************************************
+Fix below
+******************************************************************************/
+.navActions img.navIcon {
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin: 8px;
+	vertical-align: top;
+	display: block;
+	float: left;
+	width: 20px;
+	height: 20px;
+	&.user {
+	  @include sprite(20,0,0);
+	}
+	&.help {
+  	@include sprite(20,1,0);
+	}
+	&.settings {
+  	@include sprite(20,2,0);
+	}
+	&.mobile {
+  	@include sprite(20,3,0);
+	}
+}
+
+
+/* ==================== */
+/* = File Type Images = */
+/* ==================== */
+img.uFileIcon {
+  width: 16px;
+  height: 16px;
+}
+
+
+/* ============= */
+/* = Orb Icons = */
+/* ============= */
+img.statusOrb {
+  width: 16px;
+  height: 16px;
+}

@@ -1,0 +1,2661 @@
+@import "compass/css3";
+@import "settings/gradient";
+@import "settings/vars";
+
+
+/* ============= */
+/* = Variables = */
+/* ============= */
+$darkblue: #375985;
+$liteblue: #4a6d98;
+
+/* ================ */
+/* = Reset Basics = */
+/* ================ */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
+small, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+/*	-webkit-text-size-adjust:none;*/
+	-webkit-font-smoothing: antialiased;
+}
+th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+}
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after,
+q:before, q:after { content: ""; content: none; }
+ins { background-color: #ff9; color: #000; text-decoration: none; }
+mark { background-color: #ff9; color: #000; font-style: italic; font-weight: bold; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom: 1px dotted; cursor: help; }
+table { border-collapse: collapse; border-spacing: 0; }
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+input, select { vertical-align: middle; }
+
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+.clear {clear: both;}
+
+
+html, body {
+	height: 100%;
+}
+
+a {
+	color: #404040;
+}
+
+/* =============== */
+/* =	Variables	 = */
+/* =============== */
+
+
+
+body {
+	font: normal 12px/16px $fontFamily;
+	margin: 0 auto;
+	background: url(../images/portal/portalContentBG.png) 0 0 repeat #F2F2F2;
+}
+
+/* Override Default CSS */
+header#xHeader {
+	position: fixed;
+	z-index: 100;
+	width: 100%;
+	height: 36px;
+	z-index: 100;
+	hgroup {
+		margin: 0 12px;
+		position: relative;
+		height: 36px;
+		background: none #000;
+	}
+	background: none #000;
+	a#uLogo {
+		margin: 8px 0;
+		display: inline-block;
+		font: bold 14px/20px $fontFamily;
+		color: #AAA;
+		text-decoration: none;
+		img {
+			background: url(../images/portal/portalSprite.png) 0 -96px no-repeat;
+			width: 136px;
+			height: 18px;
+			vertical-align: bottom;
+		}
+	}
+	nav {
+		position: absolute;
+		right: 0;
+		top: 0;
+		margin: 0;
+		& > ul {
+			margin: 0;
+			list-style: none;
+			& > li {
+				display: block;
+				float: left;
+				padding: 8px 0;
+				position: relative;
+				&.pullDownLink a {
+					img {
+						width: 10px;
+						height: 10px;
+						vertical-align: text-top;
+						background: url(../img/c9/c9_sprite.png) -20px 0 no-repeat;
+					}
+					&:hover img {
+						background: url(../img/c9/c9_sprite.png) -30px 0 no-repeat;
+					}
+				}
+				&.active {
+					background-color: #333;
+					a {
+						border-right: 1px solid transparent;
+						color: #DDD;
+						img {
+							background: url(../img/c9/c9_sprite.png) -30px 0 no-repeat;
+						}
+					}
+				}
+				&.current {
+					a {
+						color: #DDD;
+						font-weight: bold;
+					}
+				}
+
+				&:last-child > a {
+					border-right: none;
+				}
+				&:last-child > a {
+					padding-right: 0;
+				}
+				& > span {
+					padding: 0 8px;
+					border-right: 1px solid #333;
+					display: block;
+					color: #999;
+					font: normal 12px/20px $fontFamily;
+					text-decoration: none;
+				}
+				& > a {
+					padding: 0 8px;
+					border-right: 1px solid #333;
+					display: block;
+					color: #999;
+					font: normal 12px/20px $fontFamily;
+					text-decoration: none;
+					&:hover {
+						color: #DDD;
+					}
+				}
+				& > a.uButtonSmall {
+					padding: 0;
+					margin-left: 8px;
+					height: 18px;
+					display: inline-block;
+					font: bold 11px/18px $fontFamily;
+					text-decoration: none;
+					@include border-radius(3px);
+					border: 1px solid #384d6b;
+					@include box-shadow(0 1px 1px rgba(0,0,0,.15));
+					background-color: #384d6b;
+					span {
+						display: block;
+						color: #FFF;
+						text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+						padding: 0 8px;
+						@include border-radius(3px);
+						@include background-gradient(#8fb1e2,#466188);
+						@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+					}
+				}
+/*				& > a.uButtonSmall {
+					padding: 0;
+					margin-left: 8px;
+					height: 18px;
+					@include box-shadow(0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 0 rgba(255, 255, 255, 0.25) inset);
+					border: 1px solid rgba(0,0,0,.75);
+					margin: 0 4px 0 0;
+					text-decoration: none;
+					span {
+						padding: 0 8px;
+						font: bold 11px/18px $fontFamily;
+					}
+				}*/
+			}
+		}
+	}
+	div#menu_resources {
+		width: 160px;
+	}
+	div.menuPullDown {
+		width: 320px;
+		position: absolute;
+		background-color: #222;
+		z-index: 1000;
+		border: 2px solid #000;
+		border-top: none;
+		display: none;
+		@include border-radius(0 0 2px 2px);
+		top: 36px;
+		left: -2px;
+		@include box-shadow(0 2px 2px rgba(0,0,0,.25));
+		ul {
+			margin: 0;
+			list-style: none;
+			li {
+				border-top: 1px solid #444;
+				&:first-child {
+					border-top: none;
+				}
+				a {
+					padding: 4px 8px;
+					display: block;
+					color: #BBB;
+					font: bold 12px/16px $fontFamily;
+					text-decoration: none;
+					&:hover {
+						background-color: #333;
+					};
+					span {
+						display: block;
+						color: #999;
+						font: normal 11px/16px $fontFamily;
+					}
+				}
+			}
+		}
+	}
+}
+
+/* ========================= */
+/* = Header for portal = */
+/* ========================= */
+header#portalHeader {
+	background: url(../images/portal/portalTileSprite.png) 0 -128px repeat-x;
+	position: fixed;
+	top: 36px;
+	width: 100%;
+	z-index: 10;
+	h1 {
+		float: left;
+		width: 240px;
+		font: bold 14px/64px $fontFamily;
+		color: #444;
+		text-shadow: 0 1px 0 rgba(255,255,255,.75);
+		margin: 0;
+		text-indent: 12px;
+		background: url(../images/portal/portalTileSprite.png) 0 -192px no-repeat;
+	}
+	section.rightButtonContainer {
+		position: absolute;
+		right: 0;
+		top: 0;
+		margin: 17px 4px 17px 16px;
+	}
+}
+div#bodyContainer {
+	background: url(../images/portal/portalBGSprite.png) 0 0 repeat-y transparent;
+	min-height: 100%;
+}
+div#portalBody {
+	position: absolute;
+	top: 100px;
+	left: 240px;
+	right: 0;
+	bottom: 0;
+	div#portalBodyInside {
+		min-width: 752px;
+	}
+	div#portalContentContainer {
+		min-width: 752px;
+		padding: 16px;
+		&.hasRightSide {
+			min-width: 520px;
+			margin-right: 200px;
+		}
+		& > section.modalDialog {
+			display: none;
+		}
+	}
+	div#portalSideRegion {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+}
+nav#portalNav {
+	width: 240px;
+	position: fixed;
+	z-index: 10;
+	height: 100%;
+	background: url(../images/portal/portalBGSprite.png) 0 0 repeat-y transparent;
+	left: 0;
+	top: 100px;
+	ul {
+		list-style: none;
+		margin: 0;
+		li {
+			display: block;
+			background: url(../images/portal/portalTileSprite.png) 0 -64px no-repeat;
+			&.active {
+				background: url(../images/portal/portalTileSprite.png) 0 0px no-repeat;
+				a {
+					color: #FFF;
+					text-shadow: 0 -1px rgba(0,0,0,.25);
+					span {
+						color: #417fcd;
+						background-color: #FFF;
+						background-color: rgba(255,255,255,.95);
+						text-shadow: none;
+						&.alerts {
+							background-color: #FFF;
+							color: red;
+						}
+					}
+				}
+			}
+			a {
+				display: block;
+				padding: 12px 12px;
+				font: bold 14px/40px $fontFamily;
+				color: #393f46;
+				text-decoration: none;
+				position: relative;
+			}
+			a span {
+				position: absolute;
+				right: 24px;
+				top: 22px;
+				margin: 0;
+				display: inline-block;
+				padding: 4px 8px;
+				font: bold 12px/12px $fontFamily;
+				@include border-radius(10px);
+				background-color: #417fcd;
+				color: #FFF;
+				text-shadow: none;
+				@include box-shadow(0 1px 1px rgba(0,0,0,.15) inset);
+				&.alerts {
+					background-color: #de1818;
+					color: #FFF;
+				}
+			}
+		}
+	}
+}
+section.searchFilters {
+	margin-bottom: 16px;
+	h2 {
+		font: normal 13px/30px $fontFamily;
+		color: #444;
+		text-shadow: 0 1px 0 rgba(255,255,255,.5);
+		span.searchFilter {
+			margin-left: 8px;
+			display: inline-block;
+			@include border-radius(4px);
+			font: normal 11px/30px $fontFamily;
+			background-color: #FFF;
+			border: 1px solid #AAA;
+			color: #444;
+			@include box-shadow(0 1px 1px rgba(0,0,0,.1));
+			padding-right: 2px;
+			strong {
+				font: bold 11px/30px $fontFamily;
+				display: block;
+				float: left;
+				background: url(../images/portal/portalTileSprite.png) 0 -324px repeat-x;
+				background-color: #DDD;
+				border-right: 1px solid #AAA;
+				@include border-radius(3px 0 0 3px);
+				padding: 0 12px;
+				margin-right: 2px;
+				color: #444;
+			}
+			span.noFilterText {
+				text-shadow: none;
+				color: red;
+				text-decoration: none;
+				padding: 0 4px 0 4px;
+				line-height: 22px;
+				display: inline-block;
+				border: 1px solid transparent;
+				margin: 0 2px;
+				position: relative;
+			}
+			a {
+				text-shadow: none;
+				color: #444;
+				text-decoration: none;
+				padding: 0 22px 0 4px;
+				line-height: 22px;
+				display: inline-block;
+				@include border-radius(3px);
+				border: 1px solid #DDD;
+				background-color: #F8F8F8;
+				margin: 0 2px;
+				position: relative;
+				&.noRemoveButton {
+					padding-right: 4px;
+				}
+				&:hover {
+					img {
+						background: url(../images/portal/portalSprite.png) -96px -48px no-repeat #AAA;
+						border: 1px solid #888;
+					}
+				}
+				img {
+					@include border-radius(3px);
+					margin: 3px;
+					border: 1px solid #DDD;
+					width: 14px;
+					height: 14px;
+					vertical-align: middle;
+					background: url(../images/portal/portalSprite.png) -72px -48px no-repeat #FFF;
+					display: block;
+					position: absolute;
+					right: 0;
+					top: 0;
+				}
+			}
+		}
+		span.filterOperator {
+			font: normal 13px/24px $fontFamily;
+			color: #999;
+			margin: 0 8px;
+		}
+	}
+}
+section.porHeaderBar {
+	float: left;
+	margin: 17px 16px;
+	div.searchBox {
+		font: normal 14px/20px $fontFamily;
+		padding: 0;
+		color: #666;
+		@include border-radius(4px);
+		@include box-shadow(0 1px 1px rgba(0,0,0,.25) inset, 0 1px 0 rgba(255,255,255,.75));
+		background: url(../images/portal/portalTileSprite.png) 0 -630px repeat-x #EEE;
+		float: left;
+		margin-right: 12px;
+		input {
+			border: none;
+			padding: 0;
+			display: block;
+			background: none transparent;
+			font: normal 13px/20px $fontFamily;
+			height: 20px;
+			padding: 4px;
+			color: #333;
+			float: left;
+			width: 240px;
+			@include border-radius(3px 0 0 3px);
+			border: 1px solid #777;
+			border: 1px solid rgba(0,0,0,.40);
+			border-right: none;
+			&:focus {
+				background-color: #FFF;
+			};
+			&::-webkit-input-placeholder {
+				padding-top: 4px;
+			}
+		}
+		a.searchButton {
+			float: left;
+			border: 1px solid #4a6d98;
+			border: 1px solid rgba(0,0,0,.4);
+			font: bold 13px/20px $fontFamily;
+			padding: 4px 8px;
+			color: #FFF;
+			background: url(../images/portal/portalTileSprite.png) 0 -880px repeat-x transparent;
+			@include box-shadow(0 1px 0 rgba(255,255,255,.65), 0 1px 0 rgba(255,255,255,.25) inset);
+			@include border-radius(0 3px 3px 0);
+			text-decoration: none;
+			text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+			&:hover {
+				background: url(../images/portal/portalTileSprite.png) 0 -940px repeat-x transparent;
+			}
+			img {
+				display: block;
+				margin: 1px 0;
+				height: 18px;
+				width: 18px;
+				background: url(../images/portal/portalSprite.png) -72px -24px no-repeat;
+			}
+		}
+	}
+	ul.pillList {
+		float: left;
+		display: block;
+		margin-right: 12px;
+		border: 1px solid #777;
+		border: 1px solid rgba(0,0,0,.40);
+		@include border-radius(4px);
+		height: 28px;
+		@include box-shadow(0 1px 0 rgba(255,255,255,.65), 0 1px 0 rgba(255,255,255,.25) inset);
+		& > li {
+			display: block;
+			float: left;
+			& > a {
+				border-top: none;
+				border-bottom: none;
+				padding: 4px;
+				background: none;
+				box-shadow: none;
+				border-right-color: #AAA;
+				border-right-color: rgba(0,0,0,.25);
+				font: normal 13px/20px $fontFamily;
+				color: #444;
+				text-decoration: none;
+				background: url(../images/portal/portalTileSprite.png) 0 -570px repeat-x transparent;
+				text-shadow: 0 1px 0 rgba(255,255,255,.5);
+			}
+			& > a:hover {
+				background: url(../images/portal/portalTileSprite.png) 0 -690px repeat-x transparent;
+			}
+			&.active > a {
+				background: url(../images/portal/portalTileSprite.png) 0 -690px repeat-x #EEE;
+			}
+			&.textLink {
+				position: relative;
+				&.active > a {
+					background-color: #FFF;
+				}
+				& > a {
+					padding: 4px 8px;
+				}
+			}
+			&:only-child > a {
+				@include border-radius(4px !important);
+			}
+			&:first-child > a {
+				@include border-radius(4px 0 0 4px);
+				border-left: none;
+			}
+			&:last-child > a {
+				@include border-radius(0 4px 4px 0);
+				border-right: none;
+			}
+		}
+	}
+}
+
+div#portalBody section.porRegion {
+	min-width: 100%;
+	@include border-radius(4px);
+	@include box-shadow(0 1px 4px rgba(0,0,0,.10));
+	margin-bottom: 16px;
+	&#hideTitle {
+		div.porHeader {
+			height: 4px;
+			h2 {
+				display: none;
+			}
+		}
+	}
+	div.porLargeHeader {
+		@include border-radius(4px 4px 0 0);
+		background: url(../images/portal/portalTileSprite.png) 0 -450px repeat-x;
+		border: 1px solid #4a6d98;
+		border-bottom: none;
+		@include box-shadow(0 1px 0 rgba(255,255,255,.25) inset, 0 -1px 0 #375985 inset);
+		position: relative;
+		height: 88px;
+		h2 {
+			font: bold 16px/16px $fontFamily;
+			color: #FFF;
+			padding: 12px 12px 2px 12px;
+			text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+		}
+		h3 {
+			font: normal 12px/16px $fontFamily;
+			color: #FFF;
+			padding: 0 12px 12px 12px;
+			text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+		}
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			position: absolute;
+			left: 12px;
+			bottom: 0;
+			li {
+				display: block;
+				float: left;
+				&:first-child a {
+					margin-left: 0;
+				}
+				a {
+					float: left;
+					color: #333;
+					color: rgba(0,0,0,.65);
+					text-align: center;
+					font: bold 13px/32px $fontFamily;
+					text-decoration: none;
+					@include border-radius(4px 4px 0 0);
+					border: 1px solid #4a6d98;
+					border-bottom: none;
+					margin-left: -1px;
+					@include box-shadow(0 -1px 0 rgba(0,0,0,.1) inset);
+					background-clip: padding-box;
+					text-shadow: none;
+					&.active span,
+					&.active:hover span {
+						background: #FFF;
+						color: #222;
+						color: rgba(0,0,0,.75);
+						@include box-shadow(none);
+					}
+					&:hover span{
+						background: #C2D3E9;
+						background: rgba(255,255,255,.75);;
+					}
+					span {
+						color: #333;
+						display: block;
+						padding: 2px 12px 0 12px;
+						background: #84A7D3;
+						background: rgba(255,255,255,.25);;
+/*						@include background-gradient(rgba(255,255,255,.25),rgba(255,255,255,.1));*/
+						@include border-radius(4px 4px 0 0);
+						text-shadow: none;
+					}
+				}
+			}
+		}
+		span.porButtonContainer {
+			position: absolute;
+			top: 0;
+			right: 4px;
+			a {
+				margin: 12px 8px 12px 0;
+				&.standardButton {
+					@include box-shadow(0 1px 0 rgba(255,255,255,.35), 0 1px 0 rgba(255,255,255,.25) inset);
+					border: 1px solid #375985;
+					span {
+						color: #FFF;
+						text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+					}
+				}
+			}
+		}
+	}
+	div.porHeader {
+		@include border-radius(4px 4px 0 0);
+		background: url(../images/portal/portalTileSprite.png) 0 -400px repeat-x;
+		border: 1px solid #4a6d98;
+		border-bottom: 1px solid #375985;
+		@include box-shadow(0 1px 0 rgba(255,255,255,.25) inset);
+		position: relative;
+		h2 {
+			font: bold 13px/16px $fontFamily;
+			color: #FFF;
+			padding: 12px;
+			text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+		}
+		span.porButtonContainer {
+			position: absolute;
+			top: 0;
+			right: 0;
+			a.standardButton {
+				margin: 8px;
+				height: 22px;
+				@include box-shadow(0 1px 0 rgba(255,255,255,.35), 0 1px 0 rgba(255,255,255,.25) inset);
+				img.nextArrow {
+					vertical-align: text-bottom;
+					height: 16px;
+					width: 8px;
+					background: url(../images/portal/portalSprite.png) -72px 0 no-repeat;
+				}
+				span {
+					color: #FFF;
+					text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+					padding: 2px 8px;
+					font-size: 12px;
+				}
+			}
+		}
+	}
+}
+
+div.porContent {
+	@include border-radius(0 0 4px 4px);
+	background-color: #FFF;
+	border: 1px solid #999;
+	border-top: none;
+	small.notice,
+	span.nodatafound {
+		font: normal 11px/16px $fontFamily;
+		color: #767676;
+		padding: 8px;
+		display: block;
+	}
+	div.porContentHeader {
+		background: url(../images/portal/portalTileSprite.png) 0 -1000px repeat-x #FFFFFF;
+		border-bottom: 1px solid #999;
+		ul.pillList {
+			float: left;
+			display: block;
+			border: 1px solid #999;
+			border-top: 1px solid #777;
+			@include border-radius(4px);
+			height: 24px;
+			@include box-shadow(0 1px 0 rgba(255,255,255,.75), 0 1px 0 rgba(0,0,0,.05) inset);
+			li {
+				display: block;
+				float: left;
+				a {
+					border-top: none;
+					border-bottom: none;
+					padding: 4px 8px;
+					background: none;
+					box-shadow: none;
+					border-right-color: #AAA;
+					text-shadow: 0 1px 0 rgba(255,255,255,.5);
+					color: #444;
+					text-decoration: none;
+					background: url(../images/portal/portalTileSprite.png) 0 -570px repeat-x transparent;
+					span {
+						font: normal 11px/16px $fontFamily;
+					}
+				}
+				&.active a,
+				a:hover {
+					background: url(../images/portal/portalTileSprite.png) 0 -690px repeat-x transparent;
+				}
+				&.textLink a {
+					padding: 4px 8px;
+				}
+				&:only-child a {
+					@include border-radius(4px !important);
+				}
+				&:first-child a {
+					@include border-radius(4px 0 0 4px);
+					border-left: none;
+				}
+				&:last-child a {
+					@include border-radius(0 4px 4px 0);
+					border-right: none;
+				}
+			}
+		}
+		ul.linkList {
+			margin: 0;
+			list-style: none;
+			li {
+				display: block;
+				float: left;
+				a {
+					display: block;
+					margin: 6px 0 6px 6px;
+					padding: 6px;
+					text-align: center;
+					min-width: 60px;
+					font: normal 11px/14px $fontFamily;
+					color: #555;
+					text-shadow: 0 1px 0 rgba(255,255,255,.45);
+					text-decoration: none;
+					&:hover {
+						background-color: #F0F0F0;
+						background-color: rgba(0,0,0,.05);
+						@include border-radius(4px);
+					};
+					&.active {
+						font-weight: bold;
+					}
+				}
+			}
+		}
+	}
+	section.subContentBox {
+		&.noBorderTop h2 {
+			border-top: none;
+		}
+		& > h2 {
+			background: url(../images/portal/portalTileSprite.png) 0 -630px repeat-x #F2F2F2;
+			font: bold 13px/14px $fontFamily;
+			padding: 12px;
+			border-top: 1px solid #BBB;
+			border-bottom: 1px solid #BBB;
+			text-shadow: 0 1px 0 rgba(255,255,255,.75);
+			color: #444;
+			position: relative;
+			span {
+				position: absolute;
+				right: 0;
+				top: 0;
+				font: normal 11px/18px $fontFamily;
+				em {
+					display: block;
+					float: left;
+					padding: 10px 16px;
+					border-right: 1px solid #EEE;
+					border-right: 1px solid rgba(255,255,255,.5);
+				}
+				a.secondaryButton {
+					display: block;
+					float: left;
+					padding: 10px 16px;
+					border-left: 1px solid #AAA;
+					border-right: 1px solid #EEE;
+					border-right: 1px solid rgba(255,255,255,.5);
+					color: #444;
+					text-decoration: none;
+					min-width: 80px;
+					text-align: center;
+					&:hover {
+						background: url(../images/portal/portalTileSprite.png) 0 -630px repeat-x #E8E8E8;
+					}
+					&:active {
+						background: url(../images/portal/portalTileSprite.png) 0 -630px repeat-x #D2D2D2;
+						border-right: 1px solid #DDD;
+						border-right: 1px solid rgba(255,255,255,.35);
+					}
+					&.active {
+						background: url(../images/portal/portalTileSprite.png) 0 -630px repeat-x #D2D2D2;
+						border-right: 1px solid #AAA;
+						margin-right: -1px;
+						padding-right: 17px;
+						font-weight: bold;
+					}
+				}
+			}
+		}
+		& > h3 {
+			font: bold 11px/18px $fontFamily;
+			padding: 6px 12px;
+			color: #444;
+			background-color: #F8F8F8;
+			border-top: 1px solid #EEE;
+			border-bottom: 1px solid #EEE;
+		}
+		span.nodatafound {
+			display: block;
+			color: #767676;
+			font: normal 11px/16px $fontFamily;
+			padding: 8px 12px;
+		}
+		
+		/* ============================= */
+		/* = VAPLIST Table-Based (CSS) = */
+		/* ============================= */
+		
+		ul.vapList.tableBased {
+			display: table;
+			width: 100%;
+			li {
+				display: table-row;
+				border: none;
+				&:first-child {
+					& > label,
+					& > span {
+						border-top: none;
+					}
+				}
+				& > label {
+					display: table-cell;
+					white-space: nowrap;
+					border-top: 1px solid #EEE;
+				}
+				&.utilityGraph {
+					& > label {
+						position: static;
+					}
+					& > span {
+						margin-left: 0;
+					}
+				}
+				& > span {
+					display: table-cell;
+					border-top: 1px solid #EEE;
+				}
+			}
+		}
+		
+		ul.vapList {
+			margin: 0;
+			list-style: none;
+			&.borderTop li:first-child {
+				border-top: 1px solid #EEE;
+			}
+			li {
+				display: block;
+				border-top: 1px solid #EEE;
+				&:first-child {
+					border-top: none;
+				};
+				a {
+					color: #3D5B80;
+				}
+				label {
+					display: inline-block;
+					width: 140px;
+					padding: 6px 12px;
+					font: bold 11px/20px $fontFamily;
+					color: #444;
+					vertical-align: top;
+				}
+				& > span {
+					display: inline-block;
+					padding: 6px 12px;
+					font: normal 11px/20px $fontFamily;
+					color: #444;
+					vertical-align: top;
+					em {
+						color: #EA0000;
+					}
+					span.labelDesc {
+						display: block;
+						padding: 0;
+						margin: 0;
+						color: #767676;
+					}
+				}
+				small {
+					display: block;
+					font: normal 11px/16px $fontFamily;
+					color: #444;
+					white-space: nowrap;
+				}
+				big {
+					display: block;
+					width: 100%;
+					height: 12px;
+					@include border-radius(2px);
+					background: url(../images/portal/portalTileSprite.png) 0 -364px repeat-x;
+					@include box-shadow(0 1px 0 rgba(0,0,0,.05));
+					em {
+						background: url(../images/portal/portalTileSprite.png) 0 -376px repeat-x;
+						height: 12px;
+						display: block;
+						@include border-radius(2px);
+					}
+				}
+				&.utilityGraph {
+					position: relative;
+					label {
+						position: absolute;
+						left: 0;
+						top: 0;
+					}
+					span {
+						padding: 12px;
+						margin-left: 168px;
+						display: block;
+						big {
+							max-width: 320px;
+						}
+					}
+				}
+			}
+		}
+	}
+	p {
+		color: #444;
+		padding: 12px;
+	}
+}
+
+
+table.porListReport {
+	border-spacing: 0 0;
+	border-collapse: collapse;
+	width: 100%;
+	thead th {
+		background: url(../images/portal/portalTileSprite.png) 0 -296px repeat-x;
+		font: normal 12px/20px $fontFamily;
+		padding: 4px 8px;
+		color: #666;
+		color: rgba(0,0,0,.60);
+		border-bottom: 1px solid #CCC;
+		text-align: left;
+		text-shadow: 0 1px 0 rgba(255,255,255,.5);
+	}
+	tbody tr {
+/*		&.alertRow td,*/
+		td.alertRow {
+			padding: 0;
+			border-bottom: 1px solid #AAA;
+			&.yellow {
+				background: url(../images/portal/portalAlertTile-Yellow.png) 0 -200px repeat-x transparent;
+				div.alertRow {
+					background: url(../images/portal/portalAlertTile-Yellow.png) -3px 0 no-repeat transparent;
+				}
+			}
+			&.green {
+				background: url(../images/portal/portalAlertTile-Green.png) 0 -200px repeat-x transparent;
+				div.alertRow {
+					background: url(../images/portal/portalAlertTile-Green.png) -3px 0 no-repeat transparent;
+				}
+			}
+			&.red {
+				background: url(../images/portal/portalAlertTile-Red.png) 0 -200px repeat-x transparent;
+				div.alertRow {
+					background: url(../images/portal/portalAlertTile-Red.png) -3px 0 no-repeat transparent;
+				}
+			}
+			&.gray {
+				background: url(../images/portal/portalAlertTile-Gray.png) 0 -200px repeat-x transparent;
+				div.alertRow {
+					background: url(../images/portal/portalAlertTile-Gray.png) -3px 0 no-repeat transparent;
+				}
+			}
+			div.alertRow {
+				padding: 8px;
+				@include box-shadow(0 -1px 0 rgba(0,0,0,.10) inset);
+				position: relative;
+				div.alertMessageRow {
+					position: relative;
+				}
+				div.rowSideText {
+					position: absolute;
+					right: 0;
+					top: 0;
+					width: 200px;
+					text-align: right;
+					vertical-align: middle;
+					span.timeBadge {
+						margin: 12px 8px 12px 0;
+						display: inline-block;
+						padding: 4px 16px;
+						width: 120px;
+						text-align: center;
+						font: normal 12px/22px $fontFamily;
+						border: 1px solid #A59773;
+						border-radius: 4px;
+						background-color: #EBD7A3;
+						color: #404040;
+						text-shadow: 0 1px 0 rgba(255,255,255,.25);
+						@include box-shadow(0 1px 1px rgba(0,0,0,.15) inset);
+					}
+					img.statusIcon {
+						display: inline-block;
+						background-image: url(../images/portal/portalSprite.png);
+						background-repeat: no-repeat;
+						background-color: transparent;
+						width: 32px;
+						height: 32px;
+						margin: 12px 8px;
+						&.disruption {
+							background-position: -168px -32px;
+						}
+						&.down {
+							background-position: -200px 0;
+						}
+					}
+				}
+				div.messageContent {
+					margin-right: 200px;
+				}
+				h2 {
+					font: bold 13px/20px $fontFamily;
+					color: #333;
+					color: rgba(0,0,0,.75);
+				}
+				p {
+					padding: 0 !important;
+					font: normal 12px/16px $fontFamily;
+				}
+				div.alertSeparator {
+					border-bottom: 1px dotted #AAA;
+					border-bottom: 1px dotted rgba(0,0,0,.15);
+					height: 1px;
+					padding-top: 4px;
+					margin-bottom: 4px;
+				}
+				div.alertButtons {
+					position: absolute;
+					right: 0;
+					top: 0;
+					a {
+						display: block;
+						img {
+							display: block;
+							width: 24px;
+							height: 24px;
+							margin: 6px;
+							background: url(../images/portal/portalSprite.png) -48px -24px no-repeat;
+						}
+					}
+				}
+			}
+		}
+		&.alertRowParent td {
+			border-bottom: none;
+		}
+		&.alertRowParent {
+			&.yellow td.statusIcon {
+				background: url(../images/portal/portalAlertTile-Yellow.png) -3px 100% no-repeat transparent;
+			}
+			&.green td.statusIcon {
+				background: url(../images/portal/portalAlertTile-Green.png) -3px 100% no-repeat transparent;
+			}
+			&.red td.statusIcon {
+				background: url(../images/portal/portalAlertTile-Red.png) -3px 100% no-repeat transparent;
+			}
+			&.gray td.statusIcon {
+				background: url(../images/portal/portalAlertTile-Gray.png) -3px 100% no-repeat transparent;
+			}
+		}
+		&:last-child td {
+			border-bottom: none;
+			&:first-child {
+				@include border-radius(0 0 0 4px);
+			};
+			&:last-child {
+				@include border-radius(0 0 4px 0);
+			};
+			&:only-child {
+				@include border-radius(0 0 4px 4px);
+			}
+		}
+		&.notFound {
+			p {
+				background-color: #F0F0F0;
+				@include border-radius(4px);
+			}
+			&:hover td {
+				background-color: #FFF !important;
+			}
+		}
+		&:hover td {
+			@include transition(background-color, .1s);
+			background-color: #F8F8F8 !important;
+		}
+		td {
+			padding: 8px 8px;
+			border-bottom: 1px solid #DDD;
+			font: normal 12px/20px $fontFamily;
+			color: #444;
+			border-left: 1px dotted #EEE;
+			vertical-align: middle;
+			&:first-child {
+				border-left: none;
+			}
+			&.actionsList {
+				text-align: center;
+				width: 1%;
+				white-space: nowrap;
+				ul.pillList {
+				}
+				a.standardButton {
+					display: inline-block;
+					float: none;
+					margin-right: 0;
+					height: 20px;
+					@include box-shadow(0 1px 0 rgba(255,255,255,.25) inset,	0 1px 0 rgba(0,0,0,.05));
+					span {
+						font: bold 12px/20px $fontFamily;
+					}
+				}
+			}
+			&.serviceName {
+				h4 {
+					color: #444;
+					a {
+						font-weight: bold;
+						color: #444;
+					}
+				}
+			}
+			&.serviceName,
+			&.serviceType {
+				small {
+					display: block;
+					font: normal 11px/16px $fontFamily;
+					color: #767676;
+					white-space: nowrap;
+				}
+				span.secondaryService {
+					display: block;
+					margin-top: 4px;
+					border-top: 1px dotted #EEE;
+					padding-top: 4px;
+				}
+			}
+		}
+	}
+	tr.inactiveRow {
+		td {
+			color: #767676;
+			&.serviceName h4 {
+				font-weight: bold;
+				color: #767676;
+			}
+			ul.utilizationList li small {
+				color: #767676;
+			}
+			ul.utilizationList li big span {
+				background: url(../images/portal/portalTileSprite.png) 0 -388px repeat-x;
+			}
+		}
+	}
+	td, th {
+		&.alignCenter {
+			text-align: center;
+		}
+		&.alignRight {
+			text-align: right;
+		}
+	}
+	thead tr th.statusIcon,
+	tbody tr td.statusIcon {
+		width: 12px;
+	} 
+	tbody tr td.statusIcon {
+		img.statusIcon {
+			display: block;
+			margin: 0 2px;
+		}
+	}
+}
+
+/* Status Icon*/
+img.statusIcon {
+	width: 12px;
+	height: 12px;
+	background-image: url(../images/portal/portalSprite.png);
+	background-repeat: no-repeat;
+	&.statusGreen {
+		background-position: 0 0;
+	}
+	&.statusYellow {
+		background-position: 0 -24px;
+	}
+	&.statusRed {
+		background-position: 0 -48px;
+	}
+	&.statusGray {
+		background-position: 0 -72px;
+	}
+	&.statusLocked {
+		background-position: -144px -48px;
+	}
+	&.statusDisabled {
+		background-position: -144px -72px;
+	}
+}
+
+ul.utilizationList {
+	margin: 0;
+	list-style: none;
+	min-width: 140px;
+	&.four {
+		li {
+			width: 23%;
+		}
+	}
+	li {
+		display: inline-block;
+		margin: 0;
+		padding: 0;
+		margin-right: 2%;
+		width: 46%;
+		/*adding vertical align top to line up when multi-lines*/
+		vertical-align: top;
+		&:last-child {
+			margin-right: 0;
+		}
+		small {
+			display: block;
+			font: bold 11px/16px $fontFamily;
+			color: #444;
+			/*Commenting out to wrap service use labels on my services list*/
+/*			white-space: nowrap;
+			overflow: hidden;*/
+			span {
+				color: #767676;
+				font: normal 11px/16px $fontFamily;
+				margin-left: 4px;
+			}
+		}
+		big {
+			display: block;
+			width: 100%;
+			height: 12px;
+			@include border-radius(2px);
+			background: url(../images/portal/portalTileSprite.png) 0 -364px repeat-x;
+			@include box-shadow(0 1px 0 rgba(0,0,0,.05));
+			span {
+				background: url(../images/portal/portalTileSprite.png) 0 -376px repeat-x;
+				height: 12px;
+				display: block;
+				@include border-radius(2px);
+			}
+		}
+		& > strong {
+			margin-top: 4px;
+			font: normal 11px/12px $fontFamily;
+			color: #767676;
+			/*making text wrap for CRM/HCM*/
+			/*white-space: nowrap;*/
+			display: block;
+		}
+	}
+}
+
+ul.pillList {
+	list-style: none;
+	margin: 0;
+	height: 26px;
+	display: block;
+	& > li {
+		display: inline-block;
+		& > a {
+			background: url(../images/portal/portalTileSprite.png) 0 -256px repeat-x;
+			border: 1px solid #BBB;
+			border-bottom: 1px solid #AAA;
+			border-left: none;
+			border-right: 1px solid #CCC;
+			@include box-shadow(0 1px 0 rgba(255,255,255,.75) inset,	0 1px 0 rgba(0,0,0,.05));
+			display: block;
+			font: normal 12px/16px $fontFamily;
+			padding: 2px 4px;
+			&:hover {
+				/*background: url(../images/portal/portalTileSprite.png) 0 -324px repeat-x;*/
+				background: none #E0E0E0;
+			};
+			span {
+				display: inline-block;
+				font: normal 12px/20px $fontFamily;
+				padding: 0 8px;
+				color: #444;
+				text-shadow: 0 1px 0 rgba(255,255,255,.5);
+			}
+			img {
+				display: inline-block;
+				vertical-align: top;
+				height: 20px;
+				width: 20px;
+				background-image: url(../images/portal/portalSprite.png);
+				background-repeat: no-repeat;
+				&.actionsSetting {
+					background-position: -232px 0;
+/*					background-position: -24px 0;*/
+				}
+				&.gotoportal {
+					background-position: -232px -24px;
+				}
+				&.viewDetails {
+					background-position: -232px 0;
+				}
+				&.actionsAccess {
+					background-position: -24px -72px;
+				}
+				&.actionsGoto {
+					background-position: -24px -24px;
+				}
+				&.actionsUtilization {
+					background-position: -24px -48px;
+				}
+				&.normalView {
+					background-position: -48px -72px;
+				}
+				&.denseView {
+					background-position: -72px -72px;
+				}
+				&.actionsConsole {
+					background-position: -144px -24px;
+				}
+			}
+		}
+		&:first-child > a {
+			@include border-radius(4px 0 0 4px);
+			border-left: 1px solid #BBB;
+		}
+		&:last-child > a {
+			@include border-radius(0 4px 4px 0);
+			border-left: none;
+		}
+		&:only-child > a {
+			@include border-radius(4px);
+			border-left: 1px solid #BBB;
+		}
+	}
+}
+
+/* =========== */
+/* = Buttons = */
+/* =========== */
+a.standardButton {
+	float: left;
+	display: block;
+	margin-right: 12px;
+	border: 1px solid #777;
+	border: 1px solid rgba(0,0,0,.40);
+	@include border-radius(4px);
+	height: 28px;
+	@include box-shadow(0 1px 0 rgba(255,255,255,.65), 0 1px 0 rgba(255,255,255,.25) inset);
+	background: url(../images/portal/portalTileSprite.png) 0 -570px repeat-x transparent;
+	text-decoration: none;
+	span {
+		display: block;
+		padding: 4px 8px;
+		font: normal 13px/20px $fontFamily;
+		color: #444;
+		text-shadow: 0 1px 0 rgba(255,255,255,.5);
+		@include border-radius(4px);
+	}
+	&:hover {
+		background: url(../images/portal/portalTileSprite.png) 0 -690px repeat-x transparent;
+	}
+	&.disabledButton {
+		@include opacity(0.5);
+		cursor: default;
+		&:hover {
+			background: url(../images/portal/portalTileSprite.png) 0 -570px repeat-x transparent;
+		};
+	}
+	&.hotBlueButton,
+	&.hotButton {
+		background: url(../images/portal/portalTileSprite.png) 0 -880px repeat-x transparent;
+		span {
+			color: #FFF;
+			font-weight: bold;
+			text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+		}
+		&:hover {
+			background: url(../images/portal/portalTileSprite.png) 0 -940px repeat-x transparent;
+		}
+		&.disabledButton {
+			@include opacity(0.5);
+			background: url(../images/portal/portalTileSprite.png) 0 -880px repeat-x transparent;
+		}
+	}
+}
+a.simpleButton {
+	display: inline-block;
+	padding: 0 8px;
+	font: normal 11px/20px $fontFamily;
+	color: #444;
+	background-color: #F0F0F0;
+	border: 1px solid #DDD;
+	text-align: center;
+	@include border-radius(8px);
+	text-decoration: none;
+}
+
+/* ========================== */
+/* = Cloud Services Details = */
+/* ========================== */
+
+div#portalSideRegion {
+	width: 200px;
+	padding: 16px 0;
+	section.porSideRegion {
+		@include border-radius(4px 0 0 4px);
+		@include box-shadow(0 1px 4px rgba(0,0,0,.10));
+		margin-bottom: 16px;
+		border: 1px solid #999;
+		border-right: none;
+		div.porHeader {
+			@include border-radius(4px 0 0 0);
+			background: url(../images/portal/portalTileSprite.png) 0 -324px repeat-x;
+			border-bottom: 1px solid #BBB;
+			@include box-shadow(0 1px 0 rgba(255,255,255,.25) inset);
+			position: relative;
+			h3 {
+				font: bold 13px/16px $fontFamily;
+				color: #444;
+				color: rgba(0,0,0,.65);
+				padding: 12px;
+				text-shadow: 0 1px 0 rgba(255,255,255,.5);
+			}
+		}
+		div.porContent {
+			@include border-radius(0 0 0 4px);
+			background-color: #F8F8F8;
+			border-top: none;
+		}
+		p {
+			color: #444;
+			padding: 12px;
+		}
+	}
+}
+
+/* ========================= */
+/* = Pulldown Menu Styling (for filters) = */
+/* ========================= */
+div.dropMenuContainer {
+	display: block;
+	float: left;
+	position: relative;
+	z-index: 1000;
+	& > a.standardButton.active {
+		@include border-radius(4px 4px 0 0);
+	}
+	& > a.standardButton.active span {
+		position: relative;
+		z-index: 1000;
+		background-color: #FFF;
+		@include border-radius(4px 4px 0 0);
+	}
+	& > a.standardButton span img {
+		display: inline-block;
+		vertical-align: top;
+		height: 20px;
+		width: 20px;
+		background-image: url(../images/portal/portalSprite.png);
+		background-repeat: no-repeat;
+		&.dropDown {
+			background-position: -48px -48px;
+			width: 12px;
+		}
+	}
+}
+div.menuDrop {
+	display: none;
+	position: absolute;
+	top: 28px;
+	left: 0;
+	width: 220px;
+	@include border-radius(0 4px 4px 4px);
+	background-color: #FFF;
+	border: 1px solid #777;
+	@include box-shadow(0 1px 2px rgba(0,0,0,.15));
+	padding: 4px 0;
+	h4 {
+		padding: 4px 8px;
+		font: bold 11px/16px $fontFamily;
+		color: #444;
+		text-shadow: 0 1px 0 rgba(255,255,255,.65);
+		background: url(../images/portal/portalTileSprite.png) 0 -296px repeat-x;
+		border-bottom: 1px solid #EEE;
+	}
+	ul {
+		list-style: none;
+		margin: 4px 0;
+		li {
+			display: block;
+			a {
+				display: block;
+				padding: 4px 8px;
+				text-decoration: none;
+				img {
+					display: inline-block;
+					width: 18px;
+					height: 18px;
+					background: url(../images/portal/portalSprite.png) -99px 0 no-repeat transparent;
+					margin: 0;
+					vertical-align: middle;
+				}
+				span {
+					font: normal 11px/20px $fontFamily;
+					display: inline-block;
+					color: #444;
+				}
+				&.active {
+					img {
+						background: url(../images/portal/portalSprite.png) -99px -24px no-repeat transparent;
+					}
+					&:hover img {
+						background: url(../images/portal/portalSprite.png) -123px -24px no-repeat transparent;
+					}
+					span {
+						font-weight: bold;
+					}
+				}
+				&:hover {
+					img {
+						background: url(../images/portal/portalSprite.png) -123px 0 no-repeat transparent;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+/* ===================== */
+/* = Utilization Table = */
+/* ===================== */
+table.utilizationTable {
+	border-spacing: 0;
+	border-collapse: collapse;
+	width: 100%;
+	thead tr th {
+		background: url(../images/portal/portalTileSprite.png) 0 -296px repeat-x;
+		font: bold 11px/11px $fontFamily;
+		padding: 4px 8px;
+		color: #666;
+		color: rgba(0,0,0,.60);
+		border-bottom: 1px solid #CCC;
+		text-align: left;
+		text-shadow: 0 1px 0 rgba(255,255,255,.5);
+		height: 22px;
+/*		white-space:nowrap;*/
+		vertical-align: middle;
+	}
+	tbody tr.topLevelRow th,
+	tbody tr.topLevelRow td {
+		background: #F8F8F8;
+		border-bottom: 1px solid #EEE;
+		font: bold 12px/20px $fontFamily;
+		padding: 4px 8px;
+		text-align: left;
+		color: #666;
+		text-shadow: 0 1px 0 rgba(255,255,255,.5);
+	}
+	tbody tr.topLevelRow td {
+		font: normal 11px/20px $fontFamily;
+	}
+	tbody tr th, 
+	tbody tr td {
+		padding: 4px 8px;
+		border-bottom: 1px solid #EEE;
+		font: normal 11px/20px $fontFamily;
+		padding: 4px 8px;
+		color: #444;
+	}
+	tbody tr th {
+		font-weight: bold;
+		text-align: left;
+	}
+	tbody tr:last-child th,
+	tbody tr:last-child td {
+		border-bottom: none;
+	}
+}
+
+
+/* =================== */
+/* = SubRegion Table = */
+/* =================== */
+
+table.subRegionTable {
+	border-spacing: 0;
+	border-collapse: collapse;
+	width: 100%;
+	thead tr th {
+		background: url(../images/portal/portalTileSprite.png) 0 -296px repeat-x;
+		font: bold 11px/20px $fontFamily;
+		padding: 4px 8px;
+		color: #666;
+		color: rgba(0,0,0,.60);
+		border-bottom: 1px solid #CCC;
+		text-align: left;
+		text-shadow: 0 1px 0 rgba(255,255,255,.5);
+	}
+	tbody tr th, 
+	tbody tr td {
+		padding: 4px 8px;
+		border-bottom: 1px solid #EEE;
+		font: normal 11px/20px $fontFamily;
+		padding: 4px 8px;
+		color: #444;
+	}
+	tbody tr th {
+		font-weight: bold;
+		text-align: left;
+	}
+	tbody tr:last-child th,
+	tbody tr:last-child td {
+		border-bottom: none;
+	}
+	td {
+		img.delete_icon {
+			width: 16px;
+			height: 16px;
+			background: url(../images/portal/portalSprite.png) -120px -48px no-repeat;
+			text-align: text-top;
+		}
+		a {
+			color: #404040;
+		}
+	}
+}
+
+/* ================= */
+/* = Block Message = */
+/* ================= */
+div.blockMessage + ul.vapList {
+	border-top: 1px solid #EEE;
+}
+div.blockMessage {
+/*	margin: 12px;
+	@include border-radius(4px);
+	background: url(../images/portal/portalDiagonalTile.png) 0 0 repeat #FEFAE7;
+	border: 1px solid #999;
+	border: 1px solid rgba(0,0,0,.35);*/
+	div.innerMessage {
+/*		width: 500px;
+		margin: 0 auto;*/
+		position: relative;
+		height: 48px;
+		img {
+			width: 24px;
+			height: 24px;
+			float: left;
+			display: block;
+			margin: 12px;
+			&.unlocked {
+				background: url(../images/portal/portalSprite.png) -96px -72px no-repeat;
+			}
+			&.locked {
+				background: url(../images/portal/portalSprite.png) -120px -72px no-repeat;
+			}
+			&.clock {
+				background: url(../images/portal/portalSprite.png) -144px 0 no-repeat;
+			}
+			&.export_data {
+				background: url(../images/portal/portalSprite.png) -224px -72px no-repeat;
+			}
+			&.import_data {
+				background: url(../images/portal/portalSprite.png) -200px -72px no-repeat;
+			}
+			&.stage_files {
+				background: url(../images/portal/portalSprite.png) -200px -96px no-repeat;
+			}
+		}
+		h3 {
+			color: #444;
+			text-shadow: 0 1px 0 rgba(255,255,255,.5);
+			float: left;
+			margin: 12px 0;
+			font: normal 13px/24px $fontFamily;
+			strong {
+				color: #222;
+				font-weight: bold;
+			}
+		}
+		a.standardButton {
+			float: right;
+			margin: 9px 0;
+		}
+	}
+	& + p {
+		padding-top: 0 !important;
+	}
+}
+
+/* ================= */
+/* = Modal Dialogs = */
+/* ================= */
+/*<section class="modalDialog" id="#REGION_STATIC_ID#" #REGION_ATTRIBUTES#>
+  <h2>#TITLE#</h2>
+  #BODY#
+  <div class="modalButtons">
+  #EDIT##CLOSE##CREATE##CREATE2##EXPAND##HELP##DELETE##COPY##NEXT##PREVIOUS#
+  </div>
+</section>*/
+section.confirmationDialog {
+	width: 640px;
+	margin: 0 auto;
+	padding: 0;
+	border: 2px solid rgba(0,0,0,.25);
+	background: none transparent !important;
+	min-height: 80px;
+	overflow: visible;
+	@include border-radius(4px !important);
+	h2 {
+		padding: 16px;
+		font: bold 16px/16px $fontFamily;
+		color: #333;
+		background: none transparent;
+		display: block !important;
+	}
+	div.modalButtons {
+		background-color: #F8F8F8 !important;
+	}
+}
+section.modalDialog, section.confirmationDialog {
+	background: none #FFF !important;
+	@include border-radius(0 0 3px 3px);
+	& > p {
+		font: normal 13px/20px $fontFamily;
+		color: #444;
+		margin: 0 16px 16px 16px;
+	}
+	h2 {
+		display: none;
+	}
+	div.modalButtons {
+		border-top: 1px solid #DDD;
+		text-align: center;
+		padding: 16px;
+		background: none #F0F0F0;
+		@include border-radius(0 0 3px 3px);
+		a {
+			display: inline-block;
+			margin: 0 8px;
+			float: none;
+			height: 36px;
+			span {
+				padding: 6px 16px;
+				font-size: 16px;
+				line-height: 24px;
+			}
+		}
+	}
+	div.alertMessage {
+		display: none;
+		margin: 0 16px;
+	}
+	& > table.formlayout {
+		margin: 16px;
+		width: 480px;
+		label {
+			font: normal 13px/20px $fontFamily;
+			color: #444;
+		}
+		label.hidden_label {
+			display: none;
+			& + br {
+				display: none;
+			}
+		}
+		select.selectlist {
+			margin-bottom: 16px !important;
+		}
+		input.text_field,
+		select.selectlist,
+		input.password,
+		input[type=text],
+		textarea {
+			margin: 0;
+			border: 1px solid #AAA;
+			padding: 3px;
+			font: normal 12px/16px $fontFamily;
+			@include border-radius(2px);
+			@include box-shadow(0 1px 1px rgba(0,0,0,.15) inset);
+			background-color: #F8F8F8;
+			color: #333;
+			&:focus {
+				background-color: #FFF;
+				border: 1px solid #AAA;
+			}
+		}
+		textarea.textarea {
+			width: 472px;
+		}
+	}
+	ul.vapList {
+		margin: 0 16px;;
+		list-style: none;
+		li {
+			display: block;
+			border-top: 1px solid #EEE;
+			&:first-child {
+				border-top: none;
+			};
+			a {
+				color: #3D5B80;
+			}
+			label {
+				display: inline-block;
+				width: 140px;
+				padding: 6px 0;
+				font: bold 13px/20px $fontFamily;
+				color: #444;
+				vertical-align: top;
+			}
+			span {
+				display: inline-block;
+				padding: 6px 0;
+				font: normal 13px/20px $fontFamily;
+				color: #444;
+				vertical-align: top;
+				small {
+					display: block;
+					font: normal 11px/20px $fontFamily;
+				}
+			}
+		}
+	}
+}
+
+.ui-widget-overlay {
+	background-image: none;
+	background-color: #000;
+}
+.ui-dialog .ui-dialog-content {
+	padding: 0;
+}
+.ui-dialog {
+	padding: 0;
+	border: 2px solid rgba(0,0,0,.25);
+	background: none transparent !important;
+	min-height: 80px;
+	overflow: visible;
+}
+.ui-dialog .ui-dialog-titlebar-close {
+	background: none transparent;
+	width: 32px;
+	height: 32px;
+	top: 18px;
+	right: 8px;
+	padding: 0 !important;
+}
+.ui-dialog .ui-dialog-titlebar-close.ui-state-hover {
+	border: none;
+}
+.ui-dialog .ui-dialog-title {
+	margin: 0;
+}
+.ui-widget-header .ui-icon {
+/*	background: url(../img/c9/modal_close_icon.png) no-repeat 0 0;*/
+	width: 32px;
+	height: 32px;
+}
+.ui-dialog .ui-dialog-titlebar {
+	overflow: visible;
+	@include border-radius(3px 3px 0 0);
+	padding: 16px;
+	font: bold 16px/16px $fontFamily;
+	color: #333;
+	background: none #FFF;
+/*	text-shadow: 0 1px 0 rgba(255,255,255,.75);
+	@include background-gradient(#F0F0F0,#C0C0C0);
+	border: none;
+	border-bottom: 1px solid #AAA;*/
+}
+.ui-widget-header {
+	border: none;
+}
+
+
+/* ============================== */
+/* = Alert Message (Standalone) = */
+/* ============================== */
+
+section.subContentBox {
+	div.alertMessage {
+		margin: 12px;
+	}
+}
+div#portalContentContainer > div.alertMessage,
+div#alertMessagesContainer > div.alertMessage {
+	margin: 0 0 12px 0;
+	@include box-shadow(0 1px 4px rgba(0,0,0,.1));
+}
+
+div#portalBody div.alertMessage div.innerMessage {
+	p {
+		padding: 0;
+	}
+}
+
+div.alertMessage {
+	background: url(../images/portal/portalDiagonalTile.png) 0 0 repeat #F0F0F0;
+	border: 1px solid #999;
+	border: 1px solid rgba(0,0,0,.35);
+	@include border-radius(4px);
+	position: relative;
+	img {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		margin: -16px 0 0 12px;
+		display: block;
+		width: 32px;
+		height: 32px;
+		background-image: url(../images/portal/portalSprite.png);
+		background-repeat: no-repeat;
+		background-position: -200px -32px;
+	}
+	&.green {
+		background-color: #E6F9E6;
+		img {
+			background-position: -168px 0;
+		}
+	}
+	&.red {
+		background-color: #FCEAEA;
+		img {
+			background-position: -200px 0;
+		}
+	}
+	&.yellow {
+		background-color: #FEFAE7;
+		img {
+			background-position: -168px -32px;
+		}
+	}
+	&.info {
+		background-color: #EEF5FA;
+		img {
+			background-position: -200px -32px;
+		}
+	}
+	div.innerMessage {
+		margin: 0 0 0 44px;
+		padding: 12px;
+		h3 {
+			font: bold 13px/24px $fontFamily;
+			color: #333;
+		}
+		p {
+			font: normal 12px/16px $fontFamily;
+			padding: 0;
+		}
+		ul {
+			margin: 0 0 0 16px;
+			li {
+				font: normal 11px/16px $fontFamily;
+				a {
+					color: #000;
+				}
+			}
+		}
+		a.standardButton {
+			float: none;
+			display: inline-block;
+		}
+		small {
+			margin-top: 4px;
+			font: normal 11px/16px $fontFamily;
+			color: #666;
+			padding: 0;
+		}
+	}
+}
+
+/* ======================= */
+/* = Current Status Orbs = */
+/* ======================= */
+
+img.statusOrb {
+  background-image: url(../img/db/status_icons.png);
+  background-repeat: no-repeat;
+  height: 20px;
+  width: 20px;
+  vertical-align: bottom;
+}
+img.statusOrb.green {
+  background-position: 0 0;
+}
+img.statusOrb.yellow {
+  background-position: -20px 0;
+}
+img.statusOrb.red {
+  background-position: -40px 0;
+}
+img.statusOrb.info {
+  background-position: -120px 0;
+}
+img.statusOrb.null {
+  background-position: -140px 0;
+}
+
+/* ================= */
+/* = Hidden Region = */
+/* ================= */
+div.hiddenRegion {
+	display: none;
+}
+
+
+/* ============= */
+/* = Bar Graph = */
+/* ============= */
+.ie7 ul.barGraph li {
+	display: inline;
+}
+ul.barGraph {
+	margin: 12px;
+	list-style: none;
+	white-space: nowrap;
+	li {
+		display: inline-block;
+		width: 48px;
+		&:hover big small{
+			background-color: #4A6D98;
+		};
+		&.barHeaders {
+			width: 128px;
+			& > span {
+				text-align: left;
+			}
+		}
+	}
+	li > label {
+		display: block;
+		font: normal 11px/12px $fontFamily;
+		color: #444;
+		text-align: center;
+		span {
+			display: block;
+			font: normal 11px/12px $fontFamily;
+			color: #767676;
+		}
+	}
+	li > big {
+		height: 120px;
+		margin: 8px;
+		position: relative;
+		display: block;
+		& > small {
+			display: block;
+			position: absolute;
+			bottom: 0;
+			width: 30px;
+			@include border-radius(4px);
+			background-color: #6A9CDA;
+			@include box-shadow(0 1px 0 rgba(255,255,255,.5) inset);
+			border: 1px solid #4A6D98;
+		}
+	}
+	li > span {
+		display: block;
+		text-align: center;
+		font: normal 11px/16px $fontFamily;
+		color: #444;
+		border-top: 1px solid #F0F0F0;
+		padding: 8px;
+		&.noBorder {
+			border-top: none;
+			padding-top: 0;
+		}
+		a {
+			color: #405580;
+		}
+	}
+}
+
+/* ================= */
+/* = Checkbox List = */
+/* ================= */
+ul.checkBoxList {
+	list-style: none;
+	margin: 16px 8px 15px 8px;
+	li {
+		display: block;
+		padding: 8px;
+		margin-bottom: 1px;
+		border: 1px solid transparent;
+		@include border-radius(4px);
+		&.checked {
+			border: 1px solid #CCD7E6;
+			background-color: #F2F8FF;
+			label {
+				font-weight: bold;
+			}
+		}
+		label {
+			color: #333;
+			font: normal 13px/16px $fontFamily;
+		}
+	}
+}
+
+/* ============== */
+/* = Sub Report = */
+/* ============== */
+table.subReport {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	thead th {
+		background: url(../images/portal/portalTileSprite.png) 0 -296px repeat-x;
+		font: normal 12px/12px Arial,sans-serif;
+		padding: 2px 8px;
+		color: #666;
+		color: rgba(0, 0, 0, 0.6);
+		border-bottom: 1px solid #CCC;
+		text-align: left;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+		vertical-align: middle;
+		height: 24px;
+	}
+	tbody td {
+		padding: 8px 8px;
+		border-bottom: 1px solid #DDD;
+		font: normal 12px/20px Arial,sans-serif;
+		color: #444;
+		border-left: 1px dotted #EEE;
+		vertical-align: middle;
+		a {
+			color: #3D5B80;
+		}
+		&.actions {
+			text-align: center;
+			a.standardButton {
+				display: inline-block;
+				float: none;
+				height: 22px;
+				span {
+					padding: 2px 8px;
+					font: normal 12px/18px $fontFamily;
+				}
+			}
+		}
+		&.fileIcon {
+			text-align: center;
+			width: 1%;
+			img {
+				width: 16px;
+				height: 16px;
+				background: url(../images/portal/portalSprite.png) -168px -72px no-repeat;
+			}
+		}
+	}
+	tbody tr:hover td {
+		@include transition(background-color, .1s);
+		background-color: #F8F8F8;
+	}
+}
+section.subContentBox table.subReport tbody tr:last-child td {
+	border-bottom: none;
+}
+section.subContentBox table.subReport + p {
+	border-top: 1px solid #DDD;
+}
+
+/* =============== */
+/* = Form Layout = */
+/* =============== */
+
+div#portalBody table.formlayout {
+	border-spacing: 0 0;
+	border-collapse: collapse;
+	td:empty {
+		padding: 0;
+	}
+	td {
+		input.text_field,
+		select.selectlist,
+		input.password,
+		input[type=text],
+		textarea {
+			margin: 0;
+			border: 1px solid #AAA;
+			padding: 3px;
+			font: normal 12px/16px $fontFamily;;
+			@include border-radius(2px);
+			@include box-shadow(0 1px 1px rgba(0,0,0,.15) inset);
+			background-color: #F8F8F8;
+			color: #333;
+			&:focus {
+				background-color: #FFF;
+				border: 1px solid #666;
+			}
+		}
+		input[type=hidden] {
+			display: none;
+		}
+		textarea.codeTextarea {
+			font: normal 11px/14px monospace;
+		}
+		select.selectlist {
+			/* Add extra margin to get cell height same as single text field*/
+			margin: 0 0 7px 0;
+		}
+		span.display_only,
+		span.display_only a {
+			font: normal 12px/16px $fontFamily;;
+			color: #333;
+		}
+		span.display_bold,
+		span.display_bold a {
+			font: bold 12px/16px $fontFamily;;
+			color: #333;
+		}
+		fieldset label {
+			display: inline;
+		}
+		label {
+			display: inline-block;
+			padding: 3px 8px 3px 0;
+			font: normal 12px/16px $fontFamily;;
+			color: #555;
+			a {
+				font: normal 12px/16px $fontFamily;;
+				color: #555;
+				text-decoration: none;
+			}
+			a.uHelpLink {
+				color: #555;
+				&:hover {
+					text-decoration: underline;
+				};
+			}
+			&.uRequired {
+				font-weight: bold;
+			}
+			&.uRequired a.uHelpLink {
+				font-weight: bold;
+			}
+			&.uRequired img.uAsterisk {
+				width: 7px;
+				height: 11px;
+				background: url(../images/app_theme.png) -60px -20px no-repeat;
+				vertical-align: top;
+			}
+		}
+		span.uLabelError {
+			display: block;
+			font: normal 11px/12px $fontFamily;;
+			color: #000;
+			margin-right: 8px;
+		}
+		span.uNoLabel {
+			display: none;
+		}
+	}
+	& > tbody > tr {
+		& > td {
+			/*@include border-radius(4px);*/
+			background: none transparent;
+		}
+		& > td:only-child {
+			@include border-radius(4px);
+		}
+		& > td:first-child {
+			@include border-radius(4px 0 0 4px);
+		}
+		& > td:last-child {
+			@include border-radius(0 4px 4px 0);
+		}
+		&.rowHighlight > td { 
+			background-color: #F0F0F0;
+		}
+	}
+	table.lov {
+		a {
+			margin: 0;
+		}
+	}
+	td.lov input.popup_lov {
+		border: 1px solid #AAA;
+		padding: 4px;
+		font: normal 14px/16px $fontFamily;;
+		@include border-radius(2px 0 0 2px);
+		@include box-shadow(0 1px 1px rgba(0,0,0,.15) inset);
+		background-color: #F8F8F8;
+		@include opacity(0.75);
+		color: #333;
+	}
+	table.shuttle {
+		td {
+			vertical-align: top;
+		}
+	}
+	& > tbody > tr > td {
+		padding: 4px 8px;
+	}
+}
+
+/* ================================================= */
+/* = Identity Console Button Container (5200:1000) = */
+/* ================================================= */
+div.identityConsoleButtonContainer {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 16px;
+	a.standardButton {
+		margin: 0;
+		float: none;
+	}
+}
+
+/* ==================== */
+/* = Contact Us Modal = */
+/* ==================== */
+div.xModalDialog {
+}
+#xContactUs {
+	div.modalButtons {
+		display: none;
+	}
+}
+div.xModalInner {
+	h2 {
+		@include border-radius(3px 3px 0 0);
+		padding: 8px 16px;
+		font: bold 24px/36px $fontFamily;
+		color: #333;
+		text-shadow: 0 1px 0 rgba(255,255,255,.75);
+		@include background-gradient(#F0F0F0,#C0C0C0);
+	}
+	h2 + h3 {
+		border-top: 1px solid #AAA;
+	}
+	&.xTwoCol {
+		div.columnGroup {
+			padding-top: 16px;
+		}
+		h2 {
+			border-bottom: 1px solid #AAA;
+		}
+		h3 {
+			background: none transparent;
+			border-top: none;
+			border-bottom: none;
+			padding: 0;
+		}
+		div.modalColumn {
+			width:240px;
+			padding: 16px 24px 16px 16px;
+			border-right: 1px solid #DDD;
+			&.lastCol {
+				border-right: none;
+				padding: 16px 15px 16px 24px;
+			}
+		}
+	}
+	h3 {
+		font: bold 18px/24px $fontFamily;
+		color: #5279a3;
+		border-bottom: 1px solid #E0E0E0;
+		border-top: 1px solid #E0E0E0;
+		@include background-gradient(#FFFFFF,#F8F8F8);
+		padding: 8px 16px;
+	}
+	h4 {
+		font: bold 12px/20px $fontFamily;
+		color: #666;
+	}
+	p {
+		font: normal 12px/18px $fontFamily;
+		color: #999;
+		margin-bottom: 8px;
+	}
+	span.salesNumber {
+		font: normal 16px/22px $fontFamily;
+		color: #666;
+	}
+	ul {
+		margin: 0 0 0 8px;
+		list-style: inside disc;
+		li {
+			color: #AAA;
+			font: normal 12px/24px $fontFamily;
+			a {
+				color: #1F4F82;
+				font: normal 12px/24px $fontFamily;
+				text-decoration: none;
+				&:hover {
+					text-decoration: underline;
+				};
+			}
+		}
+	}
+	div.columnGroup {
+		padding: 8px 16px 16px 16px
+	}
+	div.modalColumn {
+		width: 240px;
+		float: left;
+	}
+}
+
+/* ================================= */
+/* = Calendar (for status history) = */
+/* ================================= */
+table.uCalendar {
+	width: 100%;
+	td.uMonthTitle {
+		font: bold 13px/20px $fontFamily;
+		color: #404040;
+		padding: 8px 8px 4px 8px;
+	}
+}
+/*table.uMonth {
+	width: 100%;
+	tr td {
+		@include transition(background-color, .1s);
+	}
+	tr th.uDayTitle {
+		background-color: #F0F0F0;
+		font: normal 11px/12px $fontFamily;
+		color: #404040;
+		text-shadow: 0 1px 0 rgba(255,255,255,.5);
+		border-top: 1px solid #DDD;
+		border-bottom: 1px solid #DDD;
+		text-align: left;
+		padding: 8px;
+	}
+	tr td.uDay:first-child {
+		border-left: none;
+	}
+	tr td.uDay {
+		border-left: 1px solid #DDD;
+		border-bottom: 1px solid #DDD;
+		padding: 8px;
+		height: 40px;
+		width: 14.25%;
+		span.uDay {
+			font: normal 11px/12px $fontFamily;
+			color: #404040;
+		}
+		&.nonday span.uDay {
+			color: #909090;
+		}
+		div.calDragDrop {
+			width: 100% !important;
+		}
+		big.percentBarContainer {
+			display: block;
+			border: 1px solid #DDD;
+			@include border-radius(2px);
+			padding: 1px;
+			background-color: #F0F0F0;
+			@include box-shadow(0 0 1px rgba(0,0,0,.05) inset);
+			position: relative;
+			span.label {
+				font: bold 11px/30px $fontFamily;
+				position: absolute;
+				top: 0;
+				left: 8px;
+				z-index: 100;
+				color: #FFF;
+				text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+			}
+			span.percent {
+				@include box-shadow(0 1px 0 rgba(255,255,255,.25) inset);
+				display: block;
+				@include border-radius(2px);
+				border: 1px solid #418638;
+				background-color: #5CBE4F;
+				height: 26px;
+			}
+		}
+	}
+	tr:hover {
+		td {
+			background-color: #F8F8F8;
+		}
+		td:hover {
+			background-color: #E6EBF3;
+		}
+	}
+}*/
+table.uMonth {
+	width: 100%;
+	tr td {
+		@include transition(background-color, .1s);
+	}
+	tr th.uDayTitle {
+		font: normal 11px/12px $fontFamily;
+		color: #606060;
+		text-shadow: 0 1px 0 rgba(255,255,255,.5);
+		border-bottom: 1px solid #DDD;
+		text-align: left;
+		padding: 0 8px 8px 8px;
+	}
+	tr td.uDay:first-child {
+		border-left: none;
+	}
+	tr td.uDay {
+		border-left: 1px solid #DDD;
+		border-bottom: 1px solid #DDD;
+		height: 56px;
+		width: 14.25%;
+		span.uDay {
+			font: normal 11px/12px $fontFamily;
+			color: #404040;
+			display: block;
+			padding: 8px;
+		}
+		&.nonday span.uDay {
+			color: #909090;
+		}
+		div.calDragDrop {
+			width: 100% !important;
+		}
+		div.apex_cal_data_grid_src {
+			margin-top: 0 !important;
+		}
+		big.percentBarContainer {
+			display: block;
+			padding: 0;
+			background-color: #C62A2A;
+			position: relative;
+			span.label {
+				font: bold 11px/28px $fontFamily;
+				position: absolute;
+				top: 0;
+				left: 8px;
+				z-index: 100;
+				color: #FFF;
+				text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+			}
+			span.percent {
+				@include box-shadow(0 0 1px rgba(0,0,0,.25) inset);
+				display: block;
+				background-color: #5CBE4F;
+				height: 28px;
+			}
+		}
+	}
+}
+
+/* ================================= */
+/* = Internet Explorer Adjustments = */
+/* ================================= */
+
+.ie7 {
+	ul.utilizationList li {
+		width: 44%;
+		display: inline;
+	}
+	td.actionsList ul.pillList li {
+		display: inline;
+		vertical-align: bottom;
+	}
+	div#portalBody section.porRegion div.porHeader {
+		h2 {
+			line-height: 38px;
+			padding: 0 0 0 12px;
+			overflow: hidden;
+		}
+	}
+	section.porRegion {
+		position: relative;
+	}
+	section.porHeaderBar div.searchBox a.searchButton img {
+		margin-bottom: 2px;
+	}
+	section.porHeaderBar ul.pillList li.textLink a img {
+		vertical-align: middle;
+	}
+	nav#portalNav ul li a span {
+		top: 12px;
+	}
+}
+
+.no-css3 {
+	div#portalBody section.porRegion div.porHeader {
+		span.porButtonContainer a.standardButton {
+			border: 1px solid $darkblue;
+			span {
+				line-height: 22px;
+				padding: 0 8px;
+				vertical-align: middle;
+			}
+		}
+	}
+}
+
+/* =========================== */
+/* = IMPORT MODULE CSS FILES = */
+/* =========================== */
+
+/* Timeline Status List */
+@import 'modules/timeline_status_list.scss'

@@ -1,0 +1,73 @@
+@import "compass/css3";
+@import "settings/base";
+
+.tagCloud {
+	ul {
+		li {
+			display: inline-block;
+			a {
+				&:hover {
+					@include box-shadow(0 0 3px 1px rgba(56, 127, 214,.20));
+					border: 1px solid #B0BDCC;
+					border-bottom-color: #8896A9;
+					@include background-gradient(#F8F8F8,#FFFFFF);
+				}
+				border:1px solid #B0BDCC;
+				border-bottom-color:#8896A9;
+				border-radius:3px;
+				color:#404040;
+				display:inline-block;
+				font:normal 12px/28px $fontFamily;
+				margin:0 8px 8px 0;
+				padding:0 0 0 8px;
+				text-decoration:none;
+				text-shadow:0 1px 0 rgba(255,255,255,.5);
+				text-transform:lowercase;
+				white-space:nowrap;
+				@include transition(box-shadow 1s, background-image 1s);
+				@include background-gradient(#E8F0FB,#DBE7F8);
+				@include box-shadow(0 1px 0 rgba(255,255,255,.65) inset);
+				span {
+					@include box-shadow(0 1px 0 rgba(255,255,255,.65) inset);
+					position: relative;
+					background: #F0F4FA;
+					border-left: 1px solid #8896A9;
+					color: #404040;
+					display: inline-block;
+					margin-left: 10px;
+					padding: 0;
+					font-weight: bold;
+					padding: 0 8px;
+					border-radius: 0 2px 2px 0;
+					&:after, &:before {
+						right: 100%;
+						border: solid transparent;
+						content: " ";
+						height: 0;
+						width: 0;
+						position: absolute;
+						pointer-events: none;
+					}
+					&:after {
+						border-right-color: #F0F4FA;
+						border-width: 5px;
+						top: 50%;
+						margin-top: -5px;
+					}
+					&:before {
+						border-right-color: #8896A9;
+						border-width: 6px;
+						top: 50%;
+						margin-top: -6px;
+					}
+				}
+				&.size1, &.size2, &.size3, &.size4, &.size5, &.size6 {
+					font-size: 12px; line-height: 28px
+				}
+			}                           
+		}
+	}
+}
+.ie7 .tagCloud {
+	ul li { display: inline;}
+}

@@ -1,0 +1,24 @@
+$legacy-support-for-ie7: true;
+$legacy-support-for-ie6: true;
+$experimental-support-for-microsoft: false;
+$experimental-support-for-khtml: false;
+$experimental-support-for-opera: false;
+$fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+/*$experimental-support-for-webkit: false;
+$experimental-support-for-mozilla: false;*/
+
+@mixin clearfix {
+    zoom:1;
+    &:before, &:after {
+        content: "\0020"; 
+        display: block; 
+        height: 0; 
+        overflow: hidden; 
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+$retina_image: url(../images/app_theme_2x.png);
+$retina_size: 200px 2000px;

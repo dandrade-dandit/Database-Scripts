@@ -1,0 +1,14 @@
+/******************************************************************************
+File Name:    reports.scss
+Purpose:      reports styles and accessibility imporovements for mobile
+
+Change History:
+
+Rem   msewtz       06/15/2012    Created file
+******************************************************************************/
+/* line 10, ../../scss/modules/reports.scss */
+.list-view-cell {
+  display: inline-block;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden; }

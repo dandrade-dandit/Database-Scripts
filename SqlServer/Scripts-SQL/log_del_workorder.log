@@ -1,0 +1,455 @@
+2 - jul 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+0 rows deleted.
+
+Elapsed: 00:10:39.73
+
+Commit complete.
+
+Elapsed: 00:00:00.00
+1 - ago 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+471424 rows deleted.
+
+Elapsed: 00:48:30.98
+
+Commit complete.
+
+Elapsed: 00:00:14.24
+2 - ago 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.03
+
+305048 rows deleted.
+
+Elapsed: 00:17:43.05
+
+Commit complete.
+
+Elapsed: 00:00:00.13
+1 - set 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+55926 rows deleted.
+
+Elapsed: 00:05:47.53
+
+Commit complete.
+
+Elapsed: 00:00:00.17
+2 - set 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+1242467 rows deleted.
+
+Elapsed: 01:46:47.38
+
+Commit complete.
+
+Elapsed: 00:00:00.30
+1 - out 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+302952 rows deleted.
+
+Elapsed: 00:52:01.04
+
+Commit complete.
+
+Elapsed: 00:00:00.17
+2 - out 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+83879 rows deleted.
+
+Elapsed: 00:12:43.56
+
+Commit complete.
+
+Elapsed: 00:00:00.07
+1 - nov 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+39913 rows deleted.
+
+Elapsed: 00:07:25.64
+
+Commit complete.
+
+Elapsed: 00:00:00.03
+2 - nov 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+227069 rows deleted.
+
+Elapsed: 00:23:01.73
+
+Commit complete.
+
+Elapsed: 00:00:00.07
+1 - dez 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+61168 rows deleted.
+
+Elapsed: 00:25:57.15
+
+Commit complete.
+
+Elapsed: 00:00:00.06
+2 - dez 2009                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+427215 rows deleted.
+
+Elapsed: 04:27:10.34
+
+Commit complete.
+
+Elapsed: 00:00:00.41
+1 - jan 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+86616 rows deleted.
+
+Elapsed: 00:49:26.86
+
+Commit complete.
+
+Elapsed: 00:00:00.14
+2 - jan 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+32102 rows deleted.
+
+Elapsed: 00:17:41.43
+
+Commit complete.
+
+Elapsed: 00:00:00.06
+1 - fev 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+32621 rows deleted.
+
+Elapsed: 00:07:55.14
+
+Commit complete.
+
+Elapsed: 00:00:00.03
+2 - fev 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+16124 rows deleted.
+
+Elapsed: 00:08:18.46
+
+Commit complete.
+
+Elapsed: 00:03:38.57
+1 - mar 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.03
+
+11553 rows deleted.
+
+Elapsed: 00:04:30.84
+
+Commit complete.
+
+Elapsed: 00:00:00.06
+2 - mar 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.02
+
+11169 rows deleted.
+
+Elapsed: 00:04:56.45
+
+Commit complete.
+
+Elapsed: 00:00:00.03
+1 - abr 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.03
+
+25725 rows deleted.
+
+Elapsed: 00:40:44.44
+
+Commit complete.
+
+Elapsed: 00:13:32.13
+2 - abr 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+21385 rows deleted.
+
+Elapsed: 00:36:45.39
+
+Commit complete.
+
+Elapsed: 00:00:00.05
+1 - mai 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+4390 rows deleted.
+
+Elapsed: 00:09:30.05
+
+Commit complete.
+
+Elapsed: 00:03:42.50
+2 - mai 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.03
+
+25388 rows deleted.
+
+Elapsed: 00:38:08.49
+
+Commit complete.
+
+Elapsed: 00:00:00.15
+1 - jun 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+182418 rows deleted.
+
+Elapsed: 01:01:02.94
+
+Commit complete.
+
+Elapsed: 00:00:00.28
+2 - jun 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+233610 rows deleted.
+
+Elapsed: 00:43:43.22
+
+Commit complete.
+
+Elapsed: 00:00:00.73
+1 - jul 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+35862 rows deleted.
+
+Elapsed: 00:10:07.97
+
+Commit complete.
+
+Elapsed: 00:00:00.08
+2 - jul 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+25955 rows deleted.
+
+Elapsed: 00:09:33.13
+
+Commit complete.
+
+Elapsed: 00:00:00.09
+1 - ago 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+1747617 rows deleted.
+
+Elapsed: 01:27:15.40
+
+Commit complete.
+
+Elapsed: 00:00:00.81
+2 - ago 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+731413 rows deleted.
+
+Elapsed: 00:24:16.70
+
+Commit complete.
+
+Elapsed: 00:00:00.94
+1 - set 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+11510 rows deleted.
+
+Elapsed: 00:02:42.14
+
+Commit complete.
+
+Elapsed: 00:00:00.05
+2 - set 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+74560 rows deleted.
+
+Elapsed: 00:03:56.55
+
+Commit complete.
+
+Elapsed: 00:00:00.06
+1 - out 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+234944 rows deleted.
+
+Elapsed: 00:10:00.30
+
+Commit complete.
+
+Elapsed: 00:00:00.30
+2 - out 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+53538 rows deleted.
+
+Elapsed: 00:04:45.96
+
+Commit complete.
+
+Elapsed: 00:00:00.07
+1 - nov 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+9455 rows deleted.
+
+Elapsed: 00:02:00.08
+
+Commit complete.
+
+Elapsed: 00:00:00.04
+2 - nov 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+815840 rows deleted.
+
+Elapsed: 00:23:26.24
+
+Commit complete.
+
+Elapsed: 00:00:01.00
+1 - dez 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.00
+
+948845 rows deleted.
+
+Elapsed: 00:27:17.80
+
+Commit complete.
+
+Elapsed: 00:00:00.98
+2 - dez 2010                                                                    
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.01
+
+497181 rows deleted.
+
+Elapsed: 00:29:55.14
+
+Commit complete.
+
+Elapsed: 00:00:01.17

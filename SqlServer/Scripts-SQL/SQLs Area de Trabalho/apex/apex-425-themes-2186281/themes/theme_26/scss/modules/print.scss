@@ -1,0 +1,22 @@
+@media only print {
+	section.uRegionFrame div.uFrameSide,
+	header#uHeader nav,
+	div#uBreadcrumbs,
+	section.uRegion > div.uRegionHeading h1 a.uRegionControl,
+	div.uFrameContent div.uFrameMain section.uRegion > div.uRegionHeading > span.uButtonContainer,
+	section.uRegion > div.uRegionHeading span.uButtonContainer
+	 {
+		display: none;
+	}
+	#uOneCol,
+	footer#uFooter {
+		margin: 16px 0 0 0;
+	}
+	div.uFrameContent div.uFrameMain div.uFrameRegionSelector > ul li a.active {
+		color: #000;
+		border: 1px solid #888;
+	}
+	header#uHeader hgroup a#uLogo {
+		color: #000;
+	}
+}

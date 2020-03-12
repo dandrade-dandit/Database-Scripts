@@ -1,0 +1,16 @@
+@import "settings/vars";
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	div.userBlock {
+		img.navIcon {
+			background-image: $retina_image;
+			background-size: $retina_size;
+		}
+	}
+	div.navActions {
+		img.navIcon {
+			background-image: $retina_image;
+			background-size: $retina_size;
+		}
+	}
+}

@@ -1,0 +1,346 @@
+@import "settings/vars";
+@media only screen and (-webkit-min-device-pixel-ratio: 2.0) {
+	header#uHeader {
+		background-image: $retina_image;
+		background-size: $retina_size;
+	}
+	div#uBreadcrumbs {
+		ul {
+			li {
+				&.uSeparator {
+					img {
+						background-image: $retina_image;
+						background-size: $retina_size;
+					}
+				}
+			}
+		}
+		div.uBreadcrumbsBG {
+			background-image: $retina_image;
+			background-size: $retina_size;
+			div.uLeft,
+			div.uRight {
+			}
+			div.uLeft {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+			div.uRight {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+		}
+	}
+	/* Footer */
+	footer#uFooter {
+		div.uFooterBG {
+			background-image: $retina_image;
+			background-size: $retina_size;
+			div.uLeft,
+			div.uRight {
+			}
+			div.uLeft {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+			div.uRight {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+		}
+	}
+	section.uRegion {
+		p {
+		}
+		& > div.uRegionHeading {
+			h1 {
+				a.uRegionControl {
+					img {
+						background-image: $retina_image;
+						background-size: $retina_size;
+					}
+					&.uRegionCollapsed img {
+						background-image: $retina_image;
+						background-size: $retina_size;
+					}
+				}
+			}
+			span.uButtonContainer {
+				a.uIconButton {
+					img {
+						background-image: $retina_image;
+						background-size: $retina_size;
+					}
+				}
+			}
+		}
+	}
+	section.uMessageRegion {
+		img.uCheckmarkIcon {
+			background-image: $retina_image;
+	background-size: $retina_size;
+		}
+		img.uWarningIcon {
+			background-image: $retina_image;
+	background-size: $retina_size;
+		}
+		div.uRegionContent {
+			a.uCloseMessage {
+				background-image: $retina_image;
+	background-size: $retina_size;
+			}
+		}
+	}
+	section.uReportFilter {
+		div.uReportFilterRow {
+			img.uSearchIcon {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+		}
+	}
+	ul.uVerticalList,
+	ul.uVerticalSidebarList {
+		li {
+			background-image: $retina_image;
+			background-size: $retina_size;
+		}
+	}
+	div.uHorizontalProgressList {
+		ul {
+			li {
+				background-image: $retina_image;
+				background-size: $retina_size;
+				span {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+				&.last-non-current,
+				&.last-current {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+				&.first-non-current,
+				&.first-current {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+			}
+		}
+	}
+	div.uVerticalProgressList {
+		ul {
+			li {
+				img {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+			}
+		}
+	}
+	table.formlayout {
+		td {
+			label {
+				&.uRequired img.uAsterisk {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+			}
+		}
+		td img.uPopupLOVIcon {
+			background-image: $retina_image;
+			background-size: $retina_size;
+		}
+	}
+	table {
+		span.lov {
+			img.uPopupLOVIcon {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+		}
+	}
+	img.uFileIcon {
+		background-image: $retina_image;
+		background-size: $retina_size;
+	}
+	a.uPaginationNext {
+		img {
+			background-image: $retina_image;
+			background-size: $retina_size;
+		}
+	}
+	a.uPaginationPrev {
+		img {
+			background-image: $retina_image;
+			background-size: $retina_size;
+		}
+	}
+	#apexir_SEARCHDROPROOT.apexir_SEARCHICON {
+		background-image: $retina_image;
+		background-size: $retina_size;
+	}
+	#apexir_SEARCH_BAR_OPTIONS {
+		.irr-pill-icons-left-active span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+		.irr-pill-icons-left span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+		.irr-pill-report-right-active span,
+		.irr-pill-report-active span,
+		.irr-pill-report-center-active span,
+		.irr-pill-report-left-active span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+		.irr-pill-report-right span,
+		.irr-pill-report span,
+		.irr-pill-report-center span,
+		.irr-pill-report-left span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+		.irr-pill-group span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+		.irr-pill-group-active span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+		.irr-pill-chart span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+		.irr-pill-chart-active span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+		.irr-pill-details-right-active span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+		.irr-pill-details-right span {
+			background-image: $retina_image !important;
+			background-size: $retina_size;
+		}
+	}
+	.apexir_ACTION_MENU,
+	.apexir_WEBSHEET_MENU {
+		button#apexir_ACTIONSMENUROOT,
+		button#apexir_WEBSHEETSMANAGE {
+			span {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+		}
+	}
+	ul.detailedStatusList {
+		& > li {
+			img {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+		}
+	}
+	ul.largeLinkList {
+		li a {
+			img {
+				background-image: $retina_image;
+				background-size: $retina_size;
+				&.switchIcon {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+				&.reportIcon {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+				&.calendarIcon {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+				&.userIcon {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+				&.chartIcon {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+			}
+		}
+	}
+	div.alertMessage {
+		img {
+			background-image: $retina_image;
+			background-size: $retina_size;
+		}
+	}
+	section.uSingleAlertMessage {
+		a.closeMessage {
+			background-image: $retina_image;
+			background-size: $retina_size;
+		}
+	}
+	ul.commentBubbles {
+		& > li {
+			& > span {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+			&.grayComment {
+				& > span {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+			}
+		}
+	}
+	ul.voteList {
+		li {
+			span.voteCounter {
+				& > a {
+					img {
+					}
+					&.upVote img {
+						background-image: $retina_image;
+						background-size: $retina_size;
+					}
+					&.upVote.active img,
+					&.upVote:hover img{
+						background-image: $retina_image;
+						background-size: $retina_size;
+					}
+					&.downVote img {
+						background-image: $retina_image;
+						background-size: $retina_size;
+					}
+					&.downVote.active img,
+					&.downVote:hover img {
+						background-image: $retina_image;
+						background-size: $retina_size;
+					}
+				}
+			}
+		}
+	}
+	div.sCustomSearch table.formlayout input.sSearchFieldBig {
+		background-image: $retina_image;
+		background-size: $retina_size;
+	}
+	section.uRegion.uLoginRegion {
+		div.uLoginHeading {
+			span.bgArrow {
+				background-image: $retina_image;
+				background-size: $retina_size;
+			}
+		}
+	}
+	img.appIcon {
+		background-image: url(../../../eba/img/eba_launchpad.png);
+	}
+}

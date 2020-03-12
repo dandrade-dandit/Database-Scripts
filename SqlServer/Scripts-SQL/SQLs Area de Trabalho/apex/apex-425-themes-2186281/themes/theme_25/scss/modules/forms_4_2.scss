@@ -1,0 +1,471 @@
+/******************************************************************************
+
+File Name:    forms_4_2.scss
+Purpose:      all form and label templates
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+@-webkit-keyframes pulse {
+	0% {
+	-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 5px 2px rgba(56, 127, 214,.20);
+	}
+	50% {
+	-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 7px 2px rgba(56, 127, 214,.40);
+	}
+	100% {
+	-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 5px 2px rgba(56, 127, 214,.20);
+	}
+}
+
+@-moz-keyframes pulse {
+	0% {
+	-moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 5px 2px rgba(56, 127, 214,.20);
+	}
+	50% {
+	-moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 7px 2px rgba(56, 127, 214,.40);
+	}
+	100% {
+	-moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 5px 2px rgba(56, 127, 214,.20);
+	}
+}
+
+
+div.fieldContainer {
+	margin: 0 0 12px 0;
+	@include clearfix;
+	
+	/* Horizontal Form Container */
+	&.horizontal {
+		&.rightlabels {
+			& > label {
+				text-align: right;
+			}
+		}
+		& > label {
+			float: left;
+			width: 140px;
+		}
+		div.fieldControls {
+			margin-left: 156px;
+		}
+	}
+	
+	&.vertical {
+		& > label {
+			margin-bottom: 0;
+		}
+		div.fieldControls {
+		}
+	}
+	small.helpText {
+		display: block;
+		margin-top: 4px;
+		font-size: 11px;
+		line-height: 16px;
+		color: #606060;
+	}
+	input.text_field,
+	select.selectlist,
+	input.password,
+	input[type="text"],
+	input[type="password"],
+	textarea {
+		margin: 0;
+		border: 1px solid #C0C0C0;
+		border-bottom: 1px solid #B0B0B0;
+		padding: 4px;
+		font-size: 12px;
+		line-height: 12px;
+		@include border-radius(2px);
+		@include box-shadow(0 1px 1px rgba(0,0,0,.15) inset);
+		background-color: #FFF;
+		color: #404040;
+		@include transition(border 0.1s, box-shadow 0.1s);
+		@include box-sizing(border-box);
+	}
+	.fullWidth {
+		width: 90%;
+		&.datepicker {
+			width: 80%
+		}
+	}
+	input:focus, textarea:focus {
+		background-color: #FFF;
+		outline: 0;
+		border-color: #708DB2;
+		@include box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 5px 2px rgba(56, 127, 214,.35));
+		-webkit-animation: pulse 2.0s infinite ease-in-out;
+		-moz-animation: pulse 2.0s infinite ease-in-out;
+	}
+	textarea {
+		font-size: 11px;
+		line-height: 16px;
+		font-family: 'Monaco','Consolas',monospace;
+		@include box-sizing(border-box);
+	}
+	fieldset.textarea {
+		display: block;
+	}
+	input.apex_disabled {
+		@include opacity(0.5);
+	}
+	input.error, input.error:focus {
+		border: 1px solid red !important;
+	}
+	input[type=hidden] {
+		display: none;
+	}
+	textarea.codeTextarea {
+		font: normal 11px/14px monospace;
+	}
+	select.selectlist {
+		/* Add extra margin to get cell height same as single text field*/
+/*		margin: 6px 0 7px 0;*/
+	}
+	span.display_only,
+	span.display_bold {
+		display: inline-block;
+		padding: 3px 8px 3px 0;
+	}
+	span.display_only,
+	span.display_only a,
+	span.display_bold,
+	span.display_bold a {
+		font: normal 12px/16px $fontFamily;
+		color: #404040;
+	}
+	fieldset label {
+		display: inline;
+	}
+	& > label {
+		display: inline-block;
+		padding: 3px 8px 3px 0;
+		font: normal 12px/16px $fontFamily;
+		color: #404040;
+		a {
+			font: normal 12px/16px $fontFamily;
+			color: #404040;
+			text-decoration: none;
+		}
+		a.uHelpLink {
+			color: #404040;
+			&:hover {
+				text-decoration: underline;
+			};
+		}
+		&.uRequired {
+			font-weight: bold;
+		}
+		&.uRequired a.uHelpLink {
+			font-weight: bold;
+		}
+		&.uRequired img.uAsterisk {
+			margin-right: 2px;
+			vertical-align: top;
+		}
+	}
+	span.uLabelError {
+		display: block;
+		font: normal 11px/16px $fontFamily;
+		color: #D92B2B;
+		margin-bottom: 4px;
+		& + input,
+		& + input + input,
+		& + select,
+		& + textarea {
+			background: #FFE6E6;
+			border: 1px solid #CC6666;
+		}
+	}
+	fieldset.listmanager {
+	  table td {
+	    padding: 0 0 4px 0;
+	  }
+	}
+//  td.lov,
+//  td.calculator,
+//  fieldset.color_picker table td {
+//    /* Pad the right side by 10px to account for 100% width */
+//    @media only screen and (max-width: 767px) { padding: 0 10px 0 0; }
+//  }
+	fieldset.lov {
+		display: inline-block;
+	}
+//  img.uPopupLOVIcon {
+//    width: 18px;
+//    height: 18px;
+//    background: url(../images/app_theme.png) -144px -552px no-repeat;
+//  }
+}
+
+/* Tabular Form Styles */
+section.uRegion,
+table.uReport,
+div.fieldContainer {
+	input.text_field,
+	select.selectlist,
+	input.password,
+	input[type="text"],
+	input[type="password"],
+	textarea {
+		margin: 0;
+		border: 1px solid #C0C0C0;
+		border-bottom: 1px solid #B0B0B0;
+		padding: 4px;
+		font-size: 12px;
+		line-height: 12px;
+		@include border-radius(2px);
+		@include box-shadow(0 1px 1px rgba(0,0,0,.15) inset);
+		background-color: #FFF;
+		color: #404040;
+		@include transition(border 0.1s, box-shadow 0.1s);
+	}
+	input:focus, textarea:focus {
+		background-color: #FFF;
+		outline: 0;
+		border-color: #708DB2;
+		@include box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 5px 2px rgba(56, 127, 214,.35));
+		-webkit-animation: pulse 2.0s infinite ease-in-out;
+		-moz-animation: pulse 2.0s infinite ease-in-out;
+	}
+}
+
+/* Bring Styles out of Form Layout table */
+span.uNoLabel {
+	display: none;
+}
+
+/* Shuttle */
+td.shuttleControl,
+td.shuttleSort2 {
+  vertical-align: middle;
+}
+
+/* =================== */
+/* = Disabled Styles = */
+/* =================== */
+.apex_disabled,
+button[disabled],
+input[disabled] {
+	@include opacity(0.75);
+	cursor: default;
+	pointer-events: none;
+	&:hover {
+		@include box-shadow(none);
+	}
+}
+/* ==================== */
+/* = Responsive Forms = */
+/* ==================== */
+
+/* Tablet and Small Screens */
+@media only screen and (max-width: 1024px) {
+	div.fieldContainer.horizontal {
+		& > label {
+			width: 120px;
+		}
+		div.fieldControls {
+			margin-left: 128px;
+		}
+	}
+}
+
+/* Larger Resolutions */
+@media only screen and (min-width: 1420px) {
+	div.fieldContainer.horizontal {
+		& > label {
+			width: 180px;
+		}
+		div.fieldControls {
+			margin-left: 196px;
+		}
+	}
+}
+
+/* Very Large Resolutions */
+@media only screen and (min-width: 1900px) {
+	div.fieldContainer.horizontal {
+		& > label {
+			width: 220px;
+		}
+		div.fieldControls {
+			margin-left: 236px;
+		}
+	}
+}
+
+
+
+/* ================= */
+/* = Auto Complete = */
+/* ================= */
+div.ac_results {
+	border: 1px solid #AAA;
+	border-top: none;
+	padding: 8px 0;
+	@include border-radius(0 0 3px 3px);
+	@include box-shadow(0 1px 1px rgba(0,0,0,.1));
+	ul li {
+		padding: 0 8px;
+		font: normal 12px/24px $fontFamily;
+		color: #333;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		&.ac_even {
+			background-color: #FFF;
+		}
+		&.ac_odd {
+			background-color: #F8F8F8;
+		}
+		&.ac_over {
+			background-color: #4F84C8;
+			color: #FFF;
+		}
+		&:active {
+			background-color: #4F80BE;
+		}
+		strong {
+			font-weight: bold;
+		}
+	}
+}
+
+
+/* ================ */
+/* = Mobile Forms = */
+/* ================ */
+@media only screen and (max-width: 767px) {
+	/* ========================== */
+	/* = Form Styles for Mobile = */
+	/* ========================== */
+	div.fieldContainer {
+		&.horizontal {
+			div.fieldControls {
+				margin-left: 0;
+			}
+			& > label {
+				display: block;
+				float: none;
+				width: auto;
+				text-align: left !important;
+			}
+		}
+		div.fieldControls {
+//      padding-right: 10px;
+			input[type='text'],
+			input[type='password'],
+			input.text_field,
+			input.password,
+			textarea,
+			select,
+			span.display_only {
+//        width: 100%;
+//      Make width 90% so Help Icon fits
+        width: 90%;
+			}
+//      Don't need this as we are using box-sizing'
+//      fieldset.textarea {
+//        margin-right: -10px;
+//      }
+			input.hasDatepicker {
+				width: 80%;
+			}
+		}
+		fieldset.lov {
+		  width: 90%;
+			table.lov {
+				width: 100%;
+				td.lov {
+				  width: 100%;
+				}
+				input.popup_lov {
+				  width: 100%;
+				}
+			}
+		}
+	}
+}
+
+/******************************************************************************
+Login Form
+******************************************************************************/
+#uLoginContainer {
+	div.fieldContainer {
+		&.horizontal {
+			div.fieldControls {
+				margin-left: 0;
+			}
+			& > label {
+				display: block;
+				float: none;
+				width: auto;
+				text-align: left !important;
+			}
+		}
+		div.fieldControls {
+			input:not([type='checkbox']),
+			textarea,
+			select {
+				width: 100%;
+			}
+		}
+	}
+}
+
+
+/******************************************************************************
+Item Level Help
+******************************************************************************/
+button.itemHelpButton {
+	display: none;
+}
+span.uItemHelp {
+	display: none;
+}
+/******************************************************************************
+Item Level Help
+******************************************************************************/
+input.searchField,
+.fieldControls input[type='text'].searchField {
+	@include box-sizing(border-box);
+	margin: 8px auto;
+	display: block;
+	border: 1px solid #C0C0C0;
+	border-bottom: 1px solid #B0B0B0;
+	padding: 8px;
+	font-size: 14px;
+	line-height: 24px;
+	@include border-radius(3px);
+	@include box-shadow(0 1px 1px rgba(0,0,0,.15) inset);
+	background-color: #F9F9F9;
+	color: #404040;
+	@include transition(border 0.1s, box-shadow 0.1s);
+	&:focus {
+		background-color: #FFF;
+		outline: 0;
+		border-color: #708DB2;
+		@include box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 5px 2px rgba(56, 127, 214,.35));
+		-webkit-animation: pulse 2.0s infinite ease-in-out;
+		-moz-animation: pulse 2.0s infinite ease-in-out;
+	}
+	&.fullWidth {
+		width: 100%;
+	}
+}
+p.searchNote {
+  margin-bottom: 16px;
+  color: #707070;
+  text-align: center;
+}

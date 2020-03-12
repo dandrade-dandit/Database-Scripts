@@ -1,0 +1,16 @@
+@import "settings/vars";
+
+.tagCloud {
+	ul {
+		li {
+			a {
+				background-image: $retina_image;
+				background-size: $retina_size;
+				span {
+					background-image: $retina_image;
+					background-size: $retina_size;
+				}
+			}                           
+		}
+	}
+}

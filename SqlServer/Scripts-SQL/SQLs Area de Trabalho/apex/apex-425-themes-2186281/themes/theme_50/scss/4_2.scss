@@ -1,0 +1,31 @@
+/******************************************************************************
+File Name:    4_2.scss
+Purpose:      contains all css related changes for the theme 50
+              this file only contains import statements to other scss files or other 
+              essential generic styles
+
+Change History:
+
+Rem   msewtz      05/29/2012    Created file
+Rem   msewtz      05/29/2012    Adding modules/calendar
+Rem   shrahman    06/12/2012    Adding modules/forms
+Rem   shrahman    06/18/2012    Adding loading indicator styles
+Rem   shrahman    10/22/2012    Adding modules/lists
+Rem   shrahman    10/23/2012    Modifying loading indicator styles to set image dimensions
+Rem   shrahman    10/23/2012    Removing modules/lists
+Rem   shrahman    11/05/2012    Removing modules/forms (bug 14767963, no longer needed)
+******************************************************************************/
+
+@import 'modules/calendar';
+@import 'modules/reports';
+
+/*****************************************************************************
+Generic Styles for Mobile Theme
+******************************************************************************/
+.apex-loading-indicator {
+  background-image: url(../../../apex/builder/loading16x16.gif);
+  padding: 0;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}

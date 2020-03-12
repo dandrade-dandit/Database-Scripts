@@ -1,0 +1,63 @@
+/******************************************************************************
+
+File Name:    modals_4_2.scss
+Purpose:      modal dialog
+
+******************************************************************************/
+
+/******************************************************************************
+Import Relevant SCSS Config
+******************************************************************************/
+
+@import "compass/css3";
+@import "settings/base";
+
+/******************************************************************************
+Begin Styles
+******************************************************************************/
+
+
+/* =================================== */
+/* = Custom LightBox (modal dialogs) = */
+/* =================================== */
+div#modalBackground {  
+  display:none;
+  position:fixed;
+  _position:absolute; /* hack for internet explorer 6*/  
+  height:100%;
+  width:100%;
+  top:0;
+  left:0;
+  border:0;
+  z-index: 100;
+  background-color:#000;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)" !important;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40) !important;
+  } 
+section.modalOn {
+  display: block !important;
+  border: 1px solid #606060;
+  @include box-shadow(0 4px 12px rgba(0,0,0,.5));
+  z-index: 1000;
+}
+section.uModalRegion {
+  display:  none;
+}
+
+/* ===================================== */
+/* = Modal Progress (apex wait dialog) = */
+/* ===================================== */
+div.apex_wait_popup {
+  @include border-radius(4px);
+  border: 2px solid rgba(0,0,0,.25);
+  @include box-shadow(0 1px 10px rgba(0,0,0,.15));
+}
+div.modalProgress {
+  margin: 20px;
+  p {
+    font: normal 14px/20px $fontFamily;
+    color: #666;
+  }
+}

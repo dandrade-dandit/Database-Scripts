@@ -1,0 +1,17 @@
+use master
+set nocount on
+declare base_cursor cursor for
+select name from sysdatabases where dbid >6
+open base_cursor
+declare @base sysname
+fetch next from base_cursor into @base
+while @@fetch_status = 0
+begin
+ exec ('use ' + @base)
+ go
+ dbcc showcontig with fast, all_indexes
+ go
+ fetch next from base_cursor into @base
+end
+close base_cursor
+deallocate base_cursor

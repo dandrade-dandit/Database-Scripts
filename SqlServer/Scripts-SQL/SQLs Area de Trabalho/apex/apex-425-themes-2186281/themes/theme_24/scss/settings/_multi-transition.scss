@@ -1,0 +1,31 @@
+@mixin multi-transition($transition-1, $transition-2: false, $transition-3: false, $transition-4: false, $transition-5: false, $transition-6: false, $transition-7: false, $transition-8: false, $transition-9: false) {
+  $full: $transition-1;
+  @if $transition-2 {
+    $full: $full + ", " + $transition-2;
+  }
+  @if $transition-3 {
+    $full: $full + ", " + $transition-3;
+  }
+  @if $transition-4 {
+    $full: $full + ", " + $transition-4;
+  }
+  @if $transition-5 {
+    $full: $full + ", " + $transition-5;
+  }
+  @if $transition-6 {
+    $full: $full + ", " + $transition-6;
+  }
+  @if $transition-7 {
+    $full: $full + ", " + $transition-7;
+  }
+  @if $transition-8 {
+    $full: $full + ", " + $transition-8;
+  }
+  @if $transition-9 {
+    $full: $full + ", " + $transition-9;
+  }
+    
+  -moz-transition: $full;
+  -webkit-transition: $full;
+	transition: $full;
+}

@@ -1,0 +1,13 @@
+@mixin ie-linear-gradient($start-color, $end-color) {   
+		filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr='#{$start-color}', endColorstr='#{$end-color}');
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$start-color}', endColorstr='#{$end-color}')";
+		}
+@mixin background-gradient-ie($start-color, $end-color) {
+	background-color: mix($start-color,$end-color);
+	@include ie-linear-gradient($start-color,$end_color);
+	@include linear-gradient(color-stops($start-color,$end_color));
+}
+@mixin background-gradient($start-color, $end-color) {
+	background-color: mix($start-color,$end-color);
+	@include linear-gradient(color-stops($start-color,$end_color));
+}

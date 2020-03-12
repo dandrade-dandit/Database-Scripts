@@ -1,0 +1,33 @@
+use master
+set nocount on
+DECLARE @bstat int, @tstat int
+declare base_cursor cursor for
+select name from sysdatabases where dbid >6
+open base_cursor
+ declare @base sysname
+ fetch next from base_cursor into @base
+ set @bstat = @@fetch_status
+ while @bstat = 0
+ begin 
+    exec ('use ' + @base) --+ char(10) + ' go')
+    declare table_cursor cursor for
+    select a.id from sysindexes a, sysobjects b where a.name = b.name and b.xtype ='U' 
+    open table_cursor
+    declare @table sysname
+    fetch next from table_cursor into @table
+    set @tstat = @@fetch_status
+    while @tstat = 0
+    begin
+     print 'dbcc showcontig ('  + @table + ')' + char(10) + ' go'
+     fetch next from table_cursor into @table
+     set @tstat = @@fetch_status
+    end
+  close table_cursor
+  deallocate table_cursor
+ fetch next from base_cursor into @base
+ set @bstat = @@fetch_status
+end
+close base_cursor
+deallocate base_cursor
+
+

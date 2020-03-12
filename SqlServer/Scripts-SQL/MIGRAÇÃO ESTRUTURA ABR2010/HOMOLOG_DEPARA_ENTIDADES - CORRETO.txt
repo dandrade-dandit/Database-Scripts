@@ -1,0 +1,592 @@
+---------------------IFRSICOF.contratos_item--------------------------
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO_DBLINK.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update IFRSICOF.contratos_item
+set ide_entidade = x.ENTIDADE_PARA
+where ide_entidade = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+
+18:52:53  **** SCRIPT STARTED 9-abr-2010 18:52:53 ****
+18:52:53  declare
+18:52:53  cursor c1 is
+18:52:53  ...
+18:52:53  PL/SQL block executed
+18:52:53  **** SCRIPT ENDED 9-abr-2010 18:52:53 ****
+18:52:53  End Script Execution
+18:52:56  Transaction Commited
+
+
+
+
+
+--------------- INTEGRACAO.CONF_IDENTIFICACAO_U ----------------ok---------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_IDENTIFICACAO_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+-----------------------------INTEGRACAO.CONF_DATAS_U---------------ok------------------------------------
+
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_DATAS_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+
+
+----------------------------INTEGRACAO.CONF_ITEM_ACCT_DISTIN_U----------OK------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_ITEM_ACCT_DISTIN_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+/
+
+commit;
+------------------------------INTEGRACAO.CONF_ITEM_CRONOGRAMA_U--OK---------------
+
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_ITEM_CRONOGRAMA_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+/
+
+----------------------------INTEGRACAO.CONF_ITEM_CRONOGRAMA_U Set PAYABLE_ENTITY_ID_OPER-------OK---------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_ITEM_CRONOGRAMA_U
+set PAYABLE_ENTITY_ID_OPER = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID_OPER = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+/
+
+-----------------------INTEGRACAO.CONF_ITEM_IDENT_U-------------OK--------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_ITEM_IDENT_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+
+
+---------------------------INTEGRACAO.CONF_ITEM_PROJETO_U------------OK-----------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_ITEM_PROJETO_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+
+---------------------------INTEGRACAO.CONF_ITEM_REAJUSTE_U ----------OK------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_ITEM_REAJUSTE_U 
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+
+---------------------------------INTEGRACAO.CONF_ITEM_REQUISITADOS_U--------OK---------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_ITEM_REQUISITADOS_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+
+
+
+
+
+-------------------------------INTEGRACAO.CONF_ITEM_RESUMO_U----------OK---------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_ITEM_RESUMO_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+
+------------------------INTEGRACAO.CONF_OBJETO_U--------------OK------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_OBJETO_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+-------------------------INTEGRACAO.CONF_PARTICIPANTES_U-----------OK--------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_PARTICIPANTES_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+---------------------------INTEGRACAO.CONF_REPRESENTANTES_U------OK-----------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_REPRESENTANTES_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+------------------------INTEGRACAO.CONF_TERMO_U---------------OK
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_TERMO_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+
+
+---------------------------INTEGRACAO.CONF_SOL_PAG_HEAD_U-----------OK------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_SOL_PAG_HEAD_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+---------------------------INTEGRACAO.CONF_SOL_PAG_HEAD_U-------------OK----------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_SOL_PAG_HEAD_U
+set PAYABLE_ENTITY_ID_OPER = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID_OPER = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+---------------------------INTEGRACAO.CONF_SOL_PAG_RATEIO_U-------------OK----------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_SOL_PAG_RATEIO_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+--------------------------INTEGRACAO.CONF_SOL_PAG_VAL_U---------------OK---------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_SOL_PAG_VAL_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+---------------------------INTEGRACAO.CONF_SOL_PAG_ACR_RET_U------------OK-----------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_SOL_PAG_ACR_RET_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+
+----------------------------INTEGRACAO.CONF_SOL_PAG_RA_RATEIO_U----------OK------------------------------------------
+
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_SOL_PAG_RA_RATEIO_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+-------------------------INTEGRACAO.CONF_SOL_PAG_OUTROS_U--------OK------------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_SOL_PAG_OUTROS_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+
+/
+--------------------INTEGRACAO.CONF_SECURITY_U------------------OK---------------------------------------------
+
+declare
+cursor c1 is
+select ENTIDADE_PARA,ENTIDADE_DE
+from INTEGRACAO.TAB_DE_PARA_SMART ;
+
+BEGIN
+
+for x in c1 loop
+
+update INTEGRACAO.CONF_SECURITY_U
+set PAYABLE_ENTITY_ID = x.ENTIDADE_PARA
+where PAYABLE_ENTITY_ID = x.ENTIDADE_DE;
+
+end loop;
+
+end;
+/
+
+
+18:36:32  **** SCRIPT STARTED 9-abr-2010 18:36:31 ****
+18:36:32  select ENTIDADE_PARA,ENTIDADE_DE
+18:36:32  from INTEGRACAO_DBLINK.TAB_DE_PARA_SMART
+18:36:32  Data Set is Read-Only; 60 row(s) fetched
+18:36:32  **** SCRIPT ENDED 9-abr-2010 18:36:32 ****
+18:36:32  End Script Execution
+18:55:44  Start Script Execution ...
+18:55:44  **** SCRIPT STARTED 9-abr-2010 18:55:44 ****
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:44  PL/SQL block executed
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:44  PL/SQL block executed
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:44  PL/SQL block executed
+18:55:44  commit
+18:55:44  SQL statement executed
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:44  PL/SQL block executed
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:44  PL/SQL block executed
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:44  PL/SQL block executed
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:44  PL/SQL block executed
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:44  PL/SQL block executed
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:44  PL/SQL block executed
+18:55:44  declare
+18:55:44  cursor c1 is
+18:55:44  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  declare
+18:55:45  cursor c1 is
+18:55:45  ...
+18:55:45  PL/SQL block executed
+18:55:45  **** SCRIPT ENDED 9-abr-2010 18:55:45 ****
+18:55:46  End Script Execution
+18:55:58  Transaction Commited
