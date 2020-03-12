@@ -1,0 +1,17 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+SELO_CON                                                  5
+SELO_GER                                                  7
+SELO_USU                                                 87
+
+3 linhas selecionadas.
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+SELO_CON                       NO
+SELO_GER                       NO
+SELO_USU                       NO
+
+3 linhas selecionadas.

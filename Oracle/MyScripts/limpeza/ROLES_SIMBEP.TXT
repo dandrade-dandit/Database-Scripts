@@ -1,0 +1,19 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+SIMBEP_ROLE_ADM                                           4
+SIMBEP_ROLE_PORTEIRO                                     35
+SIMBEP_ROLE_TECNICO                                      12
+
+3 linhas selecionadas.
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+SIMBEP_ROLE_ADM                NO
+SIMBEP_ROLE_CONSULTA           NO
+SIMBEP_ROLE_PORTEIRO           NO
+SIMBEP_ROLE_RECEPCAO           NO
+SIMBEP_ROLE_TECNICO            NO
+
+5 linhas selecionadas.

@@ -1,0 +1,50 @@
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'RPE_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SIPAT_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SISLIC_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SRH_WEB_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SISDAT_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SISEG_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SISELO_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SISRH_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'BDOPER_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SISMAT_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SICOF_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'IFRAD';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SISCOB_CASE';
+select 'CREATE USER ' || USERNAME || ' IDENTIFIED BY VALUES ''' || PASSWORD || ''';' from dba_users where username = 'SISCAI_CASE';
+
+
+CREATE USER RPE_CASE IDENTIFIED BY VALUES '64A1FE70F228D080';
+CREATE USER SIPAT_CASE IDENTIFIED BY VALUES '57EE51DE94D3F5D1';
+CREATE USER SISLIC_CASE IDENTIFIED BY VALUES '27088897D65FB618';
+CREATE USER SRH_WEB_CASE IDENTIFIED BY VALUES '7ABAEC0266284E58';
+CREATE USER SISDAT_CASE IDENTIFIED BY VALUES '44D2EA1372879BD1';
+CREATE USER SISEG_CASE IDENTIFIED BY VALUES 'CCD250212BF92655';
+CREATE USER SISELO_CASE IDENTIFIED BY VALUES 'C543153AF1BE27E4';
+CREATE USER SISRH_CASE IDENTIFIED BY VALUES 'D3553B810E7C5DAF';
+CREATE USER BDOPER_CASE IDENTIFIED BY VALUES '63D688805ECD6EEB';
+CREATE USER SISMAT_CASE IDENTIFIED BY VALUES '502026AD03CF6A4A';
+CREATE USER SICOF_CASE IDENTIFIED BY VALUES '56D49A2D29BC7A77';
+CREATE USER IFRAD IDENTIFIED BY VALUES '25B767536D21D687';
+CREATE USER SISCOB_CASE IDENTIFIED BY VALUES 'EF39E1FC2D3E1D6A';
+CREATE USER SISCAI_CASE IDENTIFIED BY VALUES '975C4F2B449B1639';
+
+grant create session to RPE_CASE,SIPAT_CASE,SISLIC_CASE,SRH_WEB_CASE,SISDAT_CASE,SISEG_CASE ,SISELO_CASE,SISRH_CASE ,BDOPER_CASE,SISMAT_CASE,SICOF_CASE ,IFRAD      ,SISCOB_CASE,SISCAI_CASE;
+
+exp system@homolog owner=rpe_case,sipat_case,sislic_case,srh_web_case,sisdat_case,siseg_case,siselo_case,sisrh_case,bdoper_case,sismat_case,sicof_case,ifrad,siscob_case,siscai_case file=exp_case.dmp log=exp_case.log
+
+imp system/man_aston@case9i fromuser=rpe_case       touser=rpe_case     file=exp_case.dmp log=imp_rpe_case     ignore=y
+imp system/man_aston@case9i fromuser=sipat_case     touser=sipat_case   file=exp_case.dmp log=imp_sipat_case   ignore=y
+imp system/man_aston@case9i fromuser=sislic_case    touser=sislic_case  file=exp_case.dmp log=imp_sislic_case   ignore=y                        
+imp system/man_aston@case9i fromuser=srh_web_case   touser=srh_web_case file=exp_case.dmp log=imp_srh_web_case ignore=y                         
+imp system/man_aston@case9i fromuser=sisdat_case    touser=sisdat_case  file=exp_case.dmp log=imp_sisdat_case  ignore=y
+imp system/man_aston@case9i fromuser=siseg_case     touser=siseg_case   file=exp_case.dmp log=imp_siseg_case  ignore=y 
+imp system/man_aston@case9i fromuser=siselo_case    touser=siselo_case  file=exp_case.dmp log=imp_siselo_case ignore=y 
+imp system/man_aston@case9i fromuser=sisrh_case     touser=sisrh_case   file=exp_case.dmp log=imp_sisrh_case  ignore=y 
+imp system/man_aston@case9i fromuser=bdoper_case    touser=bdoper_case  file=exp_case.dmp log=imp_bdoper_case ignore=y 
+imp system/man_aston@case9i fromuser=sismat_case    touser=sismat_case  file=exp_case.dmp log=imp_sismat_case ignore=y 
+imp system/man_aston@case9i fromuser=sicof_case     touser=sicof_case   file=exp_case.dmp log=imp_sicof_case  ignore=y 
+imp system/man_aston@case9i fromuser=ifrad          touser=ifrad        file=exp_case.dmp log=imp_ifrad       ignore=y 
+imp system/man_aston@case9i fromuser=siscob_case    touser=siscob_case  file=exp_case.dmp log=imp_siscob_case  ignore=y
+imp system/man_aston@case9i fromuser=siscai_case    touser=siscai_case  file=exp_case.dmp log=imp_siscai_case ignore=y 
+

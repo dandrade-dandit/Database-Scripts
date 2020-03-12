@@ -1,0 +1,29 @@
+ROLE                                Total
+------------------------------ ----------
+MAT_ATE_SAI_MAT                         2
+MAT_CAT                                 1
+MAT_GER_USU                           328
+MAT_GES_ALM                             3
+MAT_GES_EST                             6
+MAT_GES_INV                             1
+MAT_GES_LOC                            97
+MAT_GES_SED                             6
+MAT_REG_ENT                             6
+MAT_USU_EXT                          1258
+
+10 linhas selecionadas.
+
+ROLE
+------------------------------
+MAT_ATE_SAI_MAT
+MAT_GES_ALM
+MAT_GER_USU
+MAT_USU_EXT
+MAT_GES_SED
+MAT_GES_LOC
+MAT_CAT
+MAT_REG_ENT
+MAT_GES_EST
+MAT_GES_INV
+
+10 linhas selecionadas.

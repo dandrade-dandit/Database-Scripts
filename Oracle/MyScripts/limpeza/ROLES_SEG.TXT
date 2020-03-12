@@ -1,0 +1,15 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+SEG_CAD_USR                                               2
+SEG_GERAL                                                63
+
+2 linhas selecionadas.
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+SEG_CAD_USR                    NO
+SEG_GERAL                      NO
+
+2 linhas selecionadas.

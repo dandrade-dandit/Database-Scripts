@@ -1,0 +1,650 @@
+
+drop public synonym MOVIMENTACAO;
+drop public synonym CADASTROS;
+drop public synonym FORMULAS;
+drop public synonym OCORRENCIAS_EMPREGADOS;
+drop public synonym PENSIONISTAS;
+drop public synonym RUBRICAS;
+
+
+CREATE public synonym MOVIMENTACAO FOR IFRSRH.MOVIMENTACAO;
+CREATE public synonym CADASTROS FOR IFRSRH.CADASTROS;
+CREATE public synonym FORMULAS FOR IFRSRH.FORMULAS;
+CREATE public synonym OCORRENCIAS_EMPREGADOS FOR IFRSRH.OCORRENCIAS_EMPREGADOS;
+CREATE public synonym PENSIONISTAS FOR IFRSRH.PENSIONISTAS;
+CREATE public synonym RUBRICAS FOR IFRSRH.RUBRICAS;
+
+CREATE INDEX mov_dep_ix ON movimentacao
+  (
+    mov_ano_referencia              ASC,
+    mov_mes_referencia              ASC,
+    mov_versao_pagamento            ASC,
+    mov_emp_dep_codigo_pagto        ASC,
+    mov_emp_numero_matricula        ASC
+  )
+  PCTFREE     10
+  INITRANS    2
+  MAXTRANS    255
+tablespace tsi_pessoal
+/
+CREATE INDEX mov_emp_idx ON movimentacao
+  (
+    mov_emp_numero_matricula        ASC
+  )
+  PCTFREE     10
+  INITRANS    2
+  MAXTRANS    255
+tablespace tsi_pessoal
+/
+CREATE INDEX movimentacao_ind1 ON movimentacao
+  (
+    mov_oem_emp_numero_matricula    ASC,
+    mov_oem_ofu_codigo              ASC,
+    mov_oem_data_inicio             ASC
+  )
+  PCTFREE     10
+  INITRANS    2
+  MAXTRANS    255
+tablespace tsi_pessoal
+/
+CREATE INDEX mov_pkt_codigo_pedido_ix ON movimentacao
+  (
+    mov_pkt_codigo_pedido           ASC
+  )
+  PCTFREE     10
+  INITRANS    2
+  MAXTRANS    255
+tablespace tsi_pessoal
+/
+CREATE INDEX mov_pen_fk ON movimentacao
+  (
+    mov_emp_numero_matricula        ASC,
+    mov_pen_codigo                  ASC
+  )
+  PCTFREE     10
+  INITRANS    2
+  MAXTRANS    255
+tablespace tsi_pessoal
+/
+
+
+-- Constraints for MOVIMENTACAO
+
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_ck_1 CHECK ( mov_tipo_parametro in ('H','D','V','P','Q') )
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_ck_2 CHECK ( mov_tip_rubrica in ('N','D','E','R') )
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_ck_3 CHECK ( mov_ind_arsaprev in ('S','N','I') )
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_ck_4 CHECK ( mov_tipo_funcao in ('FG','RG','DI') )
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_ck_5 CHECK ( mov_ind_exclusivo in ('S','N') )
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_ck_6 CHECK ( mov_ind_13 in ('S','N') )
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_ck_7 CHECK ( mov_ind_calculo IN ( 'S' , 'N' ) )
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_pk PRIMARY KEY (mov_ano_referencia, mov_mes_referencia, 
+  mov_versao_pagamento, mov_emp_numero_matricula, mov_rub_codigo, 
+  mov_tip_rubrica, mov_sequencial)
+USING INDEX tablespace tsi_pessoal
+  PCTFREE     10
+  INITRANS    2
+  MAXTRANS    255
+parallel (degree 3)
+/
+
+-- Triggers for MOVIMENTACAO
+
+CREATE TRIGGER trg_folha_fechada
+BEFORE INSERT  OR UPDATE  OR  DELETE 
+ON movimentacao
+REFERENCING NEW AS NEW OLD AS OLD
+FOR EACH ROW
+WHEN ( user <> 'SRH_SFP')
+DECLARE
+ v_folha_fechada    VARCHAR2(1) := 'N';
+ v_update           VARCHAR2(3);
+ v_mes              VARCHAR2(2);
+ v_ano              VARCHAR2(4);
+ v_versao           VARCHAR2(4);
+ v_operacao         VARCHAR2(1);
+ v_num_erro         NUMBER(6);
+BEGIN
+  -- Verifica se a folha esta fechada
+  --
+  IF INSERTING THEN
+    v_folha_fechada := PKT_ERRO_FOLHA.FUN_FOLHA_FECHADA(:NEW.MOV_ANO_REFERENCIA,
+                                                        :NEW.MOV_MES_REFERENCIA,
+                                                        :NEW.MOV_VERSAO_PAGAMENTO
+                                                        );
+  ELSIF UPDATING THEN
+    v_update := 'OLD';
+    v_folha_fechada := PKT_ERRO_FOLHA.FUN_FOLHA_FECHADA(:OLD.MOV_ANO_REFERENCIA,
+                                                        :OLD.MOV_MES_REFERENCIA,
+                                                        :OLD.MOV_VERSAO_PAGAMENTO
+                                                         );
+    IF v_folha_fechada != 'S' THEN
+      v_update := 'NEW';
+      v_folha_fechada := PKT_ERRO_FOLHA.FUN_FOLHA_FECHADA(:NEW.MOV_ANO_REFERENCIA,
+                                                          :NEW.MOV_MES_REFERENCIA,
+                                                          :NEW.MOV_VERSAO_PAGAMENTO
+                                                          );
+    END IF;
+  ELSIF DELETING THEN
+    v_folha_fechada := PKT_ERRO_FOLHA.FUN_FOLHA_FECHADA(:OLD.MOV_ANO_REFERENCIA,
+                                                        :OLD.MOV_MES_REFERENCIA,
+                                                        :OLD.MOV_VERSAO_PAGAMENTO
+                                                         );
+  END IF;
+  --
+  IF v_folha_fechada = 'S' THEN
+    IF INSERTING THEN
+      -- Carrego o numero de Erro
+      v_num_erro := -20010;
+      -- Carrega a operacao que deu erro
+      v_operacao := 'I';
+      -- Se o erro foi gerado por um insert
+      PKT_ERRO_FOLHA.PRC_CARREGA_ERRO_FOLHA(v_operacao,
+                                            :NEW.MOV_ANO_REFERENCIA,
+                                            :NEW.MOV_MES_REFERENCIA,
+                                            :NEW.MOV_VERSAO_PAGAMENTO,
+                                            :NEW.MOV_EMP_NUMERO_MATRICULA,
+                                            :NEW.MOV_RUB_CODIGO,
+                                            :NEW.MOV_SEQUENCIAL,
+                                            :NEW.MOV_TIP_RUBRICA
+                                            );
+      -- Transformo a char as informações a ser mostradas no mensagem de erro
+      v_mes     := LPAD(TO_CHAR(:NEW.MOV_MES_REFERENCIA),2,'0');
+      v_ano     := TO_CHAR(:NEW.MOV_ANO_REFERENCIA);
+      v_versao  := TO_CHAR(:NEW.MOV_VERSAO_PAGAMENTO);
+      --
+    ELSIF UPDATING THEN  -- O erro foi por update
+        -- Carrego o numero de Erro
+        v_num_erro := -20020;
+        -- Carrega a operacao que deu erro
+        v_operacao := 'U';
+        IF v_update = 'OLD' THEN
+          PKT_ERRO_FOLHA.PRC_CARREGA_ERRO_FOLHA(v_operacao,
+                                               :OLD.MOV_ANO_REFERENCIA,
+                                               :OLD.MOV_MES_REFERENCIA,
+                                               :OLD.MOV_VERSAO_PAGAMENTO,
+                                               :OLD.MOV_EMP_NUMERO_MATRICULA,
+                                               :OLD.MOV_RUB_CODIGO,
+                                               :OLD.MOV_SEQUENCIAL,
+                                               :OLD.MOV_TIP_RUBRICA
+                                               );
+          -- Transformo a char as informações a ser mostradas no mensagem de erro
+          v_mes     := LPAD(TO_CHAR(:OLD.MOV_MES_REFERENCIA),2,'0');
+          v_ano     := TO_CHAR(:OLD.MOV_ANO_REFERENCIA);
+          v_versao  := TO_CHAR(:OLD.MOV_VERSAO_PAGAMENTO);
+          --
+        ELSE -- UPDATE = 'NEW'
+          PKT_ERRO_FOLHA.PRC_CARREGA_ERRO_FOLHA(v_operacao,
+                                               :NEW.MOV_ANO_REFERENCIA,
+                                               :NEW.MOV_MES_REFERENCIA,
+                                               :NEW.MOV_VERSAO_PAGAMENTO,
+                                               :NEW.MOV_EMP_NUMERO_MATRICULA,
+                                               :NEW.MOV_RUB_CODIGO,
+                                               :NEW.MOV_SEQUENCIAL,
+                                               :NEW.MOV_TIP_RUBRICA
+                                               );
+          -- Transformo a char as informações a ser mostradas no mensagem de erro
+          v_mes     := LPAD(TO_CHAR(:NEW.MOV_MES_REFERENCIA),2,'0');
+          v_ano     := TO_CHAR(:NEW.MOV_ANO_REFERENCIA);
+          v_versao  := TO_CHAR(:NEW.MOV_VERSAO_PAGAMENTO);
+          --
+        END IF;
+        --
+    ELSIF DELETING THEN
+      -- Carrego o numero de Erro
+      v_num_erro := -20030;
+      -- Carrega a operacao que deu erro
+      v_operacao := 'D';
+      --
+      -- Se o erro foi gerado por um deleting
+      PKT_ERRO_FOLHA.PRC_CARREGA_ERRO_FOLHA(v_operacao,
+                                            :OLD.MOV_ANO_REFERENCIA,
+                                            :OLD.MOV_MES_REFERENCIA,
+                                            :OLD.MOV_VERSAO_PAGAMENTO,
+                                            :OLD.MOV_EMP_NUMERO_MATRICULA,
+                                            :OLD.MOV_RUB_CODIGO,
+                                            :OLD.MOV_SEQUENCIAL,
+                                            :OLD.MOV_TIP_RUBRICA
+                                            );
+      -- Transformo a char as informações a ser mostradas no mensagem de erro
+      v_mes     := LPAD(TO_CHAR(:OLD.MOV_MES_REFERENCIA),2,'0');
+      v_ano     := TO_CHAR(:OLD.MOV_ANO_REFERENCIA);
+      v_versao  := TO_CHAR(:OLD.MOV_VERSAO_PAGAMENTO);
+      --
+    END IF;
+    --
+    RAISE_APPLICATION_ERROR
+                (v_num_erro, v_operacao||' - OPERAÇÃO CANCELADA !!! '||CHR(013)||
+                  'Folha encerrada para Mês/Ano:'||v_mes||'/'||v_ano||
+                  ' e Versão :'||v_versao||CHR(013) );
+END IF; -- DE v_folha_fechada = 'S'
+--
+END;
+/
+CREATE TRIGGER log_movimentacao
+AFTER UPDATE  OR  DELETE 
+ON movimentacao
+REFERENCING NEW AS NEW OLD AS OLD
+FOR EACH ROW
+WHEN (user <> 'SRH_SFP')
+declare
+  v_mov_parcela                     log_movimentacao.mov_parcela%type;
+  v_mov_parcela_atual               log_movimentacao.mov_parcela_atual%type;
+  v_mov_emp_dep_codigo_pagto        log_movimentacao.mov_emp_dep_codigo_pagto%type;
+  v_mov_tip_rubrica                 log_movimentacao.mov_tip_rubrica%type;
+  v_mov_for_codigo                  log_movimentacao.mov_for_codigo%type;
+  v_mov_parametro                   log_movimentacao.mov_parametro%type;
+  v_mov_valor                       log_movimentacao.mov_valor%type;
+  v_mov_ano_ref_diferenca           log_movimentacao.mov_ano_ref_diferenca%type;
+  v_mov_mes_ref_diferenca           log_movimentacao.mov_mes_ref_diferenca%type;
+  v_mov_pen_codigo                  log_movimentacao.mov_pen_codigo%type;
+  v_mov_pkt_codigo_pedido           log_movimentacao.mov_pkt_codigo_pedido%type;
+  v_mov_dias_proporcionalidade      log_movimentacao.mov_dias_proporcionalidade%type;
+  v_mov_tipo_parametro              log_movimentacao.mov_tipo_parametro%type;
+begin
+  if deleting then
+     insert into log_movimentacao
+                   (cod_usuario,
+                    dta_operacao,
+                    tip_operacao,
+                    mov_ano_referencia,
+                    mov_mes_referencia,
+                    mov_versao_pagamento,
+                    mov_emp_numero_matricula,
+                    mov_rub_codigo,
+                    mov_sequencial,
+                    mov_parcela,
+                    mov_parcela_atual,
+                    mov_emp_dep_codigo_pagto,
+                    mov_tip_rubrica,
+                    mov_for_codigo,
+                    mov_parametro,
+                    mov_valor,
+                    mov_ano_ref_diferenca,
+                    mov_mes_ref_diferenca,
+                    mov_pen_codigo,
+                    mov_pkt_codigo_pedido,
+                    mov_dias_proporcionalidade,
+                    mov_tipo_parametro,
+                    mov_rub_seq_pagamento,
+                    mov_ind_calculo,
+                    mov_ind_exclusivo,
+                    mov_valor_integral,
+                    mov_fun_codigo,
+                    mov_nsa_codigo_nivel,
+                    mov_oem_emp_numero_matricula,
+                    mov_oem_ofu_codigo,
+                    mov_oem_data_inicio,
+                    mov_data_calculo,
+                    mov_pem_ben_sigla,
+                    mov_tipo_funcao,
+                    mov_ind_13,
+                    mov_ind_arsaprev,
+                    mov_ind_lancamento_liq_negat,
+                    mov_nsa_codigo_padrao,
+                    mov_nsa_indicador_nivel_escola,
+                    mov_flg_frequencia)
+            values (user,
+                    sysdate,
+                    'E',
+                    :old.mov_ano_referencia,
+                    :old.mov_mes_referencia,
+                    :old.mov_versao_pagamento,
+                    :old.mov_emp_numero_matricula,
+                    :old.mov_rub_codigo,
+                    :old.mov_sequencial,
+                    :old.mov_parcela,
+                    :old.mov_parcela_atual,
+                    :old.mov_emp_dep_codigo_pagto,
+                    :old.mov_tip_rubrica,
+                    :old.mov_for_codigo,
+                    :old.mov_parametro,
+                    :old.mov_valor,
+                    :old.mov_ano_ref_diferenca,
+                    :old.mov_mes_ref_diferenca,
+                    :old.mov_pen_codigo,
+                    :old.mov_pkt_codigo_pedido,
+                    :old.mov_dias_proporcionalidade,
+                    :old.mov_tipo_parametro,
+                    :old.mov_rub_seq_pagamento,
+                    :old.mov_ind_calculo,
+                    :old.mov_ind_exclusivo,
+                    :old.mov_valor_integral,
+                    :old.mov_fun_codigo,
+                    :old.mov_nsa_codigo_nivel,
+                    :old.mov_oem_emp_numero_matricula,
+                    :old.mov_oem_ofu_codigo,
+                    :old.mov_oem_data_inicio,
+                    :old.mov_data_calculo,
+                    :old.mov_pem_ben_sigla,
+                    :old.mov_tipo_funcao,
+                    :old.mov_ind_13,
+                    :old.mov_ind_arsaprev,
+                    :old.mov_ind_lancamento_liq_negat,
+                    :old.mov_nsa_codigo_padrao,
+                    :old.mov_nsa_indicador_nivel_escola,
+                    :old.mov_flg_frequencia
+                 );
+  end if;
+  if updating then
+     insert into log_movimentacao
+                   (cod_usuario,
+                    dta_operacao,
+                    tip_operacao,
+                    mov_ano_referencia,
+                    mov_mes_referencia,
+                    mov_versao_pagamento,
+                    mov_emp_numero_matricula,
+                    mov_rub_codigo,
+                    mov_sequencial,
+                    mov_parcela,
+                    mov_parcela_atual,
+                    mov_emp_dep_codigo_pagto,
+                    mov_tip_rubrica,
+                    mov_for_codigo,
+                    mov_parametro,
+                    mov_valor,
+                    mov_ano_ref_diferenca,
+                    mov_mes_ref_diferenca,
+                    mov_pen_codigo,
+                    mov_pkt_codigo_pedido,
+                    mov_dias_proporcionalidade,
+                    mov_tipo_parametro,
+                    mov_rub_seq_pagamento,
+                    mov_ind_calculo,
+                    mov_ind_exclusivo,
+                    mov_valor_integral,
+                    mov_fun_codigo,
+                    mov_nsa_codigo_nivel,
+                    mov_oem_emp_numero_matricula,
+                    mov_oem_ofu_codigo,
+                    mov_oem_data_inicio,
+                    mov_data_calculo,
+                    mov_pem_ben_sigla,
+                    mov_tipo_funcao,
+                    mov_ind_13,
+                    mov_ind_arsaprev,
+                    mov_ind_lancamento_liq_negat,
+                    mov_nsa_codigo_padrao,
+                    mov_nsa_indicador_nivel_escola,
+                    mov_flg_frequencia)
+            values (user,
+                    sysdate,
+                    'A',
+                    :old.mov_ano_referencia,
+                    :old.mov_mes_referencia,
+                    :old.mov_versao_pagamento,
+                    :old.mov_emp_numero_matricula,
+                    :old.mov_rub_codigo,
+                    :old.mov_sequencial,
+                    :old.mov_parcela,
+                    :old.mov_parcela_atual,
+                    :old.mov_emp_dep_codigo_pagto,
+                    :old.mov_tip_rubrica,
+                    :old.mov_for_codigo,
+                    :old.mov_parametro,
+                    :old.mov_valor,
+                    :old.mov_ano_ref_diferenca,
+                    :old.mov_mes_ref_diferenca,
+                    :old.mov_pen_codigo,
+                    :old.mov_pkt_codigo_pedido,
+                    :old.mov_dias_proporcionalidade,
+                    :old.mov_tipo_parametro,
+                    :old.mov_rub_seq_pagamento,
+                    :old.mov_ind_calculo,
+                    :old.mov_ind_exclusivo,
+                    :old.mov_valor_integral,
+                    :old.mov_fun_codigo,
+                    :old.mov_nsa_codigo_nivel,
+                    :old.mov_oem_emp_numero_matricula,
+                    :old.mov_oem_ofu_codigo,
+                    :old.mov_oem_data_inicio,
+                    :old.mov_data_calculo,
+                    :old.mov_pem_ben_sigla,
+                    :old.mov_tipo_funcao,
+                    :old.mov_ind_13,
+                    :old.mov_ind_arsaprev,
+                    :old.mov_ind_lancamento_liq_negat,
+                    :old.mov_nsa_codigo_padrao,
+                    :old.mov_nsa_indicador_nivel_escola,
+                    :old.mov_flg_frequencia);
+  end if;
+end;
+/
+CREATE TRIGGER trg_auditoria_mov
+BEFORE INSERT 
+ON movimentacao
+REFERENCING NEW AS NEW OLD AS OLD
+FOR EACH ROW
+WHEN ( user <> 'SRH_SFP')
+BEGIN
+  --
+  :NEW.cod_usuario  := USER;
+  :NEW.dta_operacao := SYSDATE;
+  --
+END; --End TRIGGER TRG_AUDITORIA
+/
+CREATE TRIGGER srh_altera_formula_movim
+BEFORE INSERT  OR UPDATE OF 
+  mov_for_codigo,
+ON movimentacao
+REFERENCING NEW AS NEW OLD AS OLD
+FOR EACH ROW
+DECLARE
+begin
+if :new.mov_for_codigo is null then
+   begin
+   --------------------Verifica se existe formula para a rubrica que está sendo inserida---
+      select fru_for_codigo
+      into   :new.mov_for_codigo
+      from   IFRSRH.formulas_rubricas
+      where  fru_rub_codigo = :new.mov_rub_codigo and
+             TO_NUMBER(LPAD(TO_CHAR(FRU_ANO_INICIO),4,'0') || LPAD(TO_CHAR(FRU_MES_INICIO),2,'0')) =
+             (select max(TO_NUMBER(LPAD(TO_CHAR(FRU_ANO_INICIO),4,'0') || LPAD(TO_CHAR(FRU_MES_INICIO),2,'0')))
+              from   IFRSRH.formulas_rubricas
+              where  fru_rub_codigo = :new.mov_rub_codigo);
+  exception
+    when no_data_found then
+         null;
+    when others then
+         RAISE_APPLICATION_ERROR
+         (-20002, 'Erro [Others] na seleção da tabela Movimentação: Erro - ' ||SQLERRM);
+  end;
+end if;
+end;
+/
+
+-- Comments for MOVIMENTACAO
+
+COMMENT ON COLUMN movimentacao.cod_usuario IS 'Indica o usuário que efetuou a transação'
+/
+COMMENT ON COLUMN movimentacao.dta_operacao IS 'Indica a data e hora da transação'
+/
+COMMENT ON COLUMN movimentacao.mov_ano_ref_diferenca IS 'Indica o ano referenca à rubrida de diferença ou extorno, lançada na movimentacao do empregado'
+/
+COMMENT ON COLUMN movimentacao.mov_ano_referencia IS 'Indica o ano referente ao pagamento'
+/
+COMMENT ON COLUMN movimentacao.mov_data_calculo IS 'Informa a data que foi efetuado o cálculo'
+/
+COMMENT ON COLUMN movimentacao.mov_dias_proporcionalidade IS 'Indica a quantidade de dias que obedecerá a proporcionalidade do cálculo'
+/
+COMMENT ON COLUMN movimentacao.mov_emp_dep_codigo_pagto IS 'Indica o código da dependência de pagamento do empregado'
+/
+COMMENT ON COLUMN movimentacao.mov_emp_numero_matricula IS 'Informa a matricula do empregado'
+/
+COMMENT ON COLUMN movimentacao.mov_flg_frequencia IS 'Indica se a rubrica é relativa à frequência'
+/
+COMMENT ON COLUMN movimentacao.mov_for_codigo IS 'Indica o código da formula de calculo da rubrica'
+/
+COMMENT ON COLUMN movimentacao.mov_fun_codigo IS 'Indica o código da função do empregado'
+/
+COMMENT ON COLUMN movimentacao.mov_ind_13 IS 'Indicador que será utilizado somente no cálculo do 13º, marca as rubricas que foram utilizadas e devem ser retiradas após o cálculo'
+/
+COMMENT ON COLUMN movimentacao.mov_ind_arsaprev IS 'Indica se a rubrica é relativa ao fundo de pensão da Infraero'
+/
+COMMENT ON COLUMN movimentacao.mov_ind_calculo IS 'Indica se a rubrica já foi calculada, N - não, S - sim'
+/
+COMMENT ON COLUMN movimentacao.mov_ind_exclusivo IS 'Indica se a rubrica é lançada exclusivamente pelo sistema'
+/
+COMMENT ON COLUMN movimentacao.mov_ind_lancamento_liq_negat IS 'Indica se a rubrica é candidata a ser migrada para um próximo mês, após cálculo de dependência e antes do cálculo final'
+/
+COMMENT ON COLUMN movimentacao.mov_mes_ref_diferenca IS 'Indica o mês referenca à rubrida de diferença ou extorno, lançada na movimentacao do empregado'
+/
+COMMENT ON COLUMN movimentacao.mov_mes_referencia IS 'Indica o mês referente ao pagamento'
+/
+COMMENT ON COLUMN movimentacao.mov_nsa_codigo_nivel IS 'Indica o nível salarial do empregado'
+/
+COMMENT ON COLUMN movimentacao.mov_nsa_codigo_padrao IS 'Indica código padrão salarial do empregado'
+/
+COMMENT ON COLUMN movimentacao.mov_nsa_indicador_nivel_escola IS 'Indica o nível de escolaridade do empregado'
+/
+COMMENT ON COLUMN movimentacao.mov_oem_data_inicio IS 'Informa a data início da ocorrência funcional que deu origem à rubrica'
+/
+COMMENT ON COLUMN movimentacao.mov_oem_emp_numero_matricula IS 'Informa a matricula do empregado na ocorrência que deu origem à rubrica'
+/
+COMMENT ON COLUMN movimentacao.mov_oem_ofu_codigo IS 'Informa o código da ocorrência funcional que deu origem à rubrica'
+/
+COMMENT ON COLUMN movimentacao.mov_parametro IS 'Indica o valor do parametro que será ultilizado no cálculo da rubrica'
+/
+COMMENT ON COLUMN movimentacao.mov_parcela IS 'Indica a quantidade de parcelas da rubrica, 999 indica rubrica permanente'
+/
+COMMENT ON COLUMN movimentacao.mov_parcela_atual IS 'Indica a parcela atual da quantidade de parcelas da rubrica, 999 indica rubrica permanente'
+/
+COMMENT ON COLUMN movimentacao.mov_pem_ben_sigla IS 'Informa a sigla do tipo de benefício'
+/
+COMMENT ON COLUMN movimentacao.mov_pen_codigo IS 'Indica o código do pedido de ticket no benefício'
+/
+COMMENT ON COLUMN movimentacao.mov_rub_codigo IS 'Indica o código de provento ou desconto (rubrica)'
+/
+COMMENT ON COLUMN movimentacao.mov_rub_seq_pagamento IS 'Indica a sequência de cálculo da rubrica'
+/
+COMMENT ON COLUMN movimentacao.mov_sequencial IS 'Indica o sequencial da rubrica no mesmo mês'
+/
+COMMENT ON COLUMN movimentacao.mov_tip_rubrica IS 'Indica o tipo de rubrica, D - diferença, N - normal, E - extorno, R - recibo '
+/
+COMMENT ON COLUMN movimentacao.mov_tipo_funcao IS 'Indica a sigla da função do empregado, FG, DG, DI'
+/
+COMMENT ON COLUMN movimentacao.mov_tipo_parametro IS 'Indica o tipo do parametro, H - horas, D - dias, V - valor, P - percentual, Q - quantidade'
+/
+COMMENT ON COLUMN movimentacao.mov_valor IS 'Indica o valor final da rubrica, utilizando o mov_dias_proporcionalidade'
+/
+COMMENT ON COLUMN movimentacao.mov_valor_integral IS 'Valor integral da rubrica, valor base para aplicar a proporcionalidade dos cálculos'
+/
+COMMENT ON COLUMN movimentacao.mov_versao_pagamento IS 'Indica a versão de pagamento dentro do mesmo mês'
+/
+
+-- End of DDL Script for Table IFRSRH.MOVIMENTACAO
+
+-- Foreign Key
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_emp_fk FOREIGN KEY (mov_emp_numero_matricula)
+REFERENCES cadastros (emp_numero_matricula) ON DELETE SET NULL
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_form_fk FOREIGN KEY (mov_for_codigo)
+REFERENCES formulas (for_codigo) ON DELETE SET NULL
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_oem_fk FOREIGN KEY (mov_oem_emp_numero_matricula, 
+  mov_oem_ofu_codigo, mov_oem_data_inicio)
+REFERENCES ocorrencias_empregados (oem_emp_numero_matricula,oem_ofu_codigo,oem_data_inicio) ON DELETE SET NULL
+DISABLE
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_pen_fk FOREIGN KEY (mov_emp_numero_matricula, mov_pen_codigo)
+REFERENCES pensionistas (pen_emp_numero_matricula,pen_codigo) ON DELETE SET NULL
+DISABLE
+/
+ALTER TABLE movimentacao
+ADD CONSTRAINT mov_rub_fk FOREIGN KEY (mov_rub_codigo)
+REFERENCES rubricas (rub_codigo) ON DELETE SET NULL
+/
+
+
+
+GRANT DELETE ON MOVIMENTACAO TO MIGSRH;
+GRANT INSERT ON MOVIMENTACAO TO MIGSRH;
+GRANT SELECT ON MOVIMENTACAO TO MIGSRH;
+GRANT UPDATE ON MOVIMENTACAO TO MIGSRH;
+GRANT SELECT ON MOVIMENTACAO TO SRH_PROD;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CAD_02;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CAD_02;
+GRANT SELECT ON MOVIMENTACAO TO SRH_CAD_02;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CAD_02;
+GRANT DELETE ON MOVIMENTACAO TO RH_PERFIL_99;
+GRANT INSERT ON MOVIMENTACAO TO RH_PERFIL_99;
+GRANT SELECT ON MOVIMENTACAO TO RH_PERFIL_99;
+GRANT UPDATE ON MOVIMENTACAO TO RH_PERFIL_99;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CAD_18;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CAD_18;
+GRANT SELECT ON MOVIMENTACAO TO SRH_CAD_18;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CAD_18;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CAD_17;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CAD_17;
+GRANT SELECT ON MOVIMENTACAO TO SRH_CAD_17;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CAD_17;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CAD_01;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CAD_01;
+GRANT SELECT ON MOVIMENTACAO TO SRH_CAD_01;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CAD_01;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CAD_03;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CAD_03;
+GRANT SELECT ON MOVIMENTACAO TO SRH_CAD_03;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CAD_03;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CAD_04;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CAD_04;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CAD_04;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CAD_06;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CAD_06;
+GRANT SELECT ON MOVIMENTACAO TO SRH_CAD_06;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CAD_06;
+GRANT DELETE ON MOVIMENTACAO TO SRH_SFP_04;
+GRANT INSERT ON MOVIMENTACAO TO SRH_SFP_04;
+GRANT SELECT ON MOVIMENTACAO TO SRH_SFP_04;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_SFP_04;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CAD_11;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CAD_11;
+GRANT SELECT ON MOVIMENTACAO TO SRH_CAD_11;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CAD_11;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CAD_99;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CAD_99;
+GRANT SELECT ON MOVIMENTACAO TO SRH_CAD_99;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CAD_99;
+GRANT SELECT ON MOVIMENTACAO TO SRH_BEN_02;
+GRANT DELETE ON MOVIMENTACAO TO SRH_BEN_13;
+GRANT INSERT ON MOVIMENTACAO TO SRH_BEN_13;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_BEN_13;
+GRANT SELECT ON MOVIMENTACAO TO SRH_BEN_13;
+GRANT DELETE ON MOVIMENTACAO TO SRH_SFP_03;
+GRANT INSERT ON MOVIMENTACAO TO SRH_SFP_03;
+GRANT SELECT ON MOVIMENTACAO TO SRH_SFP_03;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_SFP_03;
+GRANT DELETE ON MOVIMENTACAO TO SRH_TRN_01;
+GRANT INSERT ON MOVIMENTACAO TO SRH_TRN_01;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_TRN_01;
+GRANT SELECT ON MOVIMENTACAO TO SRH_TRN_01;
+GRANT DELETE ON MOVIMENTACAO TO SRH_CONSULTA;
+GRANT INSERT ON MOVIMENTACAO TO SRH_CONSULTA;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_CONSULTA;
+GRANT SELECT ON MOVIMENTACAO TO SRH_CONSULTA;
+GRANT UPDATE ON MOVIMENTACAO TO SRH_TRN_02;
+GRANT INSERT ON MOVIMENTACAO TO SRH_TRN_02;
+GRANT DELETE ON MOVIMENTACAO TO SRH_TRN_02;
+GRANT SELECT ON MOVIMENTACAO TO SRH_TRN_02;
+GRANT SELECT ON MOVIMENTACAO TO SRH_TRN_03;
+GRANT SELECT ON MOVIMENTACAO TO SRH_TRN_04;
+GRANT REFERENCES ON MOVIMENTACAO TO IFRHUMANUS;

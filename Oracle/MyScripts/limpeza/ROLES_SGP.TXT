@@ -1,0 +1,20 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+SGP_DEMA                                                  8
+SGP_GERENTE                                               2
+SGP_GER_01                                                1
+SGP_MANUTENCAO                                            8
+
+4 linhas selecionadas.
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+SGP_DEMA                       NO
+SGP_ENGENHARIA                 NO
+SGP_GERENTE                    NO
+SGP_GER_01                     NO
+SGP_MANUTENCAO                 NO
+
+5 linhas selecionadas.

@@ -1,0 +1,15 @@
+Perfil                         Total de Usuários por Perfil
+------------------------------ ----------------------------
+BDE_GERAL                                               271
+BDE_VIEWS                                               271
+
+2 linhas selecionadas.
+
+SQL> 
+
+ROLE                           PASSWORD
+------------------------------ --------
+BDE_GERAL                      NO
+BDE_VIEWS                      NO
+
+2 linhas selecionadas.

@@ -1,0 +1,1265 @@
+TAR Number  4238719.995   Open Date 22-DEC-04 18:28:19 
+Support Identifier  13593224   Name Quedima Sale 
+Severity  1   Last Update 13-JAN-05 00:15:12 
+Product Oracle Server - Enterprise Edition   Product Version   8.1.7.4.0 
+Platform HP Tru64 UNIX   Detailed Status Hard Close 
+TAR Reference   n/a   BUG Reference n/a 
+
+Abstract
+ 
+I HAVE UNIX PROCESS THAT DONT HAVE ORACLE WITH PARENT PROCESS  
+    
+
+    
+Resolution History 
+ 
+
+22-DEC-04 18:28:19 GMT
+
+Severity questions and responses:
+### This is a critical production system ### = YES
+### Your database is down and will not start ### = NO
+### Your database crashes at least once per day ### = YES
+### You have a data corruption issue and media recovery failed to fix the 
+problem ### = NO
+### Your system hangs or locks up completely ### = YES
+### You have a wrong results issue and the database returns wrong rows or data 
+in a repeatable test ### = NO
+### You suffer ORA-600, ORA-7445 and other unexpected errors and these errors 
+are signaled in more than 3 independent, unexplained, occurrences every day. 
+These errors repeatedly and consistently prevent a critical job from completing 
+### = NO
+***** Contact Information ************
+** Customer's Management 24x7 contact number: 55 61 3123609
+** Primary Customer contact name: Denis
+** Current Customer 24x7 voice phone number: 55 61 3123609
+** Current Customer Email address: dandrade@infraero.gov.br
+** Current Customer Pager/Fax number: 55 61 3123609
+*****************
+
+### Platform and O/S version, including patch set or service pack level? ###
+HP Tru64 4.0f
+
+### What version and patch set level of the database are you running? ###
+Oracle8i (8.1.7.4.0)
+
+### Are you running the most recent patch set? ###
+Yes
+
+### Problem Description and its duration: ###
+Today, One of the nodes of OPS created process like [oracle] that was child of 
+process 1 (init). It happened three times today and it repaired with a boot of 
+the server. I can not kill this processes. Why those processes do not child of 
+oracle process?
+Please answer via email cause i dont speak english very well.
+
+### If you are receiving errors, list the exact error messages and text: ###
+I dont have any.
+
+### Did the error generate a trace file? ###
+No
+
+### List and describe files that you plan to upload: ###
+Ok
+
+### Error can be generated if SQL statement is run in SQL*Plus/Server Mgr: 
+###
+Unknown
+
+### What is the frequency of the error? ###
+One-time
+
+### What is the impact to your business because of this problem? ###
+All the application are stop even if the oracle is up.
+
+### Are you running any third-party applications? ###
+no
+
+### Has the third-party Vendor been contacted? ###
+Does Not Apply
+
+Contact me via : E-mail -> quedima@infraero.gov.br
+
+
+22-DEC-04 18:28:25 GMT
+
+The customer has uploaded the following file via 
+MetaLink:
+D:\Nova\oracle_tar_node2.zip
+
+
+22-DEC-04 18:30:21 GMT
+
+New info : Please contact me by dandrade@infraero.gov.br or via metalink.
+My name is Denis.
+
+
+22-DEC-04 18:32:25 GMT
+
+TAR has been assigned to an analyst -- Sending email. 
+
+
+22-DEC-04 18:36:20 GMT
+
+New info : Sorry I forgot...
+this is the result when I execute the ps comand on unix
+oracle 4216 1 3.2 15:29:58 ?? 0:49.09 [oracle]
+oracle 4218 1 3.1 15:29:59 ?? 0:57.64 [oracle]
+oracle 4250 1 3.1 15:30:03 ?? 0:55.60 [oracle]
+oracle 4258 1 1.8 15:30:34 ?? 0:38.89 [oracle]
+oracle 4262 1 3.1 15:31:06 ?? 0:51.44 [oracle]
+oracle 4270 1 3.0 15:31:29 ?? 0:01.84 [oracle]
+oracle 4284 1 3.1 15:32:12 ?? 0:46.75 [oracle]
+oracle 4287 1 1.8 15:32:00 ?? 0:38.16 [oracle]
+oracle 4300 1 3.1 15:32:33 ?? 0:36.39 [oracle]
+oracle 4304 1 1.8 15:32:46 ?? 0:43.69 [oracle]
+oracle 4312 1 1.7 15:32:56 ?? 0:34.51 [oracle]
+oracle 4321 1 3.1 15:33:02 ?? 0:45.35 [oracle]
+oracle 4333 1 1.8 15:33:14 ?? 0:04.46 oracleifr1b 
+(LOCAL=NO)
+oracle 4344 1 2.9 15:33:29 ?? 0:26.36 [oracle]
+oracle 4346 1 0.0 15:33:29 ?? 0:06.93 oracleifr1b 
+(LOCAL=NO)
+oracle 4348 1 3.0 15:33:30 ?? 0:37.68 [oracle]
+oracle 4364 1 1.8 15:34:03 ?? 0:41.07 [oracle]
+oracle 4366 1 0.0 15:34:05 ?? 0:01.24 oracleifr1b (LOCAL=NO)
+
+
+22-DEC-04 18:38:46 GMT
+
+.
+Hi Denis,
+
+Thank you for using MetaLink. We are currently reviewing/researching the situation and will update the SR / call you as soon as we have relevant in
+formation. Thank you for your patience. 
+
+Best Regards,
+
+Mark
+
+Oracle Support Services
+
+STATUS 
+=======
+
+@WIP -- Work In Progress
+
+
+
+22-DEC-04 18:38:57 GMT
+
+Email Update button has been pressed: Sending email to quedima@infraero.gov.br. 
+
+
+22-DEC-04 19:15:35 GMT
+
+.
+ISSUE CLARIFICATION
+====================
+Today, One of the nodes of OPS created process like [oracle] that was child of 
+process 1 (init). It happened three times today and it repaired with a boot of 
+the server. I can not kill this processes. Why those processes do not child of 
+oracle process?
+
+.
+DATA COLLECTED
+===============
+
+ALERT LOG
+==========
+
+Wed Dec 22 09:36:52 2004
+Errors in file /u01/app/admin/ifr1/udump/ora_13969.trc:
+ORA-00600: internal error code, arguments: [3113], [], [], [], [], [], [], []
+Wed Dec 22 09:51:43 2004
+Shutting down instance (immediate)
+License high water mark = 276
+Wed Dec 22 09:56:00 2004
+License high water mark = 276
+Instance terminated by USER, pid = 12405
+Wed Dec 22 09:56:04 2004
+Errors in file /u01/app/admin/ifr1/udump/ora_30782.trc:
+ORA-07445: exception encountered: core dump [11] [536866968] [0] [0] [] []
+
+Wed Dec 22 14:45:34 2004
+Instance recovery: looking for dead threads
+Instance recovery: lock domain invalid but no dead threads
+Wed Dec 22 16:10:16 2004
+Error 2068 trapped in 2PC on transaction 29.75.92568. Cleaning up.
+Error stack returned to user:
+ORA-02050: transaction 29.75.92568 rolled back, some remote DBs may be in-doubt
+ORA-02068: following severe error from INTEGRACAO_DBLINK
+ORA-03113: end-of-file on communication channel
+Wed Dec 22 16:10:18 2004
+DISTRIB TRAN IFR1.WORLD.b69f2086.29.75.92568
+is local tran 29.75.92568 (hex=1d.4b.16998)
+insert pending collecting tran, scn=1099866223814 (hex=100.1522b4c6)
+Wed Dec 22 16:10:18 2004
+DISTRIB TRAN IFR1.WORLD.b69f2086.29.75.92568
+is local tran 29.75.92568 (hex=1d.4b.16998))
+delete pending collecting tran, scn=1099866223814 (hex=100.1522b4c6)
+
+
+TRACE FILE
+============
+
+reco_2809.trc
+Oracle8i Enterprise Edition Release 8.1.7.4.0 - Production
+With the Partitioning and Parallel Server options
+JServer Release 8.1.7.4.0 - Production
+ORACLE_HOME = /u01/app/oracle/product/8.1.7
+System name: OSF1
+Node name: s-sebu05
+Release: V4.0
+Version: 1229
+Machine: alpha
+Instance name: ifr1b
+
+*** 2004-12-22 13:27:42.572
+ERROR, tran=27.88.90208, session#=1, ose=0:
+ORA-02062: distributed recovery received DBID 88b1dcbf, expected fe45f8af
+
+
+pmon_2795.trc
+
+*** 2004-12-22 13:54:07.917
+found process 4009bebf0 pid=24 serial=5 dead
+*** 2004-12-22 13:54:19.185
+found process 4009bebf0 pid=24 serial=5 dead
+*** 2004-12-22 13:54:30.453
+found process 4009bebf0 pid=24 serial=5 dead
+*** 2004-12-22 13:54:30.456
+found process 4009bebf0 pid=24 serial=5 dead
+deletion of process 4009bebf0 pid=24 seq=5 successful
+*** 2004-12-22 14:01:41.451
+found process 4009c7a50 pid=58 serial=13 dead
+*** 2004-12-22 14:01:41.451
+deleting process 4009c7a50 pid=58 seq=13
+timeout waiting for global cache lock #4484
+deleting lock context 753d608
+cancelling lock 4484 flg=4 acq=3
+deletion of process 4009c7a50 pid=58 seq=13 unsuccessful
+*** 2004-12-22 13:54:07.917
+found process 4009bebf0 pid=24 serial=5 dead
+*** 2004-12-22 13:54:19.185
+found process 4009bebf0 pid=24 serial=5 dead
+*** 2004-12-22 13:54:30.453
+found process 4009bebf0 pid=24 serial=5 dead
+*** 2004-12-22 13:54:30.456
+found process 4009bebf0 pid=24 serial=5 dead
+deletion of process 4009bebf0 pid=24 seq=5 successful
+*** 2004-12-22 14:01:41.451
+found process 4009c7a50 pid=58 serial=13 dead
+*** 2004-12-22 14:01:41.451
+deleting process 4009c7a50 pid=58 seq=13
+timeout waiting for global cache lock #4484
+deleting lock context 753d608
+cancelling lock 4484 flg=4 acq=3
+deletion of process 4009c7a50 pid=58 seq=13 unsuccessful
+
+.
+RESEARCH
+=========
+Error 2068 trapped in 2PC on transaction 29.75.92568. Cleaning up.
+Error stack returned to user:
+ORA-02050: transaction 29.75.92568 rolled back, some remote DBs may be in-doubt
+ORA-02068: following severe error from INTEGRACAO_DBLINK
+ORA-03113: end-of-file on communication channel
+
+
+NOTE:214851.1 Distributed Transactions Fails with ORA-02068 and ORA-03113
+
+* fact: Oracle Server - Enterprise Edition 8.1.7.3
+* symptom: Distributed transactions waits in COLLECTING state
+* symptom: ORA-02068: following severe error from %s%s
+* symptom: ORA-03113: end-of-file on communication channel
+* symptom: ORA-02050: transaction %s rolled back, some remote DBs may be in- doubt
+* symptom: RECO may not recover IN-DOUBT transactions
+* cause: This is introduced in <Bug:2273417>: RECO may not recover IN-DOUBT transactions when LOGON triggers exist 
+
+
+
+fix:
+
+The bug is fixed in 9.0.1.4 and 9.2.0.2 versions.
+
+In 8.1.7 version, apply the following workaround:
+1. Check for logon triggers at the remote instance:
+SQL> select trigger_name, triggering_event, status from dba_triggers 
+where triggering_event like 'LOG%';
+
+2. Disable all logon triggers if distributed transactions are used
+
+ACTION PLAN
+=============
+
+As the transaction was started at the home site and has been already rolled back at the home site it probably cannot be completed 
+on the remote sites. Presumably the problem occurred because one or more of the 
+remote sites was not available while the transaction was taking place. If they r
+emote sites are now available you should allow the RECO process to try to roll t
+hem back. If they will not be available for some time this may not be possible.
+
+If recovery does not happen the next time RECO runs you should consider force r
+ollback or force commit.
+
+Follow the steps in this Metalink doc:
+Note:100664.1>
+Title: How to Troubleshoot Distributed Transactions
+
+If force rollback/commit cannot be done there are scripts to clean up the dba_2pc_pending and 
+dba_2pc_neighbors views to delete the transactions and stop the errors being rep
+orted.
+
+In number section 9 and 10 of note 100664.1, the 'children' are mentioned.
+
+i.e,
+"You need to also check DBA_2PC_NEIGHBORS and see whether there are any other 
+Nodes that reference the same transactionID in their DBA_2PC_PENDING. If you
+see it referenced, it means there are children and they need to be resolved
+(either committed or rollback) as well. Please take 'children' i.e. Nodes
+that other Nodes (not Global Coordinator) into account.
+
+Note: for clarification on terminology please see <NOTE:13229.1>"
+
+This means that you must check the table dba_2pc_neighbors in the same way as you checked dba_2pc_pending.
+If there are entries in this table with the same global transaction ID as that 
+which you found in dba_2pc_pending it will tell you what nodes these are on.
+You can therefore go to these nodes and roll these transactions back.
+
+If you are not in archivelog mode it is likely that the transactions cannot now be committed
+, so they will have to be rolled back.
+
+However this is my advice:
+
+1. The ORA-02050 error occurs If the remote databases invloved in the transaction had networ
+k or other errors.
+Are these databases now available again?
+If so, RECO should be able to recover the transaction.
+
+2. If these databases are NOT now available it is likely that the transaction cannot be recovered.
+Therefore use the document to force rollback if possible.
+
+3. If this cannot be done you will have to purge the transaction from the pending tables so that it does not keep being report
+ed as an error.
+A rollback force in this case will probably not work because this node is still in 'collecting' state. If you try to do so, you will receive th
+e following error:
+
+ORA-02058: no prepared transaction found with ID
+V817REP.BE.ORACLE.COM.89f6eafb.2.12.154
+
+All we can do here is a purge pending tables of the in-doubt transaction entry:
+
+execute DBMS_TRANSACTION.PURGE_LOST_DB_ENTRY('2.12.254'); <==== the transaction ID in your case is different of course
+
+Thank you
+
+Mark
+
+STATUS
+======= 
+
+22-DEC-04 19:16:10 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+22-DEC-04 19:43:20 GMT
+
+New info : Hello Mark,
+I am still executing the command "execute 
+DBMS_TRANSACTION.PURGE_LOST_DB_ENTRY('27.88.90208');" and it is taking a long 
+
+time.
+SQL> 1 select trigger_name, triggering_event, status from dba_triggers
+2* where triggering_event like 'LOG%'
+SQL>
+SQL> /
+no rows selected
+SQL>
+SQL> select * from sys.dba_2pc_pending;
+LOCAL_TRAN_ID
+----------------------
+GLOBAL_TRAN_ID
+--------------------------------------------------------------------------------
+----------------------------------------
+STATE MIX A
+---------------- --- -
+TRAN_COMMENT
+--------------------------------------------------------------------------------
+----------------------------------------
+FAIL_TIM FORCE_TI RETRY_TI OS_USER
+-------- -------- -------- 
+----------------------------------------------------------------
+OS_TERMINAL
+--------------------------------------------------------------------------------
+----------------------------------------
+HOST
+--------------------------------------------------------------------------------
+----------------------------------------
+DB_USER COMMIT#
+------------------------------ ----------------
+27.88.90208
+IFR1.WORLD.b69f2086.27.88.90208
+forced rollback no
+23/11/04 24/11/04 22/12/04 AFBE_ADEVALDO
+ADBE2-08
+D_SRBE\ADBE2-08
+I4701331 1099831005836
+Are you sure that it is problem with distributed transations cause a lot of 
+number of process with the status "[oracle]" like that
+oracle 3268 1 1.6 14:55:10 ?? 2:19.48 [oracle]
+oracle 3270 1 1.8 14:55:14 ?? 7:31.80 oracleifr1b 
+(LOCAL=NO)
+oracle 3302 1 1.6 14:56:11 ?? 2:20.14 [oracle]
+oracle 3304 1 1.9 14:56:13 ?? 2:33.29 [oracle]
+oracle 3310 1 0.0 14:56:18 ?? 0:07.28 oracleifr1b 
+(LOCAL=NO)
+oracle 3312 1 0.7 14:56:19 ?? 2:19.30 [oracle]
+oracle 3316 1 0.7 14:56:25 ?? 1:41.33 [oracle]
+oracle 3397 1 1.5 14:57:52 ?? 3:25.94 [oracle]
+oracle 3405 1 1.5 14:58:10 ?? 3:31.42 [oracle]
+oracle 3423 1 0.0 14:59:13 ?? 0:01.16 oracleifr1b 
+(LOCAL=NO)
+oracle 3498 1 1.6 15:02:51 ?? 1:04.41 [oracle]
+oracle 3514 1 1.0 15:03:29 ?? 2:52.64 [oracle]
+oracle 3539 1 1.1 15:03:57 ?? 4:09.02 oracleifr1b 
+(LOCAL=NO)
+oracle 3550 1 0.7 15:04:36 ?? 1:04.98 [oracle]
+oracle 3557 1 1.8 15:04:43 ?? 2:50.07 [oracle]
+Text continued in next action...
+
+
+22-DEC-04 19:44:23 GMT
+
+Text continued from previous action...
+
+oracle 3567 1 1.9 15:05:31 ?? 2:47.88 [oracle]
+oracle 3569 1 0.0 15:05:33 ?? 0:45.35 oracleifr1b 
+(LOCAL=NO)
+oracle 3598 1 1.9 15:06:38 ?? 2:32.94 [oracle]
+oracle 3611 1 0.0 15:07:36 ?? 0:26.83 oracleifr1b 
+(LOCAL=NO)
+oracle 3622 1 1.5 15:08:16 ?? 3:09.07 [oracle]
+oracle 3632 1 1.2 15:08:42 ?? 4:20.36 [oracle]
+oracle 3685 1 1.2 15:09:41 ?? 2:51.73 [oracle]
+oracle 3746 1 0.0 15:11:21 ?? 0:02.82 oracleifr1b 
+(LOCAL=NO)
+oracle 3748 1 1.9 15:11:35 ?? 2:17.20 [oracle]
+oracle 3772 1 1.9 15:12:36 ?? 2:21.17 [oracle]
+oracle 3776 1 0.7 15:12:55 ?? 2:52.25 [oracle]
+oracle 3780 1 0.4 15:13:13 ?? 2:43.16 [oracle]
+oracle 3881 1 1.6 15:15:18 ?? 2:22.04 [oracle]
+oracle 3893 1 1.9 15:15:35 ?? 3:30.67 [oracle]
+the are more than a hundred processes like those.
+thanks
+Denis
+
+
+22-DEC-04 19:55:19 GMT
+
+New info : The executing has done.
+SQL> select * from sys.dba_2pc_pending;
+no rows selected
+What do i do now?
+Thanks
+Denis
+
+
+22-DEC-04 21:22:30 GMT
+
+
+UNPUBLISHED
+=============
+
+ISUQI.US from the advanced resolution team has agreed to take ownership of this issue. I will leave it in his very capable hands. 
+Thanks Ihab!
+
+
+
+22-DEC-04 21:34:26 GMT
+
+
+Quedima,
+
+Please run the following query in order to know more about the processes you listed above:
+
+select p.spid,s.username, s.status,s.osuser,s.sid,s.program,s.program,s.machine,s.process,s.inst_id,p.inst_id,p.pid
+from gv$session s, gv$process p
+where s.paddr=p.addr
+and p.spid in (3268,3270,3302,3304,3316,3423,3772,3776)
+/
+
+Please upload the output in a spool file.
+
+Ihab
+
+
+22-DEC-04 21:34:36 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+22-DEC-04 21:47:19 GMT
+
+The customer has uploaded the following file via MetaLink:
+D:\result.log
+
+
+22-DEC-04 21:56:47 GMT
+
+
+The output had 3 lines only:
+
+SPID USERNAME STATUS OSUSER SID 
+--------- ------------------------------ -------- ------------------------------ -------
+--- 
+PROGRAM PROGRAM 
+------------------------------------------------ -------------------------------------
+----------- 
+MACHINE PROCESS INST_ID INST_ID PID 
+---------------------------------------------------------------- --------- ---------
+- ---------- ---------- 
+
+3270 I9488068 ACTIVE BHAF_glaucia 69 
+
+
+BHAF15 429306773 2 2 32 
+
+
+3270 SYS INACTIVE oracle 59 
+rman@s-sebu04 (TNS V1-V3) rman@s-sebu04 (TNS V1-V3) 
+
+s-sebu04 23910 1 2 32 
+
+
+3423 I1942516 ACTIVE AFBE_BARROSO 70 
+
+
+D_SRBE\AFBE-BARROSO 1568:1732 2 2 70 
+
+
+
+2 lines for process 3270 (one for each instance) and one entry for process 3423.
+No process labled [oracle] has a corresponding entry in gv$process.
+
+
+
+22-DEC-04 21:57:21 GMT
+
+New info : Mr. Ihab
+I've already sent the result of the query. Have you ever seen this problem 
+before? Now I have this problem in both nodes of the OPS. The node 1 has 33 
+session in v$sesssion and when I execute "ps -ef |grep oracle |wc -l" on unix 
+it returns 218 processes. The node 2 has 47 session in v$session and 215 
+processes on unix.
+I talk with many of DBA and nobody knows about it. 
+I beg you I need your answer as soon as possible.
+I want this tar will be forward to your manager.
+Thanks
+Denis
+
+
+22-DEC-04 22:15:20 GMT
+
+Denis,
+
+Your issue is already transfered to the Advamced Resolution team and we are trying our best to find out what's going on your system.
+I have also contacted AR manager so that he arranges TAR transfer to the next AR engineer once my s
+hift is over.
+
+Please answer the following questions:
+
+1. is this the first time you see orphan processes labled as [oracle]?
+2. Have you made any changes for os or oracle sofware lately?
+3. Are you still seeing in-doubt tranactions error messages/warnings in alert log even afyter purging them?
+4. Do you have the same problem if you work on a single node only? i'e startup one instance only?
+
+Please let me know.
+Ihab
+
+
+22-DEC-04 22:16:44 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+22-DEC-04 22:40:22 GMT
+
+
+Denis,
+
+In addition to the questions above , please run the following to attach to the problem process and tarce it from the os level:
+
+truss -aef -o x.out -p 3776
+
+also please get the folloiwng output for one of the problem processes:
+
+gdb $ORACLE_HOME/bin/oracle 3776
+or
+dbx $ORACLE_HOME/bin/oracle -p 3776
+
+-- when you get the promt , please type "where" to know where the trace is being generate
+d.
+Please upload traces.
+Ihab 
+
+22-DEC-04 22:40:34 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+22-DEC-04 22:41:20 GMT
+
+New info : 1. is this the first time you see orphan processes labled as 
+
+[oracle]?
+yes. it started this morning.
+2. Have you made any changes for os or oracle sofware lately?
+today one disk crashed and has been replaced.
+3. Are you still seeing in-doubt tranactions error messages/warnings in alert 
+log even afyter purging them?
+Yes. I will send you one file with the messages.
+4. Do you have the same problem if you work on a single node only? i'e startup 
+one instance only?
+I dont know. I dont try.
+
+The customer has uploaded the following file via MetaLink:
+D:\messages.txt
+
+
+22-DEC-04 22:48:15 GMT
+
+Denis ,
+please check my previous update ,I'm putting it again here :
+
+please run the following to attach to the problem process and tarce it from the os level:
+
+truss -aef -o x.out -p 3776
+
+also please get the folloiwng output for one of the problem processes:
+
+gdb $ORACLE_HOME/bin/oracle 3776
+or
+dbx $ORACLE_HOME/bin/oracle -p 3776
+
+-- when you get the promt , please type "where" to know where the trace is being generated.
+Please upload traces.
+
+also are you using multi-threader server ? 
+
+Ihab 
+
+22-DEC-04 22:48:25 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+22-DEC-04 23:35:19 GMT
+
+New info : Hi, I cant execute the comands that you sugest and I do not use 
+MTS.
+Thanks
+Denis
+
+
+22-DEC-04 23:38:56 GMT
+
+
+ACTION PLAN
+==============
+
+Please update the tar with exactly how you entered the commands and what response you got.
+Please do ps -ef | grep [SID] and upload the results.
+. 
+
+22-DEC-04 23:39:14 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+22-DEC-04 23:57:06 GMT
+
+===========================================
+** HUB **
+CUSTOMER UPDATE
+
+Customer contact name (if not same as in SR header):
+
+Denis
+
+Comments for this update:
+
+Customer called back, to tell that this problem started happening this morning.
+They have detected a hardware issue on a disk of a RAID 5 array.
+The disk was replaced, but the problem persisted.
+Several [oracle] processes are being created regardless of the number of sessions.
+They cannot be killed even by root, and end up consuming all system resources in about 2 hours.
+Customer wants to know whether this is an Oracle or O/S issue.
+Not sure if Compaq technical support has been involved.
+Customer is using OPS, but he hasn't tested it running single instance yet.
+He could find a core dump file generated yesterday night.
+There is a snap file in the ORACLE_HOME directory.
+
+Best regards,
+Mauricio Buissa
+Brazilian HUB Team Engineer
+Oracle Global Product Support
+
+
+23-DEC-04 00:09:28 GMT
+
+New info : hi i sent the file to you.
+
+The customer has uploaded the following file via MetaLink:
+D:\result.txt
+
+
+23-DEC-04 00:10:20 GMT
+
+New info : Hi, i sent the file to you.
+Thanks
+Denis
+
+
+23-DEC-04 00:16:20 GMT
+
+
+s-sebu04> ps -ef |grep ifr1a
+oracle 1295 1 0.0 21:28:04 ?? 0:04.60 oracleifr1a (DESCRIPTION=(LOCAL=no)(ADDRESS=(PROTOCOL=BEQ)))
+oracle 4357 1 0.0 14:45:34 ?? 0:06.01 ora_pmon_ifr1a
+oracle 4358 1 0.0 14:45:34 ?? 0:51.54 ora_lmon_ifr1a
+oracle 4363 1 0.3 14:45:34 ?? 9:08.80 ora_lmd0_ifr1a
+oracle 4371 1 0.0 14:45:37 ?? 0:04.60 ora_lgwr_ifr1a
+oracle 4372 1 0.0 14:45:37 ?? 0:06.17 ora_dbw0_ifr1a
+oracle 4381 1 0.0 14:45:38 ?? 0:00.63 ora_reco_ifr1a
+oracle 4383 1 0.0 14:45:37 ?? 0:04.11 ora_smon_ifr1a
+oracle 4388 1 0.0 14:45:37 ?? 0:05.09 ora_ckpt_ifr1a
+oracle 4390 1 0.0 14:45:38 ?? 0:02.57 ora_snp0_ifr1a
+oracle 4392 1 0.0 14:45:38 ?? 0:02.35 ora_snp1_ifr1a
+oracle 4394 1 0.0 14:45:38 ?? 0:02.36 ora_snp2_ifr1a
+oracle 4397 1 0.0 14:45:38 ?? 0:02.38 ora_snp3_ifr1a
+oracle 4400 1 0.0 14:45:38 ?? 0:00.43 ora_arc0_ifr1a
+oracle 4405 1 0.0 14:45:49 ?? 0:16.24 ora_bsp0_ifr1a
+oracle 4418 1 0.3 14:45:49 ?? 2:01.69 ora_lck0_ifr1a
+oracle 4439 1 0.0 14:45:55 ?? 0:04.61 ora_i201_ifr1a
+oracle 4447 1 0.0 14:45:56 ?? 0:02.13 ora_i102_ifr1a
+oracle 4450 1 0.0 14:45:56 ?? 0:03.71 ora_i101_ifr1a
+oracle 4451 1 0.0 14:45:56 ?? 0:01.56 ora_i104_ifr1a
+oracle 4452 1 0.0 14:45:56 ?? 0:01.68 ora_i103_ifr1a
+oracle 10205 1 2.4 21:32:28 ?? 0:03.72 oracleifr1a (DESCRIPTION=(LOCAL=no)(ADDRESS=(PROTOCOL=BEQ)))
+oracle 17961 1 0.0 20:09:08 ?? 0:00.64 /u01/app/oracle/product/8.1.7/bin/tnslsnr ifr1alsnr -i
+nherit
+oracle 22334 1 0.1 16:43:20 ?? 4:46.25 oracleifr1a (DESCRIPTION=(LOCAL=no)(ADDRESS=(PROTOCOL=BEQ)))
+oracle 24155 1 0.0 21:30:50 ?? 0:00.83 oracleifr1a (LOCAL=NO)
+oracle 27274 1 0.0 21:51:34 ?? 0:00.15 ora_p000_ifr1a
+oracle 20062 26161 0.0 21:53:55 ttyp5 0:00.01 grep ifr1a
+s-sebu04>
+
+s-sebu05> ps -ef |grep ifr1b
+oracle 2809 1 0.0 14:40:41 ?? 0:03.65 ora_pmon_ifr1b
+oracle 2811 1 0.0 14:40:42 ?? 0:45.88 ora_lmon_ifr1b
+oracle 2814 1 0.3 14:40:42 ?? 7:24.41 ora_lmd0_ifr1b
+oracle 2816 1 0.0 14:40:45 ?? 0:03.83 ora_dbw0_ifr1b
+oracle 2818 1 0.0 14:40:45 ?? 0:03.02 ora_lgwr_ifr1b
+oracle 2820 1 0.0 14:40:45 ?? 0:09.56 ora_ckpt_ifr1b
+oracle 2822 1 0.0 14:40:45 ?? 0:04.82 ora_smon_ifr1b
+oracle 2824 1 0.0 14:40:45 ?? 0:00.42 ora_reco_ifr1b
+oracle 2826 1 0.0 14:40:46 ?? 0:02.12 ora_snp0_ifr1b
+oracle 2828 1 0.0 14:40:46 ?? 0:02.09 ora_snp1_ifr1b
+oracle 2830 1 0.0 14:40:46 ?? 0:02.29 ora_snp2_ifr1b
+oracle 2832 1 0.0 14:40:46 ?? 0:02.14 ora_snp3_ifr1b
+oracle 2834 1 0.0 14:40:46 ?? 0:00.25 ora_arc0_ifr1b
+oracle 2836 1 0.1 14:40:58 ?? 1:19.29 ora_lck0_ifr1b
+oracle 2838 1 0.0 14:40:58 ?? 0:13.93 ora_bsp0_ifr1b
+oracle 2841 1 0.0 14:41:08 ?? 0:04.35 ora_i201_ifr1b
+oracle 2843 1 0.0 14:41:08 ?? 0:04.39 ora_i101_ifr1b
+oracle 2845 1 0.0 14:41:08 ?? 0:02.01 ora_i102_ifr1b
+oracle 2847 1 0.0 14:41:08 ?? 0:01.54 ora_i103_ifr1b
+oracle 2849 1 0.0 14:41:09 ?? 0:01.45 ora_i104_ifr1b
+oracle 2929 1 0.0 14:42:45 ?? 0:09.61 oracleifr1b (LOCAL=NO)
+oracle 2931 1 0.0 14:42:51 ?? 0:03.85 oracleifr1b (LOCAL=NO)
+oracle 2961 1 0.0 14:43:55 ?? 0:06.61 oracleifr1b (LOCAL=NO)
+oracle 3005 1 0.0 14:44:52 ?? 0:01.49 oracleifr1b (LOCAL=NO)
+oracle 3270 1 0.4 14:55:14 ?? 10:26.17 oracleifr1b (LOCAL=NO)
+oracle 3423 1 0.0 14:59:13 ?? 0:01.16 oracleifr1b (LOCAL=NO)
+oracle 3539 1 1.9 15:03:57 ?? 7:00.81 oracleifr1b (LOCAL=NO)
+oracle 3746 1 0.0 15:11:21 ?? 0:02.82 oracleifr1b (LOCAL=NO)
+oracle 3970 1 0.0 15:19:18 ?? 0:01.27 oracleifr1b (LOCAL=NO)
+oracle 5491 1 0.0 17:19:30 ?? 0:00.93 oracleifr1b (LOCAL=NO)
+oracle 5886 1 0.0 17:38:01 ?? 0:00.47 oracleifr1b (LOCAL=NO)
+oracle 6712 1 0.0 19:17:23 ?? 0:01.01 /u01/app/oracle/product/8.1.7/bin/tnslsnr ifr1blsnr -inherit
+oracle 7088 1 0.6 19:47:48 ?? 1:07.07 oracleifr1b (LOCAL=NO)
+oracle 7165 1 0.0 19:51:16 ?? 0:02.68 oracleifr1b (LOCAL=NO)
+oracle 7284 1 0.7 20:00:16 ?? 0:59.75 oracleifr1b (LOCAL=NO)
+oracle 8467 1 0.0 21:51:05 ?? 0:00.55 oracleifr1b (LOCAL=NO)
+oracle 8482 1 0.0 21:51:35 ?? 0:00.14 ora_p000_ifr1b
+oracle 8531 6217 0.0 21:54:16 ttyp1 0:00.01 grep ifr1b
+
+
+
+23-DEC-04 00:26:47 GMT
+
+
+There are no [oracle] processes because the correct ps -ef command was used.
+
+The background processes for Oracle nornally change to PPID 1 after the instance 
+is started.
+These processes should not be killed unless you are trying to crash the instance.
+
+They should be killable by root however.
+
+Please describe what resources are being used up?
+If memory or cpu please use the top utility to see which processes are using the most memory and cpu.
+NOTE.224176.1 How to use OS commands to diagnose Database Performance 
+.
+
+
+23-DEC-04 00:26:58 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+23-DEC-04 00:27:19 GMT
+
+The customer has uploaded the following file via MetaLink:
+D:\Nova\node1.zip
+
+
+23-DEC-04 00:28:19 GMT
+
+The customer has uploaded the following file via MetaLink:
+D:\Nova\node2.zip
+
+
+23-DEC-04 00:42:43 GMT
+
+
+TRACE FILES
+==============
+
+/u01/app/admin/ifr1/udump/ora_12299.trc
+Oracle8i Enterprise Edition Release 8.1.7.4.0 - Production
+With the Partitioning and Parallel Server options
+JServer Release 8.1.7.4.0 - Production
+ORACLE_HOME = /u01/app/oracle/product/8.1.7
+System name: OSF1
+Node name: s-sebu05
+Release: V4.0
+Version: 1229
+Machine: alpha
+Instance name: ifr1b
+Redo thread mounted by this instance: 2
+Oracle process number: 68
+Unix process pid: 12299, image: oracle@s-sebu05 (TNS V1-V3)
+
+*** 2004-12-22 09:36:00.395
+*** SESSION ID:(278.3632) 2004-12-22 09:36:00.392
+DLM caught error 3113 in kjusuc - resignalling
+
+
+ALERT ifr1a LOG
+===============
+
+Wed Dec 22 18:01:02 2004
+ORA-04031: unable to allocate 540760 bytes of shared memory ("large pool","unknown object","large pool hea","KSFQ Buffers")
+Wed Dec 22 18:01:02 2004
+ksfqxcre: failure to allocate shared memory means sync I/O will be used
+whenever async I/O to file not supported natively
+Wed Dec 22 18:01:02 2004
+ORA-04031: unable to allocate 540760 bytes of shared memory ("large pool","unknown object","large pool hea","KSFQ Buffers")
+ksfqxcre: failure to allocate shared memory means sync I/O will be used
+whenever async I/O to file not supported natively
+Wed Dec 22 18:01:02 2004
+ORA-04031: unable to allocate 540760 bytes of shared memory ("large pool","unknown object","large 
+pool hea","KSFQ Buffers")
+ksfqxcre: failure to allocate shared memory means sync I/O will be used
+whenever async I/O to file not supported natively
+Wed Dec 22 18:01:02 2004
+ORA-04031: unable to allocate 540760 bytes of shared memory ("large pool","unknown object","large pool hea","KSFQ Buffers")
+ksfqxcre: failure to allocate shared memory means sync I/O will be used
+whenever async I/O to file not supported natively
+Wed Dec 22 18:01:02 2004
+ORA-04031: unable to allocate 540760 bytes of shared memory ("large pool","unknown object","larg
+e pool hea","KSFQ Buffers")
+ksfqxcre: failure to allocate shared memory means sync I/O will be used
+whenever async I/O to file not supported natively
+Wed Dec 22 18:10:02 2004
+WARNING: aio_results_np timed out 1 times, waited 120 secs
+Wed Dec 22 18:13:21 2004
+Errors in file /u01/app/admin/ifr1/bdump/ora_7273.trc:
+ORA-00600: internal error code, arguments: [12235], [], [], [], [], [], [], []
+Wed Dec 22 18:14:25 2004
+WARNING: aio_results_np timed out 1 times, waited 120 secs
+Wed Dec 22 18:19:52 2004
+WARNING: aio_results_np timed out 1 times, waited 590 secs
+Wed Dec 22 18:24:15 2004
+WARNING: aio_results_np timed out 1 times, waited 590 secs
+Wed Dec 22 18:29:42 2004
+WARNING: aio_results_np timed out 1 times, waited 590 secs
+Wed Dec 22 18:34:05 2004
+
+
+
+23-DEC-04 00:47:33 GMT
+
+
+ACTION PLAN
+=============
+
+There are no [oracle] processes because the correct ps -ef command was used.
+
+The background processes for Oracle nornally change to PPID 1 after the instance is started.
+These processes should not be killed unless you are trying to crash the instance.
+
+They should be killable by root however.
+
+Please describe what resources are being used up?
+If memory or cpu please use the top utility to see which processes are using the most memory and cpu.
+NOTE.224176.1 How to use OS commands to diagnose Database Performance 
+.
+
+
+
+23-DEC-04 00:47:48 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+23-DEC-04 10:05:19 GMT
+
+New info : I can not kill those processes even if i try to do it as root user.
+The only way to kill this processes is shutdonw the servers.
+I did it last night and i am waiting to see if the error starts again or not.
+Thanks
+Denis
+
+
+
+23-DEC-04 10:06:20 GMT
+
+New info : I can not kill those processes even if i try to do it as root user.
+The only way to kill this processes is shutdonw the servers.
+I did it last night and i am waiting to see if the error starts again or not.
+Thanks
+Denis
+
+
+
+23-DEC-04 11:20:01 GMT
+
+.
+STATUS
+=======
+
+Customer rebooted Cluster and now the Processes are not present anymore.
+Now waiting for reoccurance.
+
+
+23-DEC-04 12:50:19 GMT
+
+New info : Hi
+I have this problem and I think this it causes my problem.
+SQL> analyze table ifrdba2.sms validate structure;
+analyze table ifrdba2.sms validate structure
+*
+ERRO na linha 1:
+ORA-01115: IO error reading block from file 12 (block # 360209)
+ORA-01110: data file 12: '/dev/rdrd/drd9'
+ORA-27091: skgfqio: unable to queue I/O
+Compaq Tru64 UNIX Error: 4: Interrupted system call
+Additional information: 360201
+Additional information: 8
+Can I Repair this table without restore the backup?
+Thanks
+Denis
+
+
+23-DEC-04 12:52:19 GMT
+
+New info : Hi
+I have this problem and I think this it causes my problem.
+SQL> analyze table ifrdba2.sms validate structure;
+analyze table ifrdba2.sms validate structure
+*
+ERRO na linha 1:
+ORA-01115: IO error reading block from file 12 (block # 360209)
+ORA-01110: data file 12: '/dev/rdrd/drd9'
+ORA-27091: skgfqio: unable to queue I/O
+Compaq Tru64 UNIX Error: 4: Interrupted system call
+Additional information: 360201
+Additional information: 8
+Can I Repair this table without restore the backup?
+Thanks
+Denis
+
+
+23-DEC-04 13:31:20 GMT
+
+New info : Hi, I want to help of duty manager to resolve my problem ASAP cause 
+
+of critical system is stopped due the errors on the file.
+Thanks
+Denis
+
+
+23-DEC-04 13:35:10 GMT
+
+.
+UPDATE
+=======
+
+Hi Denis !!
+
+The only Option apart from restoring the File from a Backup is to try to export the 
+Table, then drop this Table and import it again. If this also fails, the only option left
+is to restore from a backup.
+
+Please also note that 8.1.7.x will be desupported very soon:
+
+=== Desupport ===
+8.1.7.x is desupported up from 31-DEC-2004, so I would recommend you to update to a
+
+newer supported Release soon. Please see 
+Note.148054.1: Oracle Database 8.1.7 (8i) & 8.1.7.x (8i) Notice 2 of 2
+for timeline and further Details.
+
+Thank you and best regards
+
+Thorsten Senft
+Oracle Support Services 
+
+23-DEC-04 13:35:34 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+23-DEC-04 14:27:19 GMT
+
+New info : Hi Thorsten 
+Is impossible to make the export because it hangs when this table is reached.
+
+
+23-DEC-04 14:43:47 GMT
+
+.
+UPDATE
+=======
+
+Hi Denis !!
+
+So basically in this case only a Restore/Recovery of the Datafile from a valid Backup is
+possible to proceed from here.
+Anyway, I found a similar case as yours on AIX - in this case it was an OS-issue and IBM
+provided a Patch for that.
+So in your case, you may also open a Service request at HP regarding the
+Compaq Tru64 UNIX Error: 4: Interrupted system call
+Additional information: 360201
+Additional information: 8
+They will be able to identify the cause for this as these are OS-Messages, we mostly 
+cannot interpret them.
+
+Thank you and best regards
+
+Thorsten 
+
+23-DEC-04 14:44:13 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+23-DEC-04 15:00:20 GMT
+
+New info : We can't recovery the backup of datafiles because we will lost data. 
+
+We need repair this table, or recovery his data without a backup.
+
+
+23-DEC-04 16:15:29 GMT
+
+
+ACTION:
+=======
+
+-To resolve the error, Please restore the datafile from a good backup and apply recovery to it
+
+alter database datafile 'path and name' offline;
+recover datafile 'path and name'
+alter database datafile 'path and name' online;
+
+Thanks
+
+@cus 
+
+23-DEC-04 16:15:45 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+23-DEC-04 18:12:18 GMT
+
+New info : Hi, I will do it. When i finish i will report you.
+Thanks
+Denis
+
+
+23-DEC-04 21:06:34 GMT
+
+
+ACTION PLAN :
+============
+
+Denis,
+
+Please, let me know if you did the recommendations given or when are you planning to do these recommendations.
+
+Thanks,
+Luz Rodriguez
+Oracle Support Services
+
+@CUS
+
+
+23-DEC-04 21:07:30 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+23-DEC-04 21:27:45 GMT
+
+
+ACTION PLAN :
+===========
+
+I called Quedima Sales at +55 61 3123609 but there was not anser and I left a message.
+
+Quedima,
+
+Please update the tar with the status of the issue reported.
+This tar is in sev 1 and I am finishing my shift and i will put the tar in pending status. Please, update the tar if you need any h
+elp.
+If the issue reported is resolved , please close the tar via metalink.
+
+Thanks,
+Luz Rodriguez
+Oracle Support Services
+
+@CUS
+
+
+23-DEC-04 23:38:08 GMT
+
+New info : Hi Luz, I am Denis DBA's Infraero. We are working in recover of 
+
+cluster/raid with the corrupted blocks problem. I Think tomorroy with start to 
+
+recover the database. I have a few questios from oracle.
+1) We discover which cause the ghost processes on Unix ( disk corruption). Mu 
+doubt is: 
+Why the oracle server generate this process without communicate through the use 
+of signals in alert file? 
+Why root user can not kill those processes? 
+Why those process only are killed with a shutdown of the server?
+to give more informations:
+2 redo member and 5 important tables are in the raid with problem . when i 
+change the redo member to another raw device and deny the user access for the 5 
+tables the error ends??
+Can anybody at oracle corp answer those questions??
+Thans Anyway.
+best regards,
+Denis
+
+
+24-DEC-04 01:48:18 GMT
+
+
+UPDATE
+=======
+
+Working on the issue ........
+
+STATUS
+=======
+@WIP
+
+
+24-DEC-04 02:06:05 GMT
+
+
+
+Hi Denis.
+
+I think we need to some more investigation on this issue to answer those questions.As per our
+policy for doing RCA(Root cause Analysis) kind of work we need to raise a separate lower severity
+SR with reference to this critical SR.Severity 1 SRs are raised for resolving critical
+issues.Please let me know if you need any assistance to raise a new Sev2 SR for RCA.
+
+Thanks
+Jobin
+OSS
+
+
+
+
+24-DEC-04 02:06:18 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+28-DEC-04 07:04:31 GMT
+
+.
+ACTION PLAN
+============
+
+Hi Quedima,
+
+Please update the SR as soon as possible with the current status and/or requested information so we can continue workin
+g the issue.
+
+Thank You,
+Jobin
+
+STATUS
+=======
+
+@CUS -- Waiting for Customer Update
+
+
+
+
+28-DEC-04 07:04:43 GMT
+
+Email Update button has been pressed: Sending email to dandrade@infraero.gov.br.
+
+
+29-DEC-04 06:43:42 GMT
+
+.
+UPDATE
+=======
+
+Hi Quedima,
+
+I haven't heard back from you, so I assume that this is no longer an issue or the issue has been resolved. If this is not the cas
+e, please update the SR as soon as possible with the requested information and I
+will be glad to assist you further. Otherwise, no update is necessary and the S
+R will automatically close after two weeks.
+
+Best Regards,
+Jobin
+Oracle Support Services
+
+STATUS
+=======
+
+Inactivated -- Pending Customer Response
+
+
+
+13-JAN-05 00:15:12 GMT
+
+TAR passed SCL review date. Setting to HCL. 
+ 
+    
+ 
+

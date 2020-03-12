@@ -1,0 +1,1946 @@
+
+Qui Nov 18                                                                                                               página    1
+                                                         SYSTEM STATISTICS
+
+'LIBRARYCACHESTATISTICS:'                                                                                                           
+-------------------------                                                                                                           
+LIBRARY CACHE STATISTICS:                                                                                                           
+
+
+'PINS-#OFTIMESANITEMINTHELIBRARYCACHEWASEXECUTED-'||SUM(PINS)                                                                       
+------------------------------------------------------------------------------------------------------                              
+'RELOADS-#OFLIBRARYCACHEMISSESONEXECUTIONSTEPS-'||SUM(RELOADS)                                                                      
+-------------------------------------------------------------------------------------------------                                   
+'RELOADS/PINS*100='||ROUND((SUM(RELOADS)/SUM(PINS)*100),2)||'%'                                                                     
+----------------------------------------------------------------                                                                    
+PINS - # of times an item in the library cache was executed - 48498209                                                              
+RELOADS - # of library cache misses on execution steps - 92436                                                                      
+RELOADS / PINS * 100 = ,19%                                                                                                         
+                                                                                                                                    
+
+Increase memory until RELOADS is near 0 but watch out for
+Paging/swapping
+To increase library cache, increase SHARED_POOL_SIZE
+
+** NOTE: Increasing SHARED_POOL_SIZE will increase the SGA size.
+
+Library Cache Misses indicate that the Shared Pool is not big
+enough to hold the shared SQL area for all concurrently open cursors.
+If you have no Library Cache misses (PINS = 0), you may get a small
+increase in performance by setting CURSOR_SPACE_FOR_TIME = TRUE which
+prevents ORACLE from deallocating a shared SQL area while an
+application
+cursor associated with it is open.
+
+For Multi-threaded server, add 1K to SHARED_POOL_SIZE per user.
+
+----------------------------------------------------------------------- 
+HIT RATIO:
+
+Values Hit Ratio is calculated against:
+
+
+XN1                                                                                                                                 
+--------------------------------------------------                                                                                  
+       db block gets  =  20935690                                                                                                   
+
+
+XN2                                                                                                                                 
+--------------------------------------------------                                                                                  
+     consistent gets  =  895735361                                                                                                  
+
+
+XN3                                                                                                                                 
+--------------------------------------------------                                                                                  
+      physical reads  =  47696563                                                                                                   
+
+
+'LOGICALREADS=DBBLOCKGETS+CONSISTENTGETS'        D1                                                                                 
+------------------------------------------------ --------------------------------------------------                                 
+Logical reads = db block gets + consistent gets          Logical Reads = 916671051                                                  
+
+
+'HITRATIO=(LOGICALREADS-PHYSICALREADS)/LOGICALREADS'         D2                                                                     
+------------------------------------------------------------ --------------------------------------------------                     
+Hit Ratio = (logical reads - physical reads) / logical reads             Hit Ratio = 94,8%                                          
+
+If the hit ratio is less than 60%-70%, increase the initialization
+parameter DB_BLOCK_BUFFERS.  ** NOTE:  Increasing this parameter will
+increase the SGA size.
+
+----------------------------------------------------------------------- 
+ROLLBACK CONTENTION STATISTICS:
+
+GETS - # of gets on the rollback segment header
+WAITS - # of waits for the rollback segment header
+
+NAME                                WAITS       GETS                                                                                
+------------------------------ ---------- ----------                                                                                
+SYSTEM                                  0        949                                                                                
+RBS1                                    0     42,757                                                                                
+RBS2                                    0     33,385                                                                                
+RBS3                                    0    146,108                                                                                
+RBS4                                    2     43,539                                                                                
+RBS5                                    0     44,453                                                                                
+RBS6                                    0     34,374                                                                                
+RBS7                                    0     43,491                                                                                
+RBS8                                    0     42,040                                                                                
+RBS9                                    0     55,295                                                                                
+RBS10                                   0     39,273                                                                                
+RBS11                                   1     52,395                                                                                
+RBS12                                   0     33,765                                                                                
+RBS13                                   0     37,548                                                                                
+RBS14                                   0     88,098                                                                                
+RB_GRANDE1                              0     52,462                                                                                
+RBS_PUB_01                              2     35,514                                                                                
+
+17 linhas selecionadas.
+
+
+The average of waits/gets is 0%                                                                                                     
+
+
+If the ratio of waits to gets is more than 1% or 2%, consider
+creating more rollback segments
+
+Another way to gauge rollback contention is:
+
+
+CLASS                   COUNT                                                                                                       
+------------------ ----------                                                                                                       
+system undo header          0                                                                                                       
+system undo block           0                                                                                                       
+undo header               280                                                                                                       
+undo block                 50                                                                                                       
+
+
+Total requests = 82956                                                                                                              
+
+
+Contention for system undo header = 0%                                                                                              
+
+
+Contention for system undo block = 0%                                                                                               
+
+
+Contention for undo header = ,34%                                                                                                   
+
+
+Contention for undo block = ,06%                                                                                                    
+
+
+If the percentage for an area is more than 1% or 2%, consider
+creating more rollback segments.  Note:  This value is usually very
+small
+and has been rounded to 4 places.
+
+----------------------------------------------------------------------- 
+REDO CONTENTION STATISTICS:
+
+The following shows how often user processes had to wait for space in
+the redo log buffer:
+
+redo log space requests = 23                                                                                                        
+
+
+This value should be near 0.  If this value increments consistently,
+processes have had to wait for space in the redo buffer.  If this
+condition exists over time, increase the size of LOG_BUFFER in the
+init.ora file in increments of 5% until the value nears 0.
+** NOTE: increasing the LOG_BUFFER value will increase total SGA size.
+
+---------------------------------------------------------------------- 
+LATCH CONTENTION:
+
+GETS - # of successful willing-to-wait requests for a latch
+MISSES - # of times an initial willing-to-wait request was unsuccessful
+IMMEDIATE_GETS - # of successful immediate requests for each latch
+IMMEDIATE_MISSES = # of unsuccessful immediate requests for each latch
+SLEEPS - # of times a process waited and requests a latch after an
+initial willing-to-wait request
+
+If the latch requested with a willing-to-wait request is not
+available, the requesting process waits a short time and requests
+again.
+If the latch requested with an immediate request is not available,
+the requesting process does not wait, but continues processing
+
+
+NAME                GETS   MISSES IMMED GETS IMMED MISS  SLEEPS                                                                     
+--------------- -------- -------- ---------- ---------- -------                                                                     
+redo allocation  7149805      744          0          0     412                                                                     
+redo copy             64        0    6395762       1417       0                                                                     
+
+
+Ratio of MISSES to GETS: ,01%                                                                                                       
+
+
+Ratio of IMMEDIATE_MISSES to IMMEDIATE_GETS: ,02%                                                                                   
+
+
+If either ratio exceeds 1%, performance will be affected.
+
+Decreasing the size of LOG_SMALL_ENTRY_MAX_SIZE reduces the number of
+processes copying information on the redo allocation latch.
+
+Increasing the size of LOG_SIMULTANEOUS_COPIES will reduce contention
+for redo copy latches.
+
+----------------------------------------------------------------------- 
+
+Look at gethitratio and pinhit ratio
+
+GETHITRATIO is number of GETHTS/GETS
+PINHIT RATIO is number of PINHITS/PINS - number close to 1 indicates
+that most objects requested for pinning have been cached.  Pay close
+attention to PINHIT RATIO.
+
+
+                                         GET HIT          PIN HIT                                                                   
+NAME                      GETS   GETHITS   RATIO  PINHITS   RATIO                                                                   
+-------------------- --------- --------- ------- -------- -------                                                                   
+SQL AREA               3642042   3506845     .96 ########     .98                                                                   
+TABLE/PROCEDURE       21445179  21290959     .99 ########     .99                                                                   
+BODY                     17595     17383     .99    17604     .99                                                                   
+TRIGGER                  52867     52586     .99    52873     .98                                                                   
+INDEX                     3204      2536     .79     3204     .59                                                                   
+CLUSTER                  17702     17653    1.00    14754     .99                                                                   
+OBJECT                       0         0    1.00        0    1.00                                                                   
+PIPE                        93        43     .46       93     .46                                                                   
+
+8 linhas selecionadas.
+
+
+----------------------------------------------------------------------- 
+THE DATA DICTIONARY CACHE:
+
+
+Consider keeping this below 5% to keep the data dictionary cache in
+the SGA.  Up the SHARED_POOL_SIZE to improve this statistic. **NOTE:
+increasing the SHARED_POOL_SIZE will increase the SGA.
+
+
+Dictionary Cache                                                                                                                    
+          Ratio %                                                                                                                   
+-----------------                                                                                                                   
+              .83                                                                                                                   
+
+
+----------------------------------------------------------------------- 
+
+SYSTEM EVENTS:
+
+Not sure of the value of this section yet but it looks interesting.
+
+
+                                          Total           Time Wait     Average                                                     
+Event                                     Waits Timeout   In Hndrds        Time                                                     
+------------------------------------- --------- ------- ----------- -----------                                                     
+Null event                                    3       3           0        .000                                                     
+latch free                            ######### #######           0        .000                                                     
+pmon timer                               308554  273166           0        .000                                                     
+inactive session                            112     111           0        .000                                                     
+process startup                             139       2           0        .000                                                     
+rdbms ipc reply                           23845       3           0        .000                                                     
+rdbms ipc message                      36431178 #######           0        .000                                                     
+enqueue                                 2024428 #######           0        .000                                                     
+imm op                                      323       0           0        .000                                                     
+io done                                  722174   11679           0        .000                                                     
+slave wait                              5327842 #######           0        .000                                                     
+lock manager wait for remote message   43754276 #######           0        .000                                                     
+DFS lock handle                          118127    1147           0        .000                                                     
+wait for register recovery to complet         7       5           0        .000                                                     
+e                                                                                                                                   
+                                                                                                                                    
+wait for recovery validate to complet         3       2           0        .000                                                     
+e                                                                                                                                   
+                                                                                                                                    
+wait for lock db to become frozen            35      35           0        .000                                                     
+wait for lock db to unfreeze                327     320           0        .000                                                     
+LMON wait for LMD to inherit communic        34      34           0        .000                                                     
+ation channels                                                                                                                      
+                                                                                                                                    
+wait for gms registration                   362     362           0        .000                                                     
+wait for DLM reconfiguration to compl        71      71           0        .000                                                     
+ete                                                                                                                                 
+                                                                                                                                    
+DLM generic wait event                        1       1           0        .000                                                     
+wait in DLM enter server mode                37      36           0        .000                                                     
+wait for LMON to get to FTDONE           177712      44           0        .000                                                     
+wait for inquiry response                  9100      47           0        .000                                                     
+name-service call wait                      111       6           0        .000                                                     
+Contacting SCN server or SCN lock mas     23645       0           0        .000                                                     
+ter                                                                                                                                 
+                                                                                                                                    
+control file sequential read              18288       0           0        .000                                                     
+control file single write                   176       0           0        .000                                                     
+control file parallel write              281258       0           0        .000                                                     
+refresh controlfile command                 626       0           0        .000                                                     
+buffer deadlock                            2015    1989           0        .000                                                     
+buffer busy waits                         38711      61           0        .000                                                     
+buffer busy due to global cache           44285      78           0        .000                                                     
+writes stopped by instance recovery o        12       0           0        .000                                                     
+r database suspension                                                                                                               
+                                                                                                                                    
+log switch/archive                            5       5           0        .000                                                     
+log file sequential read                  56485       0           0        .000                                                     
+log file single write                       154       0           0        .000                                                     
+log file parallel write                  270649      22           0        .000                                                     
+LGWR wait for redo copy                     977     368           0        .000                                                     
+log buffer space                              7       3           0        .000                                                     
+switch logfile command                       17       0           0        .000                                                     
+log file switch completion                   23       1           0        .000                                                     
+log file sync                            198802     172           0        .000                                                     
+db file sequential read                13741572       0           0        .000                                                     
+db file scattered read                  3949616       0           0        .000                                                     
+db file single write                        836       0           0        .000                                                     
+db file parallel write                   234757       5           0        .000                                                     
+db file parallel read                      4310       0           0        .000                                                     
+global cache lock open s                   8818       2           0        .000                                                     
+global cache lock open x                  34577      29           0        .000                                                     
+global cache lock null to s               18799      23           0        .000                                                     
+global cache lock null to x               57339      51           0        .000                                                     
+global cache lock s to x                 159699     680           0        .000                                                     
+global cache cr request                 6499264    1445           0        .000                                                     
+global cache lock busy                    18082     636           0        .000                                                     
+global cache bg acks                          2       0           0        .000                                                     
+direct path read                         230322       0           0        .000                                                     
+direct path write                        244399       0           0        .000                                                     
+instance recovery                             5       2           0        .000                                                     
+sort segment request                          1       1           0        .000                                                     
+instance state change                         1       0           0        .000                                                     
+smon timer                                 2814    2788           0        .000                                                     
+PX Deq: Txn Recovery Start                   10       0           0        .000                                                     
+Wait for stopper event to be increase         7       6           0        .000                                                     
+d                                                                                                                                   
+                                                                                                                                    
+row cache lock                           259807       2           0        .000                                                     
+library cache pin                         91893     239           0        .000                                                     
+library cache lock                       971828    9140           0        .000                                                     
+library cache load lock                      19       4           0        .000                                                     
+file identify                              1352       0           0        .000                                                     
+file open                                 69660       0           0        .000                                                     
+single-task message                          10       0           0        .000                                                     
+SQL*Net message to client              33547455       0           0        .000                                                     
+SQL*Net message to dblink                 62738       0           0        .000                                                     
+SQL*Net more data to client            13845643       0           0        .000                                                     
+SQL*Net message from client            33546611       0           0        .000                                                     
+SQL*Net more data from client             21414       0           0        .000                                                     
+SQL*Net message from dblink               62738       0           0        .000                                                     
+SQL*Net more data from dblink                49       0           0        .000                                                     
+SQL*Net break/reset to client            126938       0           0        .000                                                     
+SQL*Net break/reset to dblink              1314       0           0        .000                                                     
+PX qref latch                                 3       3           0        .000                                                     
+PX Idle Wait                               5619    5551           0        .000                                                     
+PX Deq: Join ACK                            165       0           0        .000                                                     
+PX Deq Credit: send blkd                     14       0           0        .000                                                     
+PX Deq: Signal ACK                           35      14           0        .000                                                     
+PX Deq: Parse Reply                         161       0           0        .000                                                     
+PX Deq: Execute Reply                       188       0           0        .000                                                     
+PX Deq: Execution Msg                       243       0           0        .000                                                     
+
+88 linhas selecionadas.
+
+
+----------------------------------------------------------------------- 
+THE SGA AREA ALLOCATION:
+
+
+This shows the allocation of SGA storage.  Examine this before and
+after making changes in the INIT.ORA file which will impact the SGA.
+
+
+NAME                                          BYTES                                                                                 
+---------------------------------------- ----------                                                                                 
+fixed_sga                                     83076                                                                                 
+db_block_buffers                          491520000                                                                                 
+log_buffer                                   204800                                                                                 
+free memory                                19316072                                                                                 
+miscellaneous                               5190256                                                                                 
+dlm shared memory                          20482812                                                                                 
+fixed allocation callback                      1512                                                                                 
+dlm process array                            404096                                                                                 
+ktlbk state objects                          294800                                                                                 
+PX msg pool                                  189416                                                                                 
+PL/SQL DIANA                                3815720                                                                                 
+gc_*                                       12573200                                                                                 
+table columns                                 62992                                                                                 
+enqueue_resources                            520000                                                                                 
+PLS non-lib hp                                 2136                                                                                 
+sessions                                    1216000                                                                                 
+table definiti                                25984                                                                                 
+State objects                              78117712                                                                                 
+transactions                                 836000                                                                                 
+db_block_hash_buckets                       2108592                                                                                 
+trigger defini                                74736                                                                                 
+KGFF heap                                     15560                                                                                 
+PX subheap                                    13616                                                                                 
+trigger inform                                16264                                                                                 
+DML locks                                    369600                                                                                 
+dictionary cache                            8910040                                                                                 
+db_block_buffers                           15840000                                                                                 
+PL/SQL MPCODE                                652768                                                                                 
+ksfv subheap                                   4288                                                                                 
+kclnb                                        360312                                                                                 
+library cache                              37885064                                                                                 
+sql area                                   73702392                                                                                 
+db_handles                                   396000                                                                                 
+processes                                    522000                                                                                 
+KGK heap                                      10216                                                                                 
+KQLS heap                                   8367112                                                                                 
+event statistics per sess                   1736000                                                                                 
+free memory                                15728640                                                                                 
+free memory                                   32768                                                                                 
+
+39 linhas selecionadas.
+
+
+total of SGA                            801588168                                                                                   
+
+
+----------------------------------------------------------------------- 
+
+Below is a dump of the core Instance Statistics that are greater than0.
+Although there are a great many statistics listed, the ones of greatest
+value are displayed in other formats throughout this report.  Of
+interest here are the values for:
+
+cumulative logons
+(# of actual connections to the DB since last startup - good
+volume-of-use statistic)
+
+#93  table fetch continued row
+(# of chained rows - will be higher if there are a lot of long fields
+if the value goes up over time, it is a good signaller of general
+database fragmentation)
+
+
+                                                         Instance Statistics                                                        
+                                                                                                                                    
+Stat# Statistic Name                                                    Result                                                      
+----- ------------------------------------------------------- ----------------                                                      
+    0 logons cumulative                                                125,070                                                      
+    1 logons current                                                       297                                                      
+    2 opened cursors cumulative                                      3,197,857                                                      
+    3 opened cursors current                                             3,398                                                      
+    4 user commits                                                     186,071                                                      
+    5 user rollbacks                                                    40,327                                                      
+    6 user calls                                                    33,838,339                                                      
+    7 recursive calls                                               26,852,588                                                      
+    9 session logical reads                                        893,291,119                                                      
+   15 session uga memory                                         1,035,375,112                                                      
+   16 session uga memory max                                    12,152,777,752                                                      
+   17 messages sent                                                  1,248,623                                                      
+   18 messages received                                              1,248,645                                                      
+   19 background timeouts                                           30,627,080                                                      
+   20 session pga memory                                       631,896,949,368                                                      
+   21 session pga memory max                                   690,745,681,568                                                      
+   22 enqueue timeouts                                                  26,703                                                      
+   23 enqueue waits                                                    202,394                                                      
+   24 enqueue deadlocks                                                      2                                                      
+   25 enqueue requests                                               1,153,486                                                      
+   26 enqueue conversions                                              157,200                                                      
+   27 enqueue releases                                               1,126,572                                                      
+   28 global lock sync gets                                         14,994,047                                                      
+   29 global lock async gets                                        16,853,821                                                      
+   31 global lock sync converts                                        274,791                                                      
+   32 global lock async converts                                       638,763                                                      
+   34 global lock releases                                          31,734,787                                                      
+   35 total file opens                                                  69,669                                                      
+   38 db block gets                                                 20,947,226                                                      
+   39 consistent gets                                              896,037,663                                                      
+   40 physical reads                                                47,705,811                                                      
+   41 db block changes                                              10,547,392                                                      
+   42 consistent changes                                            23,514,436                                                      
+   44 physical writes                                                1,819,401                                                      
+   45 physical writes non checkpoint                                 1,797,865                                                      
+   46 summed dirty queue length                                         10,555                                                      
+   47 DBWR checkpoint buffers written                                   81,618                                                      
+   48 DBWR transaction table writes                                      5,636                                                      
+   49 DBWR undo block writes                                            80,364                                                      
+   50 DBWR revisited being-written buffer                                  336                                                      
+   51 DBWR make free requests                                           28,408                                                      
+   52 DBWR free buffers found                                        4,877,083                                                      
+   53 DBWR lru scans                                                    28,408                                                      
+   54 DBWR summed scan depth                                         5,070,699                                                      
+   55 DBWR buffers scanned                                           5,070,699                                                      
+   56 DBWR checkpoints                                                  13,033                                                      
+   57 DBWR cross instance writes                                       324,452                                                      
+   58 remote instance undo block writes                                      1                                                      
+   59 remote instance undo header writes                                   469                                                      
+   61 redo synch writes                                                194,299                                                      
+   63 exchange deadlocks                                                 2,015                                                      
+   64 free buffer requested                                         39,670,197                                                      
+   65 dirty buffers inspected                                           32,032                                                      
+   66 pinned buffers inspected                                           5,935                                                      
+   67 hot buffers moved to head of LRU                               9,562,667                                                      
+   68 free buffer inspected                                             48,789                                                      
+   70 commit cleanout failures: block lost                              20,561                                                      
+   71 commit cleanout failures: cannot pin                               9,489                                                      
+   72 commit cleanout failures: hot backup in progress                       1                                                      
+   73 commit cleanout failures: buffer being written                        83                                                      
+   74 commit cleanout failures: callback failure                           129                                                      
+   75 commit cleanouts                                                 697,865                                                      
+   76 commit cleanouts successfully completed                          667,602                                                      
+   79 CR blocks created                                              2,609,756                                                      
+   80 current blocks converted for CR                                    4,331                                                      
+   81 switch current to new buffer                                     170,125                                                      
+   82 write clones created in foreground                                   685                                                      
+   83 write clones created in background                                     2                                                      
+   84 prefetched blocks                                             19,576,151                                                      
+   85 prefetched blocks aged out before use                                676                                                      
+   86 physical reads direct                                         11,154,541                                                      
+   87 physical writes direct                                         1,188,059                                                      
+   91 calls to kcmgcs                                                   60,447                                                      
+   93 calls to kcmgas                                                  296,997                                                      
+   96 calls to get snapshot scn: kcmgss                             10,616,489                                                      
+   97 kcmgss waited for batching                                        21,148                                                      
+   98 kcmgss read scn without going to server                            4,036                                                      
+  100 redo entries                                                   6,396,060                                                      
+  101 redo size                                                  1,724,928,728                                                      
+  102 redo buffer allocation retries                                        29                                                      
+  103 redo wastage                                                 134,825,456                                                      
+  105 redo writes                                                      270,674                                                      
+  106 redo blocks written                                            1,845,234                                                      
+  108 redo log space requests                                               23                                                      
+  111 redo ordering marks                                               92,982                                                      
+  112 global cache gets                                             16,250,844                                                      
+  114 global cache converts                                            252,838                                                      
+  116 global cache cr blocks received                                  223,732                                                      
+  120 global cache cr blocks served                                    379,570                                                      
+  128 global cache defers                                               30,770                                                      
+  129 global cache convert timeouts                                        368                                                      
+  130 global cache cr timeouts                                              94                                                      
+  136 instance recovery database freeze count                                2                                                      
+  137 background checkpoints started                                        36                                                      
+  138 background checkpoints completed                                      35                                                      
+  140 transaction lock foreground requests                                  33                                                      
+  142 transaction lock background gets                                      33                                                      
+  144 transaction tables consistent reads - undo records appl            6,065                                                      
+      ied                                                                                                                           
+                                                                                                                                    
+  145 transaction tables consistent read rollbacks                          20                                                      
+  146 data blocks consistent reads - undo records applied           23,431,011                                                      
+  147 no work - consistent read gets                               466,719,157                                                      
+  148 cleanouts only - consistent read gets                             68,888                                                      
+  149 rollbacks only - consistent read gets                            387,019                                                      
+
+                                                         Instance Statistics                                                        
+                                                                                                                                    
+Stat# Statistic Name                                                    Result                                                      
+----- ------------------------------------------------------- ----------------                                                      
+  150 cleanouts and rollbacks - consistent read gets                 2,235,333                                                      
+  151 rollback changes - undo records applied                           79,981                                                      
+  152 transaction rollbacks                                              2,883                                                      
+  153 immediate (CURRENT) block cleanout applications                   77,701                                                      
+  154 immediate (CR) block cleanout applications                     2,304,229                                                      
+  155 deferred (CURRENT) block cleanout applications                   382,562                                                      
+  157 Cached Commit SCN referenced                                          17                                                      
+  158 table scans (short tables)                                     2,093,792                                                      
+  159 table scans (long tables)                                         50,966                                                      
+  160 table scans (rowid ranges)                                         3,930                                                      
+  162 table scans (direct read)                                          3,930                                                      
+  163 table scan rows gotten                                     6,362,428,786                                                      
+  164 table scan blocks gotten                                     188,560,769                                                      
+  165 table fetch by rowid                                         693,928,643                                                      
+  166 table fetch continued row                                      5,632,403                                                      
+  167 cluster key scans                                              5,329,550                                                      
+  168 cluster key scan block gets                                   21,953,949                                                      
+  169 rows fetched via callback                                     83,423,125                                                      
+  170 leaf node splits                                                   6,409                                                      
+  171 branch node splits                                                    20                                                      
+  174 index fast full scans (full)                                           5                                                      
+  179 parse count (total)                                            3,664,057                                                      
+  180 parse count (hard)                                               172,147                                                      
+  181 execute count                                                 10,556,328                                                      
+  182 bytes sent via SQL*Net to client                          22,328,721,366                                                      
+  183 bytes received via SQL*Net from client                     3,980,528,581                                                      
+  184 SQL*Net roundtrips to/from client                             33,501,277                                                      
+  185 bytes sent via SQL*Net to dblink                              14,585,430                                                      
+  186 bytes received via SQL*Net from dblink                         5,055,982                                                      
+  187 SQL*Net roundtrips to/from dblink                                 62,738                                                      
+  188 sorts (memory)                                                 2,423,590                                                      
+  189 sorts (disk)                                                         150                                                      
+  190 sorts (rows)                                               1,132,920,656                                                      
+  193 cursor authentications                                            77,919                                                      
+  194 queries parallelized                                                  57                                                      
+  197 DFO trees parallelized                                                57                                                      
+  198 Parallel operations not downgraded                                    55                                                      
+  199 Parallel operations downgraded to serial                               2                                                      
+  204 PX local messages sent                                               308                                                      
+  205 PX local messages recv'd                                             310                                                      
+  206 PX remote messages sent                                              144                                                      
+  207 PX remote messages recv'd                                            165                                                      
+  208 buffer is pinned count                                     1,230,987,498                                                      
+  209 buffer is not pinned count                                   611,843,838                                                      
+  210 no buffer to keep pinned count                                     2,336                                                      
+  215 get Next seq # returned valid status                          11,230,098                                                      
+  217 get SCN recovery lock in EX mode                                       1                                                      
+
+150 linhas selecionadas.
+
+
+---------------------------------------------------------------------- 
+
+Parse Ratio usually falls between 1.15 and 1.45.  If it is higher, then
+it is usually a sign of poorly written Pro* programs or unoptimized
+SQL*Forms applications.
+
+Recursive Call Ratio will usually be between
+
+7.0 - 10.0 for tuned production systems
+10.0 - 14.5 for tuned development systems
+
+Buffer Hit Ratio is dependent upon RDBMS size, SGA size and
+the types of applications being processed.  This shows the %-age
+of logical reads from the SGA as opposed to total reads - the
+figure should be as high as possible.  The hit ratio can be raised
+by increasing DB_BUFFERS, which increases SGA size.  By turning on
+the "Virtual Buffer Manager" (db_block_lru_statistics = TRUE and
+db_block_lru_extended_statistics = TRUE in the init.ora parameters),
+you can determine how many extra hits you would get from memory as
+opposed to physical I/O from disk.  **NOTE:  Turning these on will
+impact performance.  One shift of statistics gathering should be enough
+to get the required information.
+
+
+Ratios for this Instance                                                                                                            
+                                                                                                                                    
+ Parse    Recsv                 Buffer            Rd/Wr       Blks per                                                              
+ Ratio    Cursr                  Ratio            Ratio        Full TS                                                              
+------   ------   --------------------   --------------   ------------                                                              
+   .00     8.40        896,087,078.278             26.2          3,535                                                              
+
+
+---------------------------------------------------------------- prompt This looks at overall i/o activity against individual
+files within a tablespace
+
+Look for a mismatch across disk drives in terms of I/O
+
+Also, examine the Blocks per Read Ratio for heavily accessed
+TSs - if this value is significantly above 1 then you may have
+full tablescans occurring (with multi-block I/O)
+
+If activity on the files is unbalanced, move files around to balance
+the load.  Should see an approximately even set of numbers across files
+
+
+                                                          Tablespace Report                                                         
+                                                                                                                                    
+                                          Physical  Physical      Read     Write                                                    
+DataFile Name                             Blk Read Blks Wrtn      Time      Time                                                    
+---------------------------------------- --------- --------- --------- ---------                                                    
+/dev/rdrd/drd10                            7650639     36238         0         0                                                    
+/dev/rdrd/drd11                              94053       735         0         0                                                    
+/dev/rdrd/drd12                             637215        95         0         0                                                    
+/dev/rdrd/drd17                            8503434     24767         0         0                                                    
+/dev/rdrd/drd2                              451668     19286         0         0                                                    
+/dev/rdrd/drd21                             450683       436         0         0                                                    
+/dev/rdrd/drd22                            8402326     27397         0         0                                                    
+/dev/rdrd/drd24                             566025   #######         0         0                                                    
+/dev/rdrd/drd25                               2401        27         0         0                                                    
+/dev/rdrd/drd26                           10131460     46663         0         0                                                    
+/dev/rdrd/drd3                                2929     86026         0         0                                                    
+/dev/rdrd/drd36                             862711     11034         0         0                                                    
+/dev/rdrd/drd37                              28221      1995         0         0                                                    
+/dev/rdrd/drd5                             1513587    169269         0         0                                                    
+/dev/rdrd/drd6                             2193165    179973         0         0                                                    
+/dev/rdrd/drd9                             6918983     27849         0         0                                                    
+
+16 linhas selecionadas.
+
+
+---------------------------------------------------------------- 
+GENERATING WAIT STATISTICS:
+
+This will show wait stats for certain kernel instances.  This
+may show the need for additional rbs, wait lists, db_buffers
+
+
+                                                  Wait Statistics for the Instance                                                  
+                                                                                                                                    
+Class Type         Times Waited Total Times                                                                                         
+------------------ ------------ -----------                                                                                         
+data block               82,691           0                                                                                         
+free list                     1           0                                                                                         
+segment header                3           0                                                                                         
+undo block                   50           0                                                                                         
+undo header                 280           0                                                                                         
+
+
+Look at the wait statistics generated above (if any). They will
+tell you where there is contention in the system.  There will
+usually be some contention in any system - but if the ratio of
+waits for a particular operation starts to rise, you may need to
+add additional resource, such as more database buffers, log buffers,
+or rollback segments
+
+---------------------------------------------------------------- 
+ROLLBACK STATISTICS:
+
+
+     Size in          Optimal       High Water     Num of     Num of            
+       Bytes             Size             Mark    Shrinks      Wraps            
+------------ ---------------- ---------------- ---------- ----------            
+      Num of     Average size                                                   
+     Extends   Active Extents                                                   
+------------ ----------------                                                   
+     827,392                           827,392          0          0            
+           0                0                                                   
+                                                                                
+  62,906,368                        62,906,368          0         16            
+           0        1,878,411                                                   
+                                                                                
+  67,100,672                        67,100,672          0         27            
+           0       14,121,512                                                   
+                                                                                
+  62,906,368                        62,906,368          0         55            
+           0        9,720,239                                                   
+                                                                                
+  62,906,368                        62,906,368          0         24            
+           0       10,661,408                                                   
+                                                                                
+  77,586,432                        77,586,432          0         11            
+           0        1,627,120                                                   
+                                                                                
+  62,906,368                        62,906,368          0          8            
+           0        1,194,394                                                   
+                                                                                
+ 123,723,776                       123,723,776          0         37            
+           0       30,373,562                                                   
+                                                                                
+  98,557,952                        98,557,952          0         13            
+           0        1,564,081                                                   
+                                                                                
+  62,906,368                        62,906,368          0         18            
+           0        2,329,734                                                   
+                                                                                
+ 320,856,064                       320,856,064          0         14            
+           0        1,617,388                                                   
+                                                                                
+ 159,375,360                       159,375,360          0         19            
+           0        2,977,613                                                   
+                                                                                
+  65,003,520                        65,003,520          0         15            
+           0        1,665,364                                                   
+                                                                                
+  62,906,368                        62,906,368          0         13            
+           0        1,963,103                                                   
+                                                                                
+  62,906,368                        62,906,368          0         12            
+           0        1,504,851                                                   
+                                                                                
+  78,635,008                        78,635,008          0          4            
+           0        1,803,026                                                   
+                                                                                
+ 159,375,360                       159,375,360          0          7            
+           0        1,094,088                                                   
+                                                                                
+
+17 linhas selecionadas.
+
+
+---------------------------------------------------------------- 
+
+                               Rollback Statistics                              
+                                                                                
+             Size in                                                            
+Extents        Bytes      XACTS      GETS      WAITS     WRITES                 
+------- ------------ ---------- --------- ---------- ----------                 
+     10      827,392          0       969          0       9436                 
+     30   62,906,368          1     42776          0   28956580                 
+     32   67,100,672          1     33405          0   48215232                 
+     30   62,906,368          0    146140          0  104848956                 
+     30   62,906,368          1     43555          2   43211992                 
+     37   77,586,432          1     44468          0   18638960                 
+     30   62,906,368          1     34388          0   14949554                 
+     59  123,723,776          1     43504          0   72708574                 
+     47   98,557,952          0     42082          0   22289494                 
+     30   62,906,368          1     55306          0   32066152                 
+    153  320,856,064          0     39313          0   24439546                 
+     76  159,375,360          1     52404          1   36994068                 
+     31   65,003,520          2     33773          0   26313926                 
+     30   62,906,368          1     37555          0   23372048                 
+     30   62,906,368          1     88104          0   20819344                 
+     15   78,635,008          2     52467          0   16060952                 
+     76  159,375,360          0     35547          2   13543404                 
+                                --------- ---------- ----------                 
+                                   825756          5  547438218                 
+
+17 linhas selecionadas.
+
+
+---------------------------------------------------------------- 
+
+SORT AREA SIZE VALUES:
+
+To make best use of sort memory, the initial extent of your Users
+sort-work Tablespace should be sufficient to hold at least one sort
+run from memory to reduce dynamic space allocation.  If you are getting
+a high ratio of disk sorts as opposed to memory sorts, setting
+sort_area_retained_size = 0 in init.ora will force the sort area to be
+released immediately after a sort finishes.
+
+
+INIT.ORA sort_area_size: 5000000                                                
+
+
+sorts (memory)                                  2,423,675                       
+sorts (disk)                                          150                       
+sorts (rows)                                1,132,932,797                       
+
+
+---------------------------------------------------------------- 
+
+This looks at Tablespace Sizing - Total bytes and free bytes
+
+
+                          Tablespace Sizing Information                         
+                                                                                
+TS Name                                Total Bytes          Free Bytes   Ext    
+------------------------------  ------------------  ------------------  ----    
+RBS1                                 2,086,666,240         495,968,256    23    
+RBS2                                 2,086,666,240       1,205,854,208    37    
+SYSTEM                               1,047,527,424         787,988,480     4    
+TEMP                                 4,141,875,200       3,714,048,000  ####    
+TOOLS                                2,097,152,000         682,557,440     2    
+TSD_FINAN                            4,194,304,000       2,463,498,240    49    
+TSD_FINAN                            5,190,451,200         294,584,320     1    
+TSD_INDICE                           4,141,875,200         505,610,240     2    
+TSD_INDICE                           6,291,456,000       1,540,358,144    55    
+TSD_PESSOAL2                         5,190,451,200         847,511,552     5    
+TSD_PESSOAL2                         6,186,598,400         964,624,384     1    
+TSD_SELO                             4,194,304,000       3,131,047,936     7    
+TSI_SELO                             6,239,027,200         141,230,080    13    
+                                ------------------  ------------------          
+sum                                 53,088,354,304      16,774,881,280          
+
+13 linhas selecionadas.
+
+
+A large number of Free Chunks indicates that the tablespace may need
+to be defragmented and compressed.
+
+---------------------------------------------------------------- 
+
+Total Physical Reads          896,167,245                                       
+
+
+If you can significantly reduce physical reads by adding incremental
+data buffers...do it.  To determine whether adding data buffers will
+help, set db_block_lru_statistics = TRUE and
+db_block_lru_extended_statistics = TRUE in the init.ora parameters.
+You can determine how many extra hits you would get from memory as
+opposed to physical I/O from disk.  **NOTE:  Turning these on will
+impact performance.  One shift of statistics gathering should be enough
+to get the required information.
+
+
+---------------------------------------------------------------- prompt CHECKING FOR FRAGMENTED DATABASE OBJECTS:
+
+Fragmentation report - If number of extents is approaching Maxextents,
+it is time to defragment the table.
+
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: DISCOVERER                                                             
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+EUL$EXPRESSION_DEPENDENCIES     TABLE               393,216   2147483645     6  
+EUL$IG_EXP_LINKS                TABLE               327,680   2147483645     5  
+EUL$KEY_CONSTRAINTS             TABLE               393,216   2147483645     6  
+EUL$OBJS                        TABLE               720,896   2147483645    11  
+EUL$OG_OBJ_LINKS                TABLE               327,680   2147483645     5  
+EUL$PLAN_TABLE                  TABLE               589,824   2147483645     9  
+EUL$QPP_ITEM_STATISTICS         TABLE             4,194,304   2147483645     4  
+EUL$QPP_STATISTICS              TABLE               983,040   2147483645    15  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: DISCOVERER4I                                                           
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+EUL_EXPRESSIONS                 TABLE               720,896   2147483645    11  
+EUL4_DOCUMENTS                  TABLE               393,216   2147483645     6  
+EUL4_DOMAINS                    TABLE               458,752   2147483645     7  
+EUL4_EXPRESSIONS                TABLE             2,097,152   2147483645    17  
+EUL4_QPP_STATS                  TABLE             2,097,152   2147483645    17  
+EUL4_SEGMENTS                   TABLE               393,216   2147483645     6  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: HELPDESK                                                               
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+LOG_ALTERASENHA                 TABLE               393,216   2147483645     6  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRAGENDA                                                              
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+CONCESSIONARIAS                 TABLE             4,194,304   2147483645    19  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRBACKUP                                                              
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ARQUIVO_CREDITO_BANCARIO        TABLE            33,554,432   2147483645    32  
+ARQUIVO_CREDITO_BANCARIO_PENS   TABLE             2,097,152   2147483645    32  
+ITEM_PROPOSTA_ORC_SIMULADA      TABLE         2,283,798,528   2147483645   344  
+LOG_FOLHA                       TABLE            16,777,216   2147483645    16  
+LOG_MOVIMENTACAO                TABLE           117,440,512   2147483645   142  
+LOG_OCORRENCIAS_EMPREGADOS      TABLE         4,311,744,512   2147483645   262  
+OCORRENCIAS_EMPREGADOS          TABLE         3,032,481,792   2147483645   244  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRBANCO                                                               
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ANALYZ_TABELAS                  TABLE            12,582,912   2147483645    12  
+PLAN_TABLE                      TABLE               393,216   2147483645     6  
+TABELAS                         TABLE            10,485,760   2147483645    10  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRDBA2                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ACOMP_SITUACAO_BEM_PATRIM       TABLE             5,242,880   2147483645     5  
+AGENCIAINF                      TABLE               983,040   2147483645    15  
+AREA_ATENDIDA                   TABLE               458,752   2147483645     7  
+ATA_LICITACAO                   TABLE               786,432   2147483645    12  
+ATO_ADMINISTRATIVO              TABLE               720,896   2147483645    11  
+AUX_EVENT_SIMBEP                TABLE             4,194,304   2147483645     4  
+BAIXA_BEM_PATRIMONIAL           TABLE             8,388,608   2147483645     8  
+BALANCETE_MENSAL_ALMOXARIFADO   TABLE               786,432   2147483645    12  
+BEM_PATRIMONIAL                 TABLE            62,914,560   2147483645    60  
+BEM_PATRIMONIAL_TEMP            TABLE             5,242,880   2147483645     5  
+CARAC_MAT_ITEM_GENERICO         TABLE             6,291,456   2147483645     6  
+CENTRO_CUSTO                    TABLE               327,680   2147483645     5  
+COMISSAO_LICITACAO              TABLE               720,896   2147483645    11  
+CONTA_CONTABIL                  TABLE               851,968   2147483645    13  
+CONTA_PATRIMONIAL_DEPENDENCIA   TABLE               327,680   2147483645     5  
+DEMONSTRA_TARIFACAO             TABLE             4,194,304   2147483645     4  
+DET_ADICAO_EXCL_FA_CH_CONTABIL  TABLE             2,097,152   2147483645    17  
+DETALHE_ADICAO_EXCLUSAO_FA      TABLE               327,680   2147483645     5  
+DETALHE_DEPREC_REMUN            TABLE            14,680,064   2147483645    14  
+DETALHE_ESTRUTURA               TABLE               262,144   2147483645     4  
+DIVULGACAO_LICITACAO            TABLE             2,097,152   2147483645    17  
+DOCUMENTOS_PROCESSO             TABLE             2,097,152   2147483645    17  
+ENTRADA_ESTOQUE                 TABLE            11,534,336   2147483645    11  
+EVENTO_DO_PROCESSO              TABLE            17,825,792   2147483645    17  
+EXCLUSAO_BEM_PATRIMONIAL        TABLE               655,360   2147483645    10  
+FABRICANTE                      TABLE               393,216   2147483645     6  
+FATOR_PREVISAO                  TABLE            55,574,528   2147483645    53  
+FERIADO                         TABLE               655,360   2147483645    10  
+FORNECEDOR                      TABLE            10,485,760   2147483645    10  
+FORNECEDOR_DEPENDENCIA          TABLE             2,097,152   2147483645    17  
+HISTORICO_CENTRO_CUSTOS         TABLE             2,097,152   2147483645    17  
+HISTORICO_DEPENDENCIAS          TABLE               393,216   2147483645     6  
+INCIDENCIA_CENTRO_CUSTO         TABLE            10,485,760   2147483645    10  
+INCIDENCIA_CENTRO_CUSTO_DEP     TABLE               720,896   2147483645    11  
+INTERFACE_SPV                   TABLE               589,824   2147483645     9  
+INVENTARIO                      TABLE           143,654,912   2147483645    60  
+ITEM_DA_TRANSFERENCIA           TABLE             4,194,304   2147483645     4  
+ITEM_DO_SISTEMA                 TABLE             2,097,152   2147483645    17  
+ITEM_ENTRADA_ESTOQUE            TABLE            11,534,336   2147483645    11  
+ITEM_GENERICO                   TABLE           823,132,160   2147483645   141  
+ITEM_GENERICO_SUBSTITUIDO       TABLE               917,504   2147483645    14  
+ITEM_INEDITO                    TABLE             2,097,152   2147483645    17  
+ITEM_POR_DEPENDENCIA            TABLE            23,068,672   2147483645    22  
+ITEM_PROPOSTA_LICITACAO         TABLE            42,991,616   2147483645    41  
+ITEM_REQUISICAO                 TABLE           100,663,296   2147483645    68  
+ITEM_SAIDA_ESTOQUE              TABLE            60,817,408   2147483645    58  
+LANCAMENTO_CONTABIL_MATERIAL    TABLE           118,489,088   2147483645    57  
+LOG_AUX_EVENT_SIMBEP            TABLE             6,291,456   2147483645     6  
+LOG_ITEM_INEDITO                TABLE            25,165,824   2147483645    24  
+LOG_ITEM_REQUISICAO             TABLE             7,340,032   2147483645     7  
+LOG_ORDEM_SERVICO               TABLE             3,145,728   2147483645    18  
+LOG_SEG_USUARIO_SISTEMA         TABLE             1,048,576   2147483645    16  
+LOTE_ESTOQUE                    TABLE            22,020,096   2147483645    21  
+LOTE_REQUISICOES_COMPRAS        TABLE             5,242,880   2147483645     5  
+MATERIAL_CENTRO_CUSTO           TABLE               720,896   2147483645    11  
+MEMBRO_COMISSAO_LICITACAO       TABLE             1,048,576   2147483645    16  
+MUNICIPIOS                      TABLE               262,144   2147483645     4  
+ORDEM_SERVICO                   TABLE            47,185,920   2147483645    45  
+PARTICIPANTE_DE_LICITACAO       TABLE            10,485,760   2147483645    10  
+PART_NUMBER                     TABLE               786,432   2147483645    12  
+PROCESSO_LICITATORIO            TABLE            14,680,064   2147483645    14  
+RECURSO_LICITATORIO             TABLE               589,824   2147483645     9  
+REQUISICAO_COMPRA_ITEM          TABLE            45,088,768   2147483645    43  
+REQUISICOES_COMPRAS_DO_LOTE     TABLE             9,437,184   2147483645     9  
+SAIDA_ESTOQUE                   TABLE            47,185,920   2147483645    45  
+SEG_GRUPO_USUARIO               TABLE               262,144   2147483645     4  
+SEG_LOG_USUARIO                 TABLE             2,097,152   2147483645    17  
+SEG_LOG_USUARIO_DEPENDENCIA     TABLE            10,485,760   2147483645    10  
+SEG_LOG_USUARIO_SISTEMA         TABLE             2,097,152   2147483645    17  
+SEG_USUARIO                     TABLE             2,097,152   2147483645    17  
+SEG_USUARIO_CENTRO_CUSTO        TABLE             2,097,152   2147483645    17  
+SEG_USUARIO_SISTEMA             TABLE             2,097,152   2147483645    17  
+SICAF                           TABLE            22,020,096   2147483645    21  
+SIT_ANUAL_CONTA_PATRIM_EXE_ANT  TABLE               786,432   2147483645    12  
+SIT_MENSAL_BEM_PATRIMONIAL      TABLE           353,370,112   2147483645    85  
+SIT_MENSAL_CONTA_PATRIMONIAL    TABLE            32,505,856   2147483645    31  
+SMS                             TABLE            24,117,248   2147483645    23  
+SS_BEM_PATRIMONIAL              TABLE             5,242,880   2147483645     5  
+TIPO_MATERIAL_DO_FORNECEDOR     TABLE               327,680   2147483645     5  
+TIPO_MATERIAL_FORNECIMENTO      TABLE             1,048,576   2147483645    16  
+TRANSFER_BEM_PATRIMONIAL        TABLE            61,865,984   2147483645    59  
+TRANSFERENCIA_ITENS             TABLE             2,097,152   2147483645    17  
+UNIDADES_ORGANIZACIONAIS        TABLE             2,097,152   2147483645    17  
+USUARIO_TESOURARIA              TABLE               327,680   2147483645     5  
+VALOR_CARAC_BEM_PATRIMONIAL     TABLE            57,671,680   2147483645    55  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRHUMANUS                                                             
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+LOG_TRN_EVENTO                  TABLE             4,194,304   2147483645    19  
+LOG_TRN_EVENTO_INSTRUTOR        TABLE               655,360   2147483645    10  
+LOG_TRN_EVENTO_PARTICIP         TABLE            50,331,648   2147483645    63  
+TRN_AVALREACAO_INDIV            TABLE               262,144   2147483645     4  
+TRN_CURSO                       TABLE               458,752   2147483645     7  
+TRN_CURSO_CURRICULO             TABLE             3,145,728   2147483645    18  
+TRN_CUSTO_EVENTO                TABLE               589,824   2147483645     9  
+TRN_EVENTO                      TABLE               655,360   2147483645    10  
+TRN_EVENTO_DATA                 TABLE               458,752   2147483645     7  
+TRN_EVENTO_PARTICIP             TABLE             3,145,728   2147483645    18  
+TRN_PESSOA                      TABLE             2,097,152   2147483645    17  
+TRN_VAGAS_DEPENDENCIA           TABLE               262,144   2147483645     4  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRSELO                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+CIA_AEREA                       TABLE               458,752   2147483645     7  
+DISCREPANCIAS_SELOS             TABLE            27,262,976   2147483645    26  
+HST_LEITURA_SELOS               TABLE         1,544,552,448   2147483645   178  
+HST_LEITURA_SELOS_OLD           TABLE           806,354,944   2147483645   139  
+LOG_HST_LEITURA_SELOS           TABLE           117,440,512   2147483645    85  
+RECIBO_TARIFAS_EMBARQUE         TABLE         1,410,334,720   2147483645   176  
+RECIBO_TARIFAS_EMBARQUE_OLD     TABLE           730,857,472   2147483645   130  
+RSTE_TARIFAS_EMBARQUE           TABLE             7,340,032   2147483645     7  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRSGP                                                                 
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+T_ANALISE                       TABLE               327,680   2147483645     5  
+T_ENTRADAS                      TABLE               655,360   2147483645    10  
+T_INSPECOES                     TABLE             2,097,152   2147483645    17  
+T_SAIDAS                        TABLE               655,360   2147483645    10  
+T_SECOES                        TABLE               262,144   2147483645     4  
+T_UAS                           TABLE               589,824   2147483645     9  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRSICOF                                                               
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+DESPESAS_ORCAMENTO              TABLE            75,497,472   2147483645    65  
+ELEMENTO_SMART                  TABLE               458,752   2147483645     7  
+ITEM_PROPOSTA_ORC_SIMULADA      TABLE         2,552,233,984   2147483645   348  
+LOG_ITENS_PROPOSTAS_ORCAMENTOS  TABLE         1,486,880,768   2147483645   122  
+MOVIMENTO_OPERACIONAL           TABLE               524,288   2147483645     8  
+ORC_CONSOL_ANA_CONTA            TABLE               458,752   2147483645     7  
+PROJECAO_RECEITA_SIMULADA       TABLE            13,631,488   2147483645    13  
+RECEITAS_ORCAMENTO              TABLE               458,752   2147483645     7  
+RELAT_CC_SELECIONADOS           TABLE            12,582,912   2147483645    12  
+RELAT_COLUNA_ANUAL              TABLE             2,097,152   2147483645    17  
+RELAT_DEP_SELECIONADAS          TABLE             4,194,304   2147483645     4  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRSRH2                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ADICIONAL_13_FERIAS             TABLE            50,331,648   2147483645    63  
+AMB                             TABLE             2,097,152   2147483645    17  
+A_PROCEDIMENTOS_ODONTOLOGICOS   TABLE               983,040   2147483645    15  
+APROVADOR_VIAGEM                TABLE               262,144   2147483645     4  
+APROVADOR_VIAGEM_TIPO           TABLE               327,680   2147483645     5  
+AREAS_ATUACAO_UNID_ORGANIZ      TABLE               524,288   2147483645     8  
+ARQUIVO_CREDITO_BANCARIO        TABLE            39,845,888   2147483645    38  
+ARQUIVO_CREDITO_BANCARIO_PENS   TABLE             4,194,304   2147483645    34  
+ASSINFRA_MOVIMENTACAO           TABLE               262,144   2147483645     4  
+ATIVIDADES                      TABLE             1,441,792   2147483645    22  
+ATIVIDADES_EMPREGADOS           TABLE             2,097,152   2147483645    17  
+AUTORIZACOES_ESPECIAIS          TABLE               393,216   2147483645     6  
+AUTORIZACOES_ITENS_MEDICOS      TABLE               851,968   2147483645    13  
+AUTORIZACOES_SERVICOS_MEDICOS   TABLE               786,432   2147483645    12  
+AUTORIZACOES_TRATAMENTOS_ODONT  TABLE            12,582,912   2147483645    12  
+AVERBACAO_TSERVICO              TABLE               327,680   2147483645     5  
+BENEFICIARIOS_SEGUROS           TABLE             2,097,152   2147483645    17  
+CADASTROS                       TABLE            11,534,336   2147483645    26  
+CADASTROS_TMP                   TABLE             8,388,608   2147483645    23  
+CARGOS                          TABLE               262,144   2147483645     4  
+CARGOS_CONFIANCA                TABLE               327,680   2147483645     5  
+CATEGORIAS_TRANSPORTE           TABLE               786,432   2147483645    12  
+CBO                             TABLE               458,752   2147483645     7  
+CONCURSADOS_APROVADOS           TABLE             4,194,304   2147483645     4  
+CONTROLE_USUARIO_DEPENDENCIA    TABLE             4,194,304   2147483645     4  
+CONTROLE_USUARIOS_FUNCOES       TABLE            13,631,488   2147483645    13  
+CONTROLE_USUARIOS_OCORRENCIAS   TABLE             7,340,032   2147483645     7  
+CORPO_CLINICO                   TABLE             2,097,152   2147483645    17  
+CORPO_CLINICO_ESPECIALIDADES    TABLE               983,040   2147483645    15  
+CREDENCIADOS_BENEFICIOS         TABLE               720,896   2147483645    11  
+CREDENCIADOS_CONTRATOS          TABLE             2,097,152   2147483645    17  
+CREDENCIADOS_DEPENDENCIAS       TABLE               851,968   2147483645    13  
+CREDENCIADOS_ESPECIALIDADES     TABLE               720,896   2147483645    11  
+CREDENC_INSS_OUTROS_RECOLHIM    TABLE               327,680   2147483645     5  
+CRONOGRAMAS_PAGAMENTOS          TABLE             4,194,304   2147483645     4  
+CTRL_FUN_ATIVIDADES_EMPREGADOS  TABLE               262,144   2147483645     4  
+DATAPREV_REEMBOLSO              TABLE               458,752   2147483645     7  
+DATAPREV_REEMBOLSO_RUBRICAS     TABLE               917,504   2147483645    14  
+DATAPREV_REEMBOLSO_RUBRICAS_TE  TABLE               851,968   2147483645    13  
+DATAPREV_REEMBOLSO_TEMP         TABLE               458,752   2147483645     7  
+DESPESAS_MEDICAS_HOSPITALARES   TABLE               524,288   2147483645     8  
+DIVERSOS_MEDICAS_HOSPIT         TABLE             4,194,304   2147483645     4  
+DOCUMENTACAO_CONTRATUAL         TABLE             2,097,152   2147483645    17  
+DOCUMENTOS_COBRANCA             TABLE            11,534,336   2147483645    26  
+EFETIVO_INFRAERO                TABLE               786,432   2147483645    12  
+EMISSAO_PROGRAMACOES_FERIAS     TABLE             1,048,576   2147483645    16  
+EMP_ARSA                        TABLE               458,752   2147483645     7  
+EMP_CCT                         TABLE               524,288   2147483645     8  
+EMP_CONVERSAO2                  TABLE               851,968   2147483645    13  
+EMP_COR_RACA                    TABLE               327,680   2147483645     5  
+EMPREGADO_FONE_COMERCIAL        TABLE               458,752   2147483645     7  
+EMPREGADOS_BENEFICIOS           TABLE             4,194,304   2147483645     4  
+EMPREGADOS_CATEGORIAS           TABLE             2,097,152   2147483645    17  
+EMPREGADOS_FERIAS_13            TABLE             5,242,880   2147483645    20  
+EMPREGADOS_FORMACOES            TABLE               917,504   2147483645    14  
+EMPREGADOS_PAGAMENTOS           TABLE           176,160,768   2147483645    77  
+EMPREGADOS_PARTICIPACAO_LUCROS  TABLE            12,582,912   2147483645    12  
+EMPRESTIMOS_CONSIGNADOS         TABLE               393,216   2147483645     6  
+ESPECIALIDADES                  TABLE               786,432   2147483645    12  
+ESPECIFICACAO_CID               TABLE               720,896   2147483645    11  
+ESPELHO_EMPREGADOS              TABLE               262,144   2147483645     4  
+EVENTO_FOLHA                    TABLE            45,088,768   2147483645    58  
+EVENTOS_EXCECAO_INFRAPREV       TABLE             6,291,456   2147483645    21  
+EXAMES_OBRIGATORIOS             TABLE             1,048,576   2147483645    16  
+FORMACOES_ESPEC_EMPREGADO       TABLE               393,216   2147483645     6  
+GRH_HST_DIRF                    TABLE             5,242,880   2147483645    20  
+GUIAS                           TABLE            65,011,712   2147483645    62  
+GUIAS_PROCEDIMENTOS             TABLE           117,440,512   2147483645    70  
+HIERARQUIA_AGENDA               TABLE               262,144   2147483645     4  
+HIST_DETALHE_DEV_ANS            TABLE             2,097,152   2147483645    17  
+HISTORICO_ANS                   TABLE            10,485,760   2147483645    25  
+HISTORICO_CARGOS_LOTACAO        TABLE               851,968   2147483645    13  
+HISTORICO_EVENTO_FOLHA          TABLE            14,680,064   2147483645    29  
+HISTORICO_LOG_MOVIMENTACAO      TABLE         1,678,770,176   2147483645   180  
+HISTORICO_MOVIMENTACAO          TABLE           747,634,688   2147483645   132  
+HISTORICO_NIVEIS_SALARIAIS      TABLE               655,360   2147483645    10  
+HISTORICOS_FUNCOES_LOTACOES     TABLE               655,360   2147483645    10  
+HIST_PERICUL_INSALUB            TABLE               917,504   2147483645    14  
+HONORARIOS_MEDICOS              TABLE             2,097,152   2147483645    17  
+HORARIOS_FREQUENCIA             TABLE             2,097,152   2147483645    17  
+HST_DEPENDENCIA_EMPREGADO       TABLE            20,971,520   2147483645    20  
+INCIDENCIAS_RUBRICAS            TABLE               262,144   2147483645     4  
+INDICE_ABSENTEISMO              TABLE             8,388,608   2147483645     8  
+INTERFACE_ERROS_PLANO_SAUDE     TABLE             2,097,152   2147483645    17  
+INTERNACAO                      TABLE             2,097,152   2147483645    17  
+LOG_AUDIT_DOCUMENTOS_COBRANCA   TABLE            28,311,552   2147483645    27  
+LOG_CADASTROS                   TABLE            83,886,080   2147483645    81  
+LOG_CONTROLE_USUARIO_DEPEND     TABLE             6,291,456   2147483645     6  
+LOG_CRONOGRAMAS_PAGAMENTOS      TABLE             6,291,456   2147483645     6  
+LOG_EMPREGADOS_BENEFICIOS       TABLE             5,242,880   2147483645    20  
+LOG_EMPREGADOS_PAGAMENTOS       TABLE           310,378,496   2147483645   108  
+LOG_MOVIMENTACAO                TABLE           729,808,896   2147483645   234  
+LOG_OCORRENCIAS_EMPREGADOS      TABLE         4,311,744,512   2147483645   262  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRSRH2                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+LOG_OCORRENCIAS_FREQUENCIA_EMP  TABLE            92,274,688   2147483645    82  
+LOG_PROGRAMACOES_FERIAS         TABLE             7,340,032   2147483645    22  
+LPM                             TABLE               720,896   2147483645    11  
+MATRICULA_DISPONIVEL_CADASTRO   TABLE             2,097,152   2147483645    17  
+MEDIAS_CATEGORIAS_TRANSPORTES   TABLE               262,144   2147483645     4  
+MOVIMENTACAO                    TABLE         1,409,286,144   2147483645   204  
+MOVIMENTACAO_AUTONOMO_COOPERAT  TABLE               851,968   2147483645    13  
+OCORRENCIAS_EMPREGADOS          TABLE         3,103,784,960   2147483645   244  
+OCORRENCIAS_EMPREGADOS_TEMP     TABLE            69,206,016   2147483645    52  
+OCORRENCIAS_FREQUENCIA_EMP      TABLE         2,079,326,208   2147483645   131  
+OCORRENCIAS_PIS_PASEP_EMP       TABLE             8,388,608   2147483645     8  
+OCORRENCIAS_RECEB_TICKETS       TABLE            75,497,472   2147483645    65  
+OCORRENCIAS_RECEB_VALES         TABLE            75,497,472   2147483645    65  
+PAGAMENTO_CALCULADO_FINAL       TABLE           504,365,056   2147483645   103  
+PAGAMENTO_CALCULADO_2110        TABLE           588,251,136   2147483645   113  
+PAGAMENTO_TEMP                  TABLE             2,097,152   2147483645    17  
+PARAMETROS_FUNCOES              TABLE               458,752   2147483645     7  
+PEDIDOS_COBRANCAS               TABLE             4,194,304   2147483645    19  
+PEDIDOS_TICKETS                 TABLE             3,145,728   2147483645    18  
+PENSIONISTAS                    TABLE               917,504   2147483645    14  
+PESSOAS_VINCULADAS              TABLE             7,340,032   2147483645     7  
+PESSOAS_VINCULADAS_BENEF        TABLE             5,242,880   2147483645     5  
+POSICAO_EMPREGADO_PAGAMENTO     TABLE            94,371,840   2147483645    55  
+PREMIO_SEGURO                   TABLE            20,971,520   2147483645    20  
+PROCEDIMENTOS_ODONTOLOGICOS     TABLE             8,388,608   2147483645     8  
+PROGRAMACOES_FERIAS             TABLE            25,165,824   2147483645    24  
+PROJECAO_MOVIMENTO_PAGAMENTO    TABLE               262,144   2147483645     4  
+PROVISIONAMENTO                 TABLE            49,283,072   2147483645    62  
+PROVISOES_EMPREGADOS            TABLE            34,603,008   2147483645    33  
+QUADRO_CARGOS_DEPENDENCIAS      TABLE               917,504   2147483645    14  
+QUADRO_FUNCOES                  TABLE               851,968   2147483645    13  
+QUADROS_FUNCOES_DEPENDENCIAS    TABLE               524,288   2147483645     8  
+REEMBOLSOS                      TABLE             8,388,608   2147483645     8  
+REG_PAGAMENTO_CALCULADO_2110    TABLE           385,875,968   2147483645   117  
+REG_POSICAO_EMP_PAGAMENTO       TABLE           125,829,120   2147483645    86  
+REG_REMUNERACAO_FINAL           TABLE           109,051,904   2147483645    84  
+REMUNERACAO_FINAL               TABLE           126,877,696   2147483645    58  
+REMUNERACAO_2110                TABLE           126,877,696   2147483645    58  
+RESUMO_ENCARGOS_FGTS            TABLE            13,631,488   2147483645    28  
+RESUMO_ENCARGOS_INFRAPREV       TABLE            25,165,824   2147483645    24  
+RESUMO_ENCARGOS_INSS            TABLE            20,971,520   2147483645    20  
+RESUMO_ENCARGOS_INSS_AUTONOMO   TABLE             2,097,152   2147483645    17  
+RESUMO_ENCARGOS_IRRF            TABLE            13,631,488   2147483645    13  
+RESUMO_ENCARGOS_SAL_EDUCACAO    TABLE            13,631,488   2147483645    13  
+RUBRICAS                        TABLE               262,144   2147483645     4  
+RUBRICA_TEMP                    TABLE             6,291,456   2147483645    21  
+SIAD_ATRIBUICAO_CONCEITOS       TABLE             4,194,304   2147483645     4  
+SPF_EMPREGADO_NAO_PROMOVIDO     TABLE            11,534,336   2147483645    11  
+SPF_EMPREGADO_NAO_PROMOVIDO_2   TABLE               458,752   2147483645     7  
+TAB_AUXILIAR                    TABLE             7,340,032   2147483645     7  
+TAB_DESPESA_MEDICAMENTOS        TABLE            10,485,760   2147483645    10  
+TAB_DOC_COBRANCA                TABLE             2,097,152   2147483645    17  
+TAB_HIST_CONF_ANS               TABLE             6,291,456   2147483645    21  
+TAB_IRRF_2110                   TABLE            10,485,760   2147483645    10  
+TAB_MSG_CONTRACHEQUE_EMPREGADO  TABLE               720,896   2147483645    11  
+TAB_PARTICIPACAO_BENEFICIO      TABLE            12,582,912   2147483645    27  
+TEMP_INCIDENCIAS_RUBRICAS       TABLE               589,824   2147483645     9  
+TEMP_MOVIMENTACAO               TABLE             9,437,184   2147483645     9  
+TEMP_PROGRAMACOES_FERIAS        TABLE               786,432   2147483645    12  
+TMP_ABSENTEISMO                 TABLE               983,040   2147483645    15  
+TMP_APROFOPENC                  TABLE             2,097,152   2147483645    17  
+TMP_CADASTROS                   TABLE               262,144   2147483645     4  
+TMP_CARGO_EMP                   TABLE             5,242,880   2147483645    20  
+TMP_CATEG_PADRAO_EMPREGADO      TABLE             4,194,304   2147483645    19  
+TMP_CONTABILIDADE_RELATORIOS    TABLE            20,971,520   2147483645    20  
+TMP_CONTRACHEQUE_EMP            TABLE             5,242,880   2147483645     5  
+TMP_DEMONSTRA_PA                TABLE               655,360   2147483645    10  
+TMP_DEPENDENCIA_EMPREGADO       TABLE             7,340,032   2147483645     7  
+TMP_DIVERSOS_MEDICAS_HOSPIT     TABLE               983,040   2147483645    15  
+TMP_DOCUMENTOS_COBRANCA         TABLE               655,360   2147483645    10  
+TMP_EMPREGADOS                  TABLE               589,824   2147483645     9  
+TMP_FERIAS_A_VENCER             TABLE               262,144   2147483645     4  
+TMP_FOLHA_EMPREGADOS            TABLE            39,845,888   2147483645    38  
+TMP_GUIAS                       TABLE             8,388,608   2147483645    23  
+TMP_GUIAS_PROCEDIMENTOS         TABLE            11,534,336   2147483645    26  
+TMP_HONORARIOS_MEDICOS          TABLE               655,360   2147483645    10  
+TMP_INTERNACAO                  TABLE             2,097,152   2147483645    17  
+TMP_NIVEL_PADRAO                TABLE             8,388,608   2147483645    23  
+TMP_OCUP_ATUA_EMPREGADO         TABLE               851,968   2147483645    13  
+TMP_REG_EMPREGADO               TABLE               393,216   2147483645     6  
+TMP_SALARIOS_CONTRIBUICOES      TABLE               589,824   2147483645     9  
+TMP_TAB_DESPESA_MEDICAMENTOS    TABLE               917,504   2147483645    14  
+TMP_VIAGEM                      TABLE            17,825,792   2147483645    32  
+USUARIOS_LINHAS_TRANSPORTES     TABLE               327,680   2147483645     5  
+USUARIOS_PLANOS_SAUDE           TABLE             1,048,576   2147483645    16  
+VINCULADO_UNIVERSITARIOS        TABLE               917,504   2147483645    14  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: IFRVGA                                                                 
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+LOGIN_SEG                       TABLE               262,144   2147483645     4  
+OCORRENCIA_SGS                  TABLE               458,752   2147483645     7  
+PROCEDIMENTO_SNSTRO_SGS         TABLE               262,144   2147483645     4  
+SEGURADO_SGS                    TABLE               327,680   2147483645     5  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: MONIT                                                                  
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+TABMONITIO                      TABLE             6,291,456   2147483645     6  
+TABMONITPERF                    TABLE             5,242,880   2147483645     5  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: PERFSTAT                                                               
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+STATS$BG_EVENT_SUMMARY          TABLE             9,437,184   2147483645    24  
+STATS$BUFFER_POOL_STATISTICS    TABLE             1,048,576   2147483645    16  
+STATS$ENQUEUESTAT               TABLE             4,194,304   2147483645    19  
+STATS$FILESTATXS                TABLE             5,242,880   2147483645    20  
+STATS$LATCH                     TABLE            41,943,040   2147483645    55  
+STATS$LATCH_CHILDREN            TABLE             1,048,576   2147483645    16  
+STATS$LATCH_MISSES_SUMMARY      TABLE            61,865,984   2147483645    74  
+STATS$LATCH_PARENT              TABLE             1,048,576   2147483645    16  
+STATS$LIBRARYCACHE              TABLE             2,097,152   2147483645    17  
+STATS$PARAMETER                 TABLE            44,040,192   2147483645    57  
+STATS$ROLLSTAT                  TABLE             5,242,880   2147483645    20  
+STATS$ROWCACHE_SUMMARY          TABLE             7,340,032   2147483645    22  
+STATS$SESSION_EVENT             TABLE             1,048,576   2147483645    16  
+STATS$SESSTAT                   TABLE             1,048,576   2147483645    16  
+STATS$SGA                       TABLE             1,048,576   2147483645    16  
+STATS$SGASTAT                   TABLE             7,340,032   2147483645    22  
+STATS$SNAPSHOT                  TABLE             1,048,576   2147483645    16  
+STATS$SQL_STATISTICS            TABLE             1,048,576   2147483645    16  
+STATS$SQL_SUMMARY               TABLE           335,544,320   2147483645   111  
+STATS$SQLTEXT                   TABLE           159,383,552   2147483645    75  
+STATS$SYSSTAT                   TABLE            48,234,496   2147483645    61  
+STATS$SYSTEM_EVENT              TABLE            15,728,640   2147483645    30  
+STATS$TEMPSTATXS                TABLE             1,048,576   2147483645    16  
+STATS$WAITSTAT                  TABLE             2,097,152   2147483645    17  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: SST                                                                    
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ACIDENTE_EMP                    TABLE               524,288   2147483645     8  
+SST_ABSENTEISMO                 TABLE            39,845,888   2147483645    53  
+SST_EPI_DETALHE                 TABLE               720,896   2147483645    11  
+SST_INSPECAO                    TABLE               393,216   2147483645     6  
+SST_LOG                         TABLE               524,288   2147483645     8  
+SST_LOG_ITEM                    TABLE             3,145,728   2147483645    18  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: SST_AUDIO                                                              
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+AUDIOMETRIA                     TABLE               524,288   2147483645     8  
+CARGOS                          TABLE               262,144   2147483645     4  
+CRITERIO_AUDIO                  TABLE            13,631,488   2147483645    28  
+FUNCIONARIOS                    TABLE             7,340,032   2147483645    22  
+HIST_CARGO                      TABLE             2,097,152   2147483645    17  
+HIST_LOTA                       TABLE             2,097,152   2147483645    17  
+HIST_SETOR                      TABLE             2,097,152   2147483645    17  
+MEDICOES_AUDIO                  TABLE             2,097,152   2147483645    17  
+SETORES                         TABLE               458,752   2147483645     7  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: SYS                                                                    
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ACCESS$                         TABLE             1,048,576   2147483645     9  
+ARGUMENT$                       TABLE             2,891,776   2147483645    23  
+COM$                            TABLE               786,432   2147483645     7  
+CON$                            TABLE               819,200          505     8  
+DEPENDENCY$                     TABLE             1,187,840   2147483645    10  
+HIST_HEAD$                      TABLE             2,572,288          505    11  
+IDL_CHAR$                       TABLE             2,637,824   2147483645    21  
+IDL_SB4$                        TABLE             5,251,072   2147483645    41  
+IDL_UB1$                        TABLE            19,931,136   2147483645   153  
+IDL_UB2$                        TABLE            26,075,136   2147483645   200  
+JAVASNM$                        TABLE               868,352          505     8  
+OBJ$                            TABLE             2,359,296   2147483645    19  
+OBJAUTH$                        TABLE            11,984,896          505    15  
+SOURCE$                         TABLE            55,271,424   2147483645   212  
+SYN$                            TABLE               819,200          505     8  
+SYSAUTH$                        TABLE               606,208          505     7  
+TRIGGER$                        TABLE             1,785,856          505    10  
+TRIGGERCOL$                     TABLE               212,992          505     4  
+VIEW$                           TABLE             2,056,192   2147483645    17  
+
+                           Table Fragmentation Report                           
+                                                                                
+creator: SYSMAN                                                                 
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+TABELAS2                        TABLE               327,680   2147483645     5  
+
+392 linhas selecionadas.
+
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: DISCOVERER                                                             
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ED_ED1_UK                       INDEX               327,680   2147483645     5  
+EUL$CO1_I                       INDEX               524,288   2147483645     8  
+EUL$ITE_OBJ_FK_I                INDEX               327,680   2147483645     5  
+EUL$KEY1_I                      INDEX               262,144   2147483645     4  
+EUL$PD_EXP_FK_I                 INDEX               262,144   2147483645     4  
+EUL$PED_EXP_FK_I                INDEX               262,144   2147483645     4  
+EUL$QS1_I                       INDEX               589,824   2147483645     9  
+EUL$QS2_I                       INDEX               655,360   2147483645    10  
+EXP_PK                          INDEX               524,288   2147483645     8  
+QIS_PK                          INDEX             4,194,304   2147483645     4  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: DISCOVERER4I                                                           
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+EUL_EXP_EXP1_UK                 INDEX               262,144   2147483645     4  
+EUL4_CO1_I                      INDEX               327,680   2147483645     5  
+EUL4_EXP_UK_1                   INDEX               524,288   2147483645     8  
+EUL4_EXP_UK_2                   INDEX               458,752   2147483645     7  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRBACKUP                                                              
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ACB_PK                          INDEX            18,874,368   2147483645    18  
+ACP_PK                          INDEX             1,310,720   2147483645    20  
+I_P_O_S_CC1_NR_CONTA            INDEX           169,869,312   2147483645   106  
+IPS_PK                          INDEX           186,646,528   2147483645   108  
+LMV_AMVERTS_IX                  INDEX            41,943,040   2147483645    70  
+LOCOREMP_IND2                   INDEX           186,646,528   2147483645   108  
+OEI                             INDEX            37,748,736   2147483645    36  
+OEM_DEP_FK                      INDEX             8,388,608   2147483645    38  
+OEM_EMP_SUBSTITUIR_FK_I         INDEX               393,216   2147483645     6  
+OEM_OEM_FK_I                    INDEX             6,291,456   2147483645     6  
+OEM_OFU_FK_I                    INDEX           304,087,040   2147483645   122  
+OEM_PK                          INDEX           455,081,984   2147483645   140  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRBANCO                                                               
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ANALYZ_TABELAS_IND              INDEX            10,485,760   2147483645    10  
+ANALYZ_TABELAS_PK               INDEX            16,777,216   2147483645    16  
+TABELAS_PK                      INDEX            10,485,760   2147483645    10  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRDBA2                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ASBP_PK                         INDEX             4,194,304   2147483645     4  
+BDBP_PK                         INDEX             4,194,304   2147483645     4  
+BP_BEM_ANT_FK                   INDEX            40,894,464   2147483645    39  
+BP_BEM_UNIA_FK                  INDEX            40,894,464   2147483645    39  
+BP_EMP_ATU_IX                   INDEX             9,437,184   2147483645     9  
+BP_PK                           INDEX             9,437,184   2147483645     9  
+BPT_PK                          INDEX               262,144   2147483645     4  
+CC1_OR_FK_I                     INDEX               327,680   2147483645     5  
+CC1_PK                          INDEX               327,680   2147483645     5  
+CGP_PK                          INDEX               262,144   2147483645     4  
+CI_PK                           INDEX               262,144   2147483645     4  
+CMIG_PK                         INDEX             6,291,456   2147483645     6  
+CP1                             INDEX               524,288   2147483645     8  
+DAEFA_PK                        INDEX               393,216   2147483645     6  
+DDR_PK                          INDEX            14,680,064   2147483645    14  
+DEP_ITEM_GENERICO               INDEX             6,291,456   2147483645     6  
+DE_PK                           INDEX               262,144   2147483645     4  
+DET_ADIC_EXC_FA_CC_PK           INDEX            41,943,040   2147483645    40  
+DOP_PK                          INDEX               720,896   2147483645    11  
+EBP_PK                          INDEX               262,144   2147483645     4  
+EL_PK                           INDEX             1,048,576   2147483645    16  
+EL_TP_FK_I                      INDEX             2,097,152   2147483645    17  
+EVP_PK                          INDEX            25,165,824   2147483645    24  
+FORD_DEP2_FK_I                  INDEX               327,680   2147483645     5  
+FOR_DEP_FK_I                    INDEX               327,680   2147483645     5  
+FOR_FOR_FK_I                    INDEX               458,752   2147483645     7  
+FOR_MOE_FK_I                    INDEX               327,680   2147483645     5  
+FOR_PK                          INDEX             6,291,456   2147483645    51  
+FP_PK                           INDEX            27,262,976   2147483645    26  
+HCC_PK                          INDEX             1,048,576   2147483645    16  
+ICCD_PK                         INDEX               327,680   2147483645     5  
+ICC_PK                          INDEX            13,631,488   2147483645    13  
+IDS_PK                          INDEX               983,040   2147483645    15  
+IDT_PK                          INDEX             8,388,608   2147483645     8  
+IDX_REQUISICAO_COMPRA_ITEM      INDEX             8,388,608   2147483645    23  
+IEE_PK                          INDEX             6,291,456   2147483645     6  
+IG_IG2_FK                       INDEX               851,968   2147483645    13  
+IG_PK                           INDEX            41,943,040   2147483645    40  
+II_PK                           INDEX               262,144   2147483645     4  
+INDCARACMATITEM                 INDEX             5,242,880   2147483645     5  
+INV_PK                          INDEX           152,043,520   2147483645    61  
+IPD_PK                          INDEX            41,943,040   2147483645    40  
+IPL_PK                          INDEX            76,546,048   2147483645    52  
+IPL_SMS_FK                      INDEX             5,242,880   2147483645    20  
+IR_IPD_FK                       INDEX            37,748,736   2147483645    36  
+IR_PK                           INDEX            33,554,432   2147483645    32  
+ISE_PK                          INDEX            31,457,280   2147483645    30  
+IS_PK                           INDEX               393,216   2147483645     6  
+ITEM_ENTRADA_ESTOQUE_IND1       INDEX             8,388,608   2147483645     8  
+ITEM_SAIDA_ESTOQUE_IND1         INDEX            46,137,344   2147483645    44  
+ITEM_SAIDA_ESTOQUE_001_IX       INDEX            23,068,672   2147483645    37  
+IT_PROP_LIC                     INDEX            17,825,792   2147483645    17  
+LCM_PK                          INDEX            41,943,040   2147483645    40  
+LE_PK                           INDEX            10,485,760   2147483645    10  
+LRC_PK                          INDEX             2,097,152   2147483645    17  
+MCL_PK                          INDEX               524,288   2147483645     8  
+MUN_COD_UFE_SIGLA_PK            INDEX               262,144   2147483645     4  
+OS_CC_FK                        INDEX             7,340,032   2147483645    22  
+OS_EMPA_FK                      INDEX             7,340,032   2147483645    22  
+OS_EMPR_FK                      INDEX             8,388,608   2147483645    23  
+OS_IDX                          INDEX            10,485,760   2147483645    10  
+OS_PK                           INDEX            10,485,760   2147483645    10  
+OS_UO_FK                        INDEX             7,340,032   2147483645    22  
+PDL_FOR_FK_I                    INDEX             8,388,608   2147483645     8  
+PDL_LRC_FK_I                    INDEX             6,291,456   2147483645     6  
+PDL_PK                          INDEX            10,485,760   2147483645    10  
+PROCESSO_LICITATORIO_01_IX      INDEX             2,097,152   2147483645    17  
+RCI_IR_FK                       INDEX             8,388,608   2147483645    23  
+RCI_PK                          INDEX             7,340,032   2147483645     7  
+RCL_PK                          INDEX            10,485,760   2147483645    10  
+RCL_RCI_FK                      INDEX             7,340,032   2147483645     7  
+REQ_COMP_IT_IDX                 INDEX            11,534,336   2147483645    11  
+SACA_PK                         INDEX               589,824   2147483645     9  
+SAIDA_ESTOQUE_001_IX            INDEX            10,485,760   2147483645    25  
+SAIDA_ESTOQUE_002_IX            INDEX            11,534,336   2147483645    26  
+SCF_PK                          INDEX             4,194,304   2147483645     4  
+SE_PK                           INDEX            10,485,760   2147483645    10  
+SIC_PK                          INDEX               786,432   2147483645    12  
+SIPATEMP_PK                     INDEX               524,288   2147483645     8  
+SMBP_PK                         INDEX           160,432,128   2147483645    62  
+SMCP_PK                         INDEX             7,340,032   2147483645     7  
+SMS_DEP_FK_I                    INDEX             2,097,152   2147483645    17  
+SUCC_PK                         INDEX               917,504   2147483645    14  
+SU_PK                           INDEX               458,752   2147483645     7  
+SUS_PK                          INDEX               786,432   2147483645    12  
+TBP_PK                          INDEX            24,117,248   2147483645    23  
+TI_DEP_D_FK_I                   INDEX               655,360   2147483645    10  
+TI_DEP_O_FK_I                   INDEX               458,752   2147483645     7  
+TI_PK                           INDEX               589,824   2147483645     9  
+TMDF_PK                         INDEX               393,216   2147483645     6  
+TMF_PK                          INDEX               262,144   2147483645     4  
+UOR_DEP_FK_I                    INDEX               262,144   2147483645     4  
+UOR_DEP_VINCULA_PGTO_FK_I       INDEX               262,144   2147483645     4  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRDBA2                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+UOR_UOR_FK_I                    INDEX               262,144   2147483645     4  
+VCEBP_PK                        INDEX            59,768,832   2147483645    57  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRHUMANUS                                                             
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ARI_PK                          INDEX               262,144   2147483645     4  
+CUR_PK                          INDEX               458,752   2147483645     7  
+EVDT_PK                         INDEX               458,752   2147483645     7  
+EVE_PK                          INDEX               262,144   2147483645     4  
+EVP_PK                          INDEX             4,194,304   2147483645    34  
+PES_PK                          INDEX               327,680   2147483645     5  
+TCE_PK                          INDEX               524,288   2147483645     8  
+VAD_PK                          INDEX               327,680   2147483645     5  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRSELO                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+DSI                             INDEX            18,874,368   2147483645    18  
+DS_PK                           INDEX            22,020,096   2147483645    21  
+HLSI                            INDEX           948,961,280   2147483645   161  
+HLSI_3                          INDEX         1,526,726,656   2147483645   207  
+HLSOLDI                         INDEX           445,644,800   2147483645    96  
+HST_LS_PK                       INDEX           905,969,664   2147483645   153  
+IDX_LHLS_1                      INDEX            39,845,888   2147483645    53  
+RTEI                            INDEX         1,410,334,720   2147483645   176  
+RTEOI                           INDEX           454,033,408   2147483645    97  
+RTE_PK                          INDEX         1,236,271,104   2147483645   176  
+SRS_PK                          INDEX             4,194,304   2147483645     4  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRSGP                                                                 
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ENTRADA_ANALISE_FK_I            INDEX               655,360   2147483645    10  
+ENTRADA_ENTRADA2_UK             INDEX               917,504   2147483645    14  
+ENTRADA_PK                      INDEX               262,144   2147483645     4  
+ENTRADA_SECAO_FK_I              INDEX               655,360   2147483645    10  
+INSP_UA_FK_I                    INDEX             2,097,152   2147483645    17  
+SAIDA_ANALISE_FK_I              INDEX               655,360   2147483645    10  
+SAIDA_PK                        INDEX               262,144   2147483645     4  
+SAIDA_SECAO_FK_I                INDEX               655,360   2147483645    10  
+SAIDA_SERVICO_FK_I              INDEX               458,752   2147483645     7  
+T_INSP_PK                       INDEX             2,097,152   2147483645    17  
+UA_PK                           INDEX               589,824   2147483645     9  
+UA_SECAO_FK_I                   INDEX               524,288   2147483645     8  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRSICOF                                                               
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+DEO_PK                          INDEX             5,242,880   2147483645     5  
+ELE_PK                          INDEX               458,752   2147483645     7  
+I_P_O_S_CC1_NR_CONTA            INDEX           169,869,312   2147483645   106  
+IPS_PK                          INDEX           203,423,744   2147483645   110  
+OCAC_UK                         INDEX               393,216   2147483645     6  
+PK_RCS                          INDEX            17,825,792   2147483645    17  
+PK_RELAT_DEP_SEL                INDEX             6,291,456   2147483645     6  
+PRS_PK                          INDEX             4,194,304   2147483645     4  
+RCAL_PK                         INDEX               327,680   2147483645     5  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRSRH2                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ACB_PK                          INDEX            25,165,824   2147483645    24  
+ACP_PK                          INDEX             1,703,936   2147483645    26  
+AEC_PK                          INDEX               327,680   2147483645     5  
+AEM_ATI_FK_I                    INDEX               262,144   2147483645     4  
+AEM_EMP_FK_I                    INDEX               262,144   2147483645     4  
+AEM_PK                          INDEX               458,752   2147483645     7  
+AIM_PK                          INDEX               524,288   2147483645     8  
+ANS_PK                          INDEX             4,194,304   2147483645    19  
+ATI_PK                          INDEX               262,144   2147483645     4  
+ATO_EMB_FK                      INDEX             4,194,304   2147483645    19  
+ATRIB_CONC_AVALIACAO_FK_I       INDEX             2,097,152   2147483645    17  
+ATRIB_CONC_CONCEITOS_FK_I       INDEX             2,097,152   2147483645    17  
+ATRIB_CONC_PK                   INDEX             3,145,728   2147483645    18  
+AVALIACAO_AVALIADOR_FK_I        INDEX               458,752   2147483645     7  
+AVALIACAO_AV_FINAL_FK_I         INDEX               458,752   2147483645     7  
+AVALIACAO_FORMULARIO_FK_I       INDEX               393,216   2147483645     6  
+AVALIACAO_PK                    INDEX               655,360   2147483645    10  
+AVAL_TREIN_AVALIACAO_FK_I       INDEX               655,360   2147483645    10  
+AVAL_TREIN_PK                   INDEX               786,432   2147483645    12  
+AVAL_TREIN_TREINO_FK_I          INDEX               393,216   2147483645     6  
+AV_FINAL_CADASTROS_FK_I         INDEX               393,216   2147483645     6  
+AV_FINAL_PK                     INDEX               458,752   2147483645     7  
+A13F_PK                         INDEX            29,360,128   2147483645    43  
+BSG_EMP_BEN_FK                  INDEX               655,360   2147483645    10  
+BSG_SEQUENCIAL_PK               INDEX               655,360   2147483645    10  
+CC_CONTRATO_PK                  INDEX               655,360   2147483645    10  
+CCE_CCLI_FK                     INDEX               327,680   2147483645     5  
+CCE_COD_SEQUE_FK                INDEX               327,680   2147483645     5  
+CCLI_PK                         INDEX               327,680   2147483645     5  
+CD_PK                           INDEX               458,752   2147483645     7  
+CID_PK                          INDEX               524,288   2147483645     8  
+CORPO_CLINICO_ESPECIALID_PK     INDEX               458,752   2147483645     7  
+CRP_PK                          INDEX             4,194,304   2147483645     4  
+CUD_PK                          INDEX            10,485,760   2147483645    10  
+CUF_UK                          INDEX            18,874,368   2147483645    18  
+CUO_UK                          INDEX            10,485,760   2147483645    10  
+DCN_PK                          INDEX               327,680   2147483645     5  
+DMO_GUI_FK                      INDEX             2,097,152   2147483645    17  
+DMO_PK                          INDEX               983,040   2147483645    15  
+DOC2_PK                         INDEX             2,097,152   2147483645    17  
+DRR_PK                          INDEX               589,824   2147483645     9  
+DRRT_PK                         INDEX               524,288   2147483645     8  
+EEI_PK                          INDEX             4,194,304   2147483645    19  
+EFE_PK                          INDEX             3,145,728   2147483645    18  
+EGT_PK                          INDEX            54,525,952   2147483645    52  
+EGT_01_IX                       INDEX            51,380,224   2147483645    64  
+EIB_PK                          INDEX               327,680   2147483645     5  
+EII_EMPINS_PK                   INDEX               524,288   2147483645     8  
+EIP_INDPRO_PK                   INDEX               589,824   2147483645     9  
+EMB_PK                          INDEX             2,097,152   2147483645    17  
+EMB_UK1                         INDEX             3,145,728   2147483645    18  
+EMC_CAT_FK_I                    INDEX               589,824   2147483645     9  
+EMC_EMB_FK_I                    INDEX               786,432   2147483645    12  
+EMC_PK                          INDEX             2,097,152   2147483645    17  
+EMF_PK                          INDEX               458,752   2147483645     7  
+EMP_CPF_UK                      INDEX               589,824   2147483645     9  
+EMP_NPROMV_CADASTROS_FK_I       INDEX             2,097,152   2147483645    17  
+EMP_NPROMV_MOTN_PROM_FK_I       INDEX             2,097,152   2147483645    17  
+EMP_NPROMV_PK                   INDEX             3,145,728   2147483645    18  
+EMP_PIS_PASEP_UK                INDEX               589,824   2147483645     9  
+EMP_PK                          INDEX               655,360   2147483645    10  
+EMP_PROM_CADASTROS_FK_I         INDEX             2,097,152   2147483645    17  
+EMP_PROM_CARGOS_FK_I            INDEX             2,097,152   2147483645    17  
+EMP_PROM_NIVEIS_SAL_FK_I        INDEX               983,040   2147483645    15  
+EMP_PROM_PK                     INDEX             2,097,152   2147483645    17  
+EMP_PROM_PROMOCAO_FK_I          INDEX               983,040   2147483645    15  
+EPL_PK                          INDEX             7,340,032   2147483645     7  
+ESC_PK                          INDEX               917,504   2147483645    14  
+EVF_IDX_01                      INDEX            10,485,760   2147483645    25  
+EXO_PK                          INDEX               327,680   2147483645     5  
+GPR_GUI_FK                      INDEX            54,525,952   2147483645    67  
+GPR_PK                          INDEX            63,963,136   2147483645    61  
+GRH_HST_DIRF_PK                 INDEX               524,288   2147483645     8  
+GUI_DATA_01_IX                  INDEX            17,825,792   2147483645    32  
+GUI_DOC_FK                      INDEX            26,214,400   2147483645    40  
+GUI_EMP_NUMERO_MATRICULA_01_IX  INDEX            22,020,096   2147483645    36  
+GUI_LOT_FK                      INDEX            14,680,064   2147483645    29  
+GUI_PK                          INDEX            29,360,128   2147483645    28  
+GUI_PVB_FK                      INDEX            31,457,280   2147483645    45  
+HDD_PK                          INDEX               655,360   2147483645    10  
+HEB_PK                          INDEX               983,040   2147483645    15  
+HIS_LOG_MOV_01_IX               INDEX           687,865,856   2147483645   153  
+HISTORICO_ANS_PK                INDEX             6,291,456   2147483645    21  
+HNM_GPR_FK                      INDEX               393,216   2147483645     6  
+HNS_PK                          INDEX               458,752   2147483645     7  
+HST_DEP_EMP_PK                  INDEX            17,825,792   2147483645    17  
+HST_MOV_DEP_IX                  INDEX           176,160,768   2147483645    92  
+HST_MOV_EMP_IDX                 INDEX           100,663,296   2147483645    83  
+HST_MOV_PK                      INDEX           209,715,200   2147483645    96  
+IAB_PK                          INDEX             8,388,608   2147483645     8  
+ICL_PK                          INDEX               327,680   2147483645     5  
+IDX_ACB_EGT_FK                  INDEX            11,534,336   2147483645    26  
+IDX_ACP_EGT_FK                  INDEX               720,896   2147483645    11  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRSRH2                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+IDX_ATO_PVB_FK                  INDEX             4,194,304   2147483645    19  
+IDX_CADASTROS_02                INDEX               393,216   2147483645     6  
+IDX_CC_DEP_FK                   INDEX               262,144   2147483645     4  
+IDX_CPF                         INDEX               458,752   2147483645     7  
+IDX_DOC_CBE                     INDEX             2,097,152   2147483645    17  
+IDX_DOC_EMB                     INDEX             1,048,576   2147483645    16  
+IDX_DUS_EMP_FK                  INDEX               458,752   2147483645     7  
+IDX_DUS_PVI_FK                  INDEX               589,824   2147483645     9  
+IDX_EMB_BEN_FK                  INDEX             2,097,152   2147483645    17  
+IDX_EMB_DEP_FK                  INDEX             2,097,152   2147483645    17  
+IDX_EMB_EMP_FK                  INDEX             2,097,152   2147483645    17  
+IDX_EMP_ABA_CONTA_FGTS_FK       INDEX               458,752   2147483645     7  
+IDX_EMP_ABA_CONTA_PGTO_FK       INDEX               589,824   2147483645     9  
+IDX_EMP_QLP_FK                  INDEX               720,896   2147483645    11  
+IDX_EMPREST_INFRAP_VAL_CAD      INDEX               393,216   2147483645     6  
+IDX_EPL_01                      INDEX             4,194,304   2147483645    19  
+IDX_PROV_EMPREG_VAL_CADASTROS   INDEX            18,874,368   2147483645    33  
+IDX_REE_DPF_FK                  INDEX             2,097,152   2147483645    17  
+IDX_REE_EMB_FK                  INDEX             3,145,728   2147483645    18  
+IDX_REE_PVB_FK                  INDEX             4,194,304   2147483645    19  
+IDX_REF_CAD_FK                  INDEX            10,485,760   2147483645    25  
+IDX_REI_EMP_FK                  INDEX            12,582,912   2147483645    27  
+IDX_RIN_CAD_FK                  INDEX             9,437,184   2147483645    24  
+IDX_RIR_CAD_FK                  INDEX            12,582,912   2147483645    27  
+IDX_RSE_CAD_FK                  INDEX            12,582,912   2147483645    27  
+IDX_TAB_PART_BEN_CADASTROS_FK   INDEX             4,194,304   2147483645    19  
+IDX_TAB_PART_BEN_EMP_BENEF_FK   INDEX             5,242,880   2147483645    20  
+IDX_TAB_PART_BEN_PVI_FK         INDEX             4,194,304   2147483645    19  
+IDX_TDM_GUI_FK                  INDEX             6,291,456   2147483645    21  
+IDX_TEMP                        INDEX             3,145,728   2147483645    18  
+IND_CADAS_TMP                   INDEX               327,680   2147483645     5  
+IND_GERA_AVALIACAO              INDEX               458,752   2147483645     7  
+IND_OFE_2                       INDEX           880,803,840   2147483645   176  
+INTERNA_PK                      INDEX             2,097,152   2147483645    17  
+LA_DOC_COB_IDX                  INDEX             8,388,608   2147483645    23  
+LMV_AMVERTS_IX                  INDEX           301,989,888   2147483645   178  
+LOCOREMP_IND2                   INDEX           150,994,944   2147483645   160  
+LOG_CADASTROS_01_IX             INDEX             5,242,880   2147483645    20  
+LOG_EMB_UK1                     INDEX             3,145,728   2147483645    18  
+LOG_OCO_DT_INCL1                INDEX            62,914,560   2147483645    75  
+LPM_PK                          INDEX               262,144   2147483645     4  
+MDC_PK                          INDEX             2,097,152   2147483645    17  
+MOV_DEP_IX                      INDEX           419,430,400   2147483645   121  
+MOVIMENTACAO_IND1               INDEX            20,971,520   2147483645    35  
+MOV_PEN_FK                      INDEX           352,321,536   2147483645   113  
+MOV_PK                          INDEX           486,539,264   2147483645   129  
+MOV_01_IX                       INDEX           427,819,008   2147483645   122  
+OEI                             INDEX            39,845,888   2147483645    68  
+OEM_DEP_FK                      INDEX             8,388,608   2147483645    38  
+OEM_EMP_SUBSTITUIR_FK_I         INDEX               655,360   2147483645    10  
+OEM_OEM_FK_I                    INDEX             1,310,720   2147483645    20  
+OEM_OFU_FK_I                    INDEX            35,651,584   2147483645    64  
+OEM_PK                          INDEX           457,179,136   2147483645   144  
+OEM_TEMP_PK                     INDEX            18,874,368   2147483645    18  
+OFE_DEP_FK                      INDEX           528,482,304   2147483645   134  
+OFE_PK                          INDEX         1,148,190,720   2147483645   173  
+OPPA_PK                         INDEX            41,943,040   2147483645    40  
+OPPE_PK                         INDEX            41,943,040   2147483645    40  
+ORT_DEP_FK                      INDEX            11,534,336   2147483645    26  
+ORT_EMB_FK                      INDEX            19,922,944   2147483645    34  
+ORT_IDX_01                      INDEX            10,485,760   2147483645    25  
+ORT_PK                          INDEX            27,262,976   2147483645    26  
+ORT_UOR_FK                      INDEX            13,631,488   2147483645    28  
+ORV_PK                          INDEX            35,651,584   2147483645    34  
+PCO_PK                          INDEX             4,194,304   2147483645     4  
+PFE_PK                          INDEX             4,194,304   2147483645    19  
+PKT_PK                          INDEX               458,752   2147483645     7  
+POD_PK                          INDEX             7,340,032   2147483645     7  
+POF_UK                          INDEX               327,680   2147483645     5  
+PRM_UK                          INDEX               720,896   2147483645    11  
+PROVISIONAMENTO_PK              INDEX            33,554,432   2147483645    47  
+PROVISOES_EMPREGADOS_PK         INDEX            22,020,096   2147483645    36  
+PRS_PK                          INDEX            20,971,520   2147483645    20  
+PVB_EMB_FK_I                    INDEX             3,145,728   2147483645    18  
+PVB_PK                          INDEX             5,242,880   2147483645     5  
+QCD_PK                          INDEX               327,680   2147483645     5  
+QFU_PK                          INDEX               262,144   2147483645     4  
+QLP_PK                          INDEX               786,432   2147483645    12  
+REA_PK                          INDEX               983,040   2147483645    15  
+REE_PK                          INDEX             4,194,304   2147483645    19  
+REF_PK                          INDEX            20,971,520   2147483645    50  
+REG_POSICAO_EMP_PAGAMENTO_IX    INDEX            55,574,528   2147483645    68  
+REG_REMUNERACAO_FINAL_IX        INDEX            36,700,160   2147483645    50  
+REI_PK                          INDEX            11,534,336   2147483645    26  
+RIN_PK                          INDEX            10,485,760   2147483645    25  
+RIR_PK                          INDEX            11,534,336   2147483645    26  
+RSE_PK                          INDEX            11,534,336   2147483645    26  
+RUBRICA_TEMP_PK                 INDEX             3,145,728   2147483645    18  
+TDE_PK                          INDEX            10,485,760   2147483645    10  
+TDF_PK                          INDEX               786,432   2147483645    12  
+TDM_GUI_FK                      INDEX             6,291,456   2147483645    21  
+TDM_PK                          INDEX             3,145,728   2147483645    18  
+TEMP_MOV_DEP_IX                 INDEX               458,752   2147483645     7  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: IFRSRH2                                                                
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+TEMP_MOV_EMP_IDX                INDEX               262,144   2147483645     4  
+TEMP_MOV_PK                     INDEX             9,437,184   2147483645     9  
+THC_PK                          INDEX             4,194,304   2147483645    19  
+TMP_CONTRACHEQUE_EMP_IND        INDEX             6,291,456   2147483645    21  
+TMP_CONTRACHEQUE_EMP_PK         INDEX             7,340,032   2147483645    22  
+TMP_GUIA_PROC_UK                INDEX             2,097,152   2147483645    17  
+TMP_GUIA_UK                     INDEX             2,097,152   2147483645    17  
+UPS_PK                          INDEX               589,824   2147483645     9  
+VLI_PK                          INDEX               262,144   2147483645     4  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: PERFSTAT                                                               
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+STATS$BG_EVENT_SUMMARY_PK       INDEX             8,388,608   2147483645    23  
+STATS$ENQUEUESTAT_PK            INDEX             3,145,728   2147483645    18  
+STATS$FILESTATXS_PK             INDEX             6,291,456   2147483645    21  
+STATS$LATCH_MISSES_SUMMARY_PK   INDEX            56,623,104   2147483645    69  
+STATS$LATCH_PK                  INDEX            49,283,072   2147483645    62  
+STATS$LIBRARYCACHE_PK           INDEX             2,097,152   2147483645    17  
+STATS$PARAMETER_PK              INDEX            59,768,832   2147483645    72  
+STATS$ROLLSTAT_PK               INDEX             3,145,728   2147483645    18  
+STATS$ROWCACHE_SUMMARY_PK       INDEX             4,194,304   2147483645    19  
+STATS$SESSION_EVENT_PK          INDEX             1,048,576   2147483645    16  
+STATS$SESSTAT_PK                INDEX             1,048,576   2147483645    16  
+STATS$SGA_PK                    INDEX             2,097,152   2147483645    17  
+STATS$SGASTAT_U                 INDEX            12,582,912   2147483645    27  
+STATS$SQL_STATISTICS_PK         INDEX             1,048,576   2147483645    16  
+STATS$SQL_SUMMARY_PK            INDEX           125,829,120   2147483645    86  
+STATS$SQLTEXT_PK                INDEX           100,663,296   2147483645    83  
+STATS$SYSSTAT_PK                INDEX            67,108,864   2147483645    79  
+STATS$SYSTEM_EVENT_PK           INDEX            26,214,400   2147483645    40  
+STATS$TEMPSTATXS_PK             INDEX             1,048,576   2147483645    16  
+STATS$WAITSTAT_PK               INDEX             4,194,304   2147483645    19  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: SST                                                                    
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+ACIDENTE_EMP_PK                 INDEX               262,144   2147483645     4  
+ACIDENTE_EMP_01_IX              INDEX               262,144   2147483645     4  
+ACIDENTE_EMP_02_IX              INDEX               262,144   2147483645     4  
+ACIDENTE_EMP_03_IX              INDEX               262,144   2147483645     4  
+ACIDENTE_EMP_04_IX              INDEX               262,144   2147483645     4  
+SST_LOG_02_IX                   INDEX               262,144   2147483645     4  
+SST_LOG_03_IX                   INDEX               262,144   2147483645     4  
+SST_LOG_04_IX                   INDEX               393,216   2147483645     6  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: SST_AUDIO                                                              
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+IEID_CRITERIO_AUDIO             INDEX             7,340,032   2147483645    22  
+IEID_FUNCIONARIOS               INDEX               327,680   2147483645     5  
+IEID_HIST_CARGO                 INDEX               327,680   2147483645     5  
+IEID_HIST_LOTA                  INDEX               327,680   2147483645     5  
+IEID_HIST_SETOR                 INDEX               327,680   2147483645     5  
+IEID_MEDICOES_AUDIO             INDEX               720,896   2147483645    11  
+IF498HIST_LOTA                  INDEX               524,288   2147483645     8  
+PKCRITERIO_AUDIO                INDEX            15,728,640   2147483645    30  
+PKHIST_LOTA                     INDEX               851,968   2147483645    13  
+XIF114FUNCIONARIOS              INDEX               917,504   2147483645    14  
+XIF172FUNCIONARIOS              INDEX               524,288   2147483645     8  
+XIF194MEDICOES_AUDIO            INDEX             2,097,152   2147483645    17  
+XIF233FUNCIONARIOS              INDEX               393,216   2147483645     6  
+XIF262HIST_SETOR                INDEX               589,824   2147483645     9  
+XIF263HIST_SETOR                INDEX               524,288   2147483645     8  
+XIF265HIST_CARGO                INDEX               589,824   2147483645     9  
+XIF266HIST_CARGO                INDEX               917,504   2147483645    14  
+XPKFUNCIONARIOS                 INDEX               524,288   2147483645     8  
+XPKHIST_CARGO                   INDEX             2,097,152   2147483645    17  
+XPKHIST_SETOR                   INDEX               983,040   2147483645    15  
+XPKMEDICOES                     INDEX             2,097,152   2147483645    17  
+
+                           Index Fragmentation Report                           
+                                                                                
+creator: SYS                                                                    
+                                                                                
+Object Name                     Table/Ind        Bytes Used  MAX_EXTENTS   No.  
+------------------------------  ---------  ----------------  -----------  ----  
+I_ACCESS1                       INDEX               663,552   2147483645     6  
+I_ARGUMENT1                     INDEX             2,105,344   2147483645    17  
+I_CCOL1                         INDEX               819,200          505     8  
+I_CCOL2                         INDEX               819,200          505     8  
+I_CDEF1                         INDEX               557,056          505     7  
+I_CDEF2                         INDEX               557,056          505     7  
+I_CDEF4                         INDEX               557,056          505     7  
+I_COL1                          INDEX             3,399,680   2147483645    27  
+I_COL2                          INDEX             1,982,464   2147483645    16  
+I_COL3                          INDEX             1,720,320   2147483645    14  
+I_COM1                          INDEX               401,408   2147483645     4  
+I_CON1                          INDEX             1,171,456          505     9  
+I_CON2                          INDEX               557,056          505     7  
+I_DEPENDENCY1                   INDEX             1,187,840   2147483645    10  
+I_DEPENDENCY2                   INDEX             1,056,768   2147483645     9  
+I_FILE#_BLOCK#                  INDEX               409,600          505     6  
+I_HH_OBJ#_COL#                  INDEX             1,261,568          505     9  
+I_HH_OBJ#_INTCOL#               INDEX             1,261,568          505     9  
+I_ICOL1                         INDEX               278,528          505     5  
+I_IDL_CHAR1                     INDEX               278,528          505     5  
+I_IDL_SB41                      INDEX               868,352          505     8  
+I_IDL_UB11                      INDEX               606,208          505     7  
+I_IDL_UB21                      INDEX               606,208          505     7  
+I_JAVASNM1                      INDEX               409,600          505     6  
+I_OBJ#                          INDEX               188,416          505     5  
+I_OBJAUTH1                      INDEX            11,984,896          505    15  
+I_OBJAUTH2                      INDEX            11,984,896          505    15  
+I_OBJ1                          INDEX               778,240          505     8  
+I_OBJ2                          INDEX             1,581,056   2147483645    13  
+I_SOURCE1                       INDEX             6,512,640   2147483645    26  
+I_SYN1                          INDEX               229,376          505     5  
+I_SYSAUTH1                      INDEX               868,352          505     8  
+I_TRIGGERCOL1                   INDEX               278,528          505     5  
+I_TRIGGERCOL2                   INDEX               278,528          505     5  
+I_USER#                         INDEX               409,600          505     6  
+I_USER1                         INDEX               409,600          505     6  
+
+444 linhas selecionadas.
+
+
+---------------------------------------------------------------- 
