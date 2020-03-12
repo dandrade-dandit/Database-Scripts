@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # |----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # |----------------------------------------------------------------------------|
 # | DATABASE   : Oracle                                                        |
 # | FILE       : archive_oracle_log_files.ksh                                  |
@@ -63,7 +63,7 @@
 # ----------------------------
 # SCRIPT VERSION
 # ----------------------------
-VERSION="6.1"
+VERSION="9.0"
 
 # ----------------------------
 # ORGANIZATION INFORMATION
@@ -100,11 +100,12 @@ unset SQLPATH
 # ----------------------------
 ORACLE_BASE=/u01/app/oracle
 ORACLE_ADMIN_DIR=${ORACLE_BASE}/admin
+ORACLE_DIAG_DIR=${ORACLE_BASE}/diag
 
 # ----------------------------
 # CUSTOM DIRECTORIES
 # ----------------------------
-CUSTOM_ORACLE_DIR=${ORACLE_BASE}/custom/oracle
+CUSTOM_ORACLE_DIR=${ORACLE_BASE}/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log
@@ -118,6 +119,14 @@ CUSTOM_ORACLE_TEMP_DIR=${CUSTOM_ORACLE_DIR}/temp
 SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 SCRIPT_NAME_NOEXT=${SCRIPT_NAME%.?*}
+
+# ----------------------------
+# HOSTNAME VARIABLES
+# ----------------------------
+HOSTNAME=`hostname`
+HOSTNAME_UPPER=`echo $HOSTNAME | tr '[:lower:]' '[:upper:]'`
+HOSTNAME_SHORT=${HOSTNAME%%.*}
+HOSTNAME_SHORT_UPPER=`echo $HOSTNAME_SHORT | tr '[:lower:]' '[:upper:]'`
 
 # ----------------------------
 # EMAIL PREFERENCES
@@ -221,14 +230,6 @@ HOST_RVAL_SUCCESS=0
 HOST_RVAL_WARNING=2
 HOST_RVAL_FAILED=2
 HIDE_PASSWORD_STRING="xxxxxxxxxxxxx"
-
-# ----------------------------
-# HOSTNAME VARIABLES
-# ----------------------------
-HOSTNAME=`${HOSTNAME_BIN}`
-HOSTNAME_UPPER=`echo $HOSTNAME | tr '[:lower:]' '[:upper:]'`
-HOSTNAME_SHORT=${HOSTNAME%%.*}
-HOSTNAME_SHORT_UPPER=`echo $HOSTNAME_SHORT | tr '[:lower:]' '[:upper:]'`
 
 # ----------------------------
 # LOG AND TEMP FILE VARIABLES
@@ -560,7 +561,7 @@ function switchOracleEnv {
     export ORACLE_DOC 
     wl "TRACE> New ORACLE_DOC       = ${ORACLE_DOC}"
 
-    ORACLE_PATH=$L_ORATAB_DB_ENTRY_HOME/rdbms/admin:$L_ORATAB_DB_ENTRY_HOME/sqlplus/admin:${ORACLE_BASE}/common/bin
+    ORACLE_PATH=$L_ORATAB_DB_ENTRY_HOME/rdbms/admin:$L_ORATAB_DB_ENTRY_HOME/sqlplus/admin
     export ORACLE_PATH
     wl "TRACE> New ORACLE_PATH      = ${ORACLE_PATH}"
     
@@ -950,7 +951,91 @@ EOF
 # |                                                                            |
 # +----------------------------------------------------------------------------+
 
+function performArchiveAlertLogFile {
 
+    typeset -r L_DB_NAME=${1}
+    typeset -r L_SID_NAME=${2}
+    typeset -r L_DATE_LOG=${3}
+    typeset    L_ORACLE_ALERT_DIR
+
+    if [[ -d $ORACLE_DIAG_DIR/rdbms ]]; then
+        L_ORACLE_ALERT_DIR="$ORACLE_DIAG_DIR/rdbms/$L_DB_NAME/$L_SID_NAME/trace"
+        wl " "
+        wl "TRACE> Setting Oracle admin environment for Oracle Database 11g or higher."
+    else
+        L_ORACLE_ALERT_DIR="$ORACLE_ADMIN_DIR/$L_DB_NAME/bdump"
+        wl " "
+        wl "TRACE> Setting Oracle admin environment for Oracle Database 10g or lower."
+    fi
+
+    wl " "
+    wl "TRACE> L_ORACLE_ALERT_DIR: ${L_ORACLE_ALERT_DIR}"
+    wl " "
+
+    (cd $L_ORACLE_ALERT_DIR; ${CP_BIN} -v alert_$L_SID_NAME.log "alert_$L_SID_NAME.$L_DATE_LOG.log") 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
+
+    (cd $L_ORACLE_ALERT_DIR; ${ZIP_BIN} alert_$L_SID_NAME.$L_DATE_LOG.log.zip "alert_$L_SID_NAME.$L_DATE_LOG.log") 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
+
+    ${RM_BIN} -v "$L_ORACLE_ALERT_DIR/alert_$L_SID_NAME.$L_DATE_LOG.log" 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
+
+    ${CAT_BIN} /dev/null > $L_ORACLE_ALERT_DIR/alert_$L_SID_NAME.log 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
+
+    return
+
+}
+
+
+function performArchiveListenerLogFile {
+
+    typeset -r L_ARCHIVE_LISTENER_LOG=${1}
+    typeset -r L_LISTENER_NAME=${2}
+    typeset -r L_DATE_LOG=${3}
+    typeset    L_ORACLE_LISTENER_DIR
+
+    if [[ $L_ARCHIVE_LISTENER_LOG = "NO" ]]; then
+    
+        wl " "
+        wl "The Oracle TNS listener.log file was not archived as per user request."
+    
+    else
+
+        if [[ -d $ORACLE_DIAG_DIR/rdbms ]]; then
+            L_ORACLE_LISTENER_DIR="$ORACLE_DIAG_DIR/tnslsnr/$HOSTNAME_SHORT/listener/trace"
+            wl " "
+            wl "TRACE> Setting Oracle listener environment for Oracle Database 11g or higher."
+        else
+            L_ORACLE_LISTENER_DIR="$ORACLE_HOME/network/log"
+            wl " "
+            wl "TRACE> Setting Oracle listener environment for Oracle Database 10g or lower."
+        fi
+
+        wl " "
+        wl "TRACE> L_ORACLE_LISTENER_DIR: ${L_ORACLE_LISTENER_DIR}"
+        wl " "
+
+        $ORACLE_HOME/bin/lsnrctl <<EOF | ${TEE_BIN} -a $LOG_FILE_NAME
+set current_listener $L_LISTENER_NAME
+set log_status off
+exit
+EOF
+
+    ${MV_BIN} -v "$L_ORACLE_LISTENER_DIR/$L_LISTENER_NAME.log" "$L_ORACLE_LISTENER_DIR/$L_LISTENER_NAME.$L_DATE_LOG.log" 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
+
+    (cd $L_ORACLE_LISTENER_DIR; ${ZIP_BIN} $L_LISTENER_NAME.$L_DATE_LOG.log.zip "$L_LISTENER_NAME.$L_DATE_LOG.log") 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
+
+    ${RM_BIN} -v "$L_ORACLE_LISTENER_DIR/$L_LISTENER_NAME.$L_DATE_LOG.log"
+
+    $ORACLE_HOME/bin/lsnrctl <<EOF | ${TEE_BIN} -a $LOG_FILE_NAME
+set current_listener $L_LISTENER_NAME
+set log_status on
+exit
+EOF
+
+    fi
+
+    return
+
+}
 
 
 
@@ -1066,6 +1151,7 @@ wl "HOST_NAME (SHORT/UPPER)              : $HOSTNAME_SHORT_UPPER"
 wl "ORACLE_BASE                          : $ORACLE_BASE"
 wl "ORACLE_HOME                          : $ORACLE_HOME"
 wl "ORACLE_ADMIN_DIR                     : $ORACLE_ADMIN_DIR"
+wl "ORACLE_DIAG_DIR                      : $ORACLE_DIAG_DIR"
 wl "LOG_FILE_NAME                        : $LOG_FILE_NAME"
 wl "LOG_FILE_NAME_NODATE                 : $LOG_FILE_NAME_NODATE"
 wl "LOG_FILE_ARCHIVE_OBSOLETE_DAYS       : $LOG_FILE_ARCHIVE_OBSOLETE_DAYS"
@@ -1147,13 +1233,7 @@ wl "|-------------------------------------------------------------------------|"
 wl "| ARCHIVE ALERT.LOG FILE.                                                 |"
 wl "+-------------------------------------------------------------------------+"
 
-(cd $ORACLE_ADMIN_DIR/$TARGET_DB_NAME/bdump; ${CP_BIN} -v alert_$TARGET_SID.log "alert_$TARGET_SID.$START_DATE_LOG.log") 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
-
-(cd $ORACLE_ADMIN_DIR/$TARGET_DB_NAME/bdump; ${ZIP_BIN} alert_$TARGET_SID.$START_DATE_LOG.log.zip "alert_$TARGET_SID.$START_DATE_LOG.log") 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
-
-${RM_BIN} -v "$ORACLE_ADMIN_DIR/$TARGET_DB_NAME/bdump/alert_$TARGET_SID.$START_DATE_LOG.log" 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
-
-${CAT_BIN} /dev/null > $ORACLE_ADMIN_DIR/$TARGET_DB_NAME/bdump/alert_$TARGET_SID.log 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
+performArchiveAlertLogFile $TARGET_DB_NAME $TARGET_SID $START_DATE_LOG
 
 
 DATE_PRINT_LOG=`date "+%m/%d/%Y %H:%M:%S"`
@@ -1164,32 +1244,8 @@ wl "|-------------------------------------------------------------------------|"
 wl "| ARCHIVE LISTENER.LOG FILE.                                              |"
 wl "+-------------------------------------------------------------------------+"
 
-if [[ $ARCHIVE_LISTENER_LOG = "NO" ]]; then
+performArchiveListenerLogFile $ARCHIVE_LISTENER_LOG $LISTENER_NAME $START_DATE_LOG
 
-    wl " "
-    wl "The Oracle TNS listener.log file was not archived as per user request."
-
-else
-
-    $ORACLE_HOME/bin/lsnrctl <<EOF | ${TEE_BIN} -a $LOG_FILE_NAME
-set current_listener $LISTENER_NAME
-set log_status off
-exit
-EOF
-
-    ${MV_BIN} -v "$ORACLE_HOME/network/log/$LISTENER_NAME.log" "$ORACLE_HOME/network/log/$LISTENER_NAME.$START_DATE_LOG.log" 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
-
-    (cd $ORACLE_HOME/network/log; ${ZIP_BIN} $LISTENER_NAME.$START_DATE_LOG.log.zip "$LISTENER_NAME.$START_DATE_LOG.log") 2>&1 | ${TEE_BIN} -a $LOG_FILE_NAME
-
-    ${RM_BIN} -v "$ORACLE_HOME/network/log/$LISTENER_NAME.$START_DATE_LOG.log"
-
-    $ORACLE_HOME/bin/lsnrctl <<EOF | ${TEE_BIN} -a $LOG_FILE_NAME
-set current_listener $LISTENER_NAME
-set log_status on
-exit
-EOF
-
-fi
 
 
 

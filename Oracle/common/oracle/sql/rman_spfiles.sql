@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : rman_spfiles.sql                                                |
@@ -13,8 +13,33 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : RMAN Server Parameter Files (SPFILE)                        |
+PROMPT | Instance : &current_instance                                           |
+PROMPT | Note     : Available automatic SPFILE files within all available       |
+PROMPT |            (and expired) backup sets.                                  |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN bs_key                 FORMAT 9999     HEADING 'BS|Key'
 COLUMN piece#                 FORMAT 99999    HEADING 'Piece|#'
@@ -23,14 +48,9 @@ COLUMN bp_key                 FORMAT 9999     HEADING 'BP|Key'
 COLUMN spfile_included        FORMAT a11      HEADING 'SPFILE|Included?'
 COLUMN completion_time        FORMAT a20      HEADING 'Completion|Time'
 COLUMN status                 FORMAT a9       HEADING 'Status'
-COLUMN handle                 FORMAT a65      HEADING 'Handle'
+COLUMN handle                 FORMAT a75      HEADING 'Handle'
 
 BREAK ON bs_key
-
-
-prompt
-prompt Available automatic SPFILE files within all available (and expired) backup sets.
-prompt 
 
 SELECT
     bs.recid                                               bs_key
@@ -38,7 +58,7 @@ SELECT
   , bp.copy#                                               copy#
   , bp.recid                                               bp_key
   , sp.spfile_included                                     spfile_included
-  , TO_CHAR(bs.completion_time, 'DD-MON-YYYY HH24:MI:SS')  completion_time
+  , TO_CHAR(bs.completion_time, 'mm/dd/yyyy HH24:MI:SS')   completion_time
   , DECODE(   status
             , 'A', 'Available'
             , 'D', 'Deleted'
@@ -62,3 +82,4 @@ ORDER BY
     bs.recid
   , piece#
 /
+

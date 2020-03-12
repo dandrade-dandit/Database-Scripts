@@ -3,21 +3,21 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_compare_schemas.sql                                         |
 -- | CLASS    : Database Administration                                         |
 -- | PURPOSE  : This script can be used by developers and DBAs to compare two   |
 -- |            Oracle schemas. This script will generate a report of all       |
--- |            object discrepencies between two Oracle database schemas.       |
+-- |            object discrepancies between two Oracle database schemas.       |
 -- |                                                                            |
 -- |            This script has been tested on the following Oracle database    |
--- |            versions:  7.3, 8, 8i, 9i, 10g.                                 |
+-- |            versions:  7.3, 8, 8i, 9i, 10g, 11g.                            |
 -- |                                                                            |
 -- |            At this time, the following schema object types (and            |
 -- |            attributes) are not compared and reported on within the         |
--- |            detailed discrepency sections. Most of them, however, will      |
+-- |            detailed discrepancy sections. Most of them, however, will      |
 -- |            appear in the "Summary" section of the report.                  |
 -- |                                                                            |
 -- |            - Comments                    (On either tables nor columns.)   |
@@ -40,46 +40,72 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-prompt
-prompt =====================
-prompt Compare Schema Script
-prompt =====================
-prompt
-prompt USAGE:
-prompt ========================================================================
-prompt This SQL script should be run while connected to the the Oracle database
-prompt as one of the schemas you would like to compare. You will be prompted
-prompt to enter the Oracle username, password and Oracle Net Service Name of
-prompt the second schema you would like to compare against. Lastly, you will 
-prompt be ased for the filename of the report you would like this script to
-prompt create for all generated discrepencies. (You can hit [ENTER] to accept
-prompt the default file name.)
-prompt
-prompt NOTE:
-prompt ========================================================================
-prompt The following database objects will be created for use by this script:
-prompt     - Database Link  (remote_schema_link)
-prompt     - Table          (schema_compare_temp)
-prompt Both objects will be dropped at the end of this script.
-prompt
+SET PAGESIZE  50000
+SET LINESIZE  256
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | COMPARE SCHEMA SCRIPT                                                  |
+PROMPT |------------------------------------------------------------------------|
+PROMPT |                                                                        |
+PROMPT | USAGE                                                                  |
+PROMPT | -----------------------------------------------------------------------|
+PROMPT | This SQL script should be run while connected to the Oracle database   |
+PROMPT | as one of the schemas you would like to compare. You will be prompted  |
+PROMPT | to enter the Oracle username, password, and Oracle Net Service Name of |
+PROMPT | the second (remote) schema you would like to compare against. Lastly,  |
+PROMPT | you will be asked for the filename of the report you would like this   |
+PROMPT | script to create for all generated discrepancies. (You can hit [ENTER] |
+PROMPT | to accept the default file name.)                                      |
+PROMPT |                                                                        |
+PROMPT | NOTE                                                                   |
+PROMPT | -----------------------------------------------------------------------|
+PROMPT | The following database objects will be created for use by this script. |
+PROMPT |                                                                        |
+PROMPT |     [*] Database Link      (remote_schema_link)                        |
+PROMPT |     [*] Table              (schema_compare_temp)                       |
+PROMPT |     [*] PL/SQL Procedure   (getLongText)                               |
+PROMPT |     [*] PL/SQL Procedure   (getLongText2)                              |
+PROMPT |                                                                        |
+PROMPT | These objects will be dropped at the end of this script.               |
+PROMPT +------------------------------------------------------------------------+
+PROMPT 
+
+SET TERMOUT OFF;
+COLUMN local_conn_info NEW_VALUE local_conn_info NOPRINT;
+SELECT  'You are currently connected to the [' || 
+        sys_context('USERENV', 'INSTANCE_NAME')  || '] instance as the [' ||
+        sys_context('USERENV', 'SESSION_USER') || '] user.' local_conn_info
+FROM   dual;
+SET TERMOUT ON;
+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | LOCAL CONNECTION INFORMATION                                           |
+PROMPT |------------------------------------------------------------------------|
+PROMPT | &local_conn_info
+PROMPT +------------------------------------------------------------------------+
+PROMPT 
+
+ACCEPT a1 CHAR PROMPT "Hit <ENTER> to continue or CTL-C to exit this script ... ";
+PROMPT
 
 
 REM +---------------------------------------------------------------------------+
 REM | PROMPT USER FOR USERNAME, PASSWORD, AND ORACLE NET SERVICE NAME.          |
 REM +---------------------------------------------------------------------------+
 
-ACCEPT schema   CHAR  PROMPT "Enter username for remote schema: "
-ACCEPT password CHAR  PROMPT "Enter password for remote schema: " HIDE
-ACCEPT tns_name CHAR  PROMPT "Enter Oracle Net service name for remote schema: "
+ACCEPT schema   CHAR  PROMPT "Enter USERNAME for remote schema: "
+ACCEPT password CHAR  PROMPT "Enter PASSWORD for remote schema: " HIDE
+ACCEPT tns_name CHAR  PROMPT "Enter ORACLE NET SERVICE NAME for remote schema: "
 
 
 REM +---------------------------------------------------------------------------+
 REM | CREATE TEMPORARY DATABASE LINK.                                           |
 REM +---------------------------------------------------------------------------+
 
-set feedback off
-set verify off
-set trimspool on
+SET FEEDBACK OFF
+SET VERIFY OFF
+SET TRIMSPOOL ON
 
 CREATE DATABASE LINK remote_schema_link
     CONNECT TO &schema IDENTIFIED BY &password
@@ -92,30 +118,33 @@ REM | CONFIGURE A DEFAULT REPORT FILE NAME FOR THIS SCRIPT RUN. THE USER WILL   
 REM | BE PROMPTED TO ENTER AN ALTERNATIVE TO THIS DEFAULT.                      |
 REM +---------------------------------------------------------------------------+
 
-set termout off;
-column dflt_name new_value dflt_name noprint;
-select 'compare_'       || 
+SET TERMOUT OFF;
+COLUMN dflt_name NEW_VALUE dflt_name NOPRINT;
+SELECT 'compare_'       || 
        lower(user)      || '_' || 
        lower('&schema') || '_' || 
        lower('&tns_name') dflt_name
-from   dual;
-set termout on;
+FROM   dual;
+SET TERMOUT ON;
 
-prompt
-prompt Specify the Discrepency Report File Name
-prompt ======================================================================
-prompt The default report file name is &dflt_name..lst.
-prompt To use this name, press [ENTER] to continue, otherwise enter an 
-prompt alternative.
-prompt
+PROMPT +------------------------------------------------------------------------+
+PROMPT | SPECIFY THE DISCREPANCY REPORT FILE NAME                               |
+PROMPT |------------------------------------------------------------------------|
+PROMPT | The default report file name is &dflt_name..lst
+PROMPT |                                                                        |
+PROMPT | To use this name, press [ENTER] to continue, otherwise enter an        |
+PROMPT | alternative.                                                           |
+PROMPT +------------------------------------------------------------------------+
+PROMPT
 
-set heading off;
-column report_name new_value report_name noprint;
-select 'Using the report name: ' || nvl('&&report_name','&dflt_name')
-     , nvl('&&report_name','&dflt_name') || '.lst' report_name
-  from sys.dual;
+SET HEADING OFF;
+COLUMN report_name new_value report_name NOPRINT;
+SELECT
+    'Using the report name: ' || nvl('&&report_name','&dflt_name')
+  , nvl('&&report_name','&dflt_name') || '.lst' report_name
+FROM sys.dual;
 spool &report_name;
-set heading on;
+SET HEADING ON;
 
 
 REM +---------------------------------------------------------------------------+
@@ -125,8 +154,8 @@ REM +---------------------------------------------------------------------------
 SELECT SUBSTR(RPAD(TO_CHAR(sysdate, 'DD-MON-YYYY HH24:MI:SS'), 25), 1, 25) "Report Date and Time"
 FROM   dual;
 
-COLUMN local_schema  FORMAT a35 HEADING "Local Schema"  TRUNC 
-COLUMN remote_schema FORMAT a35 HEADING "Remote Schema" TRUNC
+COLUMN local_schema  FORMAT a45 HEADING "Local Schema"  TRUNC 
+COLUMN remote_schema FORMAT a45 HEADING "Remote Schema" TRUNC
 
 SELECT
     user       || '@' || c.global_name  local_schema
@@ -138,29 +167,27 @@ FROM
 WHERE
     rownum = 1;
 
-set pagesize  9999
-set linesize  250
-set feedback  off
-set termout   off
+SET FEEDBACK OFF
+SET TERMOUT OFF
 
-COLUMN object_name    FORMAT a30      HEADING 'Object Name'
-COLUMN object_type    FORMAT a30      HEADING 'Object Type'
-COLUMN obj_count      FORMAT 999,999  HEADING 'Object Count'
+COLUMN object_name    FORMAT a40            HEADING 'Object Name'
+COLUMN object_type    FORMAT a40            HEADING 'Object Type'
+COLUMN obj_count      FORMAT 999,999,999    HEADING 'Object Count'
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                           OBJECT SUMMARY                             |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
-prompt
-prompt ========================================================
-prompt Objects missing from local schema - (Summary)
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Objects missing from local schema - (Summary)
+PROMPT ========================================================
 
 SELECT
     object_type
@@ -186,11 +213,11 @@ GROUP BY object_type
 ORDER BY object_type;
 
 
-prompt
-prompt
-prompt ========================================================
-prompt Extraneous objects in local schema - (Summary)
-prompt ========================================================
+PROMPT
+PROMPT
+PROMPT ========================================================
+PROMPT Extraneous objects in local schema - (Summary)
+PROMPT ========================================================
 
 SELECT
     object_type
@@ -218,33 +245,33 @@ GROUP BY object_type
 ORDER BY object_type;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                         PRIVILEGE DIFFERENCES                        |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
 
-COLUMN granted_role  FORMAT a22   HEADING 'Granted Role'
+COLUMN granted_role  FORMAT a30   HEADING 'Granted Role'
 COLUMN default_role  FORMAT a22   HEADING 'Default Role'
 COLUMN os_granted    FORMAT a11   HEADING 'O/S Granted'
-COLUMN owner         FORMAT a15   HEADING 'Owner'
-COLUMN table_name    FORMAT a25   HEADING 'Table Name'
+COLUMN owner         FORMAT a30   HEADING 'Owner'
+COLUMN table_name    FORMAT a30   HEADING 'Table Name'
 COLUMN schema        FORMAT a7    HEADING 'Schema'
-COLUMN grantee       FORMAT a15   HEADING 'Grantee'
-COLUMN privilege     FORMAT a25   HEADING 'Privilege'
+COLUMN grantee       FORMAT a30   HEADING 'Grantee'
+COLUMN privilege     FORMAT a40   HEADING 'Privilege'
 COLUMN grantable     FORMAT a10   HEADING 'Grantable?'
 COLUMN admin_option  FORMAT a13   HEADING 'Admin Option?'
 
 
-prompt
-prompt ========================================================
-prompt Role privilege discrepencies
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Role privilege discrepancies
+PROMPT ========================================================
 
 (
   SELECT
@@ -288,10 +315,10 @@ UNION ALL
 ORDER BY 1, 2;
 
 
-prompt
-prompt ========================================================
-prompt System privilege discrepencies
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT System privilege discrepancies
+PROMPT ========================================================
 
 (
   SELECT
@@ -327,10 +354,10 @@ UNION ALL
 ORDER BY 1, 2;
 
 
-prompt
-prompt ========================================================
-prompt Object-level grant discrepencies
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Object-level grant discrepancies
+PROMPT ========================================================
 
 (
   SELECT
@@ -387,21 +414,21 @@ UNION ALL
 ORDER BY 1, 2, 3;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                          OBJECT DIFFERENCES                          |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
 
-prompt
-prompt ========================================================
-prompt Objects missing from local schema
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Objects missing from local schema
+PROMPT ========================================================
 
 SELECT
     DECODE(   object_type
@@ -421,11 +448,11 @@ FROM     user_objects
 ORDER BY object_type, object_name;
 
 
-prompt
-prompt
-prompt ========================================================
-prompt Extraneous objects in local schema
-prompt ========================================================
+PROMPT
+PROMPT
+PROMPT ========================================================
+PROMPT Extraneous objects in local schema
+PROMPT ========================================================
 
 SELECT   
     DECODE(   object_type
@@ -450,11 +477,11 @@ FROM
 ORDER BY object_type, object_name;
 
 
-prompt
-prompt
-prompt ========================================================
-prompt Objects in local schema that are not valid
-prompt ========================================================
+PROMPT
+PROMPT
+PROMPT ========================================================
+PROMPT Objects in local schema that are not valid
+PROMPT ========================================================
 
 SELECT   object_name, object_type, status
 FROM     user_objects
@@ -462,11 +489,11 @@ WHERE    status != 'VALID'
 ORDER BY object_name, object_type;
 
 
-prompt
-prompt
-prompt ========================================================
-prompt Objects in remote schema that are not valid
-prompt ========================================================
+PROMPT
+PROMPT
+PROMPT ========================================================
+PROMPT Objects in remote schema that are not valid
+PROMPT ========================================================
 
 SELECT   object_name, object_type, status
 FROM     user_objects@remote_schema_link
@@ -474,22 +501,22 @@ WHERE    status != 'VALID'
 ORDER BY object_name, object_type;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                      TABLE COLUMN DIFFERENCES                        |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
 
-prompt
-prompt ========================================================
-prompt Table columns missing from one schema
-prompt (Discrepencies are not listed in column order)
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Table columns missing from one schema
+PROMPT (Discrepancies are not listed in column order)
+PROMPT ========================================================
 
 COLUMN table_name     FORMAT a30  HEADING 'Table Name'
 COLUMN column_name    FORMAT a30  HEADING 'Column Name'
@@ -540,11 +567,11 @@ UNION ALL
 ORDER BY 1, 2;
 
 
-prompt
-prompt ========================================================
-prompt Datatype discrepencies for table columns that exist in 
-prompt both schemas
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Data type discrepancies for table columns that exist in 
+PROMPT both schemas
+PROMPT ========================================================
 
 (
   SELECT
@@ -608,15 +635,15 @@ UNION ALL
 ORDER BY 1, 2, 3;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                          INDEX DIFFERENCES                           |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
 COLUMN index_name       FORMAT a30   HEADING 'Index Name'
 COLUMN schema           FORMAT a7    HEADING 'Schema'
@@ -625,11 +652,11 @@ COLUMN table_name       FORMAT a30   HEADING 'Table Name'
 COLUMN column_name      FORMAT a30   HEADING 'Column Name'
 COLUMN column_position  FORMAT 999   HEADING 'Order'
 
-prompt
-prompt ========================================================
-prompt Index discrepencies for indexes that exist in both
-prompt schemas
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Index discrepancies for indexes that exist in both
+PROMPT schemas
+PROMPT ========================================================
 
 (
   SELECT
@@ -701,24 +728,24 @@ UNION ALL
 ORDER BY 1, 2, 6;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                       CONSTRAINT DIFFERENCES                         |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
 
-prompt
-prompt ========================================================
-prompt Constraint discrepencies for tables that exist in both
-prompt schemas
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Constraint discrepancies for tables that exist in both
+PROMPT schemas
+PROMPT ========================================================
 
-set feedback off
+SET FEEDBACK OFF
 
 CREATE TABLE schema_compare_temp (
     database     NUMBER(1)
@@ -777,13 +804,13 @@ BEGIN
 END;
 /
 
-set feedback on
+SET FEEDBACK ON
 
-COLUMN constraint_name   FORMAT a15   HEADING 'Constraint|Name'
+COLUMN constraint_name   FORMAT a30   HEADING 'Constraint|Name'
 COLUMN schema            FORMAT a7    HEADING 'Schema'
 COLUMN constraint_type   FORMAT a10   HEADING 'Constraint|Type'
-COLUMN table_name        FORMAT a25   HEADING 'Table|Name'
-COLUMN r_constraint_name FORMAT a15   HEADING 'R Constraint|Name'
+COLUMN table_name        FORMAT a30   HEADING 'Table|Name'
+COLUMN r_constraint_name FORMAT a30   HEADING 'R Constraint|Name'
 COLUMN delete_rule       FORMAT a10   HEADING 'Delete|Rule'
 COLUMN status            FORMAT a9    HEADING 'Status'
 COLUMN object_text       FORMAT a20   HEADING 'Object|Text'
@@ -866,23 +893,23 @@ UNION ALL
 ORDER BY 1, 4, 2;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                         SEQUENCE DIFFERENCES                         |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
 
-prompt
-prompt ========================================================
-prompt Sequence discrepencies
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Sequence discrepancies
+PROMPT ========================================================
 
-COLUMN sequence_name  FORMAT a15  HEADING 'Sequence|Name'
+COLUMN sequence_name  FORMAT a30  HEADING 'Sequence|Name'
 COLUMN schema         FORMAT a7   HEADING 'Schema'
 COLUMN min_value                  HEADING 'Min.|Value'
 COLUMN max_value                  HEADING 'Max.|Value'
@@ -945,24 +972,24 @@ UNION ALL
 ORDER BY 1, 2;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                     PRIVATE SYNONYM DIFFERENCES                      |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
-prompt
-prompt ========================================================
-prompt Private synonym discrepencies
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Private synonym discrepancies
+PROMPT ========================================================
 
-COLUMN synonym_name   FORMAT a15  HEADING 'Synonym|Name'
+COLUMN synonym_name   FORMAT a30  HEADING 'Synonym|Name'
 COLUMN schema         FORMAT a7   HEADING 'Schema'
-COLUMN table_owner    FORMAT a10  HEADING 'Table|Owner'
+COLUMN table_owner    FORMAT a20  HEADING 'Table|Owner'
 COLUMN table_name     FORMAT a30  HEADING 'Table|Name'
 COLUMN db_link        FORMAT a25  HEADING 'DB|Link Name'
 
@@ -1007,31 +1034,31 @@ UNION ALL
 ORDER BY 1, 2;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                          PL/SQL DIFFERENCES                          |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
-prompt
-prompt ========================================================
-prompt Source code discrepencies for all packages, procedures, 
-prompt and functions that exist in both schemas
-prompt (CASE SENSITIVE COMPARISON)
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Source code discrepancies for all packages, procedures, 
+PROMPT and functions that exist in both schemas
+PROMPT (CASE SENSITIVE COMPARISON)
+PROMPT ========================================================
 
-COLUMN name           FORMAT a25          HEADING 'Source|Name'
+COLUMN name           FORMAT a30          HEADING 'Source|Name'
 COLUMN type           FORMAT a20          HEADING 'Source|Type'
-COLUMN discrepencies  FORMAT 999,999,999  HEADING 'Number|Discrepencies'
+COLUMN discrepancies  FORMAT 999,999,999  HEADING 'Number|Discrepancies'
 
 SELECT
     name
   , type
-  , COUNT(*) discrepencies
+  , COUNT(*) discrepancies
 FROM
     ( (  SELECT   name, type, line, text
          FROM     user_source@remote_schema_link
@@ -1058,21 +1085,21 @@ FROM
 GROUP BY name, type
 ORDER BY name, type;
 
-prompt
-prompt ========================================================
-prompt Source code discrepencies for packages, procedures, and 
-prompt functions that exist in both schemas
-prompt (CASE INSENSITIVE COMPARISON)
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Source code discrepancies for all packages, procedures, 
+PROMPT and functions that exist in both schemas
+PROMPT (CASE INSENSITIVE COMPARISON)
+PROMPT ========================================================
 
-COLUMN name           FORMAT a25          HEADING 'Source|Name'
+COLUMN name           FORMAT a30          HEADING 'Source|Name'
 COLUMN type           FORMAT a20          HEADING 'Source|Type'
-COLUMN discrepencies  FORMAT 999,999,999  HEADING 'Number|Discrepencies'
+COLUMN discrepancies  FORMAT 999,999,999  HEADING 'Number|Discrepancies'
 
 SELECT
     name
   , type
-  , COUNT (*) discrepencies
+  , COUNT (*) discrepancies
 FROM
     ( (  SELECT name, type, line, UPPER(text)
          FROM   user_source@remote_schema_link
@@ -1100,23 +1127,23 @@ GROUP BY name, type
 ORDER BY name, type;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                         TRIGGER DIFFERENCES                          |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
 
-prompt
-prompt ========================================================
-prompt Trigger discrepencies
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Trigger discrepancies
+PROMPT ========================================================
 
-set feedback off
+SET FEEDBACK OFF
 
 TRUNCATE TABLE schema_compare_temp
 /
@@ -1175,7 +1202,7 @@ BEGIN
 END;
 /
 
-set feedback on
+SET FEEDBACK ON
 
 COLUMN trigger_name       FORMAT a20    HEADING 'Trigger|Name'
 COLUMN schema             FORMAT a7     HEADING 'Schema'
@@ -1268,35 +1295,104 @@ UNION ALL
 ORDER BY 1, 2, 5, 3;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                           VIEW DIFFERENCES                           |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
 prompt
 prompt ========================================================
-prompt View discrepencies for views that exist in both
+prompt View discrepancies for views that exist in both
 prompt schemas
 prompt ========================================================
 
-set feedback off
+SET FEEDBACK OFF
+SET LONG 32767
 
 TRUNCATE TABLE schema_compare_temp
+/
+
+CREATE OR REPLACE FUNCTION getLongText (    p_tname IN VARCHAR2
+                                          , p_cname IN VARCHAR2
+                                          , p_vname IN VARCHAR2) RETURN VARCHAR2
+  AS
+    l_sql       VARCHAR2(4000);
+    l_cursor    INTEGER DEFAULT dbms_sql.open_cursor;
+    l_n         NUMBER;
+    l_long_val  VARCHAR2(4000);
+    l_long_len  NUMBER;
+    l_buflen    NUMBER := 4000;
+    l_curpos    NUMBER := 0;
+  BEGIN
+    l_sql := 'select ' || p_cname || ' from ' || p_tname || ' where UPPER(view_name) = UPPER(:view_name)';
+    DBMS_SQL.PARSE(   l_cursor
+                    , l_sql
+                    , DBMS_SQL.NATIVE);
+    DBMS_SQL.BIND_VARIABLE(l_cursor, ':view_name', p_vname);
+    DBMS_SQL.DEFINE_COLUMN_LONG(l_cursor, 1);
+    l_n := DBMS_SQL.EXECUTE(l_cursor);
+  
+    IF (DBMS_SQL.FETCH_ROWS(l_cursor) > 0)
+      THEN
+        DBMS_SQL.COLUMN_VALUE_LONG(   l_cursor
+                                    , 1
+                                    , l_buflen
+                                    , l_curpos 
+                                    , l_long_val
+                                    , l_long_len);
+    END IF;
+    DBMS_SQL.CLOSE_CURSOR(l_cursor);
+    RETURN l_long_val;
+  END getLongText;
+/
+
+CREATE OR REPLACE FUNCTION getLongText2 (    p_tname IN VARCHAR2
+                                           , p_cname IN VARCHAR2
+                                           , p_vname IN VARCHAR2) RETURN VARCHAR2
+  AS
+    l_sql       VARCHAR2(4000);
+    l_cursor    INTEGER DEFAULT dbms_sql.open_cursor;
+    l_n         NUMBER;
+    l_long_val  VARCHAR2(4000);
+    l_long_len  NUMBER;
+    l_buflen    NUMBER := 4000;
+    l_curpos    NUMBER := 0;
+  BEGIN
+    l_sql := 'select ' || p_cname || ' from ' || p_tname || '@remote_schema_link where UPPER(view_name) = UPPER(:view_name)';
+    DBMS_SQL.PARSE(   l_cursor
+                    , l_sql
+                    , DBMS_SQL.NATIVE);
+    DBMS_SQL.BIND_VARIABLE(l_cursor, ':view_name', p_vname);
+    DBMS_SQL.DEFINE_COLUMN_LONG(l_cursor, 1);
+    l_n := DBMS_SQL.EXECUTE(l_cursor);
+    
+    IF (DBMS_SQL.FETCH_ROWS(l_cursor) > 0)
+      THEN
+        DBMS_SQL.COLUMN_VALUE_LONG(   l_cursor
+                                    , 1
+                                    , l_buflen
+                                    , l_curpos 
+                                    , l_long_val
+                                    , l_long_len);
+    END IF;
+    DBMS_SQL.CLOSE_CURSOR(l_cursor);
+    RETURN l_long_val;
+  END getLongText2;
 /
 
 DECLARE
 
     CURSOR c1 IS
-        SELECT view_name, text
+        SELECT view_name, getLongText('USER_VIEWS', 'TEXT', view_name)
         FROM   user_views;
 
     CURSOR c2 IS
-        SELECT view_name, text
+        SELECT view_name, getLongText2('USER_VIEWS', 'TEXT', view_name)
         FROM   user_views@remote_schema_link;
 
     v_view_name    VARCHAR2(30);
@@ -1309,16 +1405,11 @@ BEGIN
     LOOP
         FETCH c1 INTO v_view_name, v_text;
         EXIT WHEN c1%NOTFOUND;
-        v_text := REPLACE(v_text, ' ', NULL);
-        v_text := REPLACE(v_text, CHR(9), NULL);
-        v_text := REPLACE(v_text, CHR(10), NULL);
-        v_text := REPLACE(v_text, CHR(13), NULL);
-        v_text := UPPER(v_text);
         v_hash_value := dbms_utility.get_hash_value(v_text, 1, 65536);
         INSERT INTO schema_compare_temp (
-            database, object_name, hash_value
+            database, object_name, object_text, hash_value
         ) VALUES (
-            1, v_view_name, v_hash_value
+            1, v_view_name, '[' || v_text || ']', v_hash_value
         );
     END LOOP;
     CLOSE c1;
@@ -1327,16 +1418,11 @@ BEGIN
     LOOP
         FETCH c2 INTO v_view_name, v_text;
         EXIT WHEN c2%NOTFOUND;
-        v_text := REPLACE(v_text, ' ', NULL);
-        v_text := REPLACE(v_text, CHR(9), NULL);
-        v_text := REPLACE(v_text, CHR(10), NULL);
-        v_text := REPLACE(v_text, CHR(13), NULL);
-        v_text := UPPER(v_text);
         v_hash_value := dbms_utility.get_hash_value(v_text, 1, 65536);
         INSERT INTO schema_compare_temp (
-            database, object_name, hash_value
+            database, object_name, object_text, hash_value
         ) VALUES (
-            2, v_view_name, v_hash_value
+            2, v_view_name, '[' || v_text || ']', v_hash_value
         );
     END LOOP;
     CLOSE c2;
@@ -1344,9 +1430,9 @@ BEGIN
 END;
 /
 
-set feedback on
+SET FEEDBACK ON
 
-COLUMN view_name          FORMAT a20    HEADING 'View|Name'
+COLUMN view_name          FORMAT a30    HEADING 'View|Name'
 COLUMN schema             FORMAT a7     HEADING 'Schema'
 COLUMN hash_value                       HEADING 'Hash Value'
 
@@ -1408,20 +1494,20 @@ UNION ALL
 ORDER BY 1, 2;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                         JOB QUEUE DIFFERENCES                        |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
-prompt
-prompt ========================================================
-prompt Job queue discrepencies
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Job queue discrepancies
+PROMPT ========================================================
 
 COLUMN what     FORMAT a30   HEADING 'What'
 COLUMN interval FORMAT a30   HEADING 'Interval'
@@ -1465,25 +1551,25 @@ UNION ALL
 ORDER BY 1, 2, 3;
 
 
-prompt
-set heading off
-set feedback off
+PROMPT
+SET HEADING OFF
+SET FEEDBACK OFF
 SELECT '+----------------------------------------------------------------------+' || chr(10) ||
        '|                      DATABASE LINK DIFFERENCES                       |' || chr(10) ||
        '+----------------------------------------------------------------------+'
 FROM    dual;
-set heading on
-set feedback on
+SET HEADING ON
+SET FEEDBACK ON
 
 
-prompt
-prompt ========================================================
-prompt Database link discrepencies
-prompt ========================================================
+PROMPT
+PROMPT ========================================================
+PROMPT Database link discrepancies
+PROMPT ========================================================
 
 COLUMN db_link        FORMAT a30  HEADING 'DB Link Name'
 COLUMN schema         FORMAT a7   HEADING 'Schema'
-COLUMN username       FORMAT a15  HEADING 'User Name'
+COLUMN username       FORMAT a20  HEADING 'User Name'
 COLUMN host           FORMAT a20  HEADING 'Host'
 
 (
@@ -1524,21 +1610,23 @@ UNION ALL
 ORDER BY 1, 2;
 
 
-spool off
+SPOOL OFF
 
-set termout on
+SET TERMOUT ON
 
-prompt
-prompt =============
-prompt END OF REPORT
-prompt =============
-prompt
-prompt Report output written to &report_name
-prompt ==============================================================
+PROMPT
+PROMPT =============
+PROMPT END OF REPORT
+PROMPT =============
+PROMPT
+PROMPT Report output written to &report_name
+PROMPT ==============================================================
 
-set feedback off
+SET FEEDBACK OFF
 
 DROP TABLE schema_compare_temp;
 DROP DATABASE LINK remote_schema_link;
+DROP FUNCTION getLongText;
+DROP FUNCTION getLongText2;
 
-set feedback on
+SET FEEDBACK    6

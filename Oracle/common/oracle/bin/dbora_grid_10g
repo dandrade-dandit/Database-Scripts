@@ -12,8 +12,9 @@
 # |                10g running on the Linux OS platform.                   |
 # | NOTE         : This script is simply a wrapper script and relies on    |
 # |                the custom script                                       |
-# |                /u01/app/oracle/custom/oracle/bin/oem10g_ctl.ksh to     |
-# |                perform all start/stop actions for Oracle Grid Control. |
+# |                /u01/app/oracle/dba_scripts/bin/oem10g_ctl.ksh          |
+# |                to perform all start/stop actions for Oracle Grid       |
+# |                Control.                                                |
 # | INSTALLATION :                                                         |
 # |                - At the beginning of this script, set all environment  |
 # |                  variables as well as ORA_HOME.                        |
@@ -27,7 +28,7 @@
 # |                  shutdown. For example:                                |
 # |                                                                        |
 # |                      ...                                               |
-# |                      emrep:/u01/app/oracle/product/11.1.0/db_1:Y       |
+# |                      emrep:/u01/app/oracle/product/10.2.0/db_1:Y       |
 # |                      ...                                               |
 # |                                                                        |
 # |                - Verify this script is executable and owned by root:   |
@@ -65,14 +66,14 @@
 # | Set the ORACLE_HOME and ORA_CRS_HOME to the appropriate directory path.|
 # +------------------------------------------------------------------------+
 ORACLE_BASE=/u01/app/oracle
-ORACLE_HOME=/u01/app/oracle/product/11.1.0/db_1
+ORACLE_HOME=/u01/app/oracle/product/10.2.0/db_1
 
 export ORACLE_BASE ORACLE_HOME
 
 # +------------------------------------------------------------------------+
 # | SCRIPT NAME VARIABLES                                                  |
 # +------------------------------------------------------------------------+
-VERSION="5.0"
+VERSION="5.3"
 SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 SCRIPT_NAME=${SCRIPT_NAME##K10}
@@ -91,7 +92,7 @@ export START_DATE_TIME
 # +------------------------------------------------------------------------+
 # | CUSTOM DIRECTORIES                                                     |
 # +------------------------------------------------------------------------+
-CUSTOM_ORACLE_DIR=/u01/app/oracle/custom/oracle
+CUSTOM_ORACLE_DIR=${ORACLE_BASE}/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log
@@ -204,21 +205,6 @@ start)
         echo "---------------------------------------------------------------" | tee -a ${LOG_FILE_NAME}
 
         chown oracle:oinstall ${LOG_FILE_NAME}
-
-        # echo " "
-        # echo "+---------------------------------------------------+"
-        # echo "| About to start the Oracle databases.              |"
-        # echo "+---------------------------------------------------+"
-        # echo " "
-        #
-        # TOUCH_DATE=`date "+%m/%d/%Y %H:%M:%S"`
-        # echo "[START] : $TOUCH_DATE : Starting all Oracle databases - [${HOSTNAME_SHORT_UPPER}]." | tee -a ${LOG_FILE_NAME}
-        #
-        # su - $ORACLE_OWNER -c "$ORACLE_HOME/bin/dbstart ${ORACLE_HOME}" | tee -a ${LOG_FILE_NAME}
-        #
-        # TOUCH_DATE=`date "+%m/%d/%Y %H:%M:%S"`
-        # echo "[START] : $TOUCH_DATE : Started all Oracle databases - [${HOSTNAME_SHORT_UPPER}]." | tee -a ${LOG_FILE_NAME}
-
 
         echo " "
         echo "+---------------------------------------------------+"
@@ -346,22 +332,6 @@ stop)
         
         TOUCH_DATE=`date "+%m/%d/%Y %H:%M:%S"`
         echo "[STOP] : $TOUCH_DATE : Stopped Oracle Grid Control Services." | tee -a ${LOG_FILE_NAME}
-
-
-        # echo " "
-        # echo "+---------------------------------------------------+"
-        # echo "| About to stop the Oracle databases.               |"
-        # echo "+---------------------------------------------------+"
-        # echo " "
-        #
-        # TOUCH_DATE=`date "+%m/%d/%Y %H:%M:%S"`
-        # echo "[STOP] : $TOUCH_DATE : Stopping all Oracle databases - [${HOSTNAME_SHORT_UPPER}]." | tee -a ${LOG_FILE_NAME}
-        #
-        # su - $ORACLE_OWNER -c "$ORACLE_HOME/bin/dbshut ${ORACLE_HOME}" | tee -a ${LOG_FILE_NAME}
-        #
-        # TOUCH_DATE=`date "+%m/%d/%Y %H:%M:%S"`
-        # echo "[STOP] : $TOUCH_DATE : Stopped all Oracle databases - [${HOSTNAME_SHORT_UPPER}]." | tee -a ${LOG_FILE_NAME}
-
 
 
         END_DATE_TIME=`date "+%m/%d/%Y %H:%M:%S"`

@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # |----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # |----------------------------------------------------------------------------|
 # | DATABASE   : N/A                                                           |
 # | FILE       : iscsi_client_services_solaris.ksh                             |

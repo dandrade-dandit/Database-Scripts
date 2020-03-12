@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : perf_hit_ratio_system.sql                                       |
@@ -37,5 +37,4 @@ SELECT
          ) Hitratio
 FROM v$sysstat
 /
-
 

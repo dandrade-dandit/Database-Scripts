@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : asm_drop_files.sql                                              |
@@ -14,14 +14,23 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE  255
-SET PAGESIZE  9999
-SET VERIFY    off
-SET FEEDBACK  off
-SET HEAD      off
+SET ECHO        OFF
+SET FEEDBACK    OFF
+SET HEADING     OFF
+SET LINESIZE    256
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN full_alias_path    FORMAT a255       HEAD 'File Name'
-COLUMN disk_group_name    noprint
+COLUMN disk_group_name    NOPRINT
 
 SELECT
     'ALTER DISKGROUP '  ||
@@ -42,4 +51,7 @@ WHERE type IS NOT NULL
 START WITH (MOD(pindex, POWER(2, 24))) = 0
     CONNECT BY PRIOR rindex = pindex
 /
+
+SET FEEDBACK    6
+SET HEAD        ON
 

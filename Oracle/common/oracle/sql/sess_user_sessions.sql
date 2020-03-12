@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sess_user_sessions.sql                                          |
@@ -13,18 +13,39 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN max_sess_allowed  FORMAT 999,999       JUSTIFY r HEADING 'Max sessions allowed'
-COLUMN num_sessions      FORMAT 999,999,999   JUSTIFY r HEADING 'Number of sessions'
-COLUMN pct_utl           FORMAT a19           JUSTIFY r HEADING 'Percent Utilization'
-COLUMN username          FORMAT a15           JUSTIFY r HEADING 'Oracle User'
-COLUMN num_user_sess     FORMAT 999,999       JUSTIFY r HEADING 'Number of Logins'
-COLUMN count_a           FORMAT 999,999       JUSTIFY r HEADING 'Active Logins'
-COLUMN count_i           FORMAT 999,999       JUSTIFY r HEADING 'Inactive Logins'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : User Sessions Summary Report                                |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
-SET verify off
+SET ECHO        OFF
+SET FEEDBACK    OFF
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN max_sess_allowed  FORMAT 9,999,999       JUSTIFY r HEADING 'Max sessions allowed'
+COLUMN num_sessions      FORMAT 9,999,999,999   JUSTIFY r HEADING 'Number of sessions'
+COLUMN pct_utl           FORMAT a19             JUSTIFY r HEADING 'Percent Utilization'
+COLUMN username          FORMAT a15             JUSTIFY r HEADING 'Oracle User'
+COLUMN num_user_sess     FORMAT 9,999,999       JUSTIFY r HEADING 'Number of Logins'
+COLUMN count_a           FORMAT 9,999,999       JUSTIFY r HEADING 'Active Logins'
+COLUMN count_i           FORMAT 9,999,999       JUSTIFY r HEADING 'Inactive Logins'
 
 SELECT
     TO_NUMBER(a.value)         max_sess_allowed
@@ -38,8 +59,8 @@ WHERE
 GROUP BY 
     a.value;
 
-break on report
-compute sum of num_user_sess count_a count_i on report
+BREAK on report
+COMPUTE sum OF num_user_sess count_a count_i ON report
 
 SELECT
     lpad(nvl(sess.username, '[B.G. Process]'), 15) username
@@ -62,5 +83,8 @@ WHERE
 GROUP BY 
     sess.username
   , act.count
-  , inact.count;
+  , inact.count
+/
+
+SET FEEDBACK 6
 

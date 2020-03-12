@@ -3,7 +3,7 @@
 ' |                      jhunter@idevelopment.info                             |
 ' |                         www.idevelopment.info                              |
 ' |----------------------------------------------------------------------------|
-' |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+' |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 ' |----------------------------------------------------------------------------|
 ' | FILE       : oracle_ADO_example.vbs                                        |
 ' | CLASS      : WINDOWS Shell Scripts                                         |
@@ -37,7 +37,7 @@
 ' |              Source Administrator" dialog box, click the "Drivers" tab,    |
 ' |              then scroll down to the driver you want to use. For the       |
 ' |              examples in this document, I will be using                    |
-' |              "Oracle in OraHome92".                                        |
+' |              "Oracle in OraDb11g_home1".                                   |
 ' |                                                                            |
 ' | ABOUT ADO  : ADO (Active X Data Objects) is a set of objects that provide  |
 ' |              a mechanism to access information from ODBC-compliant data    |
@@ -71,7 +71,7 @@ Option Explicit
 '   EXPLICIT VARIABLE DECLARATION & STANDARD GLOBALS
 ' -----------------------------------------------------------------------------
 
-Const g_SCRIPT_VERSION="1.0"
+Const g_SCRIPT_VERSION="1.1"
 Dim   g_strScriptPath, g_strScriptName, g_strScriptFolder, g_strScriptNameNoExt
 Dim   g_bytTraceLevel
 Dim   g_objShell, g_objFSO
@@ -104,7 +104,7 @@ Set g_objFSO   = CreateObject("Scripting.FileSystemObject")
 strBannerText = VbCrLf
 strBannerText = strBannerText & g_strScriptName
 strBannerText = strBannerText & " - Version " & g_SCRIPT_VERSION & VbCrLf
-strBannerText = strBannerText & "Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved."
+strBannerText = strBannerText & "Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved."
 strBannerText = strBannerText & VbCrLf
 WScript.Echo strBannerText
 
@@ -353,7 +353,7 @@ Sub RunADOExample1()
     ' Recordset objects) cannot be simulated with server-side cursors and these
     ' features will be unavailable with this setting.
     ' -------------------------------------------------------------------------
-    Const adUseNone 	   = 1      ' Does not use cursor services. This constant
+    Const adUseNone        = 1      ' Does not use cursor services. This constant
                                     ' is obsolete and appears solely For the sake
                                     ' of backward compatibility.
     Const adUseServer      = 2      ' Server cursor location (Default)
@@ -376,7 +376,7 @@ Sub RunADOExample1()
     ' NOTE: If an unsupported value is set, then no error will result; the
     '       closest supported CursorType will be used instead.
     ' -------------------------------------------------------------------------    
-    Const adOpenUnspecified 	= -1    ' Does not specify the type of cursor.
+    Const adOpenUnspecified     = -1    ' Does not specify the type of cursor.
     Const adOpenForwardOnly     = 0 	' (Default) Uses a forward-only cursor.
                                         ' Identical to a static cursor, except
                                         ' that you can only scroll forward
@@ -442,14 +442,14 @@ Sub RunADOExample1()
                               
     strDBUserID = "SYSTEM"
     strDBUserPassword = "MANAGER"
-    strTNSServiceName = "testdb_vmlinux3.idevelopment.info"
-    strDriver = "{Oracle in OraHome92}"
+    strTNSServiceName = "racdb.idevelopment.info"
+    strDriver = "{Oracle in OraDb11g_home1}"
     strConnectionString = "Driver=" & strDriver & ";" & _
                           "DBQ=" & strTNSServiceName & ";" & _
                           "UID=" & strDBUserID & ";" & _
                           "PWD=" & strDBUserPassword
-    ' The connection string when using a DSN named TESTDB would be
-    ' strConnectionString = "DSN=TESTDB"
+    ' The connection string when using a DSN named RACDB would be
+    ' strConnectionString = "DSN=RACDB"
 
     Trace 2, "D: Connection String = " & strConnectionString
     

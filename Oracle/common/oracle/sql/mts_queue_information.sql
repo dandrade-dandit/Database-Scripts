@@ -3,11 +3,11 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : mts_queue_information.sql                                       |
--- | CLASS    : Multi Threaded Server                                           |
+-- | CLASS    : Multi-threaded Server (MTS)                                     |
 -- | PURPOSE  : Display status and metrics related to MTS queue information.    |
 -- |            You can get an idea of how well work is flowing through the     |
 -- |            request and response queues by using v$queue. The DECODE in the |
@@ -22,23 +22,60 @@
 -- |            be picked up and executed by a shared server process. If you    |
 -- |            average wait time is high, you might be able to lower it by     |
 -- |            creating more shared server processes.                          |
+-- |                                                                            |
+-- |            This script is RAC enabled.                                     |
+-- |                                                                            |
 -- | NOTE     : As with any code, ensure to test this script in a development   |
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE  145
-SET PAGESIZE  9999
-SET VERIFY    off
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN paddr           FORMAT a15     HEAD 'PADDR'
-COLUMN queue_type      FORMAT a13     HEAD 'Queue Type'
-COLUMN queued                         HEAD 'Queued'
-COLUMN awt             FORMAT 999.99  HEAD 'Average_Wait_Time'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Multi-threaded Server: Queue Information                    |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN instance_name      FORMAT a10      HEAD 'Instance'
+COLUMN dispatcher_name    FORMAT a16      HEAD 'Dispatcher Name'
+COLUMN queue_type         FORMAT a13      HEAD 'Queue Type'
+COLUMN queued                             HEAD 'Queued'
+COLUMN awt                FORMAT 999.99   HEAD 'Average_Wait_Time'
 
 SELECT
-    paddr                           paddr
-  , type                            queue_type
-  , queued                          queued
-  , DECODE(totalq,0,0,wait/totalq)  awt
-FROM v$queue;
+    i.instance_name                       instance_name
+  , d.name                                dispatcher_name
+  , q.type                                queue_type
+  , q.queued                              queued
+  , DECODE(q.totalq,0,0,q.wait/q.totalq)  awt
+FROM
+    gv$instance i
+  , gv$queue q
+  , gv$dispatcher d
+WHERE
+      i.inst_id = q.inst_id
+  AND d.inst_id = q.inst_id
+  AND d.paddr = q.paddr
+ORDER BY
+    i.instance_name
+  , d.name;
 

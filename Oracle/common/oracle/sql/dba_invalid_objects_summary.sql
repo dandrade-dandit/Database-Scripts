@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_invalid_objects_summary.sql                                 |
@@ -14,21 +14,41 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE  145
-SET PAGESIZE  9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-clear columns
-clear breaks
-clear computes
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Invalid Objects Summary                                     |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
-column owner           format a25         heading 'Owner'
-column object_name     format a30         heading 'Object Name'
-column object_type     format a20         heading 'Object Type'
-column count           format 999,999     heading 'Count'
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
 
-break on owner skip 2 on report
-compute sum   label "Count: "        of count on owner
-compute sum   label "Grand Total: "  of count on report
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN owner           FORMAT a25             HEADING 'Owner'
+COLUMN object_name     FORMAT a30             HEADING 'Object Name'
+COLUMN object_type     FORMAT a20             HEADING 'Object Type'
+COLUMN count           FORMAT 999,999,999     HEADING 'Count'
+
+BREAK ON owner SKIP 2 ON REPORT
+
+COMPUTE sum   LABEL "Count: "        OF count ON owner
+COMPUTE sum   LABEL "Grand Total: "  OF count ON report
 
 SELECT
     owner
@@ -38,5 +58,4 @@ FROM dba_objects
 WHERE status <> 'VALID'
 GROUP BY owner, object_type
 /
-
 

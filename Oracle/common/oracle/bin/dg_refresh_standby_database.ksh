@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # |----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # |----------------------------------------------------------------------------|
 # | DATABASE : Oracle                                                          |
 # | FILE     : dg_refresh_standby_database.ksh                                 |
@@ -138,7 +138,7 @@
 # ----------------------------
 # SCRIPT NAME VARIABLES
 # ----------------------------
-VERSION="2.3"
+VERSION="2.4"
 SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 SCRIPT_NAME_NOEXT=${SCRIPT_NAME%%\.ksh}
@@ -160,12 +160,13 @@ MAIL_REPLYTO="iDevelopment.info Database Support <jhunter@idevelopment.info>"
 # ----------------------------
 START_DATE=`date`
 DATE_LOG=`date +%Y-%m-%d-%H:%M:%S`
+CURRENT_YEAR=`${DATE_BIN} +"%Y"`;
 TODAY=${DATE_LOG}
 
 # ----------------------------
 # CUSTOM DIRECTORIES
 # ----------------------------
-CUSTOM_ORACLE_DIR=/u01/app/oracle/custom/oracle
+CUSTOM_ORACLE_DIR=/u01/app/oracle/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log
@@ -233,7 +234,7 @@ showSignonBanner() {
 
     wl " "
     wl "${SCRIPT_NAME} - Version ${VERSION}"
-    wl "Copyright (c) 2000-2010 Jeffrey M. Hunter. All rights reserved."
+    wl "Copyright (c) 1998-${CURRENT_YEAR} Jeffrey M. Hunter. All rights reserved."
     wl " "
 
 }
@@ -376,7 +377,7 @@ switchOracleEnv() {
     ORACLE_DOC=$DB_ENTRY_HOME/doc
     export ORACLE_DOC
 
-    ORACLE_PATH=$DB_ENTRY_HOME/rdbms/admin:$DB_ENTRY_HOME/sqlplus/admin:$HOME/common/bin
+    ORACLE_PATH=$DB_ENTRY_HOME/rdbms/admin:$DB_ENTRY_HOME/sqlplus/admin
     export ORACLE_PATH
 
     TNS_ADMIN=$DB_ENTRY_HOME/network/admin

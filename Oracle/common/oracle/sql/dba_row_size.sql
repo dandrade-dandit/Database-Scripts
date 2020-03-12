@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_row_size.sql                                                |
@@ -13,18 +13,42 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-Accept INTAB prompt 'Enter Table Schema Owner (i.e. SCOTT) : '
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-SET LINESIZE 135
-SET PAGESIZE 999
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Calculate Row Size for Tables in a Specified Schema         |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+PROMPT 
+ACCEPT schema CHAR  PROMPT 'Enter schema name : '
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN Tot_Size   FORMAT 99,999
 COLUMN data_type  FORMAT a15
 
 BREAK ON table_name SKIP 2
 
-COMPUTE SUM OF Tot_Size    ON table_name
-COMPUTE SUM OF data_length ON table_name
+COMPUTE sum OF Tot_Size    ON table_name
+COMPUTE sum OF data_length ON table_name
 
 SELECT
     table_name
@@ -35,8 +59,9 @@ SELECT
              , 'CHAR'     , TO_NUMBER(DATA_LENGTH)
              , 'DATE'     , TO_NUMBER(DATA_LENGTH)) Tot_Size
   , DATA_TYPE
-FROM      all_tab_columns
-WHERE     owner = UPPER('&INTAB')
+FROM      dba_tab_columns
+WHERE     owner = UPPER('&schema')
 ORDER BY  table_name
         , column_id
 /
+

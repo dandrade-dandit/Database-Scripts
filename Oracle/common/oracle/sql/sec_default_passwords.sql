@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sec_default_passwords.sql                                       |
@@ -14,9 +14,38 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Security - Users with default database password             |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN username         FORMAT a30        HEADING 'User(s) with Default Password!'
+COLUMN account_status   FORMAT a30        HEADING 'Account Status'
+
 SELECT
-    username       "User(s) with Default Password!"
-  , account_status "Account Status"
+    username        username
+  , account_status  account_status
 FROM dba_users
 WHERE password IN (
     'E066D214D5421CCC'   -- dbsnmp
@@ -40,6 +69,7 @@ WHERE password IN (
   , 'AC98877DE1297365'   -- perfstat
   , 'D4C5016086B2DC6A'   -- sys
   , 'D4DF7931AB130E37')  -- system
+ORDER BY
+    username
 /
-
 

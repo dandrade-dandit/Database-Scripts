@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_snapshot_database_10g.sql                                   |
@@ -36,7 +36,7 @@ prompt
 prompt +-----------------------------------------------------------------------------------------+
 prompt |                             Snapshot Database 10g Release 2                             |
 prompt |-----------------------------------------------------------------------------------------+
-prompt | Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved. (www.idevelopment.info) |
+prompt | Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved. (www.idevelopment.info) |
 prompt +-----------------------------------------------------------------------------------------+
 prompt
 prompt Creating database report.
@@ -44,7 +44,7 @@ prompt This script must be run as a user with SYSDBA privileges.
 prompt This process can take several minutes to complete.
 prompt 
 
-define reportHeader="<font size=+3 color=darkgreen><b>Snapshot Database 10<i>g</i> Release 2</b></font><hr>Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved. (<a target=""_blank"" href=""http://www.idevelopment.info"">www.idevelopment.info</a>)<p>"
+define reportHeader="<font size=+3 color=darkgreen><b>Snapshot Database 10<i>g</i> Release 2</b></font><hr>Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved. (<a target=""_blank"" href=""http://www.idevelopment.info"">www.idevelopment.info</a>)<p>"
 
 
 -- +----------------------------------------------------------------------------+

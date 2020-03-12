@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : asmm_components.sql                                             |
@@ -14,11 +14,33 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE  147
-SET PAGESIZE  9999
-SET VERIFY    off
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN component             FORMAT a24              HEAD 'Component Name'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : ASMM Components                                             |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN component             FORMAT a25              HEAD 'Component Name'
 COLUMN current_size          FORMAT 9,999,999,999    HEAD 'Current Size'
 COLUMN min_size              FORMAT 9,999,999,999    HEAD 'Min Size'
 COLUMN max_size              FORMAT 9,999,999,999    HEAD 'Max Size'
@@ -27,7 +49,7 @@ COLUMN oper_count            FORMAT 9,999            HEAD 'Oper.|Count'
 COLUMN last_oper_type        FORMAT a10              HEAD 'Last Oper.|Type'
 COLUMN last_oper_mode        FORMAT a10              HEAD 'Last Oper.|Mode'
 COLUMN last_oper_time        FORMAT a20              HEAD 'Last Oper.|Time'
-COLUMN granule_size          FORMAT 9,999,999        HEAD 'Granule Size'
+COLUMN granule_size          FORMAT 999,999,999      HEAD 'Granule Size'
 
 SELECT
     component

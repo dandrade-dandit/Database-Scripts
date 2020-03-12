@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sess_uncommited_transactions.sql                                |
@@ -13,30 +13,53 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN sid                     FORMAT 99999            HEADING 'SID'
-COLUMN serial_id               FORMAT 99999999         HEADING 'Serial ID'
-COLUMN session_status          FORMAT a9               HEADING 'Status'          JUSTIFY right
-COLUMN oracle_username         FORMAT a14              HEADING 'Oracle User'     JUSTIFY right
-COLUMN os_username             FORMAT a12              HEADING 'O/S User'        JUSTIFY right
-COLUMN os_pid                  FORMAT 9999999          HEADING 'O/S PID'         JUSTIFY right
-COLUMN session_program         FORMAT a18              HEADING 'Session Program' TRUNC
-COLUMN session_machine         FORMAT a15              HEADING 'Machine'         JUSTIFY right
-COLUMN number_of_undo_records  FORMAT 999,999,999,999  HEADING "# Undo Records"
-COLUMN used_undo_size          FORMAT 999,999,999,999  HEADING  "Used Undo Size"
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Uncommited Transactions                                     |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN sid                      FORMAT 999999           HEADING 'SID'
+COLUMN serial_id                FORMAT 99999999         HEADING 'Serial ID'
+COLUMN session_status           FORMAT a9               HEADING 'Status'
+COLUMN oracle_username          FORMAT a18              HEADING 'Oracle User'
+COLUMN os_username              FORMAT a18              HEADING 'O/S User'
+COLUMN os_pid                   FORMAT a8               HEADING 'O/S PID'
+COLUMN session_program          FORMAT a30              HEADING 'Session Program'  TRUNC
+COLUMN session_machine          FORMAT a30              HEADING 'Machine'          TRUNC
+COLUMN number_of_undo_records   FORMAT 999,999,999,999  HEADING "# Undo Records"
+COLUMN used_undo_size           FORMAT     999,999,999  HEADING  "Used Undo (MB)"
 
 SELECT
-    s.sid                  sid
-  , lpad(s.status,9)       session_status
-  , lpad(s.username,14)    oracle_username
-  , lpad(s.osuser,12)      os_username
-  , lpad(p.spid,7)         os_pid
-  , b.used_urec            number_of_undo_records
-  , b.used_ublk * d.value  used_undo_size
-  , s.program              session_program
-  , lpad(s.machine,15)     session_machine
+    s.sid                               sid
+  , s.status                            session_status
+  , s.username                          oracle_username
+  , s.osuser                            os_username
+  , p.spid                              os_pid
+  , b.used_urec                         number_of_undo_records
+  , (b.used_ublk * d.value)/1024/1024   used_undo_size
+  , s.program                           session_program
+  , s.machine                           session_machine
 FROM
     v$process      p
   , v$session      s
@@ -47,3 +70,4 @@ WHERE
   AND p.addr (+) =  s.paddr
   AND s.audsid   <> userenv('SESSIONID')
   AND d.name     =  'db_block_size';
+

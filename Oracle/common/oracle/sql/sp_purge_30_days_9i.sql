@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sp_purge_30_days_9i.sql                                         |
@@ -32,14 +32,13 @@ WHENEVER SQLERROR EXIT ROLLBACK
 
 SPOOL sp_purge_&days_to_keep._days_9i.lis
 
-
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Get database and instance currently connected to. This will be used later  |
-prompt | in the report along with other metadata to lookup snapshots.               |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Get database and instance currently connected to. This will be used later  |
+PROMPT | in the report along with other metadata to lookup snapshots.               |
+PROMPT +----------------------------------------------------------------------------+
 
 SET FEEDBACK off
 
@@ -75,13 +74,13 @@ END;
 SET FEEDBACK on
 
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Obtain the MIN and MAX Snapshot IDs to be removed from the range of IDs    |
-prompt | order than &days_to_keep days.                                                        |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Obtain the MIN and MAX Snapshot IDs to be removed from the range of IDs    |
+PROMPT | order than &days_to_keep days.                                                        |
+PROMPT +----------------------------------------------------------------------------+
 
 SET FEEDBACK off
 
@@ -114,12 +113,12 @@ FROM dual;
 SET FEEDBACK ON
 
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Snapshots that will be removed for this database instance.                 |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Snapshots that will be removed for this database instance.                 |
+PROMPT +----------------------------------------------------------------------------+
 
 SET FEEDBACK off
 
@@ -179,12 +178,12 @@ SET FEEDBACK ON
 
 
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Get begin and end snapshot times - these are used to delete undostat.      |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Get begin and end snapshot times - these are used to delete undostat.      |
+PROMPT +----------------------------------------------------------------------------+
 
 SET FEEDBACK OFF
 
@@ -223,13 +222,13 @@ END;
 SET FEEDBACK on
 
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Deleting snapshots older than &days_to_keep days.
-prompt | Deleting snapshots &&losnapid - &&hisnapid.
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Deleting snapshots older than &days_to_keep days.
+PROMPT | Deleting snapshots &&losnapid - &&hisnapid.
+PROMPT +----------------------------------------------------------------------------+
 
 DELETE FROM stats$snapshot
  WHERE instance_number = :inst_num
@@ -237,15 +236,15 @@ DELETE FROM stats$snapshot
    AND snap_id between :lo_snap and :hi_snap;
 
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Delete any dangling SQLtext. The following statement deletes any dangling  |
-prompt | SQL statements which are no longer referred to by ANY snapshots. By        |
-prompt | default, Oracle comments this statement out as it can be very resource     |
-prompt | intensive.                                                                 |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Delete any dangling SQLtext. The following statement deletes any dangling  |
+PROMPT | SQL statements which are no longer referred to by ANY snapshots. By        |
+PROMPT | default, Oracle comments this statement out as it can be very resource     |
+PROMPT | intensive.                                                                 |
+PROMPT +----------------------------------------------------------------------------+
 
 SET FEEDBACK off
 
@@ -318,12 +317,12 @@ WHERE
 
 SET FEEDBACK on
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | (OPTIONAL) - STATS$SEG_STAT_OBJ delete statement                           |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | (OPTIONAL) - STATS$SEG_STAT_OBJ delete statement                           |
+PROMPT +----------------------------------------------------------------------------+
 
 DELETE --+ index_ffs(sso)
 FROM  stats$seg_stat_obj sso
@@ -354,13 +353,13 @@ WHERE (   dbid
       );
 
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Delete from stats$undostat                                                 |
-prompt | Undostat rows that cover the snap times                                    |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Delete from stats$undostat                                                 |
+PROMPT | Undostat rows that cover the snap times                                    |
+PROMPT +----------------------------------------------------------------------------+
 
 COLUMN dbid             HEADING 'DB Id'
 COLUMN instance_number  HEADING 'Instance Number'
@@ -390,13 +389,13 @@ DELETE from stats$undostat us
    AND end_time        <  to_date(:etime, 'YYYYMMDD HH24:MI:SS');
 
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Delete from stats$database_instance                                        |
-prompt | Dangling database instance rows for that startup time                      |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Delete from stats$database_instance                                        |
+PROMPT | Dangling database instance rows for that startup time                      |
+PROMPT +----------------------------------------------------------------------------+
 
 COLUMN dbid             HEADING 'DB Id'
 COLUMN instance_number  HEADING 'Instance Number'
@@ -431,13 +430,13 @@ DELETE from stats$database_instance di
                      and  s.instance_number = di.instance_number
                      and  s.startup_time    = di.startup_time);
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Delete from stats$statspack_parameter                                      |
-prompt | Dangling statspack parameter rows for the database / instance              |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Delete from stats$statspack_parameter                                      |
+PROMPT | Dangling statspack parameter rows for the database / instance              |
+PROMPT +----------------------------------------------------------------------------+
 
 COLUMN dbid             HEADING 'DB Id'
 COLUMN instance_number  HEADING 'Instance Number'

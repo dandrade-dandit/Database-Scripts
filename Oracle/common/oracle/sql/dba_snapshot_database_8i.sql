@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_snapshot_database_8i.sql                                    |
@@ -21,7 +21,7 @@
 -- +----------------------------------------------------------------------------+
 
 
-define reportHeader="<a name=top></a><font size=+3 color=darkgreen><b>Snapshot Database 8<i>i</i></b></font><hr>Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved. (<a target=""_blank"" href=""http://www.idevelopment.info"">www.idevelopment.info</a>)<p>"
+define reportHeader="<a name=top></a><font size=+3 color=darkgreen><b>Snapshot Database 8<i>i</i></b></font><hr>Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved. (<a target=""_blank"" href=""http://www.idevelopment.info"">www.idevelopment.info</a>)<p>"
 
 
 -- +----------------------------------------------------------------------------+

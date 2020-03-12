@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_files_all.sql                                               |
@@ -14,19 +14,42 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 147
-SET PAGESIZE 9999
-SET VERIFY   OFF
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN tablespace      FORMAT a29             HEADING 'Tablespace Name / File Class'
-COLUMN filename        FORMAT a64             HEADING 'Filename'
-COLUMN filesize        FORMAT 99,999,999,999  HEADING 'File Size'
-COLUMN autoextensible  FORMAT a4              HEADING 'Auto'
-COLUMN increment_by    FORMAT 99,999,999,999  HEADING 'Next'
-COLUMN maxbytes        FORMAT 99,999,999,999  HEADING 'Max'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Data File Report (all physical files)                       |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN tablespace      FORMAT a30                 HEADING 'Tablespace Name / File Class'
+COLUMN filename        FORMAT a75                 HEADING 'Filename'
+COLUMN filesize        FORMAT 9,999,999,999,999   HEADING 'File Size'
+COLUMN autoextensible  FORMAT a4                  HEADING 'Auto'
+COLUMN increment_by    FORMAT 999,999,999,999     HEADING 'Next'
+COLUMN maxbytes        FORMAT 999,999,999,999     HEADING 'Max'
 
 BREAK ON report
-COMPUTE SUM OF filesize  ON report
+
+COMPUTE sum OF filesize  ON report
 
 SELECT /*+ ordered */
     d.tablespace_name                     tablespace
@@ -81,3 +104,4 @@ FROM
     v$controlfile a
 ORDER BY 1,2
 /
+

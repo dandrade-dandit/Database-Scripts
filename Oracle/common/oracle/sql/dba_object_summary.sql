@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_object_summary.sql                                          |
@@ -13,16 +13,40 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 135
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN owner           FORMAT A15          HEADING "Owner"
-COLUMN object_type     FORMAT A18          HEADING "Object Type"
-COLUMN obj_count       FORMAT 999,999,999  HEADING "Object Count"
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Object Summary                                              |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
-break on report on owner skip 2
-compute sum label ""               of obj_count on owner
-compute sum label "Grand Total: "  of obj_count on report
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN owner           FORMAT A20               HEADING "Owner"
+COLUMN object_type     FORMAT A25               HEADING "Object Type"
+COLUMN obj_count       FORMAT 999,999,999,999   HEADING "Object Count"
+
+BREAK ON report ON owner SKIP 2
+
+COMPUTE sum LABEL ""               OF obj_count ON owner
+COMPUTE sum LABEL "Grand Total: "  OF obj_count ON report
 
 SELECT
     owner
@@ -33,4 +57,8 @@ FROM
 GROUP BY
     owner
   , object_type
+ORDER BY
+    owner
+  , object_type
 /
+

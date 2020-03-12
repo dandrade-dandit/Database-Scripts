@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_table_info.sql                                              |
@@ -14,30 +14,47 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 150
-SET PAGESIZE 9999
-SET VERIFY   OFF
-SET FEEDBACK OFF
-SET LONG 9000
-
--- +----------------------------------------------------------------------------+
--- | PROMPT USER FOR SCHEMA AND TABLE                                           |
--- +----------------------------------------------------------------------------+
-
-ACCEPT sch prompt 'Enter Schema (i.e. SCOTT) : '
-ACCEPT tab prompt 'Enter Schema (i.e. EMP) : '
-
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
 PROMPT 
-PROMPT +----------------------------------------------------------------------------+
-PROMPT | TABLE INFORMATION                                                          |
-PROMPT +----------------------------------------------------------------------------+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Table Information                                           |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
-COLUMN owner               FORMAT A15                HEADING "Owner"
-COLUMN table_name          FORMAT A30                HEADING "Table Name"
-COLUMN tablespace_name     FORMAT A28                HEADING "Tablespace"
-COLUMN last_analyzed       FORMAT A20                HEADING "Last Analyzed"
-COLUMN num_rows            FORMAT 999,999,999        HEADING "# of Rows"
+PROMPT 
+ACCEPT schema     CHAR PROMPT 'Enter table owner : '
+ACCEPT table_name CHAR PROMPT 'Enter table name  : '
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET LONG        9000
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | TABLE INFORMATION                                                      |
+PROMPT +------------------------------------------------------------------------+
+
+COLUMN owner               FORMAT a20                   HEADING "Owner"
+COLUMN table_name          FORMAT a30                   HEADING "Table Name"
+COLUMN tablespace_name     FORMAT a30                   HEADING "Tablespace"
+COLUMN last_analyzed       FORMAT a23                   HEADING "Last Analyzed"
+COLUMN num_rows            FORMAT 9,999,999,999,999     HEADING "# of Rows"
 
 SELECT
     owner
@@ -48,19 +65,19 @@ SELECT
 FROM
     dba_tables
 WHERE
-      owner      = UPPER('&sch')
-  AND table_name = UPPER('&tab')
+      owner      = UPPER('&schema')
+  AND table_name = UPPER('&table_name')
 /
 
 PROMPT 
-PROMPT +----------------------------------------------------------------------------+
-PROMPT | OBJECT INFORMATION                                                         |
-PROMPT +----------------------------------------------------------------------------+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | OBJECT INFORMATION                                                     |
+PROMPT +------------------------------------------------------------------------+
 
 COLUMN object_id                                     HEADING "Object ID"
 COLUMN data_object_id                                HEADING "Data Object ID"
-COLUMN created             FORMAT A20                HEADING "Created"
-COLUMN last_ddl_time       FORMAT A20                HEADING "Last DDL"
+COLUMN created             FORMAT A23                HEADING "Created"
+COLUMN last_ddl_time       FORMAT A23                HEADING "Last DDL"
 COLUMN status                                        HEADING "Status"
 
 SELECT
@@ -72,54 +89,72 @@ SELECT
 FROM
     dba_objects
 WHERE
-      owner       = UPPER('&sch')
-  AND object_name = UPPER('&tab')
+      owner       = UPPER('&schema')
+  AND object_name = UPPER('&table_name')
   AND object_type = 'TABLE'
 /
 
 PROMPT 
-PROMPT +----------------------------------------------------------------------------+
-PROMPT | SEGMENT INFORMATION                                                        |
-PROMPT +----------------------------------------------------------------------------+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | SEGMENT INFORMATION                                                    |
+PROMPT +------------------------------------------------------------------------+
 
-COLUMN segment_type                                  HEADING "Segment Type"
+COLUMN segment_name        FORMAT a30                HEADING "Segment Name"
+COLUMN partition_name      FORMAT a30                HEADING "Partition Name"
+COLUMN segment_type        FORMAT a16                HEADING "Segment Type"
+COLUMN tablespace_name     FORMAT a30                HEADING "Tablespace"
+COLUMN num_rows            FORMAT 9,999,999,999,999  HEADING "Num Rows"
 COLUMN bytes               FORMAT 9,999,999,999,999  HEADING "Bytes"
-COLUMN extents             FORMAT 999,999,999        HEADING "Extents"
-COLUMN initial_extent      FORMAT 999,999,999,999    HEADING "Initial|Extent"
-COLUMN next_extent         FORMAT 999,999,999,999    HEADING "Next|Extent"
-COLUMN min_extents         FORMAT 999                HEADING "Min|Extents"
-COLUMN max_extents         FORMAT 9,999,999,999      HEADING "Max|Extents"
-COLUMN pct_increase        FORMAT 999.00             HEADING "Pct|Increase"
-COLUMN freelists                                     HEADING "Free|Lists"
-COLUMN freelist_groups                               HEADING "Free|List Groups"
+COLUMN last_analyzed       FORMAT a23                HEADING "Last Analyzed"
 
 SELECT 
-    segment_type     segment_type
-  , bytes            bytes
-  , extents          extents
-  , initial_extent   initial_extent
-  , next_extent      next_extent
-  , min_extents      min_extents
-  , max_extents      max_extents
-  , pct_increase     pct_increase
-  , freelists        freelists
-  , freelist_groups  freelist_groups
-FROM
-    dba_segments
+    seg.segment_name      segment_name
+  , null                  partition_name
+  , seg.segment_type      segment_type
+  , seg.tablespace_name   tablespace_name
+  , tab.num_rows          num_rows
+  , seg.bytes             bytes
+  , TO_CHAR(tab.last_analyzed, 'DD-MON-YYYY HH24:MI:SS') last_analyzed
+from
+    dba_segments seg
+  , dba_tables tab
 WHERE
-      owner        = UPPER('&sch')
-  AND segment_name = UPPER('&tab')
+      seg.owner = UPPER('&schema')
+  AND seg.segment_name = UPPER('&table_name')
+  AND seg.segment_name = tab.table_name
+  AND seg.owner = tab.owner
+  AND seg.segment_type = 'TABLE'
+UNION ALL
+SELECT 
+    seg.segment_name      segment_name
+  , seg.partition_name    partition_name
+  , seg.segment_type      segment_type
+  , seg.tablespace_name   tablespace_name
+  , part.num_rows         num_rows
+  , seg.bytes             bytes
+  , TO_CHAR(part.last_analyzed, 'DD-MON-YYYY HH24:MI:SS') last_analyzed
+FROM
+    dba_segments seg
+  , dba_tab_partitions part
+WHERE
+      part.table_owner = UPPER('&schema')
+  AND part.table_name = UPPER('&table_name')
+  AND part.partition_name = seg.partition_name
+  AND seg.segment_type = 'TABLE PARTITION'
+ORDER BY
+    segment_name
+  , partition_name
 /
 
 
 PROMPT 
-PROMPT +----------------------------------------------------------------------------+
-PROMPT | COLUMNS                                                                    |
-PROMPT +----------------------------------------------------------------------------+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | COLUMNS                                                                |
+PROMPT +------------------------------------------------------------------------+
 
-COLUMN column_name         FORMAT A20                HEADING "Column Name"
-COLUMN data_type           FORMAT A25                HEADING "Data Type"
-COLUMN nullable            FORMAT A13                HEADing "Null?"
+COLUMN column_name         FORMAT a30                HEADING "Column Name"
+COLUMN data_type           FORMAT a25                HEADING "Data Type"
+COLUMN nullable            FORMAT a13                HEADing "Null?"
 
 SELECT
     column_name
@@ -141,20 +176,20 @@ SELECT
 FROM
     dba_tab_columns
 WHERE
-      owner      = UPPER('&sch')
-  AND table_name = UPPER('&tab')
+      owner      = UPPER('&schema')
+  AND table_name = UPPER('&table_name')
 ORDER BY
     column_id
 /
 
 
 PROMPT 
-PROMPT +----------------------------------------------------------------------------+
-PROMPT | INDEXES                                                                    |
-PROMPT +----------------------------------------------------------------------------+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | INDEXES                                                                |
+PROMPT +------------------------------------------------------------------------+
 
-COLUMN index_name          FORMAT A40                HEADING "Index Name"
-COLUMN column_name         FORMAT A30                HEADING "Column Name"
+COLUMN index_name          FORMAT a40                HEADING "Index Name"
+COLUMN column_name         FORMAT a30                HEADING "Column Name"
 COLUMN column_length                                 HEADING "Column Length"
 
 BREAK ON index_name SKIP 1
@@ -166,8 +201,8 @@ SELECT
 FROM
     dba_ind_columns
 WHERE
-      table_owner  = UPPER('&sch')
-  AND table_name   = UPPER('&tab')
+      table_owner  = UPPER('&schema')
+  AND table_name   = UPPER('&table_name')
 ORDER BY
     index_name
   , column_position
@@ -175,15 +210,15 @@ ORDER BY
 
 
 PROMPT 
-PROMPT +----------------------------------------------------------------------------+
-PROMPT | CONSTRAINTS                                                                |
-PROMPT +----------------------------------------------------------------------------+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | CONSTRAINTS                                                            |
+PROMPT +------------------------------------------------------------------------+
 
-COLUMN constraint_name     FORMAT A18                HEADING "Constraint Name"
-COLUMN constraint_type     FORMAT A11                HEADING "Constraint|Type"
-COLUMN search_condition    FORMAT A15                HEADING "Search Condition"
-COLUMN r_constraint_name   FORMAT A20                HEADING "R / Constraint Name"
-COLUMN delete_rule         FORMAT A11                HEADING "Delete Rule"
+COLUMN constraint_name     FORMAT a30                HEADING "Constraint Name"
+COLUMN constraint_type     FORMAT a13                HEADING "Constraint|Type"
+COLUMN search_condition    FORMAT a30                HEADING "Search Condition"
+COLUMN r_constraint_name   FORMAT a30                HEADING "R / Constraint Name"
+COLUMN delete_rule         FORMAT a12                HEADING "Delete Rule"
 COLUMN status                                        HEADING "Status"
 
 BREAK ON constraint_name ON constraint_type
@@ -207,11 +242,11 @@ FROM
     dba_constraints  a
   , dba_cons_columns b
 WHERE
-      a.owner            = UPPER('&sch')
-  AND a.table_name       = UPPER('&tab')
+      a.owner            = UPPER('&schema')
+  AND a.table_name       = UPPER('&table_name')
   AND a.constraint_name  = b.constraint_name
-  AND b.owner            = UPPER('&sch')
-  AND b.table_name       = UPPER('&tab')
+  AND b.owner            = UPPER('&schema')
+  AND b.table_name       = UPPER('&table_name')
 ORDER BY
     a.constraint_name
   , b.position
@@ -219,17 +254,17 @@ ORDER BY
 
 
 PROMPT 
-PROMPT +----------------------------------------------------------------------------+
-PROMPT | PARTITIONS (TABLE)                                                         |
-PROMPT +----------------------------------------------------------------------------+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | PARTITIONS (TABLE)                                                     |
+PROMPT +------------------------------------------------------------------------+
 
 COLUMN partition_name                                HEADING "Partition Name"
-COLUMN column_name         FORMAT A20                HEADING "Column Name"
-COLUMN tablespace_name     FORMAT A28                HEADING "Tablespace"
-COLUMN composite           FORMAT A9                 HEADING "Composite"
+COLUMN column_name         FORMAT a30                HEADING "Column Name"
+COLUMN tablespace_name     FORMAT a30                HEADING "Tablespace"
+COLUMN composite           FORMAT a9                 HEADING "Composite"
 COLUMN subpartition_count                            HEADING "Sub. Part.|Count"
-COLUMN logging             FORMAT A7                 HEADING "Logging"
-COLUMN high_value          FORMAT A13                HEADING "High Value" TRUNC
+COLUMN logging             FORMAT a7                 HEADING "Logging"
+COLUMN high_value          FORMAT a13                HEADING "High Value" TRUNC
 
 BREAK ON partition_name
 
@@ -244,8 +279,8 @@ FROM
     dba_tab_partitions    a
   , dba_part_key_columns  b
 WHERE
-      a.table_owner        = UPPER('&sch')
-  AND a.table_name         = UPPER('&tab')
+      a.table_owner        = UPPER('&schema')
+  AND a.table_name         = UPPER('&table_name')
   AND RTRIM(b.object_type) = 'TABLE'
   AND b.owner              = a.table_owner
   AND b.name               = a.table_name
@@ -256,16 +291,16 @@ ORDER BY
 
 
 PROMPT 
-PROMPT +----------------------------------------------------------------------------+
-PROMPT | PARTITIONS (INDEX)                                                         |
-PROMPT +----------------------------------------------------------------------------+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | PARTITIONS (INDEX)                                                     |
+PROMPT +------------------------------------------------------------------------+
 
-COLUMN index_name              FORMAT A25                HEADING "Index Name"
-COLUMN partitioning_type       FORMAT A9                 HEADING "Type"
+COLUMN index_name              FORMAT a30                HEADING "Index Name"
+COLUMN partitioning_type       FORMAT a9                 HEADING "Type"
 COLUMN partition_count         FORMAT 99999              HEADING "Part.|Count"
 COLUMN partitioning_key_count  FORMAT 99999              HEADING "Part.|Key Count"
-COLUMN locality                FORMAT A8                 HEADING "Locality"
-COLUMN alignment               FORMAT A12                HEADING "Alignment"
+COLUMN locality                FORMAT a8                 HEADING "Locality"
+COLUMN alignment               FORMAT a12                HEADING "Alignment"
 
 SELECT
     a.owner || '.' || a.index_name   index_name
@@ -279,8 +314,8 @@ FROM
     dba_part_indexes      a
   , dba_part_key_columns  b
 WHERE
-      a.owner              = UPPER('&sch')
-  AND a.table_name         = UPPER('&tab')
+      a.owner              = UPPER('&schema')
+  AND a.table_name         = UPPER('&table_name')
   AND RTRIM(b.object_type) = 'INDEX'
   AND b.owner              = a.owner
   AND b.name               = a.index_name
@@ -292,16 +327,16 @@ ORDER BY
 
 
 PROMPT 
-PROMPT +----------------------------------------------------------------------------+
-PROMPT | TRIGGERS                                                                   |
-PROMPT +----------------------------------------------------------------------------+
+PROMPT +------------------------------------------------------------------------+
+PROMPT | TRIGGERS                                                               |
+PROMPT +------------------------------------------------------------------------+
 
-COLUMN trigger_name            FORMAT A25                HEADING "Trigger Name"
-COLUMN trigger_type            FORMAT A18                HEADING "Type"
-COLUMN triggering_event        FORMAT A9                 HEADING "Trig.|Event"
-COLUMN referencing_names       FORMAT A65                HEADING "Referencing Names" newline
-COLUMN when_clause             FORMAT A65                HEADING "When Clause" newline
-COLUMN trigger_body            FORMAT A65                HEADING "Trigger Body" newline
+COLUMN trigger_name            FORMAT a30                HEADING "Trigger Name"
+COLUMN trigger_type            FORMAT a18                HEADING "Type"
+COLUMN triggering_event        FORMAT a9                 HEADING "Trig.|Event"
+COLUMN referencing_names       FORMAT a65                HEADING "Referencing Names" newline
+COLUMN when_clause             FORMAT a65                HEADING "When Clause" newline
+COLUMN trigger_body            FORMAT a65                HEADING "Trigger Body" newline
 
 SELECT
     owner || '.' || trigger_name  trigger_name
@@ -314,8 +349,8 @@ SELECT
 FROM
     dba_triggers
 WHERE
-      table_owner = UPPER('&sch')
-  AND table_name  = UPPER('&tab')
+      table_owner = UPPER('&schema')
+  AND table_name  = UPPER('&table_name')
 ORDER BY
      trigger_name
 /

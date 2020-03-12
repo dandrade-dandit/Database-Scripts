@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sess_user_trace_file_location.sql                               |
@@ -19,10 +19,33 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN "Trace File Path" FORMAT a65 HEADING 'Your tracefile with path is:'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : User Session Trace File Location                            |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN "Trace File Path" FORMAT a80 HEADING 'Your trace file with path is:'
 
 SELECT
     a.trace_path || ' > ' || b.trace_file "Trace File Path"
@@ -33,12 +56,15 @@ FROM
     ) a
   , (  SELECT c.instance || '_ora_' || spid ||'.trc' TRACE_FILE 
        FROM   v$process,
-              (SELECT LOWER(instance) instance FROM v$thread)  c
+              (select lower(instance_name) instance from v$instance)  c
        WHERE  addr = ( SELECT paddr 
                        FROM v$session 
-                       WHERE audsid = ( SELECT userenv('SESSIONID') 
-                                        FROM dual
-                                      )
+                       WHERE (audsid, sid) = (  SELECT
+                                                    sys_context('USERENV', 'SESSIONID')
+                                                  , sys_context('USERENV', 'SID') 
+                                                FROM dual
+                                              )
                      )
     ) b
 /
+

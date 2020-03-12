@@ -69,7 +69,7 @@ export ORA_BASE ORA_HOME ORA_OWNER ORA_PRIMARY_GROUP
 # +------------------------------------------------------------------------+
 # | SCRIPT NAME VARIABLES                                                  |
 # +------------------------------------------------------------------------+
-VERSION="5.1"
+VERSION="5.3"
 SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 SCRIPT_NAME=${SCRIPT_NAME##K10}
@@ -88,7 +88,7 @@ export START_DATE_TIME
 # +------------------------------------------------------------------------+
 # | CUSTOM DIRECTORIES                                                     |
 # +------------------------------------------------------------------------+
-CUSTOM_ORACLE_DIR=/u01/app/oracle/custom/oracle
+CUSTOM_ORACLE_DIR=${ORACLE_BASE}/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log

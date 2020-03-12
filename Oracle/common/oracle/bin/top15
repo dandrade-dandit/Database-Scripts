@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # +----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # +----------------------------------------------------------------------------|
 # | DATABASE : Oracle                                                          |
 # | FILE     : top15                                                           |
@@ -15,34 +15,47 @@
 # |            environment before attempting to run it in production.          |
 # +----------------------------------------------------------------------------+
 
-# +--------------------------+
-# | WRITE OUT TEMPORARY FILE |
-# +--------------------------+
+# +----------------------------------------------------------------------------+
+# | WRITE OUT TEMPORARY FILE                                                   |
+# +----------------------------------------------------------------------------+
 
 echo "
-SET linesize 2000
-SET pagesize 50
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v\$instance;
+SET TERMOUT ON;
 
-COLUMN pu           FORMAT a8      HEADING 'O/S|Login|ID'     JUSTIFY left
-COLUMN su           FORMAT a8      HEADING 'Oracle|User ID'   JUSTIFY left
-COLUMN os_user      FORMAT a12     HEADING 'O/S User'         JUSTIFY left
-COLUMN oracle_user  FORMAT a12     HEADING 'Oracle User'      JUSTIFY left
-COLUMN stat         FORMAT a8      HEADING 'Status'           JUSTIFY left
-COLUMN ssid         FORMAT 999999  HEADING 'SID'              JUSTIFY right
-COLUMN sser         FORMAT 999999  HEADING 'Serial#'          JUSTIFY right
-COLUMN spid         FORMAT 999999  HEADING 'O/S PID'          JUSTIFY right
-COLUMN program      FORMAT a30     HEADING 'Program'          JUSTIFY left truncate
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Top 15 User Sessions                                        |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
-SET verify off
+SET LINESIZE    256
+SET PAGESIZE    50000
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+COLUMN sid               FORMAT 999999     HEADING 'SID'
+COLUMN serial_id         FORMAT 99999999   HEADING 'Serial ID'
+COLUMN session_status    FORMAT a9         HEADING 'Status'
+COLUMN oracle_username   FORMAT a18        HEADING 'Oracle User'
+COLUMN os_username       FORMAT a18        HEADING 'O/S User'
+COLUMN os_pid            FORMAT a8         HEADING 'O/S PID'
+COLUMN session_terminal  FORMAT a10        HEADING 'Terminal'         TRUNC
+COLUMN session_machine   FORMAT a30        HEADING 'Machine'          TRUNC
+COLUMN session_program   FORMAT a40        HEADING 'Session Program'  TRUNC
 
 SELECT
-    s.username     oracle_user
-  , s.sid          ssid
-  , s.serial#      sser
-  , s.osuser       os_user
-  , lpad(p.spid,7) spid
-  , s.program      program
-  , s.status       stat
+    s.sid               sid
+  , s.serial#           serial_id
+  , s.status            session_status
+  , s.username          oracle_username
+  , s.osuser            os_username
+  , p.spid              os_pid
+  , s.terminal          session_terminal
+  , s.machine           session_machine
+  , s.program           session_program
 FROM
     v\$process p
   , v\$session s
@@ -70,10 +83,10 @@ ORDER BY
   , s.osuser
 /
 
-exit
+EXIT
 " > top15.sql
 
-top -b | awk '{print $1}' | tail -16 | xargs echo start top15.sql $* > top15_temp.sql
+top -b -n 1 | awk '{if ($2 == "oracle") {print $1;}}' | tail -16 | xargs echo start top15.sql $* > top15_temp.sql
 sqlplus -s "/ as sysdba" @top15_temp.sql 
 
 # +----------------------------+

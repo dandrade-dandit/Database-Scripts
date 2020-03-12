@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sp_purge.sql                                                    |
@@ -13,25 +13,25 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-prompt 
-prompt =========================================================================
-prompt The following script is a wrapper script to the Oracle supplied SQL
-prompt script ?/rdbms/admin/sppurge.sql.
-prompt 
-prompt The Oracle supplied script sppurge.sql will prompt the user for two 
-prompt snapshot IDs; a low snapshot ID and a high snapshot ID. The script
-prompt will then remove all records contained in that range.
-prompt 
-prompt Note that this script should be run as the owner of the 
-prompt STATSPACK repository.
-prompt 
-prompt Also note that a major portion of the sppurge.sql script is
-prompt commented out for performance reasons. Search for the string
-prompt "Delete any dangling SQLtext" and uncomment out the section
-prompt below it.
-prompt =========================================================================
-prompt
-prompt Hit [ENTER] to continue or CTRL-C to cancel ...
-pause
+PROMPT 
+PROMPT =========================================================================
+PROMPT The following script is a wrapper script to the Oracle supplied SQL
+PROMPT script ?/rdbms/admin/sppurge.sql.
+PROMPT 
+PROMPT The Oracle supplied script sppurge.sql will prompt the user for two 
+PROMPT snapshot IDs; a low snapshot ID and a high snapshot ID. The script
+PROMPT will then remove all records contained in that range.
+PROMPT 
+PROMPT Note that this script should be run as the owner of the 
+PROMPT STATSPACK repository.
+PROMPT 
+PROMPT Also note that a major portion of the sppurge.sql script is
+PROMPT commented out for performance reasons. Search for the string
+PROMPT "Delete any dangling SQLtext" and uncomment out the section
+PROMPT below it.
+PROMPT =========================================================================
+PROMPT
+PROMPT Hit [ENTER] to continue or CTRL-C to cancel ...
+PAUSE
 
 @?/rdbms/admin/sppurge.sql

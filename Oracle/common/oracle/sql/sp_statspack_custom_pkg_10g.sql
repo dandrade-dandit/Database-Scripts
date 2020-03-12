@@ -3,7 +3,7 @@
 -- |                                    jhunter@idevelopment.info                                    |
 -- |                                      www.idevelopment.info                                      |
 -- |-------------------------------------------------------------------------------------------------|
--- |              Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.                    |
+-- |              Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.                    |
 -- |-------------------------------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                                               |
 -- | FILE     : sp_statspack_custom_pkg_10g.sql                                                      |
@@ -726,9 +726,9 @@ IS
 END statspack_custom;
 /
 
-set termout on
-show errors
+SET TERMOUT ON
+SHOW ERRORS
 
-prompt 
+PROMPT 
 
-spool off
+SPOOL OFF

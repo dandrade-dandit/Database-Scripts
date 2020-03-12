@@ -3,37 +3,68 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_column_constraints.sql                                      |
 -- | CLASS    : Database Administration                                         |
--- | PURPOSE  : Reports on all Column Constraints in the database.              |
+-- | PURPOSE  : Reports on all column constraints in the database.              |
 -- | NOTE     : As with any code, ensure to test this script in a development   |
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-ttitle left 'Company Name' -
-       right 'COLUMN_CONSTRAINTS.SQL' -
-       center 'Column Constraints'
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-SET PAGESIZE 9999
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Column Constraints for a Specified Table                    |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
-column constraint_name format a20 heading 'Constraint Name'
-column table_name      format a20 heading 'Table Name'
-column column_name     format a25 heading 'Column Name'
+PROMPT 
+ACCEPT schema   CHAR PROMPT 'Enter schema     : '
+ACCEPT tab_name CHAR PROMPT 'Enter table name : '
 
-break on Report on table_name skip 1
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN constraint_name  FORMAT a20          HEADING 'Constraint Name'
+COLUMN table_name       FORMAT a20          HEADING 'Table Name'
+COLUMN column_name      FORMAT a25          HEADING 'Column Name'
+COLUMN position         FORMAT 999,999,999  HEADING 'Index Position'
+
+BREAK ON report ON owner ON table_name SKIP 1
 
 SELECT
-    table_name
+    owner
+  , table_name
   , constraint_name
   , column_name
   , position
 FROM
-  all_cons_columns
+  dba_cons_columns
 WHERE
-  table_name = upper('&TABLE_NAME')
+      owner = UPPER('&schema')  
+  AND table_name = UPPER('&tab_name')
 ORDER BY
-  table_name, constraint_name, position
+    owner
+  , table_name
+  , constraint_name
+  , position
 /
+

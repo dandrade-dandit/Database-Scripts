@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : rac_instances.sql                                               |
@@ -14,13 +14,36 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE  145
-SET PAGESIZE  9999
-SET VERIFY    off
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(sys_context('USERENV', 'INSTANCE_NAME'), 17) current_instance
+FROM dual;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Oracle RAC Instances                                        |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN instance_name          FORMAT a13         HEAD 'Instance|Name / Number'
 COLUMN thread#                FORMAT 99999999    HEAD 'Thread #'
-COLUMN host_name              FORMAT a13         HEAD 'Host|Name'
+COLUMN host_name              FORMAT a28         HEAD 'Host|Name'
 COLUMN status                 FORMAT a6          HEAD 'Status'
 COLUMN startup_time           FORMAT a20         HEAD 'Startup|Time'
 COLUMN database_status        FORMAT a8          HEAD 'Database|Status'
@@ -45,5 +68,5 @@ SELECT
 FROM
     gv$instance
 ORDER BY
-    instance_number
-/
+    instance_number;
+

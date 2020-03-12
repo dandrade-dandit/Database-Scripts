@@ -3,11 +3,11 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : example_partition_range_date_oracle_8.sql                       |
--- | CLASS    : Demonstrations                                                  |
+-- | CLASS    : Examples                                                        |
 -- | PURPOSE  : Example SQL syntax used to create and maintain range partitions |
 -- |            in Oracle8. The table in this example is partitioned by a date  |
 -- |            range. In Oracle8, only range partitions are available.         |
@@ -15,7 +15,7 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-CONNECT system/manager
+CONNECT scott/tiger
 
 /*
  ** +-----------------------------------+

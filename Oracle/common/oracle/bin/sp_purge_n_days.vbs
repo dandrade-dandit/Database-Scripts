@@ -3,7 +3,7 @@
 ' |                      jhunter@idevelopment.info                             |
 ' |                         www.idevelopment.info                              |
 ' |----------------------------------------------------------------------------|
-' |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+' |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 ' |----------------------------------------------------------------------------|
 ' | FILE       : sp_purge_n_days.vbs                                           |
 ' | CLASS      : WINDOWS Shell Scripts                                         |
@@ -77,7 +77,7 @@ Set g_objFSO   = CreateObject("Scripting.FileSystemObject")
 strBannerText = VbCrLf
 strBannerText = strBannerText & g_strScriptName
 strBannerText = strBannerText & " - Version " & g_SCRIPT_VERSION & VbCrLf
-strBannerText = strBannerText & "Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved."
+strBannerText = strBannerText & "Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved."
 strBannerText = strBannerText & VbCrLf
 WScript.Echo strBannerText
 

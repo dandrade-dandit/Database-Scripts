@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # |----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # |----------------------------------------------------------------------------|
 # | DATABASE : Oracle                                                          |
 # | FILE     : ias10gr1_ctl                                                    |
@@ -33,6 +33,7 @@ SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 START_DATE=`date`
 DATE_LOG=`date +%Y%m%d_%H%M`
+CURRENT_YEAR=`${DATE_BIN} +"%Y"`;
 HOSTNAME=`hostname`
 HOSTNAME_UPPER=`hostname | tr -s '[:lower:]' '[:upper:]'`
 SLEEP="sleep 2"
@@ -67,7 +68,7 @@ showSignonBanner() {
 
     echo " "
     echo "$SCRIPT_NAME - Version $VERSION"
-    echo "Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved."
+    echo "Copyright (c) 1998-${CURRENT_YEAR} Jeffrey M. Hunter. All rights reserved."
     echo " "
 
 }

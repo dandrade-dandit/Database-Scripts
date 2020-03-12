@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sess_users_by_cpu.sql                                           |
@@ -13,34 +13,52 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN sid               FORMAT 99999            HEADING 'SID'
-COLUMN serial_id         FORMAT 999999           HEADING 'Serial#'
-COLUMN session_status    FORMAT a9               HEADING 'Status'          JUSTIFY right
-COLUMN oracle_username   FORMAT a12              HEADING 'Oracle User'     JUSTIFY right
-COLUMN os_username       FORMAT a9               HEADING 'O/S User'        JUSTIFY right
-COLUMN os_pid            FORMAT 9999999          HEADING 'O/S PID'         JUSTIFY right
-COLUMN session_program   FORMAT a20              HEADING 'Session Program' TRUNC
-COLUMN session_machine   FORMAT a14              HEADING 'Machine'         JUSTIFY right TRUNC
-COLUMN cpu_value         FORMAT 999,999,999,999  HEADING 'CPU'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : User Sessions Ordered by CPU                                |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
-prompt 
-prompt +----------------------------------------------------+
-prompt | User Sessions Ordered by CPU                       |
-prompt +----------------------------------------------------+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN sid               FORMAT 999999            HEADING 'SID'
+COLUMN serial_id         FORMAT 99999999          HEADING 'Serial ID'
+COLUMN session_status    FORMAT a9                HEADING 'Status'
+COLUMN oracle_username   FORMAT a18               HEADING 'Oracle User'
+COLUMN os_username       FORMAT a18               HEADING 'O/S User'
+COLUMN os_pid            FORMAT a8                HEADING 'O/S PID'
+COLUMN session_machine   FORMAT a30               HEADING 'Machine'          TRUNC
+COLUMN session_program   FORMAT a40               HEADING 'Session Program'  TRUNC
+COLUMN cpu_value         FORMAT 999,999,999,999   HEADING 'CPU'
 
 SELECT
-    s.sid                sid
-  , s.serial#            serial_id
-  , lpad(s.status,9)     session_status
-  , lpad(s.username,12)  oracle_username
-  , lpad(s.osuser,9)     os_username
-  , lpad(p.spid,7)       os_pid
-  , s.program            session_program
-  , lpad(s.machine,14)   session_machine
-  , sstat.value          cpu_value
+    s.sid           sid
+  , s.serial#       serial_id
+  , s.status        session_status
+  , s.username      oracle_username
+  , s.osuser        os_username
+  , p.spid          os_pid
+  , s.machine       session_machine
+  , s.program       session_program
+  , sstat.value     cpu_value
 FROM 
     v$process  p
   , v$session  s
@@ -53,3 +71,4 @@ WHERE
   AND statname.name       = 'CPU used by this session'
 ORDER BY cpu_value DESC
 /
+

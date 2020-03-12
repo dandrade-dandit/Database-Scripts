@@ -3,11 +3,11 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : mts_shared_server_statistics.sql                                |
--- | CLASS    : Multi Threaded Server                                           |
+-- | CLASS    : Multi-threaded Server (MTS)                                     |
 -- | PURPOSE  : Display status and metrics related to MTS shared server         |
 -- |            statistics.                                                     |
 -- |                                                                            |
@@ -37,21 +37,54 @@
 -- |                   MTS_SERVERS. Raising the minimum number of shared server |
 -- |                   processes should reduce the number that are deleted only |
 -- |                   to be recreated later.                                   |
+-- |                                                                            |
+-- |            This script is RAC enabled.                                     |
+-- |                                                                            |
 -- | NOTE     : As with any code, ensure to test this script in a development   |
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE  145
-SET PAGESIZE  9999
-SET VERIFY    off
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN servers_started      FORMAT 999,999,999     HEAD 'Servers Started'
-COLUMN servers_terminated   FORMAT 999,999,999     HEAD 'Servers Terminated'
-COLUMN servers_highwater    FORMAT 999,999,999     HEAD 'Servers Highwater'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Multi-threaded Server: Shared Server Statistics             |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN instance_name        FORMAT a10              HEAD 'Instance'
+COLUMN servers_started      FORMAT 999,999,999      HEAD 'Servers Started'
+COLUMN servers_terminated   FORMAT 999,999,999      HEAD 'Servers Terminated'
+COLUMN servers_highwater    FORMAT 999,999,999      HEAD 'Servers Highwater'
 
 SELECT
-    servers_started
-  , servers_terminated
-  , servers_highwater
-FROM v$mts;
+    i.instance_name           instance_name
+  , s.servers_started         servers_started
+  , s.servers_terminated      servers_terminated
+  , s.servers_highwater       servers_highwater
+FROM
+    gv$instance i
+  , gv$shared_server_monitor s
+WHERE
+    i.inst_id = s.inst_id
+ORDER BY
+    i.instance_name;
 

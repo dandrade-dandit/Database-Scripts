@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : awr_snapshots_dbtime_xls.sql                                    |
@@ -15,15 +15,31 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE   32767
-SET PAGESIZE   50000
-SET TRIMSPOOL  ON
-SET HEAD       OFF
-SET TERMOUT    OFF
-SET FEEDBACK   OFF
-SET VERIFY     OFF
-SET TIMING     OFF
-SET ECHO       OFF
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(sys_context('USERENV', 'INSTANCE_NAME'), 17) current_instance FROM dual;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : AWR Snapshots (DB Time Report) for Microsoft Excel          |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    OFF
+SET HEADING     OFF
+SET LINESIZE    32767
+SET PAGESIZE    50000
+SET TERMOUT     OFF
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 DEFINE fileName=awr_snapshots_dbtime_xls
 
@@ -78,4 +94,9 @@ ORDER BY
 
 SPOOL OFF
 
-EXIT
+SET FEEDBACK    6
+SET HEADING     ON
+SET TERMOUT     ON
+
+PROMPT Wrote report to &FileName._&_dbname._&_spool_time..txt
+PROMPT 

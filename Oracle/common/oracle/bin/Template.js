@@ -4,7 +4,7 @@
  * |                      jhunter@idevelopment.info                             |
  * |                         www.idevelopment.info                              |
  * |----------------------------------------------------------------------------|
- * |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+ * |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
  * |----------------------------------------------------------------------------|
  * | FILE       : Template.js                                                   |
  * | CLASS      : Templates                                                     |
@@ -67,7 +67,7 @@ g_objFSO   = new ActiveXObject("Scripting.FileSystemObject");
 strBannerText =
         "\n" +
         g_strScriptName + " - Version " + g_SCRIPT_VERSION + "\n" +
-        "Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.\n";
+        "Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.\n";
 WScript.Echo(strBannerText);
 
 

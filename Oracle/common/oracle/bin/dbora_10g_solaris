@@ -8,7 +8,7 @@
 # |                the Sun Solaris OS platform.                            |
 # | NOTE         : This script may look a little different from a similar  |
 # |                one used for Oracle9i - most notably the omission of    |
-# |                the commands to start/stop the  Oracle TNS listener     |
+# |                the commands to start/stop the Oracle TNS listener      |
 # |                process. As of Oracle 10g Release 2 the dbstart script  |
 # |                includes the commands to automatically start/stop the   |
 # |                listener.                                               |
@@ -58,7 +58,7 @@
 # +------------------------------------------------------------------------+
 
 SCRIPT_NAME=dbora_10g_solaris
-VERSION="5.1"
+VERSION="5.3"
 
 export SCRIPT_NAME VERSION
 
@@ -84,7 +84,7 @@ export START_DATE_TIME
 # +------------------------------------------------------------------------+
 # | CUSTOM DIRECTORIES                                                     |
 # +------------------------------------------------------------------------+
-CUSTOM_ORACLE_DIR=/u01/app/oracle/custom/oracle
+CUSTOM_ORACLE_DIR=${ORACLE_BASE}/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log

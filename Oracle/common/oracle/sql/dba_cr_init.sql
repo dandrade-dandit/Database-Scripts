@@ -3,25 +3,33 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_cr_init.sql                                                 |
 -- | CLASS    : Database Administration                                         |
 -- | PURPOSE  : This script reads the database instance parameters and creates  |
--- |            an example init.ora file. This if often used when cloning a     |
+-- |            an example init.ora file. This is often used when cloning a     |
 -- |            database and need a fresh text init.ora file for the new        |
 -- |            database.                                                       |
 -- | NOTE     : As with any code, ensure to test this script in a development   |
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE  230
-SET PAGESIZE  9999
-SET HEAD      off
-SET TERM      off
-SET FEEDBACK  off
-SET TRIMSPOOL on
+SET ECHO        OFF
+SET FEEDBACK    OFF
+SET HEADING     OFF
+SET LINESIZE    32767
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN oracle_sid   NEW_VALUE xoracle_sid  NOPRINT FORMAT a1
 
@@ -70,4 +78,6 @@ ORDER BY name;
 
 spool off
 
+SET FEEDBACK    6
+SET HEADING     ON
 

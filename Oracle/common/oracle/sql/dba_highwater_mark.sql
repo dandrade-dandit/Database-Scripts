@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_highwater_mark.sql                                          |
@@ -13,29 +13,31 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-analyze table &owner.&table_name compute statistics
+ANALYZE TABLE &owner.&table_name COMPUTE STATISTICS
 /
 
 SELECT
- blocks
+      blocks
 FROM
-  dba_segments
+      dba_segments
 WHERE
       owner = '&&owner'
   AND segment_name = '&&table_name'
 /
 
 SELECT
-  empty_blocks
+      empty_blocks
 FROM
-  dba_tables
+      dba_tables
 WHERE
       owner = '&&owner'
   AND table_name = '&&table_name'
 /
 
-HIGHWATER_MARK = dba_segments.blocks - dba_tables.empty_blocks - 1
+PROMPT HIGHWATER_MARK = dba_segments.blocks - dba_tables.empty_blocks - 1
 
+
+/*
 
 ----------------------------------------------------------------
 
@@ -58,7 +60,7 @@ How to determine the high water mark
 ------------------------------------
 To view the high water mark of a particular table::
  
-  ANALYZE TABLE <tablename> ESTIMATE/COMPUTE STATISTICS;
+    ANALYZE TABLE <tablename> ESTIMATE/COMPUTE STATISTICS;
 
 This will update the table statistics. After generating the statistics,
 to determine the high water mark:
@@ -69,7 +71,7 @@ WHERE table_name = <tablename>;
 
 BLOCKS represents the number of blocks 'ever' used by the segment. 
 EMPTY_BLOCKS represents only the number of blocks above the 'HIGH WATER MARK' 
-.
+
 Deleting records doesn't lower the high water mark. Therefore, deleting 
 records doesn't raise the EMPTY_BLOCKS figure.
 
@@ -77,27 +79,33 @@ Let us take the following example based on table BIG_EMP1 which
 has 28672 rows (Oracle 8.0.6):
 
 SQL> connect system/manager
+
 Connected.
 
 SQL> SELECT segment_name,segment_type,blocks
   2> FROM dba_segments
   3> WHERE segment_name='BIG_EMP1';
+
 SEGMENT_NAME                  SEGMENT_TYPE      BLOCKS      EXTENTS
 ----------------------------- ----------------- ----------  -------
 BIG_EMP1                      TABLE                   1024      2
+
 1 row selected.
 
 SQL> connect scott/tiger
 
 SQL> ANALYZE TABLE big_emp1 ESTIMATE STATISTICS;
+
 Statement processed.
 
 SQL> SELECT table_name,num_rows,blocks,empty_blocks
   2> FROM user_tables
   3> WHERE table_name='BIG_EMP1';
+
 TABLE_NAME                     NUM_ROWS   BLOCKS     EMPTY_BLOCKS
 ------------------------------ ---------- ---------- ------------
 BIG_EMP1                            28672        700        323
+
 1 row selected.
 
 Note: BLOCKS + EMPTY_BLOCKS (700+323=1023) is one block less than 
@@ -110,60 +118,76 @@ SQL> SELECT COUNT (DISTINCT
   2>          DBMS_ROWID.ROWID_BLOCK_NUMBER(rowid)||
   3>          DBMS_ROWID.ROWID_RELATIVE_FNO(rowid)) "Used"
   4> FROM big_emp1;
+
 Used      
 ----------
        700
+
 1 row selected.
 
 SQL> DELETE from big_emp1;
+
 28672 rows processed.
 
 SQL> commit;
+
 Statement processed.
 
 SQL> ANALYZE TABLE big_emp1 ESTIMATE STATISTICS;
+
 Statement processed.
 
 SQL> SELECT table_name,num_rows,blocks,empty_blocks
   2> FROM user_tables
   3> WHERE table_name='BIG_EMP1';
+
 TABLE_NAME                     NUM_ROWS   BLOCKS     EMPTY_BLOCKS
 ------------------------------ ---------- ---------- ------------
 BIG_EMP1                                0        700        323
+
 1 row selected.
 
 SQL> SELECT COUNT (DISTINCT 
   2>          DBMS_ROWID.ROWID_BLOCK_NUMBER(rowid)||
   3>          DBMS_ROWID.ROWID_RELATIVE_FNO(rowid)) "Used"
   4> FROM big_emp1;
+
 Used      
 ----------
          0
+
 1 row selected.
 
 SQL> TRUNCATE TABLE big_emp1;
+
 Statement processed.
 
 SQL> ANALYZE TABLE big_emp1 ESTIMATE STATISTICS;
+
 Statement processed.
 
 SQL> SELECT table_name,num_rows,blocks,empty_blocks
   2> FROM user_tables
   3> WHERE table_name='BIG_EMP1';
+
 TABLE_NAME                     NUM_ROWS   BLOCKS     EMPTY_BLOCKS
 ------------------------------ ---------- ---------- ------------
 BIG_EMP1                                0          0        511
+
 1 row selected.
 
 SQL> connect system/manager
+
 Connected.
 
 SQL> SELECT segment_name,segment_type,blocks
   2> FROM dba_segments
   3> WHERE segment_name='BIG_EMP1';
+
 SEGMENT_NAME                  SEGMENT_TYPE      BLOCKS      EXTENTS
 ----------------------------- ----------------- ----------  -------
 BIG_EMP1                      TABLE                   512      1
+
 1 row selected.
 
 NOTE:
@@ -172,4 +196,6 @@ NOTE:
   To retain the space from the deleted rows allocated to the table use:
 
   SQL> TRUNCATE TABLE big_emp1 REUSE STORAGE
+
+*/
 

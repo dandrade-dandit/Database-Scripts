@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sess_user_stats.sql                                             |
@@ -15,39 +15,57 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN sid                 FORMAT 99999            HEADING 'SID'
-COLUMN session_status      FORMAT a8               HEADING 'Status'          JUSTIFY right
-COLUMN oracle_username     FORMAT a11              HEADING 'Oracle User'     JUSTIFY right
-COLUMN session_program     FORMAT a18              HEADING 'Session Program' TRUNC
-COLUMN cpu_value           FORMAT 999,999,999      HEADING 'CPU'
-COLUMN logical_io          FORMAT 999,999,999,999  HEADING 'Logical I/O'
-COLUMN physical_reads      FORMAT 999,999,999,999  HEADING 'Physical Reads'
-COLUMN physical_writes     FORMAT 999,999,999,999  HEADING 'Physical Writes'
-COLUMN session_pga_memory  FORMAT 9,999,999,999    HEADING 'PGA Memory' 
-COLUMN open_cursors        FORMAT 99,999           HEADING 'Cursors'
-COLUMN num_transactions    FORMAT 999,999          HEADING 'Txns'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : User Sessions and Statistics Ordered by Logical I/O         |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
-prompt 
-prompt +------------------------------------------------------+
-prompt | User Sessions and Statistics Ordered by Logical I/O  |
-prompt +------------------------------------------------------+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN sid                  FORMAT 999999           HEADING 'SID'
+COLUMN session_status       FORMAT a9               HEADING 'Status'
+COLUMN oracle_username      FORMAT a18              HEADING 'Oracle User'
+COLUMN session_program      FORMAT a40              HEADING 'Session Program'  TRUNC
+COLUMN cpu_value            FORMAT 999,999,999      HEADING 'CPU'
+COLUMN logical_io           FORMAT 999,999,999,999  HEADING 'Logical I/O'
+COLUMN physical_reads       FORMAT 999,999,999,999  HEADING 'Physical Reads'
+COLUMN physical_writes      FORMAT 999,999,999,999  HEADING 'Physical Writes'
+COLUMN session_pga_memory   FORMAT 9,999,999,999    HEADING 'PGA Memory' 
+COLUMN open_cursors         FORMAT 99,999           HEADING 'Cursors'
+COLUMN num_transactions     FORMAT 999,999          HEADING 'Txns'
 
 SELECT
-    s.sid                sid
-  , lpad(s.status,8)     session_status
-  , lpad(s.username,11)  oracle_username
-  , s.program            session_program
-  , sstat1.value         cpu_value
+    s.sid                 sid
+  , s.status              session_status
+  , s.username            oracle_username
+  , s.program             session_program
+  , sstat1.value          cpu_value
   , sstat2.value +
-    sstat3.value         logical_io
-  , sstat4.value         physical_reads
-  , sstat5.value         physical_writes
-  , sstat6.value         session_pga_memory
-  , sstat7.value         open_cursors
-  , sstat8.value         num_transactions
+    sstat3.value          logical_io
+  , sstat4.value          physical_reads
+  , sstat5.value          physical_writes
+  , sstat6.value          session_pga_memory
+  , sstat7.value          open_cursors
+  , sstat8.value          num_transactions
 FROM 
     v$process  p
   , v$session  s
@@ -95,3 +113,4 @@ WHERE
   AND statname8.name        = 'user commits'
 ORDER BY logical_io DESC
 /
+

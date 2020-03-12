@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # |----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # |----------------------------------------------------------------------------|
 # | DATABASE   : Oracle                                                        |
 # | FILE       : dg_rebuild_standby.ksh                                        |
@@ -29,7 +29,7 @@
 # ----------------------------
 # SCRIPT NAME VARIABLES
 # ----------------------------
-VERSION="3.8"
+VERSION="3.9"
 SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 SCRIPT_NAME_NOEXT=${SCRIPT_NAME%%\.ksh}
@@ -38,13 +38,14 @@ SCRIPT_NAME_NOEXT=${SCRIPT_NAME%%\.ksh}
 # DATE VARIABLES
 # ----------------------------
 START_DATE=`date`
+CURRENT_YEAR=`${DATE_BIN} +"%Y"`;
 DATE_LOG=`date +%Y%m%d_%H%M`
 TODAY=${DATE_LOG}
 
 # ----------------------------
 # CUSTOM DIRECTORIES
 # ----------------------------
-CUSTOM_ORACLE_DIR=/u01/app/oracle/custom/oracle
+CUSTOM_ORACLE_DIR=/u01/app/oracle/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log
@@ -125,7 +126,7 @@ showSignonBanner() {
 
     wl " "
     wl "${SCRIPT_NAME} - Version ${VERSION}"
-    wl "Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved."
+    wl "Copyright (c) 1998-${CURRENT_YEAR} Jeffrey M. Hunter. All rights reserved."
     wl " "
 
 }

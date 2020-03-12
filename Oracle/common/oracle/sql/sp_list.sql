@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sp_list.sql                                                     |
@@ -21,7 +21,7 @@ COLUMN snap_id                        HEAD 'Snap ID'
 COLUMN startup_time     FORMAT a25    HEAD 'Startup Time'
 COLUMN snap_time        FORMAT a25    HEAD 'Snap Time'
 
-break on startup_time skip 1
+BREAK on startup_time SKIP 1
 
 SELECT
     a.snap_id

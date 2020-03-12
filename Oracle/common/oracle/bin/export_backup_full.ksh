@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # |----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # |----------------------------------------------------------------------------|
 # | DATABASE   : Oracle                                                        |
 # | FILE       : export_backup_full.ksh                                        |
@@ -83,49 +83,57 @@
 # |              export with the new Oracle Database 10g Data Pump Export      |
 # |              utility will not give any warning message.                    |
 # |                                                                            |
-# |              --------------------------------------                        |
-# |              EXPORT ERROR AFTER APPLYING CPUOCT2007                        |
-# |              --------------------------------------                        |
-# |              After applying CPUOCT2007 (Patch 12) on top of Oracle         |
-# |              10.2.0.3, the following errors will occur during a full       |
-# |              database export such as:                                      |
+# |              ----------------------------                                  |
+# |              ORACLE 11g USERS                                              |
+# |              ----------------------------                                  |
+# |              Running the export utility (exp) in Oracle Database 11g or    |
+# |              after applying CPUOCT2007 (Patch 12) on top of Oracle         |
+# |              Database 10g (10.2.0.3), the following errors will occur      |
+# |              during a full database export such as:                        |
 # |                                                                            |
-# |              . about to export SYSTEM's tables via Direct Path ...         |
-# |              . . exporting table                    DEF$_AQCALL            |
-# |              EXP-00008: ORACLE error 6550 encountered                      |
-# |              ORA-06550: line 1, column 18:                                 |
-# |              PLS-00201: identifier 'SYS.DBMS_DEFER_IMPORT_INTERNAL' must be declared
-# |              ORA-06550: line 1, column 7:                                  |
-# |              PL/SQL: Statement ignored                                     |
-# |              ORA-06512: at "SYS.DBMS_SYS_SQL", line 1204                   |
-# |              ORA-06512: at "SYS.DBMS_SQL", line 323                        |
-# |              ORA-06512: at "SYS.DBMS_EXPORT_EXTENSION", line 97            |
-# |              ORA-06512: at "SYS.DBMS_EXPORT_EXTENSION", line 126           |
-# |              ORA-06512: at line 1                                          |
+# |                  . about to export SYSTEM's tables via Direct Path ...     |
+# |                  . . exporting table                    DEF$_AQCALL        |
+# |                  EXP-00008: ORACLE error 6550 encountered                  |
+# |                  ORA-06550: line 1, column 19:                             |
+# |                  PLS-00201: identifier 'SYS.DBMS_DEFER_IMPORT_INTERNAL' must be declared
+# |                  ORA-06550: line 1, column 7:                              |
+# |                  PL/SQL: Statement ignored                                 |
+# |                  ORA-06512: at "SYS.DBMS_SQL", line 1501                   |
+# |                  ORA-06512: at "SYS.DBMS_EXPORT_EXTENSION", line 97        |
+# |                  ORA-06512: at "SYS.DBMS_EXPORT_EXTENSION", line 126       |
+# |                  ORA-06512: at line 1                                      |
+# |                                                                            |
+# |                  ORA-06512: at "SYS.DBMS_SYS_SQL", line 1204               |
+# |                  ORA-06512: at "SYS.DBMS_SQL", line 323                    |
+# |                  ORA-06512: at "SYS.DBMS_EXPORT_EXTENSION", line 97        |
+# |                  ORA-06512: at "SYS.DBMS_EXPORT_EXTENSION", line 126       |
+# |                  ORA-06512: at line 1                                      |
+# |                                                                            |
+# |              This problem can occur on any platform.                       |
 # |                                                                            |
 # |              This is an Oracle bug documented in Metalink note:            |
 # |                                                                            |
-# |             464672.1 "ORA-06512 SYS.DBMS_EXPORT_EXTENSION And PLS-00201    |
+# |              464672.1 "ORA-06512 SYS.DBMS_EXPORT_EXTENSION And PLS-00201   |
 # |                       SYS.DBMS_DEFER_IMPORT_INTERNAL in 11g Export Or      |
 # |                       After OCTCPU2007"                                    |
 # |                                                                            |
-# |             The recommended workaround to this bug is to grant the         |
-# |             missing privileges to the user performing the backup. For      |
-# |             example:                                                       |
+# |              The recommended workaround to this bug is to grant the        |
+# |              missing privileges to the user performing the backup. For     |
+# |              example:                                                      |
 # |                                                                            |
-# |             GRANT EXECUTE ON SYS.DBMS_DEFER_IMPORT_INTERNAL TO backup_admin;
-# |             GRANT EXECUTE ON SYS.DBMS_EXPORT_EXTENSION TO backup_admin;    |
+# |              SQL> GRANT EXECUTE ON SYS.DBMS_DEFER_IMPORT_INTERNAL TO backup_admin;
+# |              SQL> GRANT EXECUTE ON SYS.DBMS_EXPORT_EXTENSION TO backup_admin;
 # |                                                                            |
 # |              ------------------                                            |
 # |              ORACLE EXPORT TIPS                                            |
 # |              ------------------                                            |
-# |                  (1) Some organizations find it necessary to also perform  |
-# |                      a daily export with rows=n. These export dumps can be |
-# |                      vaulted long-term if it ever becomes necessary to     |
-# |                      extract DDL definitions or PL/SQL procedure/packages  |
-# |                      from the past. In addition to Oracle import, other    |
-# |                      utilities exist that can read and parse empty         |
-# |                      (rows=n) export dump files like DDL Wizard.           |
+# |              (1) Some organizations find it necessary to also perform a    |
+# |                  daily export with rows=n. These export dumps can be       |
+# |                  vaulted long-term if it ever becomes necessary to extract |
+# |                  DDL definitions or PL/SQL procedure/packages from the     |
+# |                  past. In addition to Oracle import, other utilities exist |
+# |                  that can read and parse empty (rows=n) export dump files  |
+# |                  like DDL Wizard.                                          |
 # |                                                                            |
 # | PARAMETERS :                                                               |
 # |              TARGET_DB_NAME       TNS connect string to the target         |
@@ -147,7 +155,7 @@
 # |                                   "absolute file path" on the              |
 # |                                   database server. For example:            |
 # |                                                                            |
-# |                                   /u03/oradpump/racdb                      |
+# |                                   /u03/oraexp/racdb                        |
 # |                                                                            |
 # |                                   Also verify that the Oracle database     |
 # |                                   server has read/write privileges to the  |
@@ -163,7 +171,7 @@
 # |                                   dump files to retain on the file system. |
 # |                                                                            |
 # | EXAMPLE RUN:                                                               |
-# |              export_backup_full.ksh racdb1 racdb1 backup_admin backup_admin_pwd /u03/oradpump/racdb 2
+# |              export_backup_full.ksh racdb1 racdb1 backup_admin backup_admin_pwd /u03/oraexp/racdb 2
 # |                                                                            |
 # | CRON USAGE : This script can be run interactively from a command line      |
 # |              interface or scheduled within CRON. Regardless of the method  |
@@ -193,7 +201,7 @@
 # ----------------------------
 # SCRIPT VERSION
 # ----------------------------
-VERSION="4.1"
+VERSION="9.0"
 
 # ----------------------------
 # ORGANIZATION INFORMATION
@@ -227,11 +235,12 @@ unset SQLPATH
 # ----------------------------
 ORACLE_BASE=/u01/app/oracle
 ORACLE_ADMIN_DIR=${ORACLE_BASE}/admin
+ORACLE_DIAG_DIR=${ORACLE_BASE}/diag
 
 # ----------------------------
 # CUSTOM DIRECTORIES
 # ----------------------------
-CUSTOM_ORACLE_DIR=${ORACLE_BASE}/custom/oracle
+CUSTOM_ORACLE_DIR=${ORACLE_BASE}/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log
@@ -245,6 +254,14 @@ CUSTOM_ORACLE_TEMP_DIR=${CUSTOM_ORACLE_DIR}/temp
 SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 SCRIPT_NAME_NOEXT=${SCRIPT_NAME%.?*}
+
+# ----------------------------
+# HOSTNAME VARIABLES
+# ----------------------------
+HOSTNAME=`hostname`
+HOSTNAME_UPPER=`echo $HOSTNAME | tr '[:lower:]' '[:upper:]'`
+HOSTNAME_SHORT=${HOSTNAME%%.*}
+HOSTNAME_SHORT_UPPER=`echo $HOSTNAME_SHORT | tr '[:lower:]' '[:upper:]'`
 
 # ----------------------------
 # EMAIL PREFERENCES
@@ -348,14 +365,6 @@ HOST_RVAL_SUCCESS=0
 HOST_RVAL_WARNING=2
 HOST_RVAL_FAILED=2
 HIDE_PASSWORD_STRING="xxxxxxxxxxxxx"
-
-# ----------------------------
-# HOSTNAME VARIABLES
-# ----------------------------
-HOSTNAME=`${HOSTNAME_BIN}`
-HOSTNAME_UPPER=`echo $HOSTNAME | tr '[:lower:]' '[:upper:]'`
-HOSTNAME_SHORT=${HOSTNAME%%.*}
-HOSTNAME_SHORT_UPPER=`echo $HOSTNAME_SHORT | tr '[:lower:]' '[:upper:]'`
 
 # ----------------------------
 # LOG AND TEMP FILE VARIABLES
@@ -694,7 +703,7 @@ function switchOracleEnv {
     export ORACLE_DOC 
     wl "TRACE> New ORACLE_DOC       = ${ORACLE_DOC}"
 
-    ORACLE_PATH=$L_ORATAB_DB_ENTRY_HOME/rdbms/admin:$L_ORATAB_DB_ENTRY_HOME/sqlplus/admin:${ORACLE_BASE}/common/bin
+    ORACLE_PATH=$L_ORATAB_DB_ENTRY_HOME/rdbms/admin:$L_ORATAB_DB_ENTRY_HOME/sqlplus/admin
     export ORACLE_PATH
     wl "TRACE> New ORACLE_PATH      = ${ORACLE_PATH}"
     
@@ -1200,6 +1209,7 @@ wl "HOST_NAME (SHORT/UPPER)              : $HOSTNAME_SHORT_UPPER"
 wl "ORACLE_BASE                          : $ORACLE_BASE"
 wl "ORACLE_HOME                          : $ORACLE_HOME"
 wl "ORACLE_ADMIN_DIR                     : $ORACLE_ADMIN_DIR"
+wl "ORACLE_DIAG_DIR                      : $ORACLE_DIAG_DIR"
 wl "LOG_FILE_NAME                        : $LOG_FILE_NAME"
 wl "LOG_FILE_NAME_NODATE                 : $LOG_FILE_NAME_NODATE"
 wl "LOG_FILE_ARCHIVE_OBSOLETE_DAYS       : $LOG_FILE_ARCHIVE_OBSOLETE_DAYS"

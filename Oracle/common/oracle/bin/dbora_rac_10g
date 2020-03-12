@@ -15,7 +15,7 @@
 # |                Clusterware. This script does send email and starts the |
 # |                Oracle OEM agent. To start the OEM agent, this script   |
 # |                relies on the custom script                             |
-# |                /u01/app/oracle/custom/oracle/bin/oem10g_ctl.ksh.       |
+# |                /u01/app/oracle/dba_scripts/bin/oem10g_ctl.ksh          |
 # | INSTALLATION :                                                         |
 # |                - At the beginning  of this script, set all RAC_*       |
 # |                  environment variables as well as ORACLE_HOME and      |
@@ -59,8 +59,8 @@
 # | Modify the following Oracle service parameters to reflect the RAC      |
 # | configuration this script will be responsible for managing.            |
 # +------------------------------------------------------------------------+
-RAC_ORACLE_DATABASE="thingdb"
-RAC_ORACLE_INSTANCE="thingdb1"
+RAC_ORACLE_DATABASE="racdb"
+RAC_ORACLE_INSTANCE="racdb1"
 RAC_NODE_NAME=`hostname`
 
 export RAC_ORACLE_DATABASE RAC_ORACLE_INSTANCE RAC_NODE_NAME
@@ -79,7 +79,7 @@ export ORACLE_BASE ORACLE_HOME ORA_CRS_HOME
 # +------------------------------------------------------------------------+
 # | SCRIPT NAME VARIABLES                                                  |
 # +------------------------------------------------------------------------+
-VERSION="4.0"
+VERSION="5.2"
 SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 SCRIPT_NAME=${SCRIPT_NAME##K10}
@@ -98,7 +98,7 @@ export START_DATE_TIME
 # +------------------------------------------------------------------------+
 # | CUSTOM DIRECTORIES                                                     |
 # +------------------------------------------------------------------------+
-CUSTOM_ORACLE_DIR=/u01/app/oracle/custom/oracle
+CUSTOM_ORACLE_DIR=${ORACLE_BASE}/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log

@@ -3,22 +3,45 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : asm_files.sql                                                   |
 -- | CLASS    : Automatic Storage Management                                    |
--- | PURPOSE  : Provide a summary report of all files (and file metadata)       |
--- |            information for all ASM disk groups.                            |
+-- | PURPOSE  : Provide a summary report of all files, file metadata, and       |
+-- |            volume information for all ASM disk groups customized for       |
+-- |            Oracle 11g and higher.                                          |
 -- | NOTE     : As with any code, ensure to test this script in a development   |
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE  150
-SET PAGESIZE  9999
-SET VERIFY    off
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(sys_context('USERENV', 'INSTANCE_NAME'), 17) current_instance FROM dual;
+SET TERMOUT ON;
 
-COLUMN full_alias_path        FORMAT a63                  HEAD 'File Name'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : ASM Files                                                   |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN full_path              FORMAT a75                  HEAD 'ASM File Name / Volume Name / Device Name'
 COLUMN system_created         FORMAT a8                   HEAD 'System|Created?'
 COLUMN bytes                  FORMAT 9,999,999,999,999    HEAD 'Bytes'
 COLUMN space                  FORMAT 9,999,999,999,999    HEAD 'Space'
@@ -30,17 +53,17 @@ COLUMN disk_group_name        noprint
 
 BREAK ON report ON disk_group_name SKIP 1
 
-compute sum label ""              of bytes space on disk_group_name
-compute sum label "Grand Total: " of bytes space on report
+COMPUTE sum LABEL ""              OF bytes space ON disk_group_name
+COMPUTE sum LABEL "Grand Total: " OF bytes space ON report
 
 SELECT
-    CONCAT('+' || disk_group_name, SYS_CONNECT_BY_PATH(alias_name, '/')) full_alias_path
-  , bytes
-  , space
-  , NVL(LPAD(type, 18), '<DIRECTORY>')  type
-  , creation_date
-  , disk_group_name
-  , LPAD(system_created, 4) system_created
+    CONCAT('+' || db_files.disk_group_name, SYS_CONNECT_BY_PATH(db_files.alias_name, '/')) full_path
+  , db_files.bytes
+  , db_files.space
+  , NVL(LPAD(db_files.type, 18), '<DIRECTORY>')  type
+  , db_files.creation_date
+  , db_files.disk_group_name
+  , LPAD(db_files.system_created, 4) system_created
 FROM
     ( SELECT
           g.name               disk_group_name
@@ -55,8 +78,32 @@ FROM
       FROM
           v$asm_file f RIGHT OUTER JOIN v$asm_alias     a USING (group_number, file_number)
                                    JOIN v$asm_diskgroup g USING (group_number)
-    )
-WHERE type IS NOT NULL
-START WITH (MOD(pindex, POWER(2, 24))) = 0
-    CONNECT BY PRIOR rindex = pindex
+    ) db_files
+WHERE db_files.type IS NOT NULL
+START WITH (MOD(db_files.pindex, POWER(2, 24))) = 0
+    CONNECT BY PRIOR db_files.rindex = db_files.pindex
+UNION
+SELECT
+    '+' || volume_files.disk_group_name ||  ' [' || volume_files.volume_name || '] ' ||  volume_files.volume_device full_path
+  , volume_files.bytes
+  , volume_files.space
+  , NVL(LPAD(volume_files.type, 18), '<DIRECTORY>')  type
+  , volume_files.creation_date
+  , volume_files.disk_group_name
+  , null
+FROM
+    ( SELECT
+          g.name               disk_group_name
+        , v.volume_name        volume_name
+        , v.volume_device       volume_device
+        , f.bytes              bytes
+        , f.space              space
+        , f.type               type
+        , TO_CHAR(f.creation_date, 'DD-MON-YYYY HH24:MI:SS')  creation_date
+      FROM
+          v$asm_file f RIGHT OUTER JOIN v$asm_volume    v USING (group_number, file_number)
+                                   JOIN v$asm_diskgroup g USING (group_number)
+    ) volume_files
+WHERE volume_files.type IS NOT NULL
 /
+

@@ -3,18 +3,29 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_free_space_frag.sql                                         |
 -- | CLASS    : Database Administration                                         |
 -- | PURPOSE  : Report free space fragmentation.                                |
--- |            THIS SCRIPT MUST BE RUN AS THE SYS USER!!!                      |
+-- |            !!! THIS SCRIPT MUST BE RUN AS THE SYS USER !!!                 |
 -- | NOTE     : As with any code, ensure to test this script in a development   |
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-connect / as sysdba
+CONNECT / AS SYSDBA
+
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Free Space Fragmentation Report                             |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
 CREATE OR REPLACE VIEW free_space (
     tablespace
@@ -50,10 +61,17 @@ GROUP BY
 /
 
 CLEAR COLUMNS
-SET LINESIZE  120
-SET PAGESIZE  9999
-SET FEEDBACK  off
-SET VERIFY    off
+
+SET ECHO        OFF
+SET FEEDBACK    OFF
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
 
 BREAK ON tablespace SKIP 2 ON REPORT
 
@@ -62,16 +80,15 @@ COMPUTE SUM OF  free_blocks   ON tablespace
 COMPUTE SUM OF  free_blocks   ON report
 COMPUTE SUM OF  total_blocks  ON report
 
-COLUMN tablespace     HEADING "Tablespace"    FORMAT a15
+COLUMN tablespace     HEADING "Tablespace"    FORMAT a30
 COLUMN file_id        HEADING File#           FORMAT 99999
 COLUMN pieces         HEADING Frag            FORMAT 9999
 COLUMN free_bytes     HEADING 'Free Byte'
 COLUMN free_blocks    HEADING 'Free Blk'      FORMAT 999,999,999
 COLUMN largest_bytes  HEADING 'Biggest Bytes'
 COLUMN largest_blks   HEADING 'Biggest Blks'  FORMAT 999,999,999
-COLUMN data_file      HEADING 'File Name'     FORMAT a45
+COLUMN data_file      HEADING 'File Name'     FORMAT a75
 COLUMN total_blocks   HEADING 'Total Blocks'  FORMAT 999,999,999
-
 
 SELECT
     tablespace

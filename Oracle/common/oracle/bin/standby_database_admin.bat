@@ -4,7 +4,7 @@ REM |                          Jeffrey M. Hunter                               |
 REM |                      jhunter@idevelopment.info                           |
 REM |                         www.idevelopment.info                            |
 REM |--------------------------------------------------------------------------|
-REM |    Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+REM |    Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 REM |--------------------------------------------------------------------------|
 REM | DATABASE     : Oracle                                                    |
 REM | FILE         : standby_database_admin.bat                                |
@@ -60,31 +60,33 @@ REM | DEPENDENCIES : ROBOCOPY.EXE             - Used to copy files from the    |
 REM |                                           primary database machine.      |
 REM |                FORFILES.EXE             - Used to remove obsolete files. |
 REM |                                                                          |
-REM | PARAMETERS   : STANDBY_ADMIN_OPTION     = Valid values are "BUILD",      |
+REM | PARAMETERS   : STANDBY_ADMIN_OPTION     - Valid values are "BUILD",      |
 REM |                                           "REFRESH", or "ACTIVATE".      |
-REM |                STANDBY_DB               = Oracle SID for the standby     |
+REM |                STANDBY_DB               - Oracle SID for the standby     |
 REM |                                           database.                      |
-REM |                STANDBY_SYS_PASSWD       = SYS password for the           |
+REM |                STANDBY_DB_TNS_CONNECT   - TNS connect string to the      |
 REM |                                           standby database.              |
-REM |                STANDBY_MACHINE_NAME     = Name of the standby database   |
+REM |                STANDBY_SYS_PASSWD       - SYS password for the           |
+REM |                                           standby database.              |
+REM |                STANDBY_MACHINE_NAME     - Name of the standby database   |
 REM |                                           machine.                       |
-REM |                PRIMARY_DB               = Oracle SID and TNS connect     |
+REM |                PRIMARY_DB               - Oracle SID and TNS connect     |
 REM |                                           string for the primary         |
 REM |                                           database. Only required if     |
 REM |                                           STANDBY_ADMIN_OPTION equals    |
 REM |                                           "REFRESH" or "BUILD".          |
-REM |                PRIMARY_SYS_PASSWD       = SYS password for the primary   |
+REM |                PRIMARY_SYS_PASSWD       - SYS password for the primary   |
 REM |                                           database. Only required if     |
 REM |                                           STANDBY_ADMIN_OPTION equals    |
 REM |                                           "REFRESH" or "BUILD".          |
-REM |                PRIMARY_MACHINE_NAME     = Name of the primary database   |
+REM |                PRIMARY_MACHINE_NAME     - Name of the primary database   |
 REM |                                           machine. Only required if      |
 REM |                                           STANDBY_ADMIN_OPTION equals    |
 REM |                                           "REFRESH" or "BUILD".          |
 REM |                                                                          |
-REM | EXAMPLE USAGE: standby_database_admin.bat BUILD PROD sysprod win-db2 PROD sysprod win-db1
-REM |                standby_database_admin.bat REFRESH PROD sysprod win-db2 PROD sysprod win-db1
-REM |                standby_database_admin.bat ACTIVATE PROD sysprod win-db2
+REM | EXAMPLE USAGE: standby_database_admin.bat BUILD PROD PROD_STBY sysprod win-db2 PROD sysprod win-db1
+REM |                standby_database_admin.bat REFRESH PROD PROD_STBY sysprod win-db2 PROD sysprod win-db1
+REM |                standby_database_admin.bat ACTIVATE PROD PROD_STBY sysprod win-db2
 REM |                                                                          |
 REM | NOTE         : As with any code, ensure to test this script in a         |
 REM |                development environment before attempting to run it in    |
@@ -115,7 +117,7 @@ REM -- SET SQLNET_COMPANY_DOMAIN_NAME=
 REM -- ----------------------------------------------
 SET SQLNET_COMPANY_DOMAIN_NAME=.IDEVELOPMENT.INFO
 
-SET SCRIPT_VERSION=1.0
+SET SCRIPT_VERSION=1.4
 
 SET SCRIPTNAME=standby_database_admin.bat
 SET FILENAME=standby_database_admin
@@ -138,7 +140,7 @@ REM +--------------------------------------------------------------------------+
 
 echo.
 echo %FILENAME% - Version %SCRIPT_VERSION%
-echo Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.
+echo Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.
 echo.
 
 REM +--------------------------------------------------------------------------+
@@ -149,12 +151,13 @@ if (%1)==() goto PARAMETER_ERROR
 if (%2)==() goto PARAMETER_ERROR
 if (%3)==() goto PARAMETER_ERROR
 if (%4)==() goto PARAMETER_ERROR
+if (%5)==() goto PARAMETER_ERROR
 
 if /i %1% equ ACTIVATE (goto SKIP_PRIMARY_PARAMETERS)
 
-if (%5)==() goto PARAMETER_ERROR
 if (%6)==() goto PARAMETER_ERROR
 if (%7)==() goto PARAMETER_ERROR
+if (%8)==() goto PARAMETER_ERROR
 
 :SKIP_PRIMARY_PARAMETERS
 
@@ -197,13 +200,12 @@ REM +--------------------------------------------------------------------------+
 
 SET STANDBY_ADMIN_OPTION=%1%
 SET STANDBY_DB=%2%
-SET STANDBY_SYS_PASSWD=%3%
-SET STANDBY_MACHINE_NAME=%4%
-SET PRIMARY_DB=%5%
-SET PRIMARY_SYS_PASSWD=%6%
-SET PRIMARY_MACHINE_NAME=%7%
-
-SET STANDBY_DB_TNS_CONNECT=%STANDBY_DB%_STBY
+SET STANDBY_DB_TNS_CONNECT=%3%
+SET STANDBY_SYS_PASSWD=%4%
+SET STANDBY_MACHINE_NAME=%5%
+SET PRIMARY_DB=%6%
+SET PRIMARY_SYS_PASSWD=%7%
+SET PRIMARY_MACHINE_NAME=%8%
 
 if /i %STANDBY_MACHINE_NAME% equ %PRIMARY_MACHINE_NAME% (set LOCAL_PRIMARY_MACHINE=TRUE) else (set LOCAL_PRIMARY_MACHINE=FALSE)
 if /i %STANDBY_DB% equ %PRIMARY_DB% (set SAME_STANDBY_PRIMARY_DATABASE_NAME=TRUE) else (set SAME_STANDBY_PRIMARY_DATABASE_NAME=FALSE)
@@ -215,12 +217,17 @@ SET ORACLE_BASE=C:\oracle
 SET ORACLE_HOME=%ORACLE_BASE%\product\10.2.0\db_1
 SET ORACLE_HOME_UNC=C$\oracle\product\10.2.0\db_1
 
-SET ORA_BIN_DIR=C:\oracle\custom\oracle\bin
-SET ORA_TMP_DIR=C:\oracle\custom\oracle\temp
-SET ORA_LOG_DIR=C:\oracle\custom\oracle\log
+SET ORA_BIN_DIR=C:\Oracle\dba_scripts\bin
+SET ORA_TMP_DIR=C:\Oracle\dba_scripts\temp
+SET ORA_LOG_DIR=C:\Oracle\dba_scripts\log
 
+REM --------------------------------------------------
+REM  NOTE THAT %STANDBY_DB% WILL BE APPENDED TO THE 
+REM  FOLLOWING VARIABLES.
+REM --------------------------------------------------
 SET ORA_DB_FILES_DIR=D:\oracle\oradata
-SET ORA_REDO_LOG_FILES_DIR=E:\oracle\oradata
+SET ORA_CONTROL_FILE_DIR=F:\oracle\flash_recovery_area
+SET ORA_REDO_LOG_FILE_DIR=F:\oracle\flash_recovery_area
 SET ORA_FRA_DIR=F:\oracle\flash_recovery_area
 SET ORA_FRA_UNC=F$\oracle\flash_recovery_area
 SET ORA_ADMIN_DIR=C:\oracle\admin
@@ -264,7 +271,6 @@ echo Begin Time                            : %TIME%
 echo Debug Script?                         : %DEBUG_SCRIPT%
 echo Local Primary Machine?                : %LOCAL_PRIMARY_MACHINE%
 echo Same Standby / Primary Database Name  : %SAME_STANDBY_PRIMARY_DATABASE_NAME%
-echo Standby Database Connection String    : %STANDBY_DB_TNS_CONNECT%
 echo Production Machine Name               : %PRODUCTION_MACHINE_NAME%
 echo Company Domain                        : %COMPANY_DOMAIN_NAME%
 echo SQL*Net Company Domain                : %SQLNET_COMPANY_DOMAIN_NAME%
@@ -272,7 +278,8 @@ echo ORACLE_BASE                           : %ORACLE_BASE%
 echo ORACLE_HOME                           : %ORACLE_HOME%
 echo ORACLE_HOME_UNC                       : %ORACLE_HOME_UNC%
 echo Oracle DB Files Directory             : %ORA_DB_FILES_DIR%
-echo Oracle Redo Log Files Directory       : %ORA_REDO_LOG_FILES_DIR%
+echo Oracle Control File Directory         : %ORA_CONTROL_FILE_DIR%
+echo Oracle Redo Log File Directory        : %ORA_REDO_LOG_FILE_DIR%
 echo Oracle Flash Recovery Area Directory  : %ORA_FRA_DIR%
 echo Oracle Flash Recovery Area UNC        : %ORA_FRA_UNC%
 echo Oracle ADMIN Directory                : %ORA_ADMIN_DIR%
@@ -296,11 +303,12 @@ echo                            SCRIPT ARGUMENTS
 echo ===============================================================================
 echo Standby Admin Option             (P1) : %STANDBY_ADMIN_OPTION%
 echo Standby Database                 (P2) : %STANDBY_DB%
-echo Standby SYS Password             (P3) : xxxxxxxxxxxxxxxxx
-echo Standby Machine Name             (P4) : %STANDBY_MACHINE_NAME%
-echo Primary Database                 (P5) : %PRIMARY_DB%
-echo Primary SYS Password             (P6) : xxxxxxxxxxxxxxxxx
-echo Primary Machine Name             (P7) : %PRIMARY_MACHINE_NAME%
+echo Standby Database TNS Connect     (P3) : %STANDBY_DB_TNS_CONNECT%
+echo Standby SYS Password             (P4) : xxxxxxxxxxxxxxxxx
+echo Standby Machine Name             (P5) : %STANDBY_MACHINE_NAME%
+echo Primary Database                 (P6) : %PRIMARY_DB%
+echo Primary SYS Password             (P7) : xxxxxxxxxxxxxxxxx
+echo Primary Machine Name             (P8) : %PRIMARY_MACHINE_NAME%
 echo ===============================================================================
 
 
@@ -314,7 +322,6 @@ echo Begin Time                            : %TIME%                             
 echo Debug Script?                         : %DEBUG_SCRIPT%                           >> "%LOGFILE%"
 echo Local Primary Machine?                : %LOCAL_PRIMARY_MACHINE%                  >> "%LOGFILE%"
 echo Same Standby / Primary Database Name  : %SAME_STANDBY_PRIMARY_DATABASE_NAME%     >> "%LOGFILE%"
-echo Standby Database Connection String    : %STANDBY_DB_TNS_CONNECT%                 >> "%LOGFILE%"
 echo Production Machine Name               : %PRODUCTION_MACHINE_NAME%                >> "%LOGFILE%"
 echo Company Domain                        : %COMPANY_DOMAIN_NAME%                    >> "%LOGFILE%"
 echo SQL*Net Company Domain                : %SQLNET_COMPANY_DOMAIN_NAME%             >> "%LOGFILE%"
@@ -322,7 +329,8 @@ echo ORACLE_BASE                           : %ORACLE_BASE%                      
 echo ORACLE_HOME                           : %ORACLE_HOME%                            >> "%LOGFILE%"
 echo ORACLE_HOME_UNC                       : %ORACLE_HOME_UNC%                        >> "%LOGFILE%"
 echo Oracle DB Files Directory             : %ORA_DB_FILES_DIR%                       >> "%LOGFILE%"
-echo Oracle Redo Log Files Directory       : %ORA_REDO_LOG_FILES_DIR%                 >> "%LOGFILE%"
+echo Oracle Control File Directory         : %ORA_CONTROL_FILE_DIR%                   >> "%LOGFILE%"
+echo Oracle Redo Log File Directory        : %ORA_REDO_LOG_FILE_DIR%                  >> "%LOGFILE%"
 echo Oracle Flash Recovery Area Directory  : %ORA_FRA_DIR%                            >> "%LOGFILE%"
 echo Oracle Flash Recovery Area UNC        : %ORA_FRA_UNC%                            >> "%LOGFILE%"
 echo Oracle ADMIN Directory                : %ORA_ADMIN_DIR%                          >> "%LOGFILE%"
@@ -346,11 +354,12 @@ echo                            SCRIPT ARGUMENTS                                
 echo ===============================================================================  >> "%LOGFILE%"
 echo Standby Admin Option             (P1) : %STANDBY_ADMIN_OPTION%                   >> "%LOGFILE%"
 echo Standby Database                 (P2) : %STANDBY_DB%                             >> "%LOGFILE%"
-echo Standby SYS Password             (P3) : xxxxxxxxxxxxxxxxx                        >> "%LOGFILE%"
-echo Standby Machine Name             (P4) : %STANDBY_MACHINE_NAME%                   >> "%LOGFILE%"
-echo Primary Database                 (P5) : %PRIMARY_DB%                             >> "%LOGFILE%"
-echo Primary SYS Password             (P6) : xxxxxxxxxxxxxxxxx                        >> "%LOGFILE%"
-echo Primary Machine Name             (P7) : %PRIMARY_MACHINE_NAME%                   >> "%LOGFILE%"
+echo Standby Database TNS Connect     (P3) : %STANDBY_DB_TNS_CONNECT%                 >> "%LOGFILE%"
+echo Standby SYS Password             (P4) : xxxxxxxxxxxxxxxxx                        >> "%LOGFILE%"
+echo Standby Machine Name             (P5) : %STANDBY_MACHINE_NAME%                   >> "%LOGFILE%"
+echo Primary Database                 (P6) : %PRIMARY_DB%                             >> "%LOGFILE%"
+echo Primary SYS Password             (P7) : xxxxxxxxxxxxxxxxx                        >> "%LOGFILE%"
+echo Primary Machine Name             (P8) : %PRIMARY_MACHINE_NAME%                   >> "%LOGFILE%"
 echo ===============================================================================  >> "%LOGFILE%"
 
 
@@ -717,11 +726,11 @@ REM +--------------------------------------------------------------------------+
 
 echo.                                                                      >> "%LOGFILE%"
 echo TRACE^> ------------------------------------------------------------- >> "%LOGFILE%"
-echo TRACE^> Checking for standby database (%STANDBY_DB%).                 >> "%LOGFILE%"
+echo TRACE^> Checking for standby database (%STANDBY_DB_TNS_CONNECT%).     >> "%LOGFILE%"
 echo TRACE^> ------------------------------------------------------------- >> "%LOGFILE%"
 echo.                                                                      >> "%LOGFILE%"
 
-%ORACLE_HOME%\bin\tnsping %STANDBY_DB% >> "%LOGFILE%"
+%ORACLE_HOME%\bin\tnsping %STANDBY_DB_TNS_CONNECT% >> "%LOGFILE%"
 
 if errorlevel 1 (goto TNS_STANDBY_ERROR) else (goto TNS_STANDBY_CONTINUE)
 
@@ -733,7 +742,7 @@ echo TRACE^> CAJ-001001: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   >> "%LOGFILE%"
 echo TRACE^> CAJ-001001: !!!!!!!!!!  Script Error  !!!!!!!!!!   >> "%LOGFILE%"
 echo TRACE^> CAJ-001001: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   >> "%LOGFILE%"
 echo TRACE^> CAJ-001002: Please review the log file for errors. >> "%LOGFILE%"
-echo TRACE^> CAJ-002001: Failed to TNSPING Standby Database (%STANDBY_DB%) >> "%LOGFILE%"
+echo TRACE^> CAJ-002001: Failed to TNSPING Standby Database (%STANDBY_DB_TNS_CONNECT%) >> "%LOGFILE%"
 echo TRACE^> >> "%LOGFILE%"
 echo.        >> "%LOGFILE%"
 goto END_OF_FILE_REPORT
@@ -1270,7 +1279,8 @@ if /i %DEBUG_SCRIPT% equ TRUE (goto DONE_DROP_STANDBY_DATABASE)
 call %ORACLE_HOME%\bin\dbca -silent -deleteDatabase -sourceDB %STANDBY_DB% -sysDBAUserName SYS -sysDBAPassword %STANDBY_DB% >> "%LOGFILE%"
 
 rmdir /S /Q %ORA_DB_FILES_DIR%\%STANDBY_DB%
-rmdir /S /Q %ORA_REDO_LOG_FILES_DIR%\%STANDBY_DB%
+rmdir /S /Q %ORA_CONTROL_FILE_DIR%\%STANDBY_DB%
+rmdir /S /Q %ORA_REDO_LOG_FILE_DIR%\%STANDBY_DB%
 rmdir /S /Q %ORA_FRA_DIR%\%STANDBY_DB%
 rmdir /S /Q %ORA_ADMIN_DIR%\%STANDBY_DB%
 
@@ -1546,17 +1556,15 @@ mkdir %ORACLE_BASE%\product\10.2.0\admin\%STANDBY_DB% >> "%LOGFILE%"
 mkdir %ORACLE_BASE%\product\10.2.0\admin\%STANDBY_DB%\dpdump >> "%LOGFILE%"
 
 mkdir %ORA_DB_FILES_DIR%\%STANDBY_DB% >> "%LOGFILE%"
-mkdir %ORA_DB_FILES_DIR%\%STANDBY_DB%\CONTROLFILE >> "%LOGFILE%"
 mkdir %ORA_DB_FILES_DIR%\%STANDBY_DB%\DATAFILE >> "%LOGFILE%"
 
-mkdir %ORA_REDO_LOG_FILES_DIR%\%STANDBY_DB% >> "%LOGFILE%"
-mkdir %ORA_REDO_LOG_FILES_DIR%\%STANDBY_DB%\CONTROLFILE >> "%LOGFILE%"
-mkdir %ORA_REDO_LOG_FILES_DIR%\%STANDBY_DB%\ONLINELOG >> "%LOGFILE%"
+mkdir %ORA_REDO_LOG_FILE_DIR%\%STANDBY_DB% >> "%LOGFILE%"
+mkdir %ORA_CONTROL_FILE_DIR%\%STANDBY_DB%\CONTROLFILE >> "%LOGFILE%"
+mkdir %ORA_REDO_LOG_FILE_DIR%\%STANDBY_DB%\ONLINELOG >> "%LOGFILE%"
 
 mkdir %ORA_FRA_DIR%\%STANDBY_DB% >> "%LOGFILE%"
 mkdir %ORA_FRA_DIR%\%STANDBY_DB%\ARCHIVELOG >> "%LOGFILE%"
 mkdir %ORA_FRA_DIR%\%STANDBY_DB%\BACKUPSET >> "%LOGFILE%"
-mkdir %ORA_FRA_DIR%\%STANDBY_DB%\CONTROLFILE >> "%LOGFILE%"
 mkdir %ORA_FRA_DIR%\%STANDBY_DB%\ONLINELOG >> "%LOGFILE%"
 
 :DONE_CREATE_STANDBY_DIRECTORIES
@@ -1660,7 +1668,7 @@ echo  exit;                                                                     
 
 %ORACLE_HOME%\bin\sqlplus -L SYS/%PRIMARY_SYS_PASSWD%@%PRIMARY_DB% AS SYSDBA @"%TEMPSQLFILE%"
 
-echo control_files  = 'D:\ORACLE\ORADATA\%STANDBY_DB%\CONTROLFILE\CONTROL01.CTL', 'E:\ORACLE\ORADATA\%STANDBY_DB%\CONTROLFILE\CONTROL02.CTL', 'F:\ORACLE\FLASH_RECOVERY_AREA\%STANDBY_DB%\CONTROLFILE\CONTROL03.CTL'  >> "%ORACLE_HOME%\database\init%STANDBY_DB%.ora"
+echo control_files  = '%ORA_CONTROL_FILE_DIR%\%STANDBY_DB%\CONTROLFILE\CONTROL01.CTL', '%ORA_CONTROL_FILE_DIR%\%STANDBY_DB%\CONTROLFILE\CONTROL02.CTL', '%ORA_CONTROL_FILE_DIR%\%STANDBY_DB%\CONTROLFILE\CONTROL03.CTL'  >> "%ORACLE_HOME%\database\init%STANDBY_DB%.ora"
 
 type "%ORACLE_HOME%\database\init%STANDBY_DB%.ora" >> "%LOGFILE%"
 
@@ -2162,22 +2170,23 @@ echo.
 echo Invalid parameters.
 echo Please enter the following parameters:
 echo.
-echo      STANDBY_ADMIN_OPTION      = Valid values are "BUILD", "REFRESH", or "ACTIVATE".
-echo      STANDBY_DB                = Oracle SID for the standby database.
-echo      STANDBY_SYS_PASSWD        = SYS password for the standby database.
-echo      STANDBY_MACHINE_NAME      = Name of the standby database machine.
+echo      STANDBY_ADMIN_OPTION      - Valid values are "BUILD", "REFRESH", or "ACTIVATE".
+echo      STANDBY_DB                - Oracle SID for the standby database.
+echo      STANDBY_DB_TNS_CONNECT    - TNS connect string to the standby database.
+echo      STANDBY_SYS_PASSWD        - SYS password for the standby database.
+echo      STANDBY_MACHINE_NAME      - Name of the standby database machine.
 echo.
 echo The following parameters are only required when STANDBY_ADMIN_OPTION equals "BUILD" or "REFRESH".
 echo.
-echo      PRIMARY_DB                = Oracle SID and TNS connect string for the primary database.
-echo      PRIMARY_SYS_PASSWD        = SYS password for the primary database.
-echo      PRIMARY_MACHINE_NAME      = Name of the primary database machine.
+echo      PRIMARY_DB                - Oracle SID and TNS connect string for the primary database.
+echo      PRIMARY_SYS_PASSWD        - SYS password for the primary database.
+echo      PRIMARY_MACHINE_NAME      - Name of the primary database machine.
 echo.
 echo Example usage:
 echo.
-echo      standby_database_admin.bat BUILD PROD sysprod win-db2 PROD sysprod win-db1
-echo      standby_database_admin.bat REFRESH PROD sysprod win-db2 PROD sysprod win-db1
-echo      standby_database_admin.bat ACTIVATE PROD sysprod win-db2
+echo      standby_database_admin.bat BUILD PROD PROD_STBY sysprod win-db2 PROD sysprod win-db1
+echo      standby_database_admin.bat REFRESH PROD PROD_STBY sysprod win-db2 PROD sysprod win-db1
+echo      standby_database_admin.bat ACTIVATE PROD PROD_STBY sysprod win-db2
 
 
 REM +==========================================================================+

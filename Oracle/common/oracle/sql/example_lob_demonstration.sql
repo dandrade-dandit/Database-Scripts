@@ -3,11 +3,11 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : example_lob_demonstration.sql                                   |
--- | CLASS    : Demonstrations                                                  |
+-- | CLASS    : Examples                                                        |
 -- | PURPOSE  : Example script that demonstrates how to manipulate LOBs using   |
 -- |            SQL.                                                            |
 -- | NOTE     : As with any code, ensure to test this script in a development   |

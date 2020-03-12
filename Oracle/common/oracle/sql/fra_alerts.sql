@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : fra_alerts.sql                                                  |
@@ -14,14 +14,38 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(sys_context('USERENV', 'INSTANCE_NAME'), 17) current_instance
+FROM dual;
+SET TERMOUT ON;
 
-COLUMN object_type        FORMAT a10    HEADING 'Object Type'
-COLUMN message_type       FORMAT a12    HEADING 'Message Type'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : FRA Alerts                                                  |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN object_type        FORMAT a12    HEADING 'Object Type'
+COLUMN message_type       FORMAT a13    HEADING 'Message Type'
 COLUMN message_level                    HEADING 'Message Level'
-COLUMN reason             FORMAT a50    HEADING 'Reason'
-COLUMN suggested_action   FORMAT a50    HEADING 'Suggested Action'
+COLUMN reason             FORMAT a50    HEADING 'Reason'            WRAP
+COLUMN suggested_action   FORMAT a50    HEADING 'Suggested Action'  WRAP
 
 prompt 
 prompt The database issues a warning alert when reclaimable space is less than
@@ -43,7 +67,6 @@ prompt ORA-19815: WARNING: db_recovery_file_dest_size of "size of FRA configured
 prompt bytes is 100.00% used, and has 0 remaining bytes available.
 prompt 
 
-
 SELECT
     object_type
   , message_type
@@ -53,5 +76,4 @@ SELECT
 FROM
     dba_outstanding_alerts
 /
-
 

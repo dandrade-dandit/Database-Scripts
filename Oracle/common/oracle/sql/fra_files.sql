@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : fra_files.sql                                                   |
@@ -13,16 +13,39 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(sys_context('USERENV', 'INSTANCE_NAME'), 17) current_instance
+FROM dual;
+SET TERMOUT ON;
 
-COLUMN name               FORMAT a75                  HEADING 'File Name'
-COLUMN member      FORMAT a75 HEADING 'File Name'
-COLUMN handle      FORMAT a75 HEADING 'File Name'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : FRA Files                                                   |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
 
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
-SELECT    name, (blocks*block_size)
+COLUMN name       FORMAT a80                  HEADING 'File Name'
+COLUMN member     FORMAT a80                  HEADING 'File Name'
+COLUMN handle     FORMAT a80                  HEADING 'File Name'
+COLUMN bytes      FORMAT 999,999,999,999,999  HEADING 'File Size (Bytes)'
+
+SELECT    name, (blocks*block_size) bytes
 FROM      v$datafile_copy
 WHERE     is_recovery_dest_file = 'YES'
 UNION
@@ -38,11 +61,11 @@ SELECT    handle, bytes
 FROM      v$backup_piece
 WHERE     is_recovery_dest_file = 'YES'
 UNION
-SELECT    name, (blocks*block_size)
+SELECT    name, (blocks*block_size) bytes
 FROM      v$archived_log
 WHERE     is_recovery_dest_file = 'YES'
+ORDER BY
+    1
+  , 2
 /
 
-
-$backup_piece_details        is_recovery_dest_file
-$backup_copy_details         is_recovery_dest_file

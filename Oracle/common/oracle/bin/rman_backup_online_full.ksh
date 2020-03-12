@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # |----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # |----------------------------------------------------------------------------|
 # | DATABASE   : Oracle                                                        |
 # | FILE       : rman_backup_online_full.ksh                                   |
@@ -73,13 +73,13 @@
 # |                                                                            |
 # | EXAMPLE RUN:                                                               |
 # |              /* Full DB backup as BACKUPSET to disk, AL backup all not backed up, delete AL > [n] days, no RMAN recovery catalog*/
-# |              rman_backup_online_full.ksh  thingdb1 thingdb1 backup_admin backup_admin_pwd 2 nocatalog > rman_backup_online_full_thingdb1_backup_admin_THING1.job 2>&1
+# |              rman_backup_online_full.ksh  racdb1 racdb1 backup_admin backup_admin_pwd 2 nocatalog > rman_backup_online_full_racdb1_backup_admin_RACNODE1.job 2>&1
 # |                                                                            |
 # |              /* Full DB backup as BACKUPSET to tape, AL backup all not backed up, delete AL > [n] days, use RMAN recovery catalog */
-# |              rman_backup_online_full.ksh  thingdb1 thingdb1 backup_admin backup_admin_pwd 3 catalog catdb.idevelopment.info rman rman_pwd > rman_backup_online_full_thingdb1_backup_admin_THING1.job 2>&1
+# |              rman_backup_online_full.ksh  racdb1 racdb1 backup_admin backup_admin_pwd 3 catalog catdb.idevelopment.info rman rman_pwd > rman_backup_online_full_racdb1_backup_admin_RACNODE1.job 2>&1
 # |                                                                            |
 # |              /* Inc. Standby DB backup as BACKUPSET to disk, AL backup all not backed up, delete AL > [n] days, use RMAN recovery catalog */
-# |              rman_backup_online_full.ksh  testdb3_stby.idevelopment.info testdb3 backup_admin backup_admin_pwd 5 catalog catdb.idevelopment.info rman rman_pwd > rman_backup_online_full_thingdb1_backup_admin_LINUX4.job 2>&1
+# |              rman_backup_online_full.ksh  testdb3_stby.idevelopment.info testdb3 backup_admin backup_admin_pwd 5 catalog catdb.idevelopment.info rman rman_pwd > rman_backup_online_full_testdb3_backup_admin_LINUX4.job 2>&1
 # |                                                                            |
 # | NOTES      : This script assumes the target instance exists on the server  |
 # |              running this script. The RMAN recovery catalog (if            |
@@ -743,7 +743,7 @@
 # ----------------------------
 # SCRIPT VERSION
 # ----------------------------
-VERSION="8.1"
+VERSION="9.0"
 
 # ----------------------------
 # ORGANIZATION INFORMATION
@@ -854,11 +854,12 @@ unset SQLPATH
 # ----------------------------
 ORACLE_BASE=/u01/app/oracle
 ORACLE_ADMIN_DIR=${ORACLE_BASE}/admin
+ORACLE_DIAG_DIR=${ORACLE_BASE}/diag
 
 # ----------------------------
 # CUSTOM DIRECTORIES
 # ----------------------------
-CUSTOM_ORACLE_DIR=${ORACLE_BASE}/custom/oracle
+CUSTOM_ORACLE_DIR=${ORACLE_BASE}/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log
@@ -872,6 +873,14 @@ CUSTOM_ORACLE_TEMP_DIR=${CUSTOM_ORACLE_DIR}/temp
 SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 SCRIPT_NAME_NOEXT=${SCRIPT_NAME%.?*}
+
+# ----------------------------
+# HOSTNAME VARIABLES
+# ----------------------------
+HOSTNAME=`hostname`
+HOSTNAME_UPPER=`echo $HOSTNAME | tr '[:lower:]' '[:upper:]'`
+HOSTNAME_SHORT=${HOSTNAME%%.*}
+HOSTNAME_SHORT_UPPER=`echo $HOSTNAME_SHORT | tr '[:lower:]' '[:upper:]'`
 
 # ----------------------------
 # EMAIL PREFERENCES
@@ -978,14 +987,6 @@ HOST_RVAL_SUCCESS=0
 HOST_RVAL_WARNING=2
 HOST_RVAL_FAILED=2
 HIDE_PASSWORD_STRING="xxxxxxxxxxxxx"
-
-# ----------------------------
-# HOSTNAME VARIABLES
-# ----------------------------
-HOSTNAME=`${HOSTNAME_BIN}`
-HOSTNAME_UPPER=`echo $HOSTNAME | tr '[:lower:]' '[:upper:]'`
-HOSTNAME_SHORT=${HOSTNAME%%.*}
-HOSTNAME_SHORT_UPPER=`echo $HOSTNAME_SHORT | tr '[:lower:]' '[:upper:]'`
 
 # ----------------------------
 # LOG AND TEMP FILE VARIABLES
@@ -1347,7 +1348,7 @@ function switchOracleEnv {
     export ORACLE_DOC 
     wl "TRACE> New ORACLE_DOC       = ${ORACLE_DOC}"
 
-    ORACLE_PATH=$L_ORATAB_DB_ENTRY_HOME/rdbms/admin:$L_ORATAB_DB_ENTRY_HOME/sqlplus/admin:${ORACLE_BASE}/common/bin
+    ORACLE_PATH=$L_ORATAB_DB_ENTRY_HOME/rdbms/admin:$L_ORATAB_DB_ENTRY_HOME/sqlplus/admin
     export ORACLE_PATH
     wl "TRACE> New ORACLE_PATH      = ${ORACLE_PATH}"
     
@@ -2753,6 +2754,7 @@ wl "HOST_NAME (SHORT/UPPER)              : $HOSTNAME_SHORT_UPPER"
 wl "ORACLE_BASE                          : $ORACLE_BASE"
 wl "ORACLE_HOME                          : $ORACLE_HOME"
 wl "ORACLE_ADMIN_DIR                     : $ORACLE_ADMIN_DIR"
+wl "ORACLE_DIAG_DIR                      : $ORACLE_DIAG_DIR"
 wl "LOG_FILE_NAME                        : $LOG_FILE_NAME"
 wl "LOG_FILE_NAME_NODATE                 : $LOG_FILE_NAME_NODATE"
 wl "LOG_FILE_ARCHIVE_OBSOLETE_DAYS       : $LOG_FILE_ARCHIVE_OBSOLETE_DAYS"
@@ -2834,7 +2836,7 @@ wl "|-------------------------------------------------------------------------|"
 wl "| VERIFY LOG IN CREDENTIALS TO THE TARGET DATABASE.                       |"
 wl "+-------------------------------------------------------------------------+"
 
-verifyDatabaseLoginCredentials $TARGET_DB_NAME $TARGET_DBA_USERNAME $TARGET_DBA_PASSWORD "NOSYSDBA" $UNIQUE_SCRIPT_IDENTIFIER
+verifyDatabaseLoginCredentials $TARGET_DB_NAME $TARGET_DBA_USERNAME $TARGET_DBA_PASSWORD "SYSDBA" $UNIQUE_SCRIPT_IDENTIFIER
 
 
 

@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_file_use.sql                                                |
@@ -15,22 +15,46 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
-SET VERIFY   OFF
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : File Usage                                                  |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN db NEW_VALUE xdb NOPRINT FORMAT a1
 
 COLUMN type        FORMAT a8                 HEADING 'Type'
-COLUMN tablespace  FORMAT a15                HEADING 'Tablspace'
-COLUMN filename    FORMAT a65                HEADING 'Filename'
+COLUMN tablespace  FORMAT a30                HEADING 'Tablspace'
+COLUMN filename    FORMAT a75                HEADING 'Filename'
 COLUMN filesize    FORMAT 9,999,999,999,999  HEADING 'File Size'
 COLUMN stat        FORMAT a10                HEADING 'Status'
 COLUMN seq         FORMAT 9999999            HEADING 'Sequence'
 COLUMN arc         FORMAT a4                 HEADING 'Archived'
 
+SET TERMOUT OFF
 SELECT name db
 FROM   v$database;
+SET TERMOUT ON
 
 SELECT
     'Data'                        type
@@ -155,5 +179,4 @@ SELECT
 FROM dba_temp_files
 ORDER BY 1,2,3
 /
-
 

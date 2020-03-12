@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : awr_snapshots_dbtime.sql                                        |
@@ -14,10 +14,31 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE   145
-SET PAGESIZE   9999
-SET TRIMSPOOL  ON
-SET VERIFY     off
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(sys_context('USERENV', 'INSTANCE_NAME'), 17) current_instance FROM dual;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : AWR Snapshots (DB Time Report)                              |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    256
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN instance_name_print  FORMAT a13                   HEADING 'Instance Name'
 COLUMN snap_id              FORMAT 9999999               HEADING 'Snap ID'
@@ -31,7 +52,9 @@ COLUMN cpu_time             FORMAT 999,999,999.99        HEADING 'CPU Time (min)
 
 BREAK ON instance_name_print ON startup_time
 
-SPOOL awr_snapshots_dbtime.lst
+DEFINE spool_file=awr_snapshots_dbtime.lst
+
+SPOOL &spool_file
 
 SELECT
     i.instance_name                                                                     instance_name_print
@@ -66,3 +89,6 @@ ORDER BY
   , s.snap_id;
 
 SPOOL OFF
+
+PROMPT Report written to &spool_file
+PROMPT 

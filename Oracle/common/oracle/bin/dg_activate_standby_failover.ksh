@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # |----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # |----------------------------------------------------------------------------|
 # | DATABASE   : Oracle                                                        |
 # | FILE       : dg_activate_standby_failover.ksh                              |
@@ -58,6 +58,7 @@ export SCRIPT_NAME_NOEXT=${SCRIPT_NAME%%\.ksh}
 export DATE=`date +%Y``date +%m``date +%d`
 export TIME=`date +%H%M`
 export DAY=`date +%a`
+export CURRENT_YEAR=`${DATE_BIN} +"%Y"`;
 export THIS_HOST=`hostname`
 export DATE_LOG=`date +%Y%m%d_%H%M`
 export LOG_FILE=${SCRIPT_NAME_NOEXT}_${DATE_LOG}.log
@@ -104,7 +105,7 @@ showSignonBanner() {
 
     wl " "
     wl "${SCRIPT_NAME} - Version ${VERSION}"
-    wl "Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved."
+    wl "Copyright (c) 1998-${CURRENT_YEAR} Jeffrey M. Hunter. All rights reserved."
     wl " "
 
 }
@@ -530,7 +531,7 @@ wl "TRACE> SQL_COMMAND: $SQL_COMMAND"
 wl " "
 
 $ORACLE_HOME/bin/sqlplus -s /nolog <<EOF
-  connect / as sysdba
+  CONNECT / AS SYSDBA
   WHENEVER SQLERROR EXIT FAILURE
   $SQL_COMMAND
 EOF
@@ -566,7 +567,7 @@ wl " "
 
 
 $ORACLE_HOME/bin/sqlplus -s /nolog <<EOF
-  connect / as sysdba
+  CONNECT / AS SYSDBA
   WHENEVER SQLERROR EXIT FAILURE
   $SQL_COMMAND
 EOF
@@ -603,7 +604,7 @@ wl "+---------------------------------------------------------------------------
 
 $ORACLE_HOME/bin/sqlplus -s /nolog <<EOF | tee -a $LOG_FILE
 
-  connect / as sysdba
+  CONNECT / AS SYSDBA
 
   SHUTDOWN IMMEDIATE;
 

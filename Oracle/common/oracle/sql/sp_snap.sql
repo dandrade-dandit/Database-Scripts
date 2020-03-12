@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sp_snap.sql                                                     |
@@ -14,15 +14,15 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-prompt 
-prompt =========================================================================
-prompt The following script is a wrapper script to the Oracle supplied package
-prompt Statspack.
-prompt =========================================================================
-prompt Note that this script should be run as the owner of the 
-prompt STATSPACK repository.
-prompt =========================================================================
-prompt
+PROMPT 
+PROMPT =========================================================================
+PROMPT The following script is a wrapper script to the Oracle supplied package
+PROMPT Statspack.
+PROMPT =========================================================================
+PROMPT Note that this script should be run as the owner of the 
+PROMPT STATSPACK repository.
+PROMPT =========================================================================
+PROMPT
 
-exec statspack.snap;
+EXEC statspack.snap;
 

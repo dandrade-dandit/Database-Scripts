@@ -3,34 +3,61 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : rollback_users.sql                                              |
 -- | CLASS    : Rollback Segments                                               |
--- | PURPOSE  : Query all ative rollback segments and the Sesions that are      |
+-- | PURPOSE  : Query all active rollback segments and the sessions that are    |
 -- |            using them.                                                     |
 -- | NOTE     : As with any code, ensure to test this script in a development   |
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 135
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN roll_name FORMAT a13     HEADING 'Rollback Name'
-COLUMN userID    FORMAT a20     HEADING 'OS/Oracle'
-COLUMN usercode  FORMAT a12     HEADING 'SID/Serial#'
-COLUMN program   FORMAT a31     HEADING 'Program'
-COLUMN machine   FORMAT a14     HEADING 'Machine'
-COLUMN status    FORMAT a8      HEADING 'Status'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Rollback Users                                              |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN rollback_name      FORMAT a25        HEADING 'Rollback Name'
+COLUMN sid                FORMAT 999999     HEADING 'SID'
+COLUMN serial_id          FORMAT 99999999   HEADING 'Serial ID'
+COLUMN session_status     FORMAT a9         HEADING 'Status'
+COLUMN oracle_username    FORMAT a18        HEADING 'Oracle User'
+COLUMN os_username        FORMAT a18        HEADING 'O/S User'
+COLUMN session_machine    FORMAT a30        HEADING 'Machine'          TRUNC
+COLUMN session_program    FORMAT a40        HEADING 'Session Program'  TRUNC
 
 SELECT
-    r.name                          roll_name
-  , s.osuser || '/' ||  s.username  userID
-  , s.sid || '/' || s.serial#       usercode
-  , s.program                       program
-  , s.status                        status
-  , s.machine                       machine
+    r.name              rollback_name
+  , s.sid               sid
+  , s.serial#           serial_id
+  , s.status            session_status
+  , s.username          oracle_username
+  , s.osuser            os_username
+  , s.machine           session_machine
+  , s.program           session_program
 FROM
     v$lock     l
   , v$rollname r
@@ -40,6 +67,6 @@ WHERE
   AND TRUNC (l.id1(+)/65536) = r.usn
   AND l.type(+) = 'TX'
   AND l.lmode(+) = 6
-ORDER BY r.name
-/
+ORDER BY
+    s.sid;
 

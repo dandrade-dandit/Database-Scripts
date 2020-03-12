@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_tablespaces.sql                                             |
@@ -16,25 +16,48 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 141
-SET PAGESIZE 9999
-SET VERIFY   OFF
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Tablespaces                                                 |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN status      FORMAT a9                 HEADING 'Status'
-COLUMN name        FORMAT a22                HEADING 'Tablespace Name'
-COLUMN type        FORMAT a12                HEADING 'TS Type'
+COLUMN name        FORMAT a30                HEADING 'Tablespace Name'
+COLUMN type        FORMAT a15                HEADING 'TS Type'
 COLUMN extent_mgt  FORMAT a10                HEADING 'Ext. Mgt.'
-COLUMN segment_mgt FORMAT a9                 HEADING 'Seg. Mgt.'
+COLUMN segment_mgt FORMAT a10                HEADING 'Seg. Mgt.'
 COLUMN ts_size     FORMAT 9,999,999,999,999  HEADING 'Tablespace Size'
 COLUMN used        FORMAT 9,999,999,999,999  HEADING 'Used (in bytes)'
 COLUMN free        FORMAT 9,999,999,999,999  HEADING 'Free (in bytes)'
 COLUMN pct_used    FORMAT 999                HEADING 'Pct. Used'
 
 BREAK ON report
-COMPUTE SUM OF ts_size  ON report
-COMPUTE SUM OF used     ON report
-COMPUTE SUM OF free     ON report
-COMPUTE AVG OF pct_used ON report
+
+COMPUTE sum OF ts_size  ON report
+COMPUTE sum OF used     ON report
+COMPUTE sum OF free     ON report
+COMPUTE avg OF pct_used ON report
 
 SELECT
     d.status                                            status
@@ -90,5 +113,7 @@ WHERE
   AND d.tablespace_name = t.tablespace_name(+)
   AND d.extent_management like 'LOCAL'
   AND d.contents like 'TEMPORARY'
+ORDER BY
+  2
 /
 

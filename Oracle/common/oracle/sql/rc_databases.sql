@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : rc_databases.sql                                                |
@@ -14,8 +14,32 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : RMAN Registered Databases                                   |
+PROMPT | Instance : &current_instance                                           |
+PROMPT | Note     : Listing of all databases in the RMAN recovery catalog.      |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN db_key                 FORMAT 999999                 HEADING 'DB|Key'
 COLUMN dbinc_key              FORMAT 999999                 HEADING 'DB Inc|Key'
@@ -23,10 +47,6 @@ COLUMN dbid                                                 HEADING 'DBID'
 COLUMN name                   FORMAT a12                    HEADING 'Database|Name'
 COLUMN resetlogs_change_num                                 HEADING 'Resetlogs|Change Num'
 COLUMN resetlogs              FORMAT a21                    HEADING 'Reset Logs|Date/Time'
-
-prompt
-prompt Listing of all databases in the RMAN recovery catalog
-prompt 
 
 SELECT
     rd.db_key
@@ -40,3 +60,4 @@ FROM
 ORDER BY
     rd.name
 /
+

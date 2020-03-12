@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_rebuild_indexes.sql                                         |
@@ -17,15 +17,37 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET ECHO      OFF
-SET FEEDBACK  OFF
-SET VERIFY    OFF
-SET PAGESIZE  0
-SET TERMOUT   ON
-SET HEADING   OFF
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-ACCEPT TS_NAME CHAR PROMPT 'Enter the index tablespace name: ' 
-PROMPT Thanks... Creating Rebuild Index Script for Tablespace: &TS_NAME
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Rebuild Index Build Script                                  |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+PROMPT 
+ACCEPT TS_NAME CHAR PROMPT 'Enter the index tablespace name : '
+
+PROMPT
+PROMPT Thanks... Creating rebuild index script for tablespace: &TS_NAME
+
+SET ECHO        OFF
+SET FEEDBACK    OFF
+SET HEADING     OFF
+SET LINESIZE    180
+SET PAGESIZE    0
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 SET TERMOUT   OFF
 
@@ -39,24 +61,24 @@ SELECT 'REM' FROM dual;
 SELECT ' ' FROM dual;
 
 SELECT 
-  'REM +-----------------------------------------------+' || chr(10) ||
+  'REM +------------------------------------------------------------------------+' || chr(10) ||
   'REM | INDEX NAME : ' || owner   || '.' || segment_name 
-         || lpad('|', 33 - (length(owner) + length(segment_name)) )
+         || lpad('|', 58 - (length(owner) + length(segment_name)) )
          || chr(10) ||
   'REM | BYTES      : ' || bytes   
-         || lpad ('|', 34-(length(bytes)) ) || chr(10) ||
+         || lpad ('|', 59-(length(bytes)) ) || chr(10) ||
   'REM | EXTENTS    : ' || extents 
-         || lpad ('|', 34-(length(extents)) ) || chr(10) ||
-  'REM +-----------------------------------------------+' || chr(10) ||
+         || lpad ('|', 59-(length(extents)) ) || chr(10) ||
+  'REM +------------------------------------------------------------------------+' || chr(10) ||
   'ALTER INDEX ' || owner || '.' || segment_name || chr(10) ||
-  'REBUILD ' || chr(10) ||
-  'TABLESPACE ' || tablespace_name || chr(10) ||
-  'STORAGE ( ' || chr(10) ||
-  '  INITIAL     ' || initial_extent || chr(10) ||
-  '  NEXT        ' || next_extent || chr(10) ||
-  '  MINEXTENTS  ' || min_extents || chr(10) ||
-  '  MAXEXTENTS  ' || max_extents || chr(10) ||
-  '  PCTINCREASE ' || pct_increase || chr(10) ||
+  '    REBUILD ONLINE' || chr(10) ||
+  '    TABLESPACE ' || tablespace_name || chr(10) ||
+  '    STORAGE ( ' || chr(10) ||
+  '        INITIAL     ' || initial_extent || chr(10) ||
+  '        NEXT        ' || next_extent || chr(10) ||
+  '        MINEXTENTS  ' || min_extents || chr(10) ||
+  '        MAXEXTENTS  ' || max_extents || chr(10) ||
+  '        PCTINCREASE ' || pct_increase || chr(10) ||
   ');' || chr(10) || chr(10)
 FROM   dba_segments
 WHERE  segment_type = 'INDEX'
@@ -65,10 +87,10 @@ WHERE  segment_type = 'INDEX'
 ORDER BY owner, bytes DESC
 /
 
+SPOOL OFF
 
-spool off
 SET TERMOUT ON
-prompt Done... Built the script rebuild_&TS_NAME._indexes.sql
-SET TERMOUT OFF
-exit
 
+PROMPT 
+PROMPT Done... Built the script rebuild_&TS_NAME._indexes.sql
+PROMPT 

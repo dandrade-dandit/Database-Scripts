@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : plsql_webdba_utl_pkg.sql                                        |
@@ -126,4 +126,5 @@ CREATE OR REPLACE PACKAGE BODY webdba_util AS
 END webdba_util;
 /
 
-show errors
+SHOW ERRORS
+

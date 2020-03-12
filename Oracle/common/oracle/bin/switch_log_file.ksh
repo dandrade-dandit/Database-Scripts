@@ -5,7 +5,7 @@
 # |                      jhunter@idevelopment.info                             |
 # |                         www.idevelopment.info                              |
 # |----------------------------------------------------------------------------|
-# |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+# |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 # |----------------------------------------------------------------------------|
 # | DATABASE   : Oracle                                                        |
 # | FILE       : switch_log_file.ksh                                           |
@@ -56,7 +56,7 @@
 # |              TARGET_DBA_PASSWORD    Database password used to log in to    |
 # |                                     the target database.                   |
 # | EXAMPLE RUN:                                                               |
-# |              switch_log_file.ksh thingdb1 thingdb1 backup_admin backup_admin_pwd > switch_log_file_thingdb1_backup_admin_THING1.job 2>&1
+# |              switch_log_file.ksh racdb1 racdb1 backup_admin backup_admin_pwd > switch_log_file_racdb1_backup_admin_RACNODE1.job 2>&1
 # |                                                                            |
 # | CRON USAGE : This script can be run interactively from a command line      |
 # |              interface or scheduled within CRON. Regardless of the method  |
@@ -86,7 +86,7 @@
 # ----------------------------
 # SCRIPT VERSION
 # ----------------------------
-VERSION="4.1"
+VERSION="9.0"
 
 # ----------------------------
 # ORGANIZATION INFORMATION
@@ -118,11 +118,12 @@ unset SQLPATH
 # ----------------------------
 ORACLE_BASE=/u01/app/oracle
 ORACLE_ADMIN_DIR=${ORACLE_BASE}/admin
+ORACLE_DIAG_DIR=${ORACLE_BASE}/diag
 
 # ----------------------------
 # CUSTOM DIRECTORIES
 # ----------------------------
-CUSTOM_ORACLE_DIR=${ORACLE_BASE}/custom/oracle
+CUSTOM_ORACLE_DIR=${ORACLE_BASE}/dba_scripts
 CUSTOM_ORACLE_BIN_DIR=${CUSTOM_ORACLE_DIR}/bin
 CUSTOM_ORACLE_LIB_DIR=${CUSTOM_ORACLE_DIR}/lib
 CUSTOM_ORACLE_LOG_DIR=${CUSTOM_ORACLE_DIR}/log
@@ -136,6 +137,14 @@ CUSTOM_ORACLE_TEMP_DIR=${CUSTOM_ORACLE_DIR}/temp
 SCRIPT_NAME_FULL=$0
 SCRIPT_NAME=${SCRIPT_NAME_FULL##*/}
 SCRIPT_NAME_NOEXT=${SCRIPT_NAME%.?*}
+
+# ----------------------------
+# HOSTNAME VARIABLES
+# ----------------------------
+HOSTNAME=`hostname`
+HOSTNAME_UPPER=`echo $HOSTNAME | tr '[:lower:]' '[:upper:]'`
+HOSTNAME_SHORT=${HOSTNAME%%.*}
+HOSTNAME_SHORT_UPPER=`echo $HOSTNAME_SHORT | tr '[:lower:]' '[:upper:]'`
 
 # ----------------------------
 # EMAIL PREFERENCES
@@ -239,14 +248,6 @@ HOST_RVAL_SUCCESS=0
 HOST_RVAL_WARNING=2
 HOST_RVAL_FAILED=2
 HIDE_PASSWORD_STRING="xxxxxxxxxxxxx"
-
-# ----------------------------
-# HOSTNAME VARIABLES
-# ----------------------------
-HOSTNAME=`${HOSTNAME_BIN}`
-HOSTNAME_UPPER=`echo $HOSTNAME | tr '[:lower:]' '[:upper:]'`
-HOSTNAME_SHORT=${HOSTNAME%%.*}
-HOSTNAME_SHORT_UPPER=`echo $HOSTNAME_SHORT | tr '[:lower:]' '[:upper:]'`
 
 # ----------------------------
 # LOG AND TEMP FILE VARIABLES
@@ -581,7 +582,7 @@ function switchOracleEnv {
     export ORACLE_DOC 
     wl "TRACE> New ORACLE_DOC       = ${ORACLE_DOC}"
 
-    ORACLE_PATH=$L_ORATAB_DB_ENTRY_HOME/rdbms/admin:$L_ORATAB_DB_ENTRY_HOME/sqlplus/admin:${ORACLE_BASE}/common/bin
+    ORACLE_PATH=$L_ORATAB_DB_ENTRY_HOME/rdbms/admin:$L_ORATAB_DB_ENTRY_HOME/sqlplus/admin
     export ORACLE_PATH
     wl "TRACE> New ORACLE_PATH      = ${ORACLE_PATH}"
     
@@ -1087,6 +1088,7 @@ wl "HOST_NAME (SHORT/UPPER)              : $HOSTNAME_SHORT_UPPER"
 wl "ORACLE_BASE                          : $ORACLE_BASE"
 wl "ORACLE_HOME                          : $ORACLE_HOME"
 wl "ORACLE_ADMIN_DIR                     : $ORACLE_ADMIN_DIR"
+wl "ORACLE_DIAG_DIR                      : $ORACLE_DIAG_DIR"
 wl "LOG_FILE_NAME                        : $LOG_FILE_NAME"
 wl "LOG_FILE_NAME_NODATE                 : $LOG_FILE_NAME_NODATE"
 wl "LOG_FILE_ARCHIVE_OBSOLETE_DAYS       : $LOG_FILE_ARCHIVE_OBSOLETE_DAYS"

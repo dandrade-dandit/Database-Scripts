@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : lob_dump_blob.sql                                               |
@@ -19,14 +19,43 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-set verify off
-set serveroutput on
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+COLUMN current_user NEW_VALUE current_user NOPRINT;
+SELECT rpad(instance_name, 17) current_instance, rpad(user, 13) current_user FROM v$instance;
+SET TERMOUT ON;
 
-accept oname   prompt 'Enter Owner Name                          : '
-accept tname   prompt 'Enter Table Name                          : '
-accept cname   prompt 'Enter Column Name                         : '
-accept wclause prompt 'SQL WHERE clause (including WHERE clause) : '
-accept odir    prompt 'Enter Output Directory                    : '
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Dump the Contents of a BLOB Column                          |
+PROMPT | Instance : &current_instance                                           |
+PROMPT | User     : &current_user                                               |
+PROMPT +------------------------------------------------------------------------+
+PROMPT 
+
+SET ECHO          OFF
+SET FEEDBACK      6
+SET HEADING       ON
+SET LINESIZE      180
+SET PAGESIZE      50000
+SET TERMOUT       ON
+SET SERVEROUTPUT  ON
+SET TIMING        OFF
+SET TRIMOUT       ON
+SET TRIMSPOOL     ON
+SET VERIFY        OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+ACCEPT oname   PROMPT 'Enter Owner Name                          : '
+ACCEPT tname   PROMPT 'Enter Table Name                          : '
+ACCEPT cname   PROMPT 'Enter Column Name                         : '
+ACCEPT wclause PROMPT 'SQL WHERE clause (including WHERE clause) : '
+ACCEPT odir    PROMPT 'Enter Output Directory                    : '
+
+CREATE OR REPLACE DIRECTORY temp_dump_lob_dir AS '&odir';
 
 DECLARE
 
@@ -36,7 +65,7 @@ DECLARE
   v_oname         VARCHAR2(100)  := UPPER('&oname');
   v_tname         VARCHAR2(100)  := UPPER('&tname');
   v_cname         VARCHAR2(100)  := UPPER('&cname');
-  v_outdir        VARCHAR2(2000) := '&odir';
+  v_outdir        VARCHAR2(30)   := 'TEMP_DUMP_LOB_DIR';
   v_wclause       VARCHAR2(4000) := '&wclause';
 
   -- +----------------------------------------------------+
@@ -45,6 +74,7 @@ DECLARE
   v_out_filename       VARCHAR2(500)  := v_oname || '_' || v_tname || '_' || v_cname;
   v_out_fileext        VARCHAR2(4)    := '.out';
   v_out_filename_full  VARCHAR2(500);
+  v_out_dirname        VARCHAR2(2000);
   v_file_count         NUMBER         := 0;
   v_file_handle        UTL_FILE.FILE_TYPE;
 
@@ -85,6 +115,8 @@ BEGIN
   -- | ENABLE SERVER-SIDE OUTPUT                          |
   -- +----------------------------------------------------+
   DBMS_OUTPUT.ENABLE(1000000);
+
+  SELECT directory_path INTO v_out_dirname FROM all_directories WHERE directory_name = 'TEMP_DUMP_LOB_DIR';
 
   v_sql_string := 'SELECT ' || v_cname || '  FROM ' || v_oname || '.' || v_tname || ' ' || v_wclause;
 
@@ -165,12 +197,12 @@ BEGIN
 
   CLOSE v_lob_cur;
 
-  DBMS_OUTPUT.PUT_LINE('Wrote out ' || v_file_count || ' file(s) to ' || v_outdir || '.');
+  DBMS_OUTPUT.PUT_LINE('Wrote out ' || v_file_count || ' file(s) to ' || v_out_dirname || '.');
 
 EXCEPTION
 
   WHEN invalid_directory_path THEN
-    DBMS_OUTPUT.PUT_LINE('** ERROR ** : Invalid Directory Path: ' || v_outdir);
+     DBMS_OUTPUT.PUT_LINE('** ERROR ** : Invalid Directory Path: ' || v_outdir);
 
   WHEN table_does_not_exist THEN
     DBMS_OUTPUT.PUT_LINE('** ERROR ** : Table Not Found.');
@@ -186,3 +218,6 @@ EXCEPTION
 
 END;
 /
+
+DROP DIRECTORY temp_dump_lob_dir;
+

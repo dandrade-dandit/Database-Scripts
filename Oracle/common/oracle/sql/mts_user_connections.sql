@@ -3,11 +3,11 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : mts_user_connections.sql                                        |
--- | CLASS    : Multi Threaded Server                                           |
+-- | CLASS    : Multi-threaded Server (MTS)                                     |
 -- | PURPOSE  : Display status and metrics related to MTS user connections.     |
 -- |                                                                            |
 -- |            NAME     : Returns the dispatcher's name. This forms part of    |
@@ -36,32 +36,64 @@
 -- |                                    by a shared server process.             |
 -- |                       NONE       : A circuit (or connection) is idle.      |
 -- |                                    Nothing is happening.                   |
+-- |                                                                            |
+-- |            This script is RAC enabled.                                     |
+-- |                                                                            |
 -- | NOTE     : As with any code, ensure to test this script in a development   |
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE  145
-SET PAGESIZE  9999
-SET VERIFY    off
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN d_name            FORMAT a11     HEAD 'Dispatcher|Name'
-COLUMN s_username        FORMAT a15     HEAD 'Username'
-COLUMN c_circuit_status  FORMAT a15     HEAD 'Circuit|Status'
-COLUMN c_circuit_queue   FORMAT a15     HEAD 'Circuit|Queue'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Multi-threaded Server: User Connections                     |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN instance_name      FORMAT a10    HEAD 'Instance'
+COLUMN dispatcher_name    FORMAT a16    HEAD 'Dispatcher Name'
+COLUMN s_username         FORMAT a15    HEAD 'Username'
+COLUMN c_circuit_status   FORMAT a15    HEAD 'Circuit Status'
+COLUMN c_circuit_queue    FORMAT a15    HEAD 'Circuit Queue'
 
 SELECT
-    d.name       d_name
-  , s.username   s_username
-  , c.status     c_circuit_status
-  , c.queue      c_circuit_queue
-FROM 
-    v$circuit     c
-  , v$dispatcher  d
-  , v$session     s
+    i.instance_name   instance_name
+  , d.name            dispatcher_name
+  , s.username        s_username
+  , c.status          c_circuit_status
+  , c.queue           c_circuit_queue
+FROM
+    gv$instance i
+  , gv$circuit     c
+  , gv$dispatcher  d
+  , gv$session     s
 WHERE
-      c.dispatcher = d.paddr
-  AND c.saddr      = s.saddr
-ORDER BY 
-    d.name
+      i.inst_id = d.inst_id
+  AND c.inst_id = d.inst_id
+  AND s.inst_id = d.inst_id
+  AND c.dispatcher = d.paddr
+  AND c.saddr = s.saddr
+ORDER BY
+    i.instance_name
+  , d.name
   , s.username;
 

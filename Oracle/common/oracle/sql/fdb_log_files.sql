@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : fdb_log_files.sql                                               |
@@ -13,20 +13,45 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(sys_context('USERENV', 'INSTANCE_NAME'), 17) current_instance
+FROM dual;
+SET TERMOUT ON;
 
-COLUMN thread#                                            HEADING 'Thread #'
-COLUMN sequence#                                          HEADING 'Sequence #'
-COLUMN name                     FORMAT a59                HEADING 'Log File Name'
-COLUMN log#                                               HEADING 'Log #'
-COLUMN bytes                    FORMAT 9,999,999,999      HEADING 'Bytes'
-COLUMN first_change#                                      HEADING 'First Change #'
-COLUMN first_time                                         HEADING 'First Time' JUST RIGHT
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Flashback Database Log Files                                |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN thread#                                              HEADING 'Thread #'
+COLUMN sequence#                                            HEADING 'Sequence #'
+COLUMN name                     FORMAT a65                  HEADING 'Log File Name'
+COLUMN log#                                                 HEADING 'Log #'
+COLUMN bytes                    FORMAT 999,999,999,999      HEADING 'Bytes'
+COLUMN first_change#                                        HEADING 'First Change #'
+COLUMN first_time                                           HEADING 'First Time' JUST RIGHT
 
 BREAK ON thread# SKIP 2
-COMPUTE COUNT OF sequence# ON thread#
-COMPUTE SUM OF bytes ON thread#
+
+COMPUTE count OF sequence# ON thread#
+COMPUTE sum OF bytes ON thread#
 
 SELECT
     thread#
@@ -41,3 +66,4 @@ FROM
 ORDER BY
     thread#
   , sequence#;
+

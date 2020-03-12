@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_object_cache.sql                                            |
@@ -13,8 +13,31 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 155
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Summary of Objects in the Shared Pool Cache                 |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     OFF
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
 
 COLUMN inst_id                              HEAD "Inst.|ID"
 COLUMN owner         FORMAT a10             HEAD "Owner"
@@ -36,7 +59,12 @@ COLUMN crsr_plan_hash_value                 HEAD "Cursor Plan|Hash Value"
 COLUMN kglobt02                             HEAD "kglobt02"
 
 BREAK ON report
+
 COMPUTE sum OF sharable_mem ON report
+
+DEFINE spool_file=shared_pool_object_cache.lst
+
+SPOOL &spool_file
 
 SELECT
     inst_id                                 inst_id
@@ -164,3 +192,10 @@ SELECT
 FROM x$kglob
 / 
 
+SPOOL OFF
+
+SET TERMOUT ON
+
+PROMPT 
+PROMPT Report written to &spool_file
+PROMPT

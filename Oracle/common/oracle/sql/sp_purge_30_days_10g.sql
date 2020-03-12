@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : sp_purge_30_days_10g.sql                                        |
@@ -32,13 +32,12 @@ WHENEVER SQLERROR EXIT ROLLBACK
 
 SPOOL sp_purge_&days_to_keep._days_10g.lis
 
-
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Get database and instance currently connected to.                          |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Get database and instance currently connected to.                          |
+PROMPT +----------------------------------------------------------------------------+
 
 SET FEEDBACK off
 
@@ -81,14 +80,14 @@ END;
 
 SET FEEDBACK on
 
-prompt 
-prompt 
-prompt 
-prompt +----------------------------------------------------------------------------+
-prompt | Removed Statspack snapshots older than &days_to_keep days.                            |
-prompt +----------------------------------------------------------------------------+
+PROMPT 
+PROMPT 
+PROMPT 
+PROMPT +----------------------------------------------------------------------------+
+PROMPT | Removed Statspack snapshots older than &days_to_keep days.                            |
+PROMPT +----------------------------------------------------------------------------+
 
-print snapshots_purged
+PRINT snapshots_purged
 
 SPOOL off
 

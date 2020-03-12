@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2010 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2019 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : help.sql                                                        |
@@ -18,14 +18,14 @@ SET LINESIZE  145
 SET PAGESIZE  9999
 SET VERIFY    off
 
-prompt 
+prompt
 prompt ========================================
 prompt Automatic Shared Memory Management
 prompt ========================================
 prompt asmm_components.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Automatic Storage Management
 prompt ========================================
@@ -37,10 +37,11 @@ prompt asm_disks_perf.sql
 prompt asm_drop_files.sql
 prompt asm_files.sql
 prompt asm_files2.sql
+prompt asm_files_10g.sql
 prompt asm_templates.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Automatic Workload Repository
 prompt ========================================
@@ -48,39 +49,16 @@ prompt awr_snapshots_dbtime.sql
 prompt awr_snapshots_dbtime_xls.sql
 
 
-prompt 
+prompt
 prompt ========================================
-prompt Create Database Scripts
+prompt Data Pump
 prompt ========================================
-prompt cr_init.sql
+prompt dpump_jobs.sql
+prompt dpump_progress.sql
+prompt dpump_sessions.sql
 
 
-prompt 
-prompt ========================================
-prompt Create Object Examples
-prompt ========================================
-prompt cr_clob.sql
-prompt cr_clob_8.sql
-prompt cr_dimension.sql
-prompt cr_index.sql
-prompt cr_index_organized_table.sql
-prompt cr_materialized_view.sql
-prompt cr_not_null_constraints.sql
-prompt cr_primary_foreign_key.sql
-prompt cr_profile_password_parameters.sql
-prompt cr_profile_resource_parameters.sql
-prompt cr_resource_plan_multi_resource_plan_9i.sql
-prompt cr_sequence.sql
-prompt cr_table.sql
-prompt cr_table_buffer_pools.sql
-prompt cr_tablespace.sql
-prompt cr_temporary_tables.sql
-prompt create_emp_dept_custom.sql
-prompt create_emp_dept_original.sql
-prompt create_user_tables.sql
-
-
-prompt 
+prompt
 prompt ========================================
 prompt Database Administration
 prompt ========================================
@@ -91,6 +69,7 @@ prompt dba_controlfile_records.sql
 prompt dba_controlfiles.sql
 prompt dba_cr_init.sql
 prompt dba_db_growth.sql
+prompt dba_directories.sql
 prompt dba_errors.sql
 prompt dba_file_space_usage.sql
 prompt dba_file_space_usage_7.sql
@@ -120,13 +99,14 @@ prompt dba_registry.sql
 prompt dba_related_child_tables.sql
 prompt dba_row_size.sql
 prompt dba_segment_summary.sql
+prompt dba_snapshot_database.sql
 prompt dba_snapshot_database_10g.sql
 prompt dba_snapshot_database_8i.sql
 prompt dba_snapshot_database_9i.sql
 prompt dba_table_info.sql
-prompt dba_tables.sql
 prompt dba_tables_all.sql
-prompt dba_tables_user.sql
+prompt dba_tables_current_user.sql
+prompt dba_tables_query_user.sql
 prompt dba_tablespace_mapper.sql
 prompt dba_tablespace_to_owner.sql
 prompt dba_tablespaces.sql
@@ -136,18 +116,37 @@ prompt dba_top_segments.sql
 prompt help.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Database Resource Manager
 prompt ========================================
-prompt rsrc_plan_status_detail_9i.sql
-prompt rsrc_plan_status_summary_9i.sql
+prompt rsrc_plan_status_detail.sql
+prompt rsrc_plan_status_summary.sql
 
 
-prompt 
+prompt
 prompt ========================================
-prompt Demonstrations
+prompt Examples
 prompt ========================================
+prompt example_create_clob.sql
+prompt example_create_clob_8.sql
+prompt example_create_dimension.sql
+prompt example_create_emp_dept_custom.sql
+prompt example_create_emp_dept_original.sql
+prompt example_create_index.sql
+prompt example_create_index_organized_table.sql
+prompt example_create_materialized_view.sql
+prompt example_create_not_null_constraints.sql
+prompt example_create_primary_foreign_key.sql
+prompt example_create_profile_password_parameters.sql
+prompt example_create_profile_resource_parameters.sql
+prompt example_create_resource_plan_multi_resource_plan_9i.sql
+prompt example_create_sequence.sql
+prompt example_create_table.sql
+prompt example_create_table_buffer_pools.sql
+prompt example_create_tablespace.sql
+prompt example_create_temporary_tables.sql
+prompt example_create_user_tables.sql
 prompt example_database_resource_manager_setup.sql
 prompt example_drop_unused_column.sql
 prompt example_lob_demonstration.sql
@@ -157,7 +156,7 @@ prompt example_partition_range_number_oracle_8.sql
 prompt example_transport_tablespace.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Flash Recovery Area
 prompt ========================================
@@ -166,7 +165,7 @@ prompt fra_files.sql
 prompt fra_status.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Flashback Database
 prompt ========================================
@@ -175,7 +174,7 @@ prompt fdb_redo_time_matrix.sql
 prompt fdb_status.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt LOBs
 prompt ========================================
@@ -185,16 +184,17 @@ prompt lob_dump_nclob.sql
 prompt lob_fragmentation_user.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Locks
 prompt ========================================
 prompt locks_blocking.sql
+prompt locks_blocking2.sql
 prompt locks_dml_ddl.sql
 prompt locks_dml_lock_time.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Multi Threaded Server
 prompt ========================================
@@ -206,21 +206,23 @@ prompt mts_shared_server_utilization.sql
 prompt mts_user_connections.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Oracle Applications
 prompt ========================================
+prompt erp_conc_manager_job_status.sql
+prompt erp_conc_manager_job_status2.sql
 prompt erp_conc_manager_user_query.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Oracle Wait Interface
 prompt ========================================
 prompt owi_event_names.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt PL SQL
 prompt ========================================
@@ -228,7 +230,7 @@ prompt plsql_random_numbers.sql
 prompt plsql_webdba_utl_pkg.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt RMAN
 prompt ========================================
@@ -241,37 +243,21 @@ prompt rman_progress.sql
 prompt rman_spfiles.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt RMAN Recovery Catalog
 prompt ========================================
 prompt rc_databases.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Real Application Clusters
 prompt ========================================
 prompt rac_instances.sql
-prompt rac_locks_blocking.sql
-prompt rac_rollback_segments.sql
-prompt rac_rollback_users.sql
-prompt rac_sess_users.sql
-prompt rac_sess_users_active.sql
-prompt rac_sess_users_sql.sql
-prompt rac_waiting_sessions.sql
 
 
-prompt 
-prompt ========================================
-prompt Rollback Segments
-prompt ========================================
-prompt rollback_contention.sql
-prompt rollback_segments.sql
-prompt rollback_users.sql
-
-
-prompt 
+prompt
 prompt ========================================
 prompt Security
 prompt ========================================
@@ -280,7 +266,7 @@ prompt sec_roles.sql
 prompt sec_users.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Session Management
 prompt ========================================
@@ -291,17 +277,20 @@ prompt sess_user_sessions.sql
 prompt sess_user_stats.sql
 prompt sess_user_trace_file_location.sql
 prompt sess_users.sql
+prompt sess_users_8i.sql
 prompt sess_users_active.sql
+prompt sess_users_active_8i.sql
 prompt sess_users_active_sql.sql
 prompt sess_users_by_cpu.sql
 prompt sess_users_by_cursors.sql
 prompt sess_users_by_io.sql
 prompt sess_users_by_memory.sql
 prompt sess_users_by_transactions.sql
-prompt sess_users_sql.sql
+prompt sess_waiting.sql
+prompt sess_waiting_8i.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Statspack
 prompt ========================================
@@ -309,7 +298,6 @@ prompt sp_auto.sql
 prompt sp_auto_15.sql
 prompt sp_auto_30.sql
 prompt sp_auto_5.sql
-prompt sp_last_report.sql
 prompt sp_list.sql
 prompt sp_parameters.sql
 prompt sp_purge.sql
@@ -318,12 +306,13 @@ prompt sp_purge_30_days_9i.sql
 prompt sp_purge_n_days_10g.sql
 prompt sp_purge_n_days_9i.sql
 prompt sp_snap.sql
+prompt sp_statspack_custom_pkg.sql
 prompt sp_statspack_custom_pkg_10g.sql
 prompt sp_statspack_custom_pkg_9i.sql
 prompt sp_trunc.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Temporary Tablespace
 prompt ========================================
@@ -332,7 +321,7 @@ prompt temp_sort_users.sql
 prompt temp_status.sql
 
 
-prompt 
+prompt
 prompt ========================================
 prompt Tuning
 prompt ========================================
@@ -361,7 +350,18 @@ prompt perf_top_sql_by_buffer_gets.sql
 prompt perf_top_sql_by_disk_reads.sql
 
 
-prompt 
+prompt
+prompt ========================================
+prompt Undo Segments
+prompt ========================================
+prompt rollback_segments.sql
+prompt rollback_users.sql
+prompt undo_contention.sql
+prompt undo_segments.sql
+prompt undo_users.sql
+
+
+prompt
 prompt ========================================
 prompt Workspace Manager
 prompt ========================================
@@ -374,5 +374,6 @@ prompt wm_goto_workspace.sql
 prompt wm_merge_workspace.sql
 prompt wm_refresh_workspace.sql
 prompt wm_remove_workspace.sql
+prompt wm_rollback_workspace.sql
 prompt wm_unfreeze_workspace.sql
 prompt wm_workspaces.sql

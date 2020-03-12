@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : temp_status.sql                                                 |
@@ -13,18 +13,41 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
-SET VERIFY   off
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN tablespace_name       FORMAT a18               HEAD 'Tablespace Name'
-COLUMN tablespace_status     FORMAT a9                HEAD 'Status'
-COLUMN tablespace_size       FORMAT 999,999,999,999   HEAD 'Size'
-COLUMN used                  FORMAT 999,999,999,999   HEAD 'Used'
-COLUMN used_pct              FORMAT 999               HEAD 'Pct. Used'
-COLUMN current_users         FORMAT 9,999             HEAD 'Current Users'
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Temporary Status                                            |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN tablespace_name       FORMAT a20                 HEAD 'Tablespace Name'
+COLUMN tablespace_status     FORMAT a9                  HEAD 'Status'
+COLUMN tablespace_size       FORMAT 9,999,999,999,999   HEAD 'Size'
+COLUMN used                  FORMAT 9,999,999,999,999   HEAD 'Used'
+COLUMN used_pct              FORMAT 999                 HEAD 'Pct. Used'
+COLUMN current_users         FORMAT 999,999             HEAD 'Current Users'
 
 BREAK ON report
+
 COMPUTE SUM OF tablespace_size  ON report
 COMPUTE SUM OF used             ON report
 COMPUTE SUM OF current_users    ON report
@@ -52,6 +75,5 @@ WHERE
   AND d.tablespace_name = t.tablespace_name(+)
   AND d.tablespace_name = s.tablespace_name(+)
   AND d.extent_management like 'LOCAL'
-  AND d.contents like 'TEMPORARY'
-/
+  AND d.contents like 'TEMPORARY';
 

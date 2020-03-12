@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_controlfile_records.sql                                     |
@@ -14,10 +14,33 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 135
-SET PAGESIZE 9999
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN type           FORMAT           A20   HEADING "Record Section Type"
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Control File Records                                        |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN type           FORMAT           a30   HEADING "Record Section Type"
 COLUMN record_size    FORMAT       999,999   HEADING "Record Size|(in bytes)"
 COLUMN records_total  FORMAT       999,999   HEADING "Records Allocated"
 COLUMN bytes_alloc    FORMAT   999,999,999   HEADING "Bytes Allocated"
@@ -28,12 +51,13 @@ COLUMN first_index                           HEADING "First Index"
 COLUMN last_index                            HEADING "Last Index"
 COLUMN last_recid                            HEADING "Last RecID"
 
-break on report
-compute sum of records_total on report
-compute sum of bytes_alloc   on report
-compute sum of records_used  on report
-compute sum of bytes_used    on report
-compute avg of pct_used      on report
+BREAK ON report
+
+COMPUTE sum OF records_total ON report
+COMPUTE sum OF bytes_alloc   ON report
+COMPUTE sum OF records_used  ON report
+COMPUTE sum OF bytes_used    ON report
+COMPUTE avg OF pct_used      ON report
 
 SELECT
     type

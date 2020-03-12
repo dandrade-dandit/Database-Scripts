@@ -3,7 +3,7 @@
 -- |                      jhunter@idevelopment.info                             |
 -- |                         www.idevelopment.info                              |
 -- |----------------------------------------------------------------------------|
--- |      Copyright (c) 1998-2009 Jeffrey M. Hunter. All rights reserved.       |
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
 -- |----------------------------------------------------------------------------|
 -- | DATABASE : Oracle                                                          |
 -- | FILE     : dba_query_hidden_parameters.sql                                 |
@@ -14,14 +14,35 @@
 -- |            environment before attempting to run it in production.          |
 -- +----------------------------------------------------------------------------+
 
-SET LINESIZE 145
-SET PAGESIZE 9999
-SET VERIFY   off
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
 
-COLUMN ksppinm   FORMAT A42   HEAD 'Parameter Name'
-COLUMN ksppstvl  FORMAT A39   HEAD 'Value'
-COLUMN ksppdesc  FORMAT A60   HEAD 'Description'    TRUNC
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : Invalid Objects                                             |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
 
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    256
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN ksppinm   FORMAT a55   HEAD 'Parameter Name'
+COLUMN ksppstvl  FORMAT a40   HEAD 'Value'
+COLUMN ksppdesc  FORMAT a60   HEAD 'Description'    TRUNC
 
 SELECT
     ksppinm
@@ -33,4 +54,7 @@ FROM
 WHERE
       x.indx = y.indx 
   AND TRANSLATE(ksppinm,'_','#') like '#%'
+ORDER BY
+  ksppinm
 /
+
